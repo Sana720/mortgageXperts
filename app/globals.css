@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #ffffff;
+  --color-foreground: #0B1F3A;
+
+  --color-primary: #2563EB;
+  --color-primary-dark: #0B1F3A;
+  --color-primary-light: #EAF3FF;
+
+  --color-secondary: #38BDF8;
+
+  --color-success: #22C55E;
+
+  --color-card: #FFFFFF;
+  --color-card-foreground: #0B1F3A;
+
+  --color-muted: #6B7280;
+  --color-border: #DCE7F5;
+
+  --font-montserrat: var(--font-montserrat), sans-serif;
+  --font-inter: var(--font-inter), sans-serif;
+
+  --shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.07);
+  --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #0B1F3A;
+  --primary: #2563EB;
+  --primary-dark: #0B1F3A;
+  --primary-light: #EAF3FF;
+  --secondary: #38BDF8;
+  --success: #22C55E;
+  --card: #FFFFFF;
+  --card-foreground: #0B1F3A;
+  --muted: #6B7280;
+  --border: #DCE7F5;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #ffffff;
+  color: var(--foreground);
+  font-family: var(--font-inter), sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-montserrat), sans-serif;
+}
