@@ -15,12 +15,8 @@ import {
   Percent,
   Home as HomeIcon,
   ChevronDown,
-  RefreshCw,
   Building2,
-  Briefcase,
-  HardHat,
   PiggyBank,
-  CheckCircle2,
   Settings,
   Heart,
   FileText,
@@ -594,8 +590,7 @@ function SuccessStoriesSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.65, ease: EASE_OUT }}
-            whileHover={{ boxShadow: "0 24px 56px rgba(0,0,0,0.28)" }}
-            transition={{ duration: 0.4, ease: EASE_OUT }}
+            whileHover={{ boxShadow: "0 24px 56px rgba(0,0,0,0.28)", transition: { duration: 0.4, ease: EASE_OUT } }}
             className="lg:col-span-7 rounded-[18px] bg-white shadow-[0_20px_50px_rgba(0,0,0,0.25)] overflow-hidden border border-white/10"
           >
             <div className="flex flex-col sm:flex-row min-h-[300px] sm:min-h-[320px]">
@@ -1776,6 +1771,7 @@ export default function Home() {
                     "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=80&h=80&q=80",
                   ].map((src, i) => (
                     <div key={i} className="w-8 h-8 rounded-full border-2 border-white overflow-hidden bg-slate-100 shrink-0 shadow-sm">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={src} alt={`Client ${i + 1}`} className="w-full h-full object-cover" />
                     </div>
                   ))}
@@ -2409,7 +2405,7 @@ function WhyChooseUsSection() {
 
         {/* Mobile Vertical Stack */}
         <Stagger className="flex lg:hidden flex-col gap-4">
-          {cards.map((card, idx) => (
+          {cards.map((card) => (
             <motion.div
               key={card.city}
               variants={staggerItem}
