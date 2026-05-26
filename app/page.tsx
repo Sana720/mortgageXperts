@@ -250,19 +250,24 @@ type SmartToolItem = {
   title: string;
   desc: string;
   icon: React.ReactNode;
+  iconColorClass?: string;
+  iconBgClass?: string;
 };
 
 function SmartToolCard({ tool }: { tool: SmartToolItem }) {
+  const iconColor = tool.iconColorClass || 'text-[#1D63F1]';
+  const iconBg = tool.iconBgClass || 'border-[#E1EDFF] bg-[#F3F8FF]';
+
   return (
-    <div className="group flex items-start gap-3.5 px-4 py-3.5 rounded-xl hover:bg-[#F7FAFF] transition-colors">
-      <div className="w-10 h-10 rounded-xl border border-[#E1EDFF] bg-[#F3F8FF] text-[#1D63F1] flex items-center justify-center shrink-0">
+    <div className="group flex items-start gap-3.5 px-4 py-3.5 rounded-xl hover:bg-slate-50 transition-colors">
+      <div className={`w-10 h-10 rounded-xl border flex items-center justify-center shrink-0 ${iconColor} ${iconBg}`}>
         {tool.icon}
       </div>
       <div className="min-w-0">
         <div className="text-[14px] font-extrabold text-[#0B1F3A] leading-tight">{tool.title}</div>
         <div className="text-[12px] text-slate-500 leading-snug mt-1">{tool.desc}</div>
       </div>
-      <ArrowRight className="w-4 h-4 text-[#1D63F1] ml-auto mt-1 shrink-0 group-hover:translate-x-0.5 transition-transform" />
+      <ArrowRight className={`w-4 h-4 ml-auto mt-1 shrink-0 group-hover:translate-x-0.5 transition-transform ${iconColor}`} />
     </div>
   );
 }
@@ -304,135 +309,159 @@ function SmartToolsSection() {
   })();
 
   const tools: SmartToolItem[] = [
-    { icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="14" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg>, title: "Repayment Calculator", desc: "Estimate your monthly repayments in seconds." },
-    { icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 3.5 3.5"/><path d="M11 8v3l2 2"/></svg>, title: "Borrowing Power Calculator", desc: "Find out how much you can borrow." },
-    { icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 6v6l4 2"/></svg>, title: "Stamp Duty Calculator", desc: "Estimate your stamp duty costs." },
-    { icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>, title: "Extra Repayment Calculator", desc: "See how extra payments could save you more." },
-    { icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><rect x="3" y="3" width="8" height="18" rx="1"/><rect x="13" y="3" width="8" height="18" rx="1"/></svg>, title: "Compare Loans", desc: "Compare loan features, rates and fees side by side." },
+    {
+      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><rect x="4" y="4" width="16" height="16" rx="2" /><line x1="8" y1="9" x2="16" y2="9" /><line x1="8" y1="13" x2="14" y2="13" /><line x1="8" y1="17" x2="12" y2="17" /></svg>,
+      title: "Repayment Calculator", desc: "Estimate your monthly repayments in seconds.",
+      iconColorClass: "text-[#2563EB]", iconBgClass: "bg-blue-50 border-blue-100"
+    },
+    {
+      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><circle cx="11" cy="11" r="7" /><path d="m16.5 16.5 3.5 3.5" /><path d="M11 8v3l2 2" /></svg>,
+      title: "Borrowing Power Calculator", desc: "Find out how much you can borrow.",
+      iconColorClass: "text-[#8B5CF6]", iconBgClass: "bg-violet-50 border-violet-100"
+    },
+    {
+      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" /><path d="M12 6v6l4 2" /></svg>,
+      title: "Stamp Duty Calculator", desc: "Estimate your stamp duty costs.",
+      iconColorClass: "text-[#059669]", iconBgClass: "bg-emerald-50 border-emerald-100"
+    },
+    {
+      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>,
+      title: "Extra Repayment Calculator", desc: "See how extra payments could save you more.",
+      iconColorClass: "text-[#D97706]", iconBgClass: "bg-amber-50 border-amber-100"
+    },
+    {
+      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><rect x="3" y="3" width="8" height="18" rx="1" /><rect x="13" y="3" width="8" height="18" rx="1" /></svg>,
+      title: "Compare Loans", desc: "Compare loan features, rates and fees side by side.",
+      iconColorClass: "text-[#db2777]", iconBgClass: "bg-pink-50 border-pink-100"
+    },
   ];
 
   const steps: ProcessStepItem[] = [
-    { num: 1, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>, title: "Book a Consultation", desc: "Tell us your goals in a quick, obligation-free chat." },
-    { num: 2, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 3.5 3.5"/><path d="M8 11h6M11 8v6"/></svg>, title: "We Research & Compare", desc: "We compare 40+ lenders to find your best options." },
-    { num: 3, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>, title: "We Recommend", desc: "Get expert advice and a clear recommendation." },
-    { num: 4, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>, title: "We Handle the Paperwork", desc: "We manage the process from start to settlement." },
-    { num: 5, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>, title: "You Move Forward", desc: "Settle with confidence and focus on what is next." },
+    { num: 1, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>, title: "Book a Consultation", desc: "Tell us your goals in a quick, obligation-free chat." },
+    { num: 2, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><circle cx="11" cy="11" r="7" /><path d="m16.5 16.5 3.5 3.5" /><path d="M8 11h6M11 8v6" /></svg>, title: "We Research & Compare", desc: "We compare 40+ lenders to find your best options." },
+    { num: 3, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z" /><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" /></svg>, title: "We Recommend", desc: "Get expert advice and a clear recommendation." },
+    { num: 4, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /><polyline points="10 9 9 9 8 9" /></svg>, title: "We Handle the Paperwork", desc: "We manage the process from start to settlement." },
+    { num: 5, icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" /><path d="M9 21V12h6v9" /></svg>, title: "You Move Forward", desc: "Settle with confidence and focus on what is next." },
   ];
 
   return (
     <section className="bg-white py-14 md:py-16 overflow-hidden">
       <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
-        <div className="rounded-[24px] border border-[#E8EEF8] bg-[#FCFDFF] shadow-[0_14px_40px_rgba(15,23,42,0.05)] p-4 md:p-6">
-
         {/* TOP HERO ROW */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center mb-4">
-
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-4 mb-6 relative w-full pt-4">
           {/* Left: Text */}
           <motion.div
             initial="hidden" whileInView="visible" viewport={{ once: true }}
             variants={staggerContainer}
-            className="lg:col-span-4 flex flex-col gap-4"
+            className="w-full lg:w-[38%] flex flex-col gap-3 z-10"
           >
-            <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 bg-[#EAF3FF] border border-[#2563EB]/15 rounded-full px-4 py-1.5 w-fit">
-              <TrendingUp className="w-3.5 h-3.5 text-[#2563EB]" />
-              <span className="text-[11px] font-bold tracking-widest text-[#2563EB] uppercase">Smart Tools</span>
+            <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 bg-[#F0F5FF] text-[#2563EB] rounded-full px-3 py-1 w-fit">
+              <TrendingUp className="w-3 h-3" />
+              <span className="text-[10px] font-bold tracking-widest uppercase">Smart Tools</span>
             </motion.div>
-            <motion.h2 variants={fadeInUp} className="text-[34px] md:text-[44px] font-extrabold leading-[1.08] text-[#0B1F3A]" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+            <motion.h2 variants={fadeInUp} className="text-[34px] md:text-[46px] font-extrabold leading-[1.05] text-[#0B1F3A]" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
               Powerful Tools.<br />
               <span className="text-[#2563EB]">Smarter</span> Decisions.
             </motion.h2>
-            <motion.p variants={fadeInUp} className="text-slate-500 text-[15px] leading-relaxed max-w-sm">
+            <motion.p variants={fadeInUp} className="text-slate-500 text-[14px] md:text-[15px] leading-relaxed max-w-[360px]">
               Use our easy-to-use tools and calculators to explore your options, estimate costs and plan your next move with confidence.
             </motion.p>
-            <motion.div variants={fadeInUp}>
-              <Link href="#" className="bg-[#2563EB] text-white font-bold text-[14px] py-3.5 px-7 rounded-xl inline-flex items-center gap-2 hover:bg-[#1d4ed8] transition-all duration-300 shadow-lg shadow-blue-200 hover:scale-[1.02]">
-                Explore All Tools <ArrowRight className="w-4 h-4" />
+            <motion.div variants={fadeInUp} className="pt-2">
+              <Link href="#" className="bg-[#2563EB] text-white font-bold text-[13px] py-3.5 px-7 rounded-lg inline-flex items-center gap-2 hover:bg-[#1d4ed8] transition-all shadow-md hover:scale-[1.02]">
+                Explore All Tools <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </motion.div>
           </motion.div>
 
-          {/* Center: Repayment Calculator Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            transition={{ delay: 0.2, type: "spring", stiffness: 100, damping: 15 }}
-            className="lg:col-span-3 bg-white rounded-2xl border border-slate-200 shadow-lg p-5 z-10"
-          >
-            <div className="text-[15px] font-bold text-[#0B1F3A] mb-5">Repayment Calculator</div>
-
-            {/* Loan Amount */}
-            <div className="mb-4">
-              <div className="text-[11px] text-slate-400 font-semibold mb-1">Home Loan Amount</div>
-              <div className="text-[22px] font-black text-[#2563EB] mb-2">${loanAmount.toLocaleString()}</div>
-              <input type="range" min={100000} max={2000000} step={10000} value={loanAmount}
-                onChange={e => setLoanAmount(Number(e.target.value))}
-                className="w-full accent-[#2563EB] h-1.5 rounded-full"
-              />
-              <div className="flex justify-between text-[10px] text-slate-400 mt-1"><span>$100K</span><span>$2M</span></div>
+          {/* Right: Calculator + Image Area */}
+          <div className="w-full lg:w-[62%] relative flex justify-end items-center h-[380px] sm:h-[420px] lg:h-[480px] mt-8 lg:mt-0">
+            {/* The abstract background blob */}
+            <div className="absolute inset-0 right-0 w-[105%] lg:w-[110%] bg-[#F0F6FF] rounded-[30px] -z-10" style={{ right: "-5%" }}>
+              <div className="absolute top-6 right-8 w-32 h-32 opacity-30" style={{ backgroundImage: "radial-gradient(#2563EB 1px, transparent 1px)", backgroundSize: "8px 8px" }} />
+              <div className="absolute -left-6 -bottom-6 w-32 h-32 bg-white opacity-50 rounded-full blur-2xl" />
             </div>
 
-            {/* Interest Rate */}
-            <div className="mb-4">
-              <div className="text-[11px] text-slate-400 font-semibold mb-1">Interest Rate (p.a.)</div>
-              <div className="text-[22px] font-black text-[#0B1F3A] mb-2">{interestRate.toFixed(2)}%</div>
-              <input type="range" min={2} max={12} step={0.01} value={interestRate}
-                onChange={e => setInterestRate(Number(e.target.value))}
-                className="w-full accent-[#2563EB] h-1.5 rounded-full"
-              />
-            </div>
+            {/* The House Image */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}
+              className="relative w-full lg:w-[95%] h-full z-0 ml-auto"
+            >
+              <Image src="/images/smart_tools_house.png" alt="Home" fill className="object-contain object-bottom md:object-right-bottom mix-blend-multiply scale-[1.12] origin-bottom lg:origin-bottom-right" />
+            </motion.div>
 
-            {/* Loan Term */}
-            <div className="mb-5">
-              <div className="text-[11px] text-slate-400 font-semibold mb-1">Loan Term</div>
-              <div className="relative">
-                <select value={loanTerm} onChange={e => setLoanTerm(Number(e.target.value))}
-                  className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-[14px] font-semibold text-[#0B1F3A] appearance-none bg-white pr-10 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20">
-                  {[10,15,20,25,30].map(y => <option key={y} value={y}>{y} years</option>)}
-                </select>
-                <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            {/* The Compact Calculator Card (overlapping on the left) */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 100, damping: 15 }}
+              className="absolute left-0 lg:left-6 top-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-[0_15px_40px_rgba(11,31,58,0.06)] border border-slate-100 p-5 w-[260px] sm:w-[290px] z-10"
+            >
+              <div className="text-[14px] font-bold text-[#0B1F3A] mb-4">Repayment Calculator</div>
+
+              <div className="space-y-3.5">
+                {/* Loan Amount */}
+                <div>
+                  <div className="text-[10px] text-slate-400 font-medium mb-0.5">Home Loan Amount</div>
+                  <div className="text-[18px] font-black text-[#2563EB] mb-1">${loanAmount.toLocaleString()}</div>
+                  <input type="range" min={100000} max={2000000} step={10000} value={loanAmount}
+                    onChange={e => setLoanAmount(Number(e.target.value))}
+                    className="w-full accent-[#2563EB] h-1.5 rounded-full"
+                  />
+                  <div className="flex justify-between text-[9px] text-slate-400 mt-1"><span>$100K</span><span>$2M</span></div>
+                </div>
+
+                {/* Interest Rate */}
+                <div>
+                  <div className="text-[10px] text-slate-400 font-medium mb-0.5">Interest Rate (p.a.)</div>
+                  <div className="text-[18px] font-black text-[#2563EB] mb-1">{interestRate.toFixed(2)}%</div>
+                  <input type="range" min={2} max={12} step={0.01} value={interestRate}
+                    onChange={e => setInterestRate(Number(e.target.value))}
+                    className="w-full accent-[#2563EB] h-1.5 rounded-full"
+                  />
+                </div>
+
+                {/* Loan Term */}
+                <div className="flex items-center justify-between pt-0.5">
+                  <div className="text-[10px] text-slate-400 font-medium">Loan Term</div>
+                  <div className="relative w-28">
+                    <select value={loanTerm} onChange={e => setLoanTerm(Number(e.target.value))}
+                      className="w-full border border-slate-200 rounded-md px-3 py-1.5 text-[12px] font-semibold text-[#2563EB] appearance-none bg-white focus:outline-none focus:ring-1 focus:ring-[#2563EB]/20">
+                      {[10, 15, 20, 25, 30].map(y => <option key={y} value={y}>{y} years</option>)}
+                    </select>
+                    <ChevronDown className="w-3.5 h-3.5 text-[#2563EB] absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* Result Box */}
+                <div className="bg-[#F4F9FF] rounded-lg p-3 border border-[#EBF5FF] mt-2">
+                  <div className="text-[10px] text-slate-400 font-medium mb-0.5">Estimated Repayment</div>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-[24px] font-black text-[#0B1F3A]">${Math.round(monthlyPayment).toLocaleString()}</span>
+                    <span className="text-[11px] text-slate-500 font-medium">/month</span>
+                  </div>
+                  <div className="text-[9px] text-slate-400 mt-1 flex items-center gap-1">
+                    Principal &amp; Interest
+                    <svg className="w-3 h-3 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="10" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 16v-4m0-4h.01" /></svg>
+                  </div>
+                </div>
               </div>
-            </div>
+            </motion.div>
 
-            {/* Result */}
-            <div className="bg-[#F8FAFF] rounded-xl p-4 border border-[#EBF5FF]">
-              <div className="text-[11px] text-slate-400 font-semibold mb-1">Estimated Repayment</div>
-              <div className="flex items-baseline gap-1">
-                <span className="text-[28px] font-black text-[#0B1F3A]">${Math.round(monthlyPayment).toLocaleString()}</span>
-                <span className="text-[13px] text-slate-500 font-medium">/month</span>
-              </div>
-              <div className="text-[11px] text-slate-400 mt-1">Principal &amp; Interest</div>
-            </div>
-          </motion.div>
-
-          {/* Right: House image with floating badge */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
-            transition={{ delay: 0.3, type: "spring", stiffness: 100, damping: 15 }}
-            className="lg:col-span-5 relative h-[300px] lg:h-[340px]"
-          >
-            {/* Dot pattern */}
-            <div className="absolute top-2 right-2 w-24 h-24 opacity-20" style={{ backgroundImage: "radial-gradient(#2563EB 1px, transparent 1px)", backgroundSize: "8px 8px" }} />
-            {/* Blue blob bg */}
-            <div className="absolute inset-0 rounded-3xl" style={{ background: "radial-gradient(ellipse 90% 85% at 60% 50%, #D4E9FF 0%, #EBF5FF 50%, transparent 80%)" }} />
-            {/* House image */}
-            <div className="absolute inset-0 rounded-3xl overflow-hidden border border-[#E1ECFF]">
-              <Image src="/images/villa.png" alt="Home" fill className="object-contain object-center" />
-            </div>
             {/* Floating badge */}
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}
-              transition={{ delay: 0.6, type: "spring" }}
-              className="absolute bottom-5 right-0 bg-white rounded-2xl shadow-xl border border-slate-100 p-4 flex items-start gap-3 w-[210px]"
+              transition={{ delay: 0.4, type: "spring" }}
+              className="absolute bottom-6 right-0 lg:-right-4 bg-white rounded-xl shadow-[0_15px_30px_rgba(11,31,58,0.06)] border border-slate-100 p-4 flex items-center gap-3 w-[200px] z-20"
             >
-              <div className="w-9 h-9 rounded-xl bg-[#EAF3FF] flex items-center justify-center shrink-0">
-                <TrendingUp className="w-4 h-4 text-[#2563EB]" />
+              <div className="w-8 h-8 rounded-full bg-[#2563EB] flex items-center justify-center shrink-0">
+                <TrendingUp className="w-4 h-4 text-white" />
               </div>
               <div>
-                <div className="text-[10px] text-slate-400 font-semibold">Save up to</div>
-                <div className="text-[18px] font-black text-[#0B1F3A] leading-none">$12,000+</div>
-                <div className="text-[10px] text-slate-500 mt-0.5 leading-snug">over the life of your loan with the right strategy.</div>
+                <div className="text-[10px] text-slate-500 font-semibold mb-0.5">Save up to</div>
+                <div className="text-[16px] font-black text-[#0B1F3A] leading-none mb-1">$12,000+</div>
+                <div className="text-[9px] text-slate-400 leading-tight">over the life of your loan<br />with the right strategy.</div>
               </div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
 
         {/* TOOL CARDS ROW */}
@@ -441,9 +470,11 @@ function SmartToolsSection() {
           transition={{ delay: 0.1, duration: 0.5 }}
           className="bg-white rounded-2xl border border-slate-200 shadow-sm p-2.5 md:p-3"
         >
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-1">
+          <div className="flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-slate-100">
             {tools.map((tool) => (
-              <SmartToolCard key={tool.title} tool={tool} />
+              <div key={tool.title} className="flex-1 p-1">
+                <SmartToolCard tool={tool} />
+              </div>
             ))}
           </div>
           <div className="border-t border-slate-100 mt-2 pt-3 px-3 flex justify-end">
@@ -482,8 +513,6 @@ function SmartToolsSection() {
             </div>
           </div>
         </motion.div>
-
-        </div>
       </div>
     </section>
   );
@@ -924,10 +953,10 @@ function FaqCtaSection() {
   const faqs = FAQ_CONTENT[activeTab];
   const filteredFaqs = searchQuery.trim()
     ? faqs.filter(
-        (f) =>
-          f.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          f.answer.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+      (f) =>
+        f.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        f.answer.toLowerCase().includes(searchQuery.toLowerCase())
+    )
     : faqs;
 
   const displayFaqs = filteredFaqs.length > 0 ? filteredFaqs : faqs;
@@ -1019,11 +1048,10 @@ function FaqCtaSection() {
                       setActiveTab(tab.id);
                       setExpandedIndex(0);
                     }}
-                    className={`flex items-center gap-1.5 px-3 py-2 text-[12px] sm:text-[13px] font-semibold whitespace-nowrap border-b-2 transition-colors -mb-[13px] ${
-                      isActive
+                    className={`flex items-center gap-1.5 px-3 py-2 text-[12px] sm:text-[13px] font-semibold whitespace-nowrap border-b-2 transition-colors -mb-[13px] ${isActive
                         ? "text-[#2563EB] border-[#2563EB]"
                         : "text-slate-400 border-transparent hover:text-slate-600"
-                    }`}
+                      }`}
                   >
                     <Icon className={`w-4 h-4 shrink-0 ${isActive ? "text-[#2563EB]" : "text-slate-400"}`} />
                     {tab.label}
@@ -1064,55 +1092,87 @@ function FaqCtaSection() {
           </motion.div>
         </div>
 
-        {/* Dream home CTA banner */}
+        {/* Premium Dream home CTA banner */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="relative rounded-[20px] overflow-hidden min-h-[280px] sm:min-h-[300px] flex flex-col sm:flex-row shadow-[0_20px_50px_rgba(11,31,58,0.15)]"
+          className="relative rounded-[24px] overflow-hidden min-h-[320px] sm:min-h-[360px] flex flex-col sm:flex-row shadow-[0_24px_50px_rgba(11,31,58,0.15)] bg-[#071324] group"
         >
-          <div
-            className="relative z-10 flex flex-col justify-center px-8 py-10 sm:py-12 sm:w-[48%] lg:w-[42%] shrink-0"
-            style={{
-              background: "linear-gradient(135deg, #0B1F3A 0%, #0f2d5c 55%, #1a3a6e 100%)",
-            }}
-          >
-            <div className="w-12 h-12 rounded-full border-2 border-[#38BDF8]/60 bg-[#2563EB]/20 flex items-center justify-center mb-5 shadow-[0_0_20px_rgba(56,189,248,0.35)]">
-              <HomeIcon className="w-6 h-6 text-[#7DD3FC]" />
+          {/* Subtle background glow */}
+          <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[150%] bg-[#2563EB] opacity-[0.15] blur-[100px] pointer-events-none" />
+
+          {/* Left Content Area */}
+          <div className="relative z-20 flex flex-col justify-center px-8 py-10 sm:px-12 sm:w-[55%] lg:w-[50%] shrink-0">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 w-fit mb-6 backdrop-blur-sm shadow-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#38BDF8] shadow-[0_0_8px_#38BDF8] animate-pulse" />
+              <span className="text-[10px] sm:text-[11px] font-extrabold text-white tracking-[0.15em] uppercase">Your Next Chapter</span>
             </div>
+
             <h3
-              className="text-[26px] sm:text-[30px] lg:text-[32px] font-extrabold text-white leading-[1.15] mb-3"
+              className="text-[28px] sm:text-[34px] lg:text-[40px] font-extrabold text-white leading-[1.1] mb-4 tracking-tight"
               style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
             >
               Ready to take the next step towards your{" "}
-              <span className="text-[#38BDF8]">dream home?</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#38BDF8] to-[#2563EB]">dream home?</span>
             </h3>
-            <p className="text-[14px] text-white/80 leading-relaxed mb-6 max-w-sm">
-              Let&apos;s chat about your goals and create a smart strategy that gets you there, sooner.
+
+            <p className="text-[13px] sm:text-[14px] text-slate-300 leading-relaxed mb-8 max-w-[420px]">
+              Let&apos;s chat about your goals and create a smart, tailored strategy that gets you the keys sooner. No jargon, just clear guidance.
             </p>
+
             <Link
               href="#"
-              className="inline-flex items-center justify-center gap-2 w-fit rounded-xl bg-white px-6 py-3.5 text-[14px] font-bold text-[#2563EB] hover:bg-slate-50 transition-colors shadow-md"
+              className="inline-flex items-center justify-center gap-2 w-fit rounded-xl bg-gradient-to-r from-[#2563EB] to-[#1D4ED8] px-6 py-3.5 text-[14px] font-bold text-white hover:shadow-[0_8px_25px_rgba(37,99,235,0.4)] transition-all duration-300 hover:-translate-y-0.5 relative overflow-hidden group/btn"
             >
-              Book a Free Consultation
-              <ArrowRight className="w-4 h-4" />
+              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300 ease-out" />
+              <span className="relative z-10 flex items-center gap-2">
+                Book a Free Consultation
+                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+              </span>
             </Link>
           </div>
-          <div className="relative flex-1 min-h-[220px] sm:min-h-0">
-            <Image
-              src="/images/hero.png"
-              alt="Modern living space"
-              fill
-              className="object-cover object-center"
-              sizes="(max-width: 640px) 100vw, 60vw"
-            />
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                background:
-                  "linear-gradient(to right, #0B1F3A 0%, rgba(11,31,58,0.85) 12%, rgba(11,31,58,0.45) 28%, transparent 52%)",
-              }}
-            />
+
+          {/* Right Image Area */}
+          <div className="relative flex-1 min-h-[260px] sm:min-h-0 w-full">
+            {/* Image container with smooth gradient mask */}
+            <div className="absolute inset-0 w-full h-full" style={{ WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 30%, black 100%)" }}>
+              <Image
+                src="/images/cta-couple.png"
+                alt="Happy family in new home"
+                fill
+                className="object-cover object-[center_20%] sm:object-center group-hover:scale-105 transition-transform duration-1000 ease-out"
+                sizes="(max-width: 640px) 100vw, 50vw"
+              />
+            </div>
+
+            {/* Floating Glass UI Badge */}
+            <motion.div
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute bottom-8 right-8 z-20 bg-[#0B1F3A]/60 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-[0_8px_32px_rgba(0,0,0,0.3)] hidden lg:flex flex-col gap-2"
+            >
+              <div className="flex items-center gap-3">
+                <div className="flex -space-x-2">
+                  <div className="w-7 h-7 rounded-full border border-[#0B1F3A] bg-gradient-to-br from-[#38BDF8] to-[#2563EB] flex items-center justify-center overflow-hidden z-30">
+                    <User className="w-3.5 h-3.5 text-white" />
+                  </div>
+                  <div className="w-7 h-7 rounded-full border border-[#0B1F3A] bg-gradient-to-br from-[#22C55E] to-[#16A34A] flex items-center justify-center overflow-hidden z-20">
+                    <User className="w-3.5 h-3.5 text-white" />
+                  </div>
+                  <div className="w-7 h-7 rounded-full border border-[#0B1F3A] bg-slate-200 flex items-center justify-center overflow-hidden z-10">
+                    <User className="w-3.5 h-3.5 text-slate-500" />
+                  </div>
+                </div>
+                <div>
+                  <div className="text-white text-[11px] font-bold flex items-center gap-1">
+                    <Star className="w-3 h-3 text-[#FBBF24]" fill="currentColor" />
+                    4.9/5 Rating
+                  </div>
+                  <div className="text-white/70 text-[9px] mt-0.5">From 1,200+ happy clients</div>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </motion.div>
       </div>
@@ -1152,8 +1212,8 @@ function SiteFooterSection() {
                 <MessageCircle className="w-5 h-5 text-[#2563EB] shrink-0 mt-0.5" />
                 <div>
                   <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Speak to an Expert</div>
-                  <a href="tel:1300861118" className="text-[16px] font-extrabold text-[#2563EB] hover:underline">
-                    1300 861 118
+                  <a href="tel:0450240757" className="text-[16px] font-extrabold text-[#2563EB] hover:underline">
+                    0450 240 757
                   </a>
                   <div className="text-[11px] text-slate-400 mt-0.5">Mon - Fri 8am - 6pm AEST</div>
                 </div>
@@ -1162,8 +1222,8 @@ function SiteFooterSection() {
                 <Mail className="w-5 h-5 text-[#2563EB] shrink-0 mt-0.5" />
                 <div>
                   <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Email Us</div>
-                  <a href="mailto:hello@mortgagexperts.com.au" className="text-[14px] sm:text-[15px] font-extrabold text-[#2563EB] hover:underline break-all">
-                    hello@mortgagexperts.com.au
+                  <a href="mailto:mortgage@mortgagexperts.com.au" className="text-[14px] sm:text-[15px] font-extrabold text-[#2563EB] hover:underline break-all">
+                    mortgage@mortgagexperts.com.au
                   </a>
                   <div className="text-[11px] text-slate-400 mt-0.5">We reply within 24 hours</div>
                 </div>
@@ -1188,7 +1248,7 @@ function SiteFooterSection() {
             <div className="lg:col-span-3">
               <Link href="/" className="inline-block mb-5">
                 <Image
-                  src="/images/logo.png"
+                  src="/images/footer-logo.png"
                   alt="Mortgage Xperts"
                   width={200}
                   height={56}
@@ -1200,15 +1260,15 @@ function SiteFooterSection() {
               </p>
               <ul className="space-y-3 mb-6">
                 <li>
-                  <a href="tel:1300861118" className="flex items-center gap-2.5 text-[13px] text-slate-300 hover:text-white transition-colors">
+                  <a href="tel:0450240757" className="flex items-center gap-2.5 text-[13px] text-slate-300 hover:text-white transition-colors">
                     <Phone className="w-4 h-4 text-[#2563EB] shrink-0" />
-                    1300 861 118
+                    0450 240 757
                   </a>
                 </li>
                 <li>
-                  <a href="mailto:hello@mortgagexperts.com.au" className="flex items-center gap-2.5 text-[13px] text-slate-300 hover:text-white transition-colors break-all">
+                  <a href="mailto:mortgage@mortgagexperts.com.au" className="flex items-center gap-2.5 text-[13px] text-slate-300 hover:text-white transition-colors break-all">
                     <Mail className="w-4 h-4 text-[#2563EB] shrink-0" />
-                    hello@mortgagexperts.com.au
+                    mortgage@mortgagexperts.com.au
                   </a>
                 </li>
                 <li className="flex items-start gap-2.5 text-[13px] text-slate-300">
@@ -1398,26 +1458,38 @@ export default function Home() {
     <div className="min-h-screen flex flex-col bg-white font-inter">
 
       {/* ── TOP BAR ── */}
-      <div className="bg-[#0B1F3A] text-white/85 text-[11.5px] font-medium">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-2.5 flex items-center justify-between">
-          <div className="flex items-center gap-5">
-            <div className="flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-[#38BDF8] shrink-0" />
-              <span className="hidden sm:inline">Locations: NSW | VIC | QLD | SA | WA | TAS | ACT | NT</span>
+      <div className="bg-gradient-to-r from-[#081324] via-[#0B1F3A] to-[#081324] border-b border-white/5 text-slate-300 text-[11.5px] font-medium font-inter">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-2 flex items-center justify-between">
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2.5 group cursor-default">
+              <div className="w-5 h-5 rounded-full bg-[#38BDF8]/10 flex items-center justify-center group-hover:bg-[#38BDF8]/20 transition-colors">
+                <MapPin className="w-3 h-3 text-[#38BDF8]" />
+              </div>
+              <span className="hidden sm:inline tracking-wide">Locations: NSW | VIC | QLD | SA | WA | TAS | ACT | NT</span>
               <span className="sm:hidden text-[10.5px]">Locations: NSW | VIC | QLD | SA...</span>
             </div>
-            <div className="hidden md:flex items-center gap-1.5 border-l border-white/10 pl-5">
-              <Mail className="w-3.5 h-3.5 text-[#38BDF8] shrink-0" />
-              <a href="mailto:mail@mortgagexperts.com.au" className="hover:text-[#38BDF8] transition-colors">
-                mail@mortgagexperts.com.au
+            <div className="hidden md:flex items-center gap-2.5 border-l border-white/10 pl-6 group">
+              <div className="w-5 h-5 rounded-full bg-[#38BDF8]/10 flex items-center justify-center group-hover:bg-[#38BDF8]/20 transition-colors">
+                <Mail className="w-3 h-3 text-[#38BDF8]" />
+              </div>
+              <a href="mailto:mortgage@mortgagexperts.com.au" className="hover:text-white transition-colors tracking-wide">
+                mortgage@mortgagexperts.com.au
               </a>
             </div>
           </div>
-          <div className="flex items-center gap-4 text-white/70">
-            <a href="#" className="hover:text-white transition-colors"><FacebookIcon /></a>
-            <a href="#" className="hover:text-white transition-colors"><InstagramIcon /></a>
-            <a href="#" className="hover:text-white transition-colors"><TikTokIcon /></a>
-            <a href="#" className="hover:text-white transition-colors"><YoutubeIcon /></a>
+          <div className="flex items-center gap-2.5">
+            <a href="https://www.facebook.com/MortgageXperts.au/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-6 h-6 rounded-full flex items-center justify-center bg-white/5 hover:bg-[#1877F2] text-white/70 hover:text-white transition-all duration-300 hover:scale-110">
+              <FacebookIcon />
+            </a>
+            <a href="https://www.instagram.com/mortgagexperts.au/#" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-6 h-6 rounded-full flex items-center justify-center bg-white/5 hover:bg-[#E4405F] text-white/70 hover:text-white transition-all duration-300 hover:scale-110">
+              <InstagramIcon />
+            </a>
+            <a href="https://www.tiktok.com/@mortgagexperts.au?_t=ZS-90VgVATQ560&_r=1" target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="w-6 h-6 rounded-full flex items-center justify-center bg-white/5 hover:bg-[#FE2C55] text-white/70 hover:text-white transition-all duration-300 hover:scale-110">
+              <TikTokIcon />
+            </a>
+            <a href="https://www.youtube.com/@mortgagexpertsau" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="w-6 h-6 rounded-full flex items-center justify-center bg-white/5 hover:bg-[#FF0000] text-white/70 hover:text-white transition-all duration-300 hover:scale-110">
+              <YoutubeIcon />
+            </a>
           </div>
         </div>
       </div>
@@ -1476,7 +1548,7 @@ export default function Home() {
           </div>
 
           {/* Mobile hamburger */}
-          <button 
+          <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="lg:hidden flex flex-col gap-1.5 p-2 z-50 relative animate-pulse"
             aria-label="Toggle Menu"
@@ -1491,7 +1563,7 @@ export default function Home() {
       {/* Mobile Drawer Navigation */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
@@ -1519,8 +1591,8 @@ export default function Home() {
               <a href="tel:0450240757" className="flex items-center justify-center gap-2 text-[14px] font-bold text-[#0B1F3A] py-2.5 rounded-full border border-slate-200 bg-slate-50">
                 <Phone className="w-4 h-4 text-[#2563EB]" /> Call: 0450 240 757
               </a>
-              <Link 
-                href="#" 
+              <Link
+                href="#"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="bg-[#2563EB] text-white text-[14px] font-bold py-3 px-5 rounded-full flex items-center justify-center gap-1.5 hover:bg-[#1d4ed8]"
               >
@@ -1586,7 +1658,7 @@ export default function Home() {
         <div className="relative z-10 max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-10 lg:py-12 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
 
           {/* LEFT: Text + CTAs + Trust Bar */}
-          <motion.div 
+          <motion.div
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
@@ -1594,13 +1666,13 @@ export default function Home() {
           >
 
             {/* Badge */}
-            <motion.div 
+            <motion.div
               variants={fadeInUp}
               className="inline-flex items-center gap-2 bg-[#EAF3FF] border border-[#2563EB]/15 rounded-full px-4 py-2 w-fit shadow-sm"
             >
               <Shield className="w-4 h-4 text-[#2563EB] shrink-0" />
               <span className="text-[11px] font-bold tracking-widest text-[#2563EB] uppercase">
-                Trusted Mortgage Experts Across Australia
+                Proudly Supporting The Nepali-Australian Community
               </span>
             </motion.div>
 
@@ -1610,19 +1682,19 @@ export default function Home() {
               className="text-[36px] sm:text-[48px] lg:text-[54px] font-extrabold leading-[1.1] tracking-tight text-[#0B1F3A]"
               style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
             >
-              Smarter Home{" "}
+              Top-Rated{" "}
               <br className="hidden sm:block" />
-              Loan Solutions{" "}
+              Mortgage Broker{" "}
               <br className="hidden sm:block" />
-              For <span className="text-[#2563EB]">Australians.</span>
+              In <span className="text-[#2563EB]">Australia.</span>
             </motion.h1>
 
             {/* Subtext */}
-            <motion.p 
+            <motion.p
               variants={fadeInUp}
               className="text-slate-500 text-[15px] leading-relaxed max-w-md"
             >
-              Expert guidance. Better choices. Stronger outcomes.{" "}
+              Home Loans, Simplified. Personalised mortgage solutions Nationwide.{" "}
               <br className="hidden sm:block" />
               We simplify the home loan journey and help you make{" "}
               <br className="hidden sm:block" />
@@ -1630,7 +1702,7 @@ export default function Home() {
             </motion.p>
 
             {/* CTA Buttons */}
-            <motion.div 
+            <motion.div
               variants={fadeInUp}
               className="flex flex-col sm:flex-row gap-3 pt-1"
             >
@@ -1638,23 +1710,12 @@ export default function Home() {
                 href="#"
                 className="bg-[#2563EB] text-white font-bold text-[14px] py-3.5 px-7 rounded-full inline-flex items-center justify-center gap-2 hover:bg-[#1d4ed8] transition-all duration-300 shadow-lg shadow-blue-200 hover:scale-[1.02] active:scale-[0.98] text-center"
               >
-                Book Free Consultation <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link
-                href="#"
-                className="border border-slate-300 text-[#0B1F3A] font-bold text-[14px] py-3.5 px-6 rounded-full inline-flex items-center justify-center gap-2 hover:border-[#2563EB] hover:text-[#2563EB] transition-all duration-300 bg-white hover:scale-[1.02] active:scale-[0.98] text-center"
-              >
-                <span className="w-6 h-6 rounded-full border border-[#2563EB] text-[#2563EB] flex items-center justify-center shrink-0">
-                  <svg className="w-2.5 h-2.5 fill-current ml-0.5" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </span>
-                Explore Home Loan Guides
+                Book Your Free Assessment <ArrowRight className="w-4 h-4" />
               </Link>
             </motion.div>
 
             {/* Trust Proof Bar */}
-            <motion.div 
+            <motion.div
               variants={fadeInUp}
               className="flex flex-wrap gap-6 items-center pt-5 mt-1 border-t border-slate-100"
             >
@@ -1711,7 +1772,7 @@ export default function Home() {
             </motion.div>
 
             {/* Inline Stats Grid for Tablet/Mobile (Visible on lg-) */}
-            <motion.div 
+            <motion.div
               variants={fadeInUp}
               className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6 pt-5 border-t border-slate-100 lg:hidden"
             >
@@ -1725,7 +1786,7 @@ export default function Home() {
                   <div className="text-lg font-black text-[#0B1F3A] leading-none mt-0.5">$2.4B+</div>
                 </div>
               </div>
-              
+
               {/* Card 2 */}
               <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
                 <div className="w-10 h-10 rounded-xl bg-[#EBF5FF] flex items-center justify-center shrink-0">
@@ -1755,7 +1816,7 @@ export default function Home() {
           <div className="hidden lg:block lg:col-span-6 relative h-[500px]">
 
             {/* Card 1 – Loans Approved (top right) */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4, type: "spring", stiffness: 100, damping: 15 }}
@@ -1773,7 +1834,7 @@ export default function Home() {
             </motion.div>
 
             {/* Card 2 – Approval Rate (middle right) */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.6, type: "spring", stiffness: 100, damping: 15 }}
@@ -1791,7 +1852,7 @@ export default function Home() {
             </motion.div>
 
             {/* Card 3 – Tailored Solutions (bottom center) */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, type: "spring", stiffness: 100, damping: 15 }}
@@ -1823,98 +1884,67 @@ export default function Home() {
       {/* ── LENDER PANEL ── */}
       <section className="bg-white border-t border-slate-100 py-4">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
-        <motion.div 
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="bg-white rounded-2xl border border-slate-100 shadow-sm py-4 px-5 flex flex-col md:flex-row items-center gap-4"
-        >
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="bg-white rounded-2xl border border-slate-100 shadow-sm py-4 px-5 flex flex-col md:flex-row items-center relative overflow-hidden"
+          >
 
-          {/* Label */}
-          <div className="shrink-0 md:border-r border-slate-200 pr-5 md:mr-1 border-b md:border-b-0 pb-3 md:pb-0 w-full md:w-auto text-center md:text-left flex md:block justify-center">
-            <p className="text-[11.5px] font-bold text-[#0B1F3A] uppercase tracking-wide leading-tight max-w-[150px] md:max-w-[110px]">
-              Our Panel of 40+<br className="hidden md:block" /> Leading Lenders
-            </p>
-          </div>
-
-          {/* Logos row */}
-          <div className="flex-1 flex flex-wrap md:flex-nowrap items-center justify-center md:justify-between gap-6 md:gap-3 py-3 md:py-0 w-full overflow-hidden">
-
-            {/* nab */}
-            <div className="flex items-center gap-0.5 shrink-0 hover:scale-105 transition-transform">
-              <span className="font-extrabold text-[15px] text-black lowercase tracking-tighter leading-none">nab</span>
-              <span className="w-2.5 h-2.5 bg-[#D2143A] rounded-[3px] rotate-12 ml-0.5 shrink-0 inline-block" />
+            {/* Label */}
+            <div className="shrink-0 md:border-r border-slate-200 pr-6 md:mr-4 border-b md:border-b-0 pb-3 md:pb-0 w-full md:w-auto text-center md:text-left flex md:block justify-center z-10 bg-white">
+              <p className="text-[11.5px] font-bold text-[#0B1F3A] uppercase tracking-wide leading-[1.35]">
+                OUR PANEL OF<br />
+                40+ LEADING<br />
+                LENDERS
+              </p>
             </div>
 
-            {/* Westpac */}
-            <div className="flex items-center shrink-0 hover:scale-105 transition-transform">
-              <span className="font-black text-xl text-[#DA1B2B] tracking-tighter leading-none">W</span>
-              <span className="font-bold text-[11px] text-[#DA1B2B] tracking-tight lowercase leading-none">estpac</span>
-            </div>
-
-            {/* ANZ */}
-            <div className="flex items-center gap-1 shrink-0 hover:scale-105 transition-transform">
-              <div className="flex flex-col gap-0.5">
-                <span className="w-3 h-[2px] bg-[#007DBA] rounded block" />
-                <span className="w-4 h-[2px] bg-[#007DBA] rounded block" />
-                <span className="w-2.5 h-[2px] bg-[#007DBA] rounded block" />
+            {/* Logos row Marquee */}
+            <div className="flex-1 overflow-hidden relative flex items-center h-[60px] w-full" style={{ WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)" }}>
+              <div className="flex w-max animate-marquee items-center hover:pause">
+                {[
+                  { src: "/images/brands/png-transparent-nab-national-australia-bank-logo-thumbnail-1.png", scale: "scale-[1.2]" },
+                  { src: "/images/brands/westpac-logo-png_seeklogo-152472-1.png", scale: "scale-[1.6]" },
+                  { src: "/images/brands/anz-2-logo-png-transparent-1.png", scale: "scale-[1.3]" },
+                  { src: "/images/brands/commonwealth-bank-2-logo-png-transparent-1.png", scale: "scale-[1.3]" },
+                  { src: "/images/brands/ING_Group_N.V._Logo.svg-1.png", scale: "scale-100" },
+                  { src: "/images/brands/St_George_Bank_logo-1-scaled.png", scale: "scale-[1.4]" },
+                  { src: "/images/brands/Bankwest_new_logo-1.png", scale: "scale-[1.3]" },
+                  { src: "/images/brands/Suncorp-Bank-Logo-1-scaled.png", scale: "scale-[1.4]" },
+                  { src: "/images/brands/images-3-1.png", scale: "scale-100" },
+                  { src: "/images/brands/adelaide-bank-vector-logo-11574265916rvuvsw06fg-1.png", scale: "scale-[1.7]" },
+                  { src: "/images/brands/firstmac-limited-logo-vector-1.png", scale: "scale-105" },
+                  { src: "/images/brands/png-transparent-nab-national-australia-bank-logo-thumbnail-1.png", scale: "scale-[1.2]" },
+                  { src: "/images/brands/westpac-logo-png_seeklogo-152472-1.png", scale: "scale-[1.6]" },
+                  { src: "/images/brands/anz-2-logo-png-transparent-1.png", scale: "scale-[1.3]" },
+                  { src: "/images/brands/commonwealth-bank-2-logo-png-transparent-1.png", scale: "scale-[1.3]" },
+                  { src: "/images/brands/ING_Group_N.V._Logo.svg-1.png", scale: "scale-100" },
+                  { src: "/images/brands/St_George_Bank_logo-1-scaled.png", scale: "scale-[1.4]" },
+                  { src: "/images/brands/Bankwest_new_logo-1.png", scale: "scale-[1.3]" },
+                  { src: "/images/brands/Suncorp-Bank-Logo-1-scaled.png", scale: "scale-[1.4]" },
+                  { src: "/images/brands/images-3-1.png", scale: "scale-100" },
+                  { src: "/images/brands/adelaide-bank-vector-logo-11574265916rvuvsw06fg-1.png", scale: "scale-[1.7]" },
+                  { src: "/images/brands/firstmac-limited-logo-vector-1.png", scale: "scale-105" }
+                ].map((brand, i) => (
+                  <div key={i} className={`relative h-10 w-[120px] shrink-0 mr-12 flex items-center justify-center cursor-pointer transition-transform duration-300 hover:scale-105`}>
+                    <div className={`relative h-full w-full ${brand.scale}`}>
+                      <Image src={brand.src} alt="Lender Logo" fill className="object-contain" sizes="120px" />
+                    </div>
+                  </div>
+                ))}
               </div>
-              <span className="font-black text-sm text-[#007DBA] tracking-tight">ANZ</span>
             </div>
 
-            {/* Commonwealth Bank */}
-            <div className="flex items-center gap-1.5 shrink-0 hover:scale-105 transition-transform">
-              <div className="w-4 h-4 bg-[#FFCC00] rotate-45 flex items-center justify-center rounded-[2px]">
-                <div className="w-2 h-2 bg-black rotate-45 rounded-[1px]" />
-              </div>
-              <span className="text-[9px] font-bold text-slate-800 tracking-tight leading-tight max-w-[52px]">Commonwealth Bank</span>
+            {/* View all */}
+            <div className="shrink-0 md:border-l border-slate-200 md:pl-5 md:ml-2 w-full md:w-auto text-center border-t md:border-t-0 pt-3 md:pt-0 z-10 bg-white">
+              <Link href="#" className="text-[#2563EB] text-[12px] font-bold inline-flex items-center gap-1 hover:underline whitespace-nowrap">
+                View all lenders <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
             </div>
 
-            {/* ING */}
-            <div className="flex items-center gap-0.5 shrink-0 hover:scale-105 transition-transform">
-              <span className="font-black text-[13px] text-[#000066] tracking-tighter">ING</span>
-              <span className="w-2 h-2 bg-[#FF6600] rounded-full ml-0.5" />
-            </div>
-
-            {/* st.george */}
-            <div className="flex items-center gap-0.5 shrink-0 hover:scale-105 transition-transform">
-              <span className="font-bold text-[11.5px] text-[#008751] tracking-tight">st.george</span>
-              <span className="w-1.5 h-1.5 bg-red-600 rounded-full" />
-            </div>
-
-            {/* bankwest */}
-            <div className="flex items-center gap-1 shrink-0 hover:scale-105 transition-transform">
-              <div className="w-3.5 h-3.5 bg-[#FF7900] rounded-full flex items-center justify-center">
-                <span className="text-[6px] text-white font-extrabold">W</span>
-              </div>
-              <span className="font-bold text-[11px] text-slate-700 tracking-tight">bankwest</span>
-            </div>
-
-            {/* Suncorp */}
-            <div className="flex items-center gap-1 shrink-0 hover:scale-105 transition-transform">
-              <div className="w-3.5 h-3.5 rounded-full border-2 border-[#009639] bg-[#FFC72C]" />
-              <span className="font-black text-[9.5px] text-slate-800 tracking-widest uppercase">SUNCORP</span>
-            </div>
-
-            {/* Macquarie */}
-            <div className="flex items-center gap-1 shrink-0 hover:scale-105 transition-transform">
-              <div className="w-3.5 h-3.5 rounded-full border-2 border-slate-900 flex items-center justify-center">
-                <div className="w-1 h-[2px] bg-slate-900 rounded" />
-              </div>
-              <span className="font-extrabold text-[8.5px] text-slate-900 tracking-widest uppercase">MACQUARIE</span>
-            </div>
-
-          </div>
-
-          {/* View all */}
-          <div className="shrink-0 md:border-l border-slate-200 md:pl-4 md:ml-1 w-full md:w-auto text-center border-t md:border-t-0 pt-3 md:pt-0">
-            <Link href="#" className="text-[#2563EB] text-[12px] font-bold inline-flex items-center gap-1 hover:underline whitespace-nowrap">
-              View all lenders <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-
-        </motion.div>
+          </motion.div>
         </div>
       </section>
 
@@ -1923,7 +1953,7 @@ export default function Home() {
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
 
           {/* Section Header */}
-          <motion.div 
+          <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
@@ -1948,7 +1978,7 @@ export default function Home() {
           </motion.div>
 
           {/* TOP ROW */}
-          <motion.div 
+          <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
@@ -1957,7 +1987,7 @@ export default function Home() {
           >
 
             {/* Card 1 - First Home Buyers */}
-            <motion.div 
+            <motion.div
               variants={fadeInUp}
               whileHover={{ y: -6, boxShadow: "0 15px 35px rgba(37, 99, 235, 0.08)" }}
               className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col md:flex-row items-stretch md:min-h-[270px] transition-shadow duration-300"
@@ -1998,16 +2028,16 @@ export default function Home() {
               {/* Right image: 1:1 PNG, 75% width visible, 100% height taken */}
               <div className="w-full h-48 md:w-[203px] md:h-auto shrink-0 relative overflow-hidden">
                 <Image
-                  src="/images/villa.png"
+                  src="/images/First Home Buyers.png"
                   alt="First Home"
                   fill
-                  className="object-cover object-[left_center]"
+                  className="object-cover object-left"
                 />
               </div>
             </motion.div>
 
             {/* Card 2 - Refinancing */}
-            <motion.div 
+            <motion.div
               variants={fadeInUp}
               whileHover={{ y: -6, boxShadow: "0 15px 35px rgba(37, 99, 235, 0.08)" }}
               className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col md:flex-row items-stretch md:min-h-[270px] transition-shadow duration-300"
@@ -2047,7 +2077,7 @@ export default function Home() {
           </motion.div>
 
           {/* BOTTOM ROW - 4 small cards */}
-          <motion.div 
+          <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
@@ -2056,7 +2086,7 @@ export default function Home() {
           >
 
             {/* Investment Loans - Purple */}
-            <motion.div 
+            <motion.div
               variants={fadeInUp}
               whileHover={{ y: -6, boxShadow: "0 15px 35px rgba(124, 58, 237, 0.08)" }}
               className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-row items-stretch min-h-[190px] transition-shadow duration-300"
@@ -2077,16 +2107,16 @@ export default function Home() {
               {/* Right image: 1:1 PNG, 75% width visible, 100% height taken */}
               <div className="w-[143px] shrink-0 relative overflow-hidden">
                 <Image
-                  src="/images/villa.png"
+                  src="/images/Investment Loans.png"
                   alt="Investment"
                   fill
-                  style={{ objectFit: "cover", objectPosition: "left center" }}
+                  className="object-cover object-left"
                 />
               </div>
             </motion.div>
 
             {/* Low Deposit Loans - Amber */}
-            <motion.div 
+            <motion.div
               variants={fadeInUp}
               whileHover={{ y: -6, boxShadow: "0 15px 35px rgba(217, 119, 6, 0.08)" }}
               className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-row items-stretch min-h-[190px] transition-shadow duration-300"
@@ -2107,16 +2137,16 @@ export default function Home() {
               {/* Right image: 1:1 PNG, 75% width visible, 100% height taken */}
               <div className="w-[143px] shrink-0 relative overflow-hidden">
                 <Image
-                  src="/images/villa.png"
+                  src="/images/Low Deposit Loans.png"
                   alt="Low Deposit"
                   fill
-                  style={{ objectFit: "cover", objectPosition: "left center" }}
+                  className="object-cover object-left"
                 />
               </div>
             </motion.div>
 
             {/* Self-Employed Loans - Blue */}
-            <motion.div 
+            <motion.div
               variants={fadeInUp}
               whileHover={{ y: -6, boxShadow: "0 15px 35px rgba(37, 99, 235, 0.08)" }}
               className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-row items-stretch min-h-[190px] transition-shadow duration-300"
@@ -2137,16 +2167,16 @@ export default function Home() {
               {/* Right image: 1:1 PNG, 75% width visible, 100% height taken */}
               <div className="w-[143px] shrink-0 relative overflow-hidden">
                 <Image
-                  src="/images/villa.png"
+                  src="/images/Self-Employed Loans.png"
                   alt="Self Employed"
                   fill
-                  style={{ objectFit: "cover", objectPosition: "left center" }}
+                  className="object-cover object-left"
                 />
               </div>
             </motion.div>
 
             {/* Construction Loans - Orange */}
-            <motion.div 
+            <motion.div
               variants={fadeInUp}
               whileHover={{ y: -6, boxShadow: "0 15px 35px rgba(234, 88, 12, 0.08)" }}
               className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-row items-stretch min-h-[190px] transition-shadow duration-300"
@@ -2167,10 +2197,10 @@ export default function Home() {
               {/* Right image: 1:1 PNG, 75% width visible, 100% height taken */}
               <div className="w-[143px] shrink-0 relative overflow-hidden">
                 <Image
-                  src="/images/villa.png"
+                  src="/images/Construction Loans.png"
                   alt="Construction"
                   fill
-                  style={{ objectFit: "cover", objectPosition: "left center" }}
+                  className="object-cover object-left"
                 />
               </div>
             </motion.div>
@@ -2178,7 +2208,7 @@ export default function Home() {
           </motion.div>
 
           {/* Bottom CTA Banner */}
-          <motion.div 
+          <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -2204,8 +2234,14 @@ export default function Home() {
       </section>
 
 
+      {/* ── WHY CHOOSE US SECTION ── */}
+      <WhyChooseUsSection />
+
       {/* ── SMART TOOLS SECTION ── */}
       <SmartToolsSection />
+
+      {/* ── TESTIMONIALS ── */}
+      <TestimonialSection />
 
       {/* ── SUCCESS STORIES / BLOG ── */}
       <SuccessStoriesSection />
@@ -2218,4 +2254,215 @@ export default function Home() {
 
     </div>
   );
+}
+
+function WhyChooseUsSection() {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const cards = [
+    { city: "Sydney", title: "Mortgage Broker in Sydney", desc: "Trusted Nepali mortgage broker in Sydney. Mortgage Xperts helps first home buyers, investors, and refinancers secure the right home loan with hundreds of happy clients.", img: "/images/sydney_real.png" },
+    { city: "Adelaide", title: "Mortgage Broker in Adelaide", desc: "Mortgage Xperts serves Nepali Australians in Adelaide with expert home loan and refinancing solutions. Our personalised guidance and tailored advice help you navigate Australia's complex mortgage market.", img: "/images/adelaide_real.png" },
+    { city: "Melbourne", title: "Mortgage Broker in Melbourne", desc: "Mortgage Xperts is your trusted Nepali mortgage broker in Melbourne, helping Nepali Australians get personalised home loan solutions, refinancing advice, and investment property financing with confidence.", img: "/images/melbourne_real.png" },
+    { city: "Brisbane", title: "Mortgage Broker in Brisbane", desc: "Mortgage Xperts Brisbane specialises in home loans, refinancing, and investment finance for Nepali Australians, backed by hundreds of satisfied clients.", img: "/images/brisbane_real.png" },
+  ];
+
+  return (
+    <section className="bg-slate-50 relative py-16 lg:py-24 overflow-hidden border-y border-slate-100">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10 flex flex-col">
+        {/* Top Header Row */}
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            className="w-full lg:w-[60%]"
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 w-fit mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#2563EB] shadow-[0_0_8px_#2563EB] animate-pulse" />
+              <span className="text-[#2563EB] text-[10px] font-extrabold tracking-widest uppercase">
+                Nepali Mortgage Broker Australia
+              </span>
+            </div>
+            <h2 className="text-[#0B1F3A] text-[32px] sm:text-[36px] lg:text-[40px] font-black leading-[1.1] tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+              Why Choose <br className="hidden lg:block" />Mortgage <span className="text-[#2563EB]">Xperts?</span>
+            </h2>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
+            className="w-full lg:w-[40%] flex flex-col items-start lg:items-end"
+          >
+            <p className="text-slate-500 text-[13px] sm:text-[14px] leading-relaxed mb-6 lg:text-right max-w-md">
+              As a trusted <span className="text-[#0B1F3A] font-semibold">Nepali mortgage broker</span>, we deliver personalised home loan solutions. Whether you&apos;re purchasing your first home or investing, we have you covered.
+            </p>
+            <Link href="#" className="relative group/btn inline-flex items-center justify-center gap-2 w-fit rounded-xl bg-[#2563EB] px-6 py-3.5 text-[13px] font-bold text-white shadow-md hover:shadow-lg hover:bg-[#1d4ed8] transition-all duration-300 hover:-translate-y-0.5">
+              Let&apos;s Talk Home Loan <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+            </Link>
+          </motion.div>
+        </div>
+
+        {/* Desktop Interactive Accordion */}
+        <div className="hidden lg:flex w-full h-[450px] gap-3">
+          {cards.map((card, idx) => {
+            const isActive = activeIndex === idx;
+            return (
+              <motion.div
+                key={card.city}
+                onHoverStart={() => setActiveIndex(idx)}
+                onClick={() => setActiveIndex(idx)}
+                layout
+                initial={false}
+                animate={{ flex: isActive ? 3.5 : 1 }}
+                transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                className="relative rounded-2xl overflow-hidden cursor-pointer group bg-slate-200 shadow-sm border border-slate-200/60"
+              >
+                {/* Background Image - Clean, vibrant, visible */}
+                <Image src={card.img} fill alt={card.city} className={`object-cover transition-transform duration-1000 ease-out ${isActive ? 'scale-100' : 'scale-105 opacity-90'}`} />
+                {/* Subtle gradient only at bottom so white text is readable */}
+                <div className={`absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent transition-opacity duration-500 ${isActive ? 'opacity-100' : 'opacity-70'}`} />
+
+                {/* Content Container */}
+                <div className="absolute inset-0 p-6 flex flex-col justify-end">
+                  {/* Inactive State - Vertical Text */}
+                  <motion.div
+                    initial={false}
+                    animate={{ opacity: isActive ? 0 : 1 }}
+                    transition={{ duration: 0.3 }}
+                    className={`absolute inset-0 p-6 flex flex-col items-center justify-end pb-8 ${isActive ? 'pointer-events-none' : ''}`}
+                  >
+                    <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white mb-6 border border-white/30">
+                      <MapPin className="w-4 h-4" />
+                    </div>
+                    <h3
+                      style={{ writingMode: 'vertical-rl' }}
+                      className="text-white font-bold text-[18px] tracking-widest uppercase rotate-180 drop-shadow-md"
+                    >
+                      {card.city}
+                    </h3>
+                  </motion.div>
+
+                  {/* Active State - Full Content */}
+                  <motion.div
+                    initial={false}
+                    animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 15 }}
+                    transition={{ duration: 0.5, delay: isActive ? 0.2 : 0 }}
+                    className={`flex flex-col justify-end h-full ${!isActive ? 'pointer-events-none' : ''}`}
+                  >
+                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#2563EB] mb-4 shadow-md">
+                      <MapPin className="w-5 h-5" />
+                    </div>
+                    <h3 className="text-white font-black text-[24px] mb-2 leading-tight drop-shadow-md">{card.title}</h3>
+                    <p className="text-white/95 text-[13px] leading-relaxed max-w-md mb-5 drop-shadow-md">{card.desc}</p>
+                    <div className="inline-flex items-center gap-1.5 text-white font-bold text-[13px] hover:opacity-80 transition-opacity">
+                      Explore {card.city} Options <ArrowRight className="w-3.5 h-3.5" />
+                    </div>
+                  </motion.div>
+                </div>
+              </motion.div>
+            )
+          })}
+        </div>
+
+        {/* Mobile Vertical Stack */}
+        <div className="flex lg:hidden flex-col gap-4">
+          {cards.map((card, idx) => (
+            <div key={card.city} className="relative rounded-2xl overflow-hidden bg-slate-200 border border-slate-200 p-6">
+              <Image src={card.img} fill alt={card.city} className="object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+
+              <div className="relative z-10 pt-16">
+                <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#2563EB] mb-4 shadow-md">
+                  <MapPin className="w-5 h-5" />
+                </div>
+                <h3 className="text-white font-black text-[22px] mb-2 leading-tight drop-shadow-md">{card.title}</h3>
+                <p className="text-white/95 text-[13px] leading-relaxed mb-5 drop-shadow-md">{card.desc}</p>
+                <div className="inline-flex items-center gap-1.5 text-white font-bold text-[13px]">
+                  Explore {card.city} Options <ArrowRight className="w-3.5 h-3.5" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  );
+}
+
+function GoogleReviewCard({ name, date, text }: { name: string, date: string, text: string }) {
+  return (
+    <div className="w-[320px] sm:w-[380px] shrink-0 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm mx-3 flex flex-col gap-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-[#2563EB] font-extrabold text-lg">
+            {name.charAt(0)}
+          </div>
+          <div>
+            <h4 className="text-[15px] font-bold text-[#0B1F3A] leading-tight">{name}</h4>
+            <span className="text-[12px] text-slate-500 font-medium">{date}</span>
+          </div>
+        </div>
+        <svg width="24" height="24" viewBox="0 0 48 48" className="shrink-0">
+          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+        </svg>
+      </div>
+      <div className="flex items-center gap-1">
+        {[1, 2, 3, 4, 5].map(i => (
+          <svg key={i} className="w-4 h-4 text-[#FBBC05]" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+        ))}
+      </div>
+      <p className="text-[14px] text-slate-600 leading-relaxed">
+        &quot;{text}&quot;
+      </p>
+    </div>
+  )
+}
+
+function TestimonialSection() {
+  const reviews1 = [
+    { name: "John Smith", date: "2 weeks ago", text: "Mortgage Xperts made buying our first home an absolute breeze. Highly recommend their services to anyone looking for a loan!" },
+    { name: "Sarah Jenkins", date: "1 month ago", text: "Professional, fast, and reliable. They explained everything clearly and got us an amazing interest rate on our refinance." },
+    { name: "Raj Patel", date: "3 months ago", text: "As a self-employed business owner, getting a loan is tough. Kunal and the team sorted it out without any stress. 5 stars!" },
+    { name: "Emily Clark", date: "2 months ago", text: "The team at Mortgage Xperts is phenomenal. They went above and beyond to help us secure our dream home in Brisbane." }
+  ];
+
+  const reviews2 = [
+    { name: "David O'Connor", date: "4 weeks ago", text: "Great communication throughout the entire process. We always knew what was happening with our application." },
+    { name: "Anita Rai", date: "1 week ago", text: "Highly recommend! They are the best Nepali mortgage brokers in Australia. Very trustworthy and efficient." },
+    { name: "Michael Chen", date: "3 months ago", text: "Refinancing was so easy with Mortgage Xperts. We are saving thousands every year now. Thank you team!" },
+    { name: "Sophie Taylor", date: "2 months ago", text: "Extremely knowledgeable brokers who actually care about their clients. I felt supported every step of the way." }
+  ];
+
+  const row1 = [...reviews1, ...reviews1, ...reviews1];
+  const row2 = [...reviews2, ...reviews2, ...reviews2];
+
+  return (
+    <section className="py-20 lg:py-28 bg-white overflow-hidden border-b border-slate-100">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 mb-12 text-center">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 w-fit mb-4">
+          <span className="text-[#2563EB] text-[10px] font-extrabold tracking-widest uppercase">
+            Google Reviews
+          </span>
+        </div>
+        <h2 className="text-[#0B1F3A] text-[32px] sm:text-[40px] font-black leading-tight mb-4" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+          Loved By Hundreds of <span className="text-[#2563EB]">Happy Clients</span>
+        </h2>
+        <p className="text-slate-500 text-[15px] max-w-2xl mx-auto">
+          Don&apos;t just take our word for it. See what our clients have to say about their experience with Mortgage Xperts.
+        </p>
+      </div>
+
+      {/* Marquee Row 1 */}
+      <div className="flex w-max animate-marquee hover:[animation-play-state:paused] mb-6">
+        {row1.map((rev, i) => <GoogleReviewCard key={`r1-${i}`} {...rev} />)}
+      </div>
+
+      {/* Marquee Row 2 (Reverse) */}
+      <div className="flex w-max animate-marquee-reverse hover:[animation-play-state:paused]">
+        {row2.map((rev, i) => <GoogleReviewCard key={`r2-${i}`} {...rev} />)}
+      </div>
+    </section>
+  )
 }
