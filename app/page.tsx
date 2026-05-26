@@ -38,26 +38,21 @@ import {
   Calculator,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
-// ── Animation Variants ──
-const fadeInUp = {
-  hidden: { opacity: 0, y: 25 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: "spring", stiffness: 100, damping: 15 }
-  }
-} as const;
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
-} as const;
+import {
+  fadeInUp,
+  fadeInLeft,
+  fadeInRight,
+  staggerContainer,
+  staggerItem,
+  VIEWPORT,
+  VIEWPORT_LOOSE,
+  EASE_OUT,
+  motionCardHover,
+  motionCardShadow,
+  Stagger,
+  StaggerItem,
+  Reveal,
+} from "@/lib/motion";
 
 // ── Premium inline SVG icons (match finalized design style) ───
 const IconHome = () => (
@@ -259,7 +254,12 @@ function SmartToolCard({ tool }: { tool: SmartToolItem }) {
   const iconBg = tool.iconBgClass || 'border-[#E1EDFF] bg-[#F3F8FF]';
 
   return (
-    <div className="group flex items-start gap-3.5 px-4 py-3.5 rounded-xl hover:bg-slate-50 transition-colors">
+    <motion.div
+      variants={staggerItem}
+      whileHover={{ x: 2 }}
+      transition={{ duration: 0.25, ease: EASE_OUT }}
+      className="group flex items-start gap-3.5 px-4 py-3.5 rounded-xl hover:bg-slate-50 transition-colors"
+    >
       <div className={`w-10 h-10 rounded-xl border flex items-center justify-center shrink-0 ${iconColor} ${iconBg}`}>
         {tool.icon}
       </div>
@@ -268,7 +268,7 @@ function SmartToolCard({ tool }: { tool: SmartToolItem }) {
         <div className="text-[12px] text-slate-500 leading-snug mt-1">{tool.desc}</div>
       </div>
       <ArrowRight className={`w-4 h-4 ml-auto mt-1 shrink-0 group-hover:translate-x-0.5 transition-transform ${iconColor}`} />
-    </div>
+    </motion.div>
   );
 }
 
@@ -281,7 +281,12 @@ type ProcessStepItem = {
 
 function ProcessStepCard({ step }: { step: ProcessStepItem }) {
   return (
-    <div className="flex flex-col items-center text-center px-2">
+    <motion.div
+      variants={staggerItem}
+      whileHover={{ y: -3 }}
+      transition={{ duration: 0.3, ease: EASE_OUT }}
+      className="flex flex-col items-center text-center px-2"
+    >
       <div className="w-[68px] h-[68px] rounded-full border border-[#E2ECFF] bg-white shadow-[0_6px_20px_rgba(37,99,235,0.08)] text-[#1D63F1] flex items-center justify-center relative mb-3">
         {step.icon}
         <div className="absolute -left-1 -bottom-1 w-5 h-5 rounded-full bg-[#1D63F1] text-white text-[10px] font-black flex items-center justify-center">
@@ -290,7 +295,7 @@ function ProcessStepCard({ step }: { step: ProcessStepItem }) {
       </div>
       <div className="text-[14px] font-extrabold text-[#0B1F3A] leading-tight">{step.title}</div>
       <div className="text-[12px] text-slate-500 leading-snug mt-1.5 max-w-[160px]">{step.desc}</div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -351,7 +356,7 @@ function SmartToolsSection() {
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-4 mb-6 relative w-full pt-4">
           {/* Left: Text */}
           <motion.div
-            initial="hidden" whileInView="visible" viewport={{ once: true }}
+            initial="hidden" whileInView="visible" viewport={VIEWPORT}
             variants={staggerContainer}
             className="w-full lg:w-[38%] flex flex-col gap-3 z-10"
           >
@@ -383,7 +388,10 @@ function SmartToolsSection() {
 
             {/* The House Image */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}
+              initial={{ opacity: 0, scale: 0.98 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={VIEWPORT}
+              transition={{ duration: 0.7, ease: EASE_OUT }}
               className="relative w-full lg:w-[95%] h-full z-0 ml-auto"
             >
               <Image src="/images/smart_tools_house.png" alt="Home" fill className="object-contain object-bottom md:object-right-bottom mix-blend-multiply scale-[1.12] origin-bottom lg:origin-bottom-right" />
@@ -391,8 +399,10 @@ function SmartToolsSection() {
 
             {/* The Compact Calculator Card (overlapping on the left) */}
             <motion.div
-              initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
-              transition={{ delay: 0.2, type: "spring", stiffness: 100, damping: 15 }}
+              initial={{ opacity: 0, x: -24 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={VIEWPORT}
+              transition={{ delay: 0.15, duration: 0.6, ease: EASE_OUT }}
               className="absolute left-0 lg:left-6 top-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-[0_15px_40px_rgba(11,31,58,0.06)] border border-slate-100 p-5 w-[260px] sm:w-[290px] z-10"
             >
               <div className="text-[14px] font-bold text-[#0B1F3A] mb-4">Repayment Calculator</div>
@@ -448,8 +458,10 @@ function SmartToolsSection() {
 
             {/* Floating badge */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}
-              transition={{ delay: 0.4, type: "spring" }}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={VIEWPORT}
+              transition={{ delay: 0.3, duration: 0.55, ease: EASE_OUT }}
               className="absolute bottom-6 right-0 lg:-right-4 bg-white rounded-xl shadow-[0_15px_30px_rgba(11,31,58,0.06)] border border-slate-100 p-4 flex items-center gap-3 w-[200px] z-20"
             >
               <div className="w-8 h-8 rounded-full bg-[#2563EB] flex items-center justify-center shrink-0">
@@ -466,17 +478,19 @@ function SmartToolsSection() {
 
         {/* TOOL CARDS ROW */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          transition={{ delay: 0.1, duration: 0.5 }}
+          initial="hidden"
+          whileInView="visible"
+          viewport={VIEWPORT}
+          variants={fadeInUp}
           className="bg-white rounded-2xl border border-slate-200 shadow-sm p-2.5 md:p-3"
         >
-          <div className="flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-slate-100">
+          <Stagger className="flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-slate-100">
             {tools.map((tool) => (
               <div key={tool.title} className="flex-1 p-1">
                 <SmartToolCard tool={tool} />
               </div>
             ))}
-          </div>
+          </Stagger>
           <div className="border-t border-slate-100 mt-2 pt-3 px-3 flex justify-end">
             <Link href="#" className="text-[#2563EB] text-[12px] font-bold inline-flex items-center gap-1 hover:underline">
               View all tools <ArrowRight className="w-3.5 h-3.5" />
@@ -488,11 +502,11 @@ function SmartToolsSection() {
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
+          viewport={VIEWPORT}
           variants={fadeInUp}
           className="mt-5 bg-white rounded-2xl border border-slate-200 p-5 md:p-6"
         >
-          <div className="text-center mb-6">
+          <motion.div variants={fadeInUp} className="text-center mb-6">
             <div className="inline-flex items-center gap-2 bg-[#F4F8FF] border border-[#D8E7FF] rounded-full px-3 py-1.5 mb-3">
               <div className="w-4 h-4 rounded-full bg-[#2563EB] flex items-center justify-center">
                 <span className="text-[9px] text-white font-bold">5</span>
@@ -502,15 +516,15 @@ function SmartToolsSection() {
             <h2 className="text-[30px] md:text-[42px] font-extrabold text-[#0B1F3A] leading-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
               A Clear Process. Every Step of the Way.
             </h2>
-          </div>
+          </motion.div>
 
           <div className="relative">
             <div className="hidden lg:block absolute top-[34px] left-[8%] right-[8%] h-px border-t-2 border-dashed border-[#2563EB]/25" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 relative">
+            <Stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 relative">
               {steps.map((step) => (
                 <ProcessStepCard key={step.num} step={step} />
               ))}
-            </div>
+            </Stagger>
           </div>
         </motion.div>
       </div>
@@ -579,7 +593,9 @@ function SuccessStoriesSection() {
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
-            transition={{ type: "spring", stiffness: 90, damping: 16 }}
+            transition={{ duration: 0.65, ease: EASE_OUT }}
+            whileHover={{ boxShadow: "0 24px 56px rgba(0,0,0,0.28)" }}
+            transition={{ duration: 0.4, ease: EASE_OUT }}
             className="lg:col-span-7 rounded-[18px] bg-white shadow-[0_20px_50px_rgba(0,0,0,0.25)] overflow-hidden border border-white/10"
           >
             <div className="flex flex-col sm:flex-row min-h-[300px] sm:min-h-[320px]">
@@ -650,13 +666,11 @@ function SuccessStoriesSection() {
         </div>
 
         {/* Two story cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-10">
+        <Stagger className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-10">
           {/* Refinance */}
           <motion.article
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.05 }}
+            variants={staggerItem}
+            whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
             className="rounded-[18px] bg-white shadow-[0_16px_40px_rgba(0,0,0,0.2)] overflow-hidden border border-white/10 flex flex-col sm:flex-row min-h-[260px]"
           >
             <div className="flex-1 p-6 sm:p-7 flex flex-col justify-center sm:max-w-[56%]">
@@ -706,10 +720,8 @@ function SuccessStoriesSection() {
 
           {/* Self-employed */}
           <motion.article
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
+            variants={staggerItem}
+            whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
             className="rounded-[18px] bg-white shadow-[0_16px_40px_rgba(0,0,0,0.2)] overflow-hidden border border-white/10 flex flex-col sm:flex-row min-h-[260px]"
           >
             <div className="flex-1 p-6 sm:p-7 flex flex-col justify-center sm:max-w-[56%]">
@@ -756,13 +768,14 @@ function SuccessStoriesSection() {
               </div>
             </div>
           </motion.article>
-        </div>
+        </Stagger>
 
         {/* Bottom CTA bar */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={VIEWPORT}
+          transition={{ duration: 0.55, ease: EASE_OUT }}
           className="rounded-2xl border border-white/15 bg-[#0a2a66]/55 backdrop-blur-md px-5 py-5 sm:px-8 sm:py-6 flex flex-col lg:flex-row items-center justify-between gap-6"
         >
           <div className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-4 lg:gap-6 flex-1">
@@ -970,7 +983,7 @@ function FaqCtaSection() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
+            viewport={VIEWPORT}
             variants={staggerContainer}
             className="lg:col-span-5 relative"
           >
@@ -1031,9 +1044,10 @@ function FaqCtaSection() {
 
           {/* Right column: tabs + accordion */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0, x: 24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={VIEWPORT}
+            transition={{ duration: 0.6, ease: EASE_OUT }}
             className="lg:col-span-7"
           >
             <div className="flex flex-wrap gap-x-1 gap-y-2 border-b border-slate-200 pb-3 mb-4 overflow-x-auto">
@@ -1060,52 +1074,78 @@ function FaqCtaSection() {
               })}
             </div>
 
-            <div className="flex flex-col gap-3">
-              {displayFaqs.map((item, index) => {
-                const isOpen = expandedIndex === index;
-                return (
-                  <div
-                    key={item.question}
-                    className="rounded-xl bg-white border border-slate-100 shadow-[0_4px_16px_rgba(15,23,42,0.04)] overflow-hidden"
-                  >
-                    <button
-                      type="button"
-                      onClick={() => setExpandedIndex(isOpen ? -1 : index)}
-                      className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left"
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial="hidden"
+                animate="visible"
+                exit={{ opacity: 0, y: -8, transition: { duration: 0.25, ease: EASE_OUT } }}
+                variants={staggerContainer}
+                className="flex flex-col gap-3"
+              >
+                {displayFaqs.map((item, index) => {
+                  const isOpen = expandedIndex === index;
+                  return (
+                    <motion.div
+                      key={item.question}
+                      variants={staggerItem}
+                      layout
+                      className="rounded-xl bg-white border border-slate-100 shadow-[0_4px_16px_rgba(15,23,42,0.04)] overflow-hidden"
                     >
-                      <span className="text-[14px] sm:text-[15px] font-extrabold text-[#0B1F3A] pr-2">
-                        {item.question}
-                      </span>
-                      <span className="shrink-0 w-8 h-8 rounded-lg border border-slate-200 flex items-center justify-center text-slate-500">
-                        {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
-                      </span>
-                    </button>
-                    {isOpen && (
-                      <div className="px-5 pb-4 -mt-1">
-                        <p className="text-[13px] sm:text-[14px] text-slate-500 leading-relaxed">{item.answer}</p>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+                      <button
+                        type="button"
+                        onClick={() => setExpandedIndex(isOpen ? -1 : index)}
+                        className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left"
+                      >
+                        <span className="text-[14px] sm:text-[15px] font-extrabold text-[#0B1F3A] pr-2">
+                          {item.question}
+                        </span>
+                        <motion.span
+                          animate={{ rotate: isOpen ? 180 : 0 }}
+                          transition={{ duration: 0.3, ease: EASE_OUT }}
+                          className="shrink-0 w-8 h-8 rounded-lg border border-slate-200 flex items-center justify-center text-slate-500"
+                        >
+                          {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+                        </motion.span>
+                      </button>
+                      <AnimatePresence initial={false}>
+                        {isOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.35, ease: EASE_OUT }}
+                            className="overflow-hidden"
+                          >
+                            <p className="px-5 pb-4 text-[13px] sm:text-[14px] text-slate-500 leading-relaxed">
+                              {item.answer}
+                            </p>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
+            </AnimatePresence>
           </motion.div>
         </div>
 
         {/* Premium Dream home CTA banner */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          initial="hidden"
+          whileInView="visible"
+          viewport={VIEWPORT}
+          variants={staggerContainer}
           className="relative rounded-[24px] overflow-hidden min-h-[320px] sm:min-h-[360px] flex flex-col sm:flex-row shadow-[0_24px_50px_rgba(11,31,58,0.15)] bg-[#071324] group"
         >
           {/* Subtle background glow */}
           <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[150%] bg-[#2563EB] opacity-[0.15] blur-[100px] pointer-events-none" />
 
           {/* Left Content Area */}
-          <div className="relative z-20 flex flex-col justify-center px-8 py-10 sm:px-12 sm:w-[55%] lg:w-[50%] shrink-0">
+          <motion.div variants={fadeInLeft} className="relative z-20 flex flex-col justify-center px-8 py-10 sm:px-12 sm:w-[55%] lg:w-[50%] shrink-0">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 w-fit mb-6 backdrop-blur-sm shadow-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#38BDF8] shadow-[0_0_8px_#38BDF8] animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#38BDF8]" />
               <span className="text-[10px] sm:text-[11px] font-extrabold text-white tracking-[0.15em] uppercase">Your Next Chapter</span>
             </div>
 
@@ -1131,10 +1171,10 @@ function FaqCtaSection() {
                 <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
               </span>
             </Link>
-          </div>
+          </motion.div>
 
           {/* Right Image Area */}
-          <div className="relative flex-1 min-h-[260px] sm:min-h-0 w-full">
+          <motion.div variants={fadeInRight} className="relative flex-1 min-h-[260px] sm:min-h-0 w-full">
             {/* Image container with smooth gradient mask */}
             <div className="absolute inset-0 w-full h-full" style={{ WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 30%, black 100%)" }}>
               <Image
@@ -1148,8 +1188,14 @@ function FaqCtaSection() {
 
             {/* Floating Glass UI Badge */}
             <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={VIEWPORT}
+              animate={{ y: [0, -6, 0] }}
+              transition={{
+                opacity: { delay: 0.35, duration: 0.5, ease: EASE_OUT },
+                y: { delay: 1.2, duration: 6, repeat: Infinity, ease: EASE_OUT },
+              }}
               className="absolute bottom-8 right-8 z-20 bg-[#0B1F3A]/60 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-[0_8px_32px_rgba(0,0,0,0.3)] hidden lg:flex flex-col gap-2"
             >
               <div className="flex items-center gap-3">
@@ -1173,7 +1219,7 @@ function FaqCtaSection() {
                 </div>
               </div>
             </motion.div>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>
@@ -1189,9 +1235,10 @@ function SiteFooterSection() {
       {/* Pre-footer contact card */}
       <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 pt-4 pb-10 md:pb-12">
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={VIEWPORT}
+          transition={{ duration: 0.6, ease: EASE_OUT }}
           className="bg-white rounded-2xl border border-slate-100 shadow-[0_12px_40px_rgba(15,23,42,0.08)] px-5 py-5 sm:px-8 sm:py-6 flex flex-col xl:flex-row xl:items-center justify-between gap-6"
         >
           <div className="flex items-start sm:items-center gap-4 flex-1 min-w-0">
@@ -1243,9 +1290,9 @@ function SiteFooterSection() {
       {/* Main footer */}
       <footer className="bg-[#000b1e] rounded-t-[28px] text-white">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 pt-12 md:pt-14 pb-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 mb-12">
+          <Stagger className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 mb-12">
             {/* Brand column */}
-            <div className="lg:col-span-3">
+            <StaggerItem className="lg:col-span-3">
               <Link href="/" className="inline-block mb-5">
                 <Image
                   src="/images/footer-logo.png"
@@ -1293,10 +1340,10 @@ function SiteFooterSection() {
                   </a>
                 ))}
               </div>
-            </div>
+            </StaggerItem>
 
             {/* Nav columns */}
-            <div className="lg:col-span-9 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8">
+            <StaggerItem className="lg:col-span-9 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8">
               <div>
                 <div className="flex items-center gap-2 mb-4">
                   <HomeIcon className="w-4 h-4 text-[#2563EB]" />
@@ -1370,11 +1417,11 @@ function SiteFooterSection() {
                   <FooterNavLink href="#">Contact Us</FooterNavLink>
                 </div>
               </div>
-            </div>
-          </div>
+            </StaggerItem>
+          </Stagger>
 
           {/* Newsletter */}
-          <div className="rounded-2xl border border-white/10 bg-[#0a1628]/80 p-5 sm:p-6 mb-10">
+          <Reveal direction="up" className="rounded-2xl border border-white/10 bg-[#0a1628]/80 p-5 sm:p-6 mb-10">
             <div className="flex flex-col xl:flex-row xl:items-center gap-6">
               <div className="flex items-start gap-4 flex-1 min-w-0">
                 <div className="relative shrink-0">
@@ -1420,10 +1467,10 @@ function SiteFooterSection() {
                 </span>
               </div>
             </div>
-          </div>
+          </Reveal>
 
           {/* Legal bar */}
-          <div className="border-t border-white/10 pt-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4 text-[11px] sm:text-[12px] text-slate-400">
+          <Reveal delay={0.08} direction="fade" className="border-t border-white/10 pt-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4 text-[11px] sm:text-[12px] text-slate-400">
             <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-3">
               <span>© 2026 Mortgage Xperts. All Rights Reserved.</span>
               <span className="hidden sm:inline text-white/20">·</span>
@@ -1444,7 +1491,7 @@ function SiteFooterSection() {
               </svg>
               <span>Australian Credit Licence 00000</span>
             </div>
-          </div>
+          </Reveal>
         </div>
       </footer>
     </div>
@@ -1550,7 +1597,7 @@ export default function Home() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden flex flex-col gap-1.5 p-2 z-50 relative animate-pulse"
+            className="lg:hidden flex flex-col gap-1.5 p-2 z-50 relative"
             aria-label="Toggle Menu"
           >
             <span className={`w-5 h-0.5 bg-[#0B1F3A] block transition-transform duration-300 ${isMobileMenuOpen ? "rotate-45 translate-y-2" : ""}`} />
@@ -1627,7 +1674,7 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0, scale: 1.05 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
+            transition={{ duration: 1, ease: EASE_OUT }}
             className="absolute inset-0"
             style={{
               backgroundImage: "url('/images/hero.png')",
@@ -1819,8 +1866,8 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4, type: "spring", stiffness: 100, damping: 15 }}
-              whileHover={{ y: -5, boxShadow: "0 15px 35px rgba(0,0,0,0.12)" }}
+              transition={{ delay: 0.45, duration: 0.65, ease: EASE_OUT }}
+              whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
               className="absolute top-10 right-2 w-[210px] bg-white rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-4 flex items-start gap-3 z-20 transition-shadow duration-300"
             >
               <div className="w-10 h-10 rounded-xl bg-[#2563EB] flex items-center justify-center shrink-0">
@@ -1837,8 +1884,8 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.6, type: "spring", stiffness: 100, damping: 15 }}
-              whileHover={{ y: -5, boxShadow: "0 15px 35px rgba(0,0,0,0.12)" }}
+              transition={{ delay: 0.58, duration: 0.65, ease: EASE_OUT }}
+              whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
               className="absolute top-[52%] right-0 w-[210px] bg-white rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-4 flex items-start gap-3 z-20 transition-shadow duration-300"
             >
               <div className="w-10 h-10 rounded-xl bg-[#2563EB] flex items-center justify-center shrink-0">
@@ -1855,8 +1902,8 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, type: "spring", stiffness: 100, damping: 15 }}
-              whileHover={{ y: -5, boxShadow: "0 15px 35px rgba(37,99,235,0.12)" }}
+              transition={{ delay: 0.72, duration: 0.65, ease: EASE_OUT }}
+              whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
               className="absolute bottom-8 left-4 right-12 bg-white rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.08)] overflow-hidden flex items-stretch z-20 transition-shadow duration-300" style={{ height: "72px" }}
             >
               {/* Text side with padding */}
@@ -1885,10 +1932,10 @@ export default function Home() {
       <section className="bg-white border-t border-slate-100 py-4">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            viewport={VIEWPORT}
+            transition={{ duration: 0.6, ease: EASE_OUT }}
             className="bg-white rounded-2xl border border-slate-100 shadow-sm py-4 px-5 flex flex-col md:flex-row items-center relative overflow-hidden"
           >
 
@@ -1956,7 +2003,7 @@ export default function Home() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={VIEWPORT_LOOSE}
             variants={fadeInUp}
             className="text-center mb-12"
           >
@@ -1989,7 +2036,7 @@ export default function Home() {
             {/* Card 1 - First Home Buyers */}
             <motion.div
               variants={fadeInUp}
-              whileHover={{ y: -6, boxShadow: "0 15px 35px rgba(37, 99, 235, 0.08)" }}
+              whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
               className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col md:flex-row items-stretch md:min-h-[270px] transition-shadow duration-300"
             >
               <div className="flex-1 p-6 flex flex-col justify-between">
@@ -2039,7 +2086,7 @@ export default function Home() {
             {/* Card 2 - Refinancing */}
             <motion.div
               variants={fadeInUp}
-              whileHover={{ y: -6, boxShadow: "0 15px 35px rgba(37, 99, 235, 0.08)" }}
+              whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
               className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col md:flex-row items-stretch md:min-h-[270px] transition-shadow duration-300"
             >
               <div className="flex-1 p-6 flex flex-col justify-between">
@@ -2088,7 +2135,7 @@ export default function Home() {
             {/* Investment Loans - Purple */}
             <motion.div
               variants={fadeInUp}
-              whileHover={{ y: -6, boxShadow: "0 15px 35px rgba(124, 58, 237, 0.08)" }}
+              whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
               className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-row items-stretch min-h-[190px] transition-shadow duration-300"
             >
               <div className="flex-1 p-4 flex flex-col justify-between">
@@ -2118,7 +2165,7 @@ export default function Home() {
             {/* Low Deposit Loans - Amber */}
             <motion.div
               variants={fadeInUp}
-              whileHover={{ y: -6, boxShadow: "0 15px 35px rgba(217, 119, 6, 0.08)" }}
+              whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
               className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-row items-stretch min-h-[190px] transition-shadow duration-300"
             >
               <div className="flex-1 p-4 flex flex-col justify-between">
@@ -2148,7 +2195,7 @@ export default function Home() {
             {/* Self-Employed Loans - Blue */}
             <motion.div
               variants={fadeInUp}
-              whileHover={{ y: -6, boxShadow: "0 15px 35px rgba(37, 99, 235, 0.08)" }}
+              whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
               className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-row items-stretch min-h-[190px] transition-shadow duration-300"
             >
               <div className="flex-1 p-4 flex flex-col justify-between">
@@ -2178,7 +2225,7 @@ export default function Home() {
             {/* Construction Loans - Orange */}
             <motion.div
               variants={fadeInUp}
-              whileHover={{ y: -6, boxShadow: "0 15px 35px rgba(234, 88, 12, 0.08)" }}
+              whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
               className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-row items-stretch min-h-[190px] transition-shadow duration-300"
             >
               <div className="flex-1 p-4 flex flex-col justify-between">
@@ -2213,7 +2260,7 @@ export default function Home() {
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeInUp}
-            whileHover={{ y: -3, boxShadow: "0 15px 30px rgba(0,0,0,0.06)" }}
+            whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
             className="mt-6 bg-white rounded-2xl border border-slate-100 shadow-sm px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-4 transition-all duration-300"
           >
             <div className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-4">
@@ -2276,7 +2323,7 @@ function WhyChooseUsSection() {
             className="w-full lg:w-[60%]"
           >
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 w-fit mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#2563EB] shadow-[0_0_8px_#2563EB] animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#2563EB]" />
               <span className="text-[#2563EB] text-[10px] font-extrabold tracking-widest uppercase">
                 Nepali Mortgage Broker Australia
               </span>
@@ -2310,7 +2357,7 @@ function WhyChooseUsSection() {
                 layout
                 initial={false}
                 animate={{ flex: isActive ? 3.5 : 1 }}
-                transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                transition={{ duration: 0.5, ease: EASE_OUT }}
                 className="relative rounded-2xl overflow-hidden cursor-pointer group bg-slate-200 shadow-sm border border-slate-200/60"
               >
                 {/* Background Image - Clean, vibrant, visible */}
@@ -2361,9 +2408,13 @@ function WhyChooseUsSection() {
         </div>
 
         {/* Mobile Vertical Stack */}
-        <div className="flex lg:hidden flex-col gap-4">
+        <Stagger className="flex lg:hidden flex-col gap-4">
           {cards.map((card, idx) => (
-            <div key={card.city} className="relative rounded-2xl overflow-hidden bg-slate-200 border border-slate-200 p-6">
+            <motion.div
+              key={card.city}
+              variants={staggerItem}
+              className="relative rounded-2xl overflow-hidden bg-slate-200 border border-slate-200 p-6 min-h-[280px]"
+            >
               <Image src={card.img} fill alt={card.city} className="object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 
@@ -2377,9 +2428,9 @@ function WhyChooseUsSection() {
                   Explore {card.city} Options <ArrowRight className="w-3.5 h-3.5" />
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </Stagger>
 
       </div>
     </section>
@@ -2388,7 +2439,11 @@ function WhyChooseUsSection() {
 
 function GoogleReviewCard({ name, date, text }: { name: string, date: string, text: string }) {
   return (
-    <div className="w-[320px] sm:w-[380px] shrink-0 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm mx-3 flex flex-col gap-4">
+    <motion.div
+      whileHover={{ y: -3, boxShadow: motionCardShadow }}
+      transition={{ duration: 0.3, ease: EASE_OUT }}
+      className="w-[320px] sm:w-[380px] shrink-0 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm mx-3 flex flex-col gap-4"
+    >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-[#2563EB] font-extrabold text-lg">
@@ -2416,7 +2471,7 @@ function GoogleReviewCard({ name, date, text }: { name: string, date: string, te
       <p className="text-[14px] text-slate-600 leading-relaxed">
         &quot;{text}&quot;
       </p>
-    </div>
+    </motion.div>
   )
 }
 
@@ -2440,29 +2495,47 @@ function TestimonialSection() {
 
   return (
     <section className="py-20 lg:py-28 bg-white overflow-hidden border-b border-slate-100">
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 mb-12 text-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 w-fit mb-4">
-          <span className="text-[#2563EB] text-[10px] font-extrabold tracking-widest uppercase">
-            Google Reviews
-          </span>
-        </div>
-        <h2 className="text-[#0B1F3A] text-[32px] sm:text-[40px] font-black leading-tight mb-4" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-          Loved By Hundreds of <span className="text-[#2563EB]">Happy Clients</span>
-        </h2>
-        <p className="text-slate-500 text-[15px] max-w-2xl mx-auto">
-          Don&apos;t just take our word for it. See what our clients have to say about their experience with Mortgage Xperts.
-        </p>
-      </div>
+      <Stagger className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 mb-12 text-center flex flex-col items-center">
+        <StaggerItem>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 w-fit mb-4 mx-auto">
+            <span className="text-[#2563EB] text-[10px] font-extrabold tracking-widest uppercase">
+              Google Reviews
+            </span>
+          </div>
+        </StaggerItem>
+        <StaggerItem>
+          <h2 className="text-[#0B1F3A] text-[32px] sm:text-[40px] font-black leading-tight mb-4" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+            Loved By Hundreds of <span className="text-[#2563EB]">Happy Clients</span>
+          </h2>
+        </StaggerItem>
+        <StaggerItem>
+          <p className="text-slate-500 text-[15px] max-w-2xl mx-auto">
+            Don&apos;t just take our word for it. See what our clients have to say about their experience with Mortgage Xperts.
+          </p>
+        </StaggerItem>
+      </Stagger>
 
       {/* Marquee Row 1 */}
-      <div className="flex w-max animate-marquee hover:[animation-play-state:paused] mb-6">
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={VIEWPORT_LOOSE}
+        transition={{ duration: 0.7, ease: EASE_OUT }}
+        className="flex w-max animate-marquee hover:[animation-play-state:paused] mb-6"
+      >
         {row1.map((rev, i) => <GoogleReviewCard key={`r1-${i}`} {...rev} />)}
-      </div>
+      </motion.div>
 
       {/* Marquee Row 2 (Reverse) */}
-      <div className="flex w-max animate-marquee-reverse hover:[animation-play-state:paused]">
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={VIEWPORT_LOOSE}
+        transition={{ duration: 0.7, delay: 0.12, ease: EASE_OUT }}
+        className="flex w-max animate-marquee-reverse hover:[animation-play-state:paused]"
+      >
         {row2.map((rev, i) => <GoogleReviewCard key={`r2-${i}`} {...rev} />)}
-      </div>
+      </motion.div>
     </section>
   )
 }

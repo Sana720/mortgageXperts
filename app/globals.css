@@ -84,3 +84,10 @@ h1, h2, h3, h4, h5, h6 {
 .animate-marquee-reverse:hover {
   animation-play-state: paused;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-marquee-reverse {
+    animation: none !important;
+  }
+}
