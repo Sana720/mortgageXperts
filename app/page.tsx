@@ -713,52 +713,47 @@ function SuccessStoriesSection() {
             </div>
           </motion.article>
 
-          {/* Self-employed */}
+          {/* Healthcare Professional Story */}
           <motion.article
             variants={staggerItem}
             whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
             className="rounded-[18px] bg-white shadow-[0_16px_40px_rgba(0,0,0,0.2)] overflow-hidden border border-white/10 flex flex-col sm:flex-row min-h-[260px]"
           >
             <div className="flex-1 p-6 sm:p-7 flex flex-col justify-center sm:max-w-[56%]">
-              <span className="inline-flex w-fit rounded-full bg-[#EDE9FE] px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-[#5B21B6] mb-3">
-                Self-Employed Story
+              <span className="inline-flex w-fit rounded-full bg-[#CCFBF1] px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-[#0D9488] mb-3">
+                Healthcare Professional
               </span>
               <h3
                 className="text-[19px] sm:text-[21px] font-extrabold text-[#0B1F3A] leading-snug mb-3"
                 style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
               >
-                Helping A Self-Employed Founder <span className="text-[#7C3AED]">Secure Approval</span>
+                Doctor Buys First Home With <span className="text-[#0D9488]">Zero LMI</span>
               </h3>
               <p className="text-[13px] text-slate-600 leading-relaxed mb-4 flex-1">
-                Complex income does not mean impossible. We documented the right story, matched the right lender and turned a &apos;no&apos; into a confident &apos;yes&apos;.
+                A junior doctor with HECS debt thought LMI was unavoidable. We matched them to the right lender, waived LMI entirely and got them into their first home 6 months earlier than expected.
               </p>
-              <Link href="#" className="inline-flex items-center gap-1.5 text-[13px] font-bold text-[#7C3AED] hover:underline w-fit">
+              <Link href="#" className="inline-flex items-center gap-1.5 text-[13px] font-bold text-[#0D9488] hover:underline w-fit">
                 Read their story
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
-            <div className="relative min-h-[200px] sm:min-h-0 sm:w-[44%] shrink-0">
-              <Image
-                src="/images/founder_selfemployed.png"
-                alt="Self-employed founder"
-                fill
-                className="object-cover object-center"
-                sizes="(max-width: 768px) 100vw, 45vw"
-              />
-              <div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                  background:
-                    "linear-gradient(to right, #ffffff 0%, rgba(255,255,255,0.9) 15%, rgba(255,255,255,0.25) 45%, transparent 75%)",
-                }}
-              />
+            <div className="relative min-h-[200px] sm:min-h-0 sm:w-[44%] shrink-0 bg-gradient-to-br from-[#CCFBF1] to-[#A7F3D0]">
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-6">
+                <div className="w-20 h-20 rounded-full bg-white shadow-xl flex items-center justify-center">
+                  <Heart className="w-10 h-10 text-[#0D9488]" fill="currentColor" />
+                </div>
+                <div className="text-center">
+                  <div className="text-[22px] font-black text-[#0D9488]">LMI Waived</div>
+                  <div className="text-[12px] text-[#047857] font-semibold">Saved $18,000+</div>
+                </div>
+              </div>
               <div className="absolute bottom-4 right-4 z-10 bg-white rounded-xl border border-slate-100 shadow-lg px-3 py-2.5 flex items-start gap-2.5 max-w-[160px]">
-                <div className="w-8 h-8 rounded-full bg-[#EDE9FE] flex items-center justify-center shrink-0 text-[#7C3AED]">
+                <div className="w-8 h-8 rounded-full bg-[#CCFBF1] flex items-center justify-center shrink-0 text-[#0D9488]">
                   <Shield className="w-4 h-4" />
                 </div>
                 <div>
-                  <div className="text-[12px] font-extrabold text-[#0B1F3A] leading-tight">Loan Approved</div>
-                  <div className="text-[10px] text-slate-500 font-medium mt-0.5">Business Owner</div>
+                  <div className="text-[12px] font-extrabold text-[#0B1F3A] leading-tight">Approved Fast</div>
+                  <div className="text-[10px] text-slate-500 font-medium mt-0.5">Junior Doctor</div>
                 </div>
               </div>
             </div>
@@ -807,9 +802,9 @@ function SuccessStoriesSection() {
 const FAQ_TABS = [
   { id: "first-home", label: "First Home Buyers", icon: HomeIcon },
   { id: "refinancing", label: "Refinancing", icon: Clock },
-  { id: "investment", label: "Investment", icon: BarChart3 },
+  { id: "investment", label: "Investment Loans", icon: BarChart3 },
+  { id: "healthcare", label: "Healthcare Professionals", icon: Heart },
   { id: "self-employed", label: "Self-Employed", icon: User },
-  { id: "construction", label: "Construction Loans", icon: Building2 },
 ] as const;
 
 const FAQ_CONTENT: Record<
@@ -924,31 +919,31 @@ const FAQ_CONTENT: Record<
         "Not always. Deposit requirements depend on income evidence, credit profile and lender policy — not employment type alone.",
     },
   ],
-  construction: [
+  healthcare: [
     {
-      question: "How do construction loans work?",
+      question: "Do healthcare professionals get special loan benefits?",
       answer:
-        "Funds are drawn down in stages as building progresses — slab, frame, lock-up, fixing and completion. You typically pay interest only on amounts drawn during construction.",
+        "Yes. Many lenders offer exclusive benefits to doctors, nurses, dentists and allied health professionals — including waived LMI on up to 90–95% LVR, discounted interest rates and faster approvals. We match you to the right policy.",
     },
     {
-      question: "What documents do builders need to provide?",
+      question: "Which healthcare professionals qualify for LMI waivers?",
       answer:
-        "Lenders usually require a fixed-price contract, council-approved plans, insurance and a progress payment schedule. We guide you through the checklist early.",
+        "Eligible professions typically include medical doctors (GPs and specialists), dentists, pharmacists, optometrists, veterinarians, physiotherapists and registered nurses. Requirements vary by lender — we'll confirm your eligibility upfront.",
     },
     {
-      question: "Can I use a construction loan for renovations?",
+      question: "Can I borrow with HECS/HELP debt as a healthcare professional?",
       answer:
-        "Major renovations may qualify for construction-style lending. Smaller renos might suit a standard home loan or equity release — we'll recommend the right path.",
+        "Yes. HECS debt is factored into your assessment but healthcare professionals are still strong candidates. We work with lenders who understand the income trajectory of healthcare careers and use your genuine earning capacity.",
     },
     {
-      question: "What happens after construction finishes?",
+      question: "Can I borrow more as a healthcare professional?",
       answer:
-        "The loan usually converts to a standard principal-and-interest or interest-only home loan, depending on your product. We plan this transition upfront.",
+        "Your stable, high income and career trajectory can support a higher borrowing capacity. We'll model your full borrowing power across multiple lenders and present your case to maximise your approval amount.",
     },
     {
-      question: "How much deposit is needed for a build?",
+      question: "Can I use my healthcare income to invest in property?",
       answer:
-        "Deposits often mirror standard home loans (5–20%+) plus a contingency for variations. Land and build packages have specific rules we'll explain clearly.",
+        "Absolutely. Healthcare professionals are well-positioned to build investment portfolios. We structure both your home loan and investment loans to maximise your tax efficiency and long-term wealth creation.",
     },
   ],
 };
@@ -1244,7 +1239,7 @@ function SiteFooterSection() {
               className="text-[18px] sm:text-[20px] lg:text-[22px] font-extrabold text-[#0B1F3A] leading-snug"
               style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
             >
-              Helping Australians make <span className="text-[#2563EB]">smarter</span> home loan decisions.
+              Specialists in <span className="text-[#2563EB]">Healthcare</span> &amp; <span className="text-[#2563EB]">Investment</span> lending across Australia.
             </p>
           </div>
 
@@ -1345,10 +1340,10 @@ function SiteFooterSection() {
                   <h4 className="text-[13px] font-extrabold text-white">Home Loan Solutions</h4>
                 </div>
                 <div className="flex flex-col gap-2.5">
+                  <FooterNavLink href="#">Healthcare Professionals</FooterNavLink>
+                  <FooterNavLink href="#">Investment Loans</FooterNavLink>
                   <FooterNavLink href="#">First Home Buyers</FooterNavLink>
                   <FooterNavLink href="#">Refinancing</FooterNavLink>
-                  <FooterNavLink href="#">Investment Loans</FooterNavLink>
-                  <FooterNavLink href="#">Construction Loans</FooterNavLink>
                   <FooterNavLink href="#">Self-Employed Loans</FooterNavLink>
                 </div>
                 <FooterColumnCta href="#">Explore solutions</FooterColumnCta>
@@ -1714,21 +1709,21 @@ export default function Home() {
             >
               <Shield className="w-4 h-4 text-[#2563EB] shrink-0" />
               <span className="text-[11px] font-bold tracking-widest text-[#2563EB] uppercase">
-                Proudly Supporting The Nepali-Australian Community
+                Specialists in Healthcare &amp; Investment Lending
               </span>
             </motion.div>
 
             {/* H1 */}
             <motion.h1
               variants={fadeInUp}
-              className="text-[36px] sm:text-[48px] lg:text-[54px] font-extrabold leading-[1.1] tracking-tight text-[#0B1F3A]"
+              className="text-[32px] sm:text-[44px] lg:text-[50px] font-extrabold leading-[1.1] tracking-tight text-[#0B1F3A]"
               style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
             >
-              Top-Rated{" "}
+              Mortgage Solutions for{" "}
               <br className="hidden sm:block" />
-              Mortgage Broker{" "}
+              <span className="text-[#2563EB]">Health Professionals</span>{" "}
               <br className="hidden sm:block" />
-              In <span className="text-[#2563EB]">Australia.</span>
+              &amp; Property Investors
             </motion.h1>
 
             {/* Subtext */}
@@ -1736,120 +1731,85 @@ export default function Home() {
               variants={fadeInUp}
               className="text-slate-500 text-[15px] leading-relaxed max-w-md"
             >
-              Home Loans, Simplified. Personalised mortgage solutions Nationwide.{" "}
-              <br className="hidden sm:block" />
-              We simplify the home loan journey and help you make{" "}
-              <br className="hidden sm:block" />
-              confident financial decisions.
+              Helping nurses, doctors, allied health professionals, and Australian property investors secure smarter lending solutions with expert guidance and access to 40+ lenders.
             </motion.p>
 
             {/* CTA Buttons */}
             <motion.div
               variants={fadeInUp}
-              className="flex flex-col sm:flex-row gap-3 pt-1"
+              className="flex flex-col sm:flex-row flex-wrap gap-3 pt-1"
             >
               <Link
                 href="#"
                 className="bg-[#2563EB] text-white font-bold text-[14px] py-3.5 px-7 rounded-full inline-flex items-center justify-center gap-2 hover:bg-[#1d4ed8] transition-all duration-300 shadow-lg shadow-blue-200 hover:scale-[1.02] active:scale-[0.98] text-center"
               >
-                Book Your Free Assessment <ArrowRight className="w-4 h-4" />
+                Book Free Strategy Call <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link
+                href="#"
+                className="border-2 border-[#2563EB] text-[#2563EB] font-bold text-[14px] py-3.5 px-6 rounded-full inline-flex items-center justify-center gap-2 hover:bg-[#EAF3FF] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center"
+              >
+                <Calculator className="w-4 h-4" /> Calculate Borrowing Power
+              </Link>
+              <Link
+                href="#"
+                className="border border-slate-200 text-[#0B1F3A] font-bold text-[14px] py-3.5 px-6 rounded-full inline-flex items-center justify-center gap-2 hover:border-[#2563EB] hover:text-[#2563EB] transition-all duration-300 text-center bg-white"
+              >
+                Get Pre-Approved <ArrowRight className="w-4 h-4" />
               </Link>
             </motion.div>
 
-            {/* Trust Proof Bar */}
+            {/* Trust Bar — checkmark pills */}
             <motion.div
               variants={fadeInUp}
-              className="flex flex-wrap gap-6 items-center pt-5 mt-1 border-t border-slate-100"
+              className="flex flex-wrap gap-2.5 pt-5 mt-1 border-t border-slate-100"
             >
+              {[
+                "Australia-Wide Service",
+                "40+ Lenders",
+                "First Home Buyers & Investors",
+                "Strategic Lending Solutions",
+              ].map((item) => (
+                <span key={item} className="inline-flex items-center gap-1.5 bg-[#EAF3FF] border border-[#D0E5FF] text-[#2563EB] text-[11.5px] font-semibold px-3 py-1.5 rounded-full">
+                  <svg className="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="m5 13 4 4L19 7" /></svg>
+                  {item}
+                </span>
+              ))}
+            </motion.div>
 
-              {/* Happy Clients */}
-              <div className="flex items-center gap-2.5">
-                <div className="flex -space-x-2">
-                  {[
-                    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&h=80&q=80",
-                    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&h=80&q=80",
-                    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=80&h=80&q=80",
-                  ].map((src, i) => (
-                    <div key={i} className="w-8 h-8 rounded-full border-2 border-white overflow-hidden bg-slate-100 shrink-0 shadow-sm">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={src} alt={`Client ${i + 1}`} className="w-full h-full object-cover" />
-                    </div>
-                  ))}
-                </div>
-                <div>
-                  <div className="font-bold text-sm text-[#0B1F3A] leading-none">15,000+</div>
-                  <div className="text-[11px] text-slate-500 font-medium mt-0.5">Happy Clients</div>
-                </div>
-              </div>
-
-              {/* Divider */}
-              <div className="hidden sm:block w-px h-8 bg-slate-200" />
-
-              {/* Google Reviews */}
+            {/* Google rating strip */}
+            <motion.div variants={fadeInUp} className="flex flex-wrap items-center gap-4">
               <div className="flex items-center gap-2">
                 <GoogleIcon />
                 <div>
                   <div className="flex gap-0.5">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400 shrink-0" />
+                      <Star key={i} className="w-3 h-3 text-yellow-400 fill-yellow-400" />
                     ))}
                   </div>
-                  <div className="text-[11px] text-slate-500 font-semibold mt-0.5">4.9/5 From 1200+ Reviews</div>
+                  <div className="text-[10px] text-slate-500 font-semibold">4.9 · 1,200+ Reviews</div>
                 </div>
               </div>
-
-              {/* Divider */}
-              <div className="hidden sm:block w-px h-8 bg-slate-200" />
-
-              {/* 40+ Lenders */}
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-full bg-[#EAF3FF] flex items-center justify-center shrink-0">
-                  <Shield className="w-4 h-4 text-[#2563EB]" />
-                </div>
-                <div>
-                  <div className="font-bold text-sm text-[#0B1F3A] leading-none">40+ Lenders</div>
-                  <div className="text-[11px] text-slate-500 font-medium mt-0.5">Working For You</div>
-                </div>
-              </div>
-
+              <div className="w-px h-7 bg-slate-200 hidden sm:block" />
+              <div className="text-[11px] text-slate-500 font-medium">$2.4B+ Loans Approved Since 2010</div>
             </motion.div>
 
-            {/* Inline Stats Grid for Tablet/Mobile (Visible on lg-) */}
+            {/* Mobile stats — compact row */}
             <motion.div
               variants={fadeInUp}
-              className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6 pt-5 border-t border-slate-100 lg:hidden"
+              className="grid grid-cols-3 gap-3 mt-2 pt-4 border-t border-slate-100 lg:hidden"
             >
-              {/* Card 1 */}
-              <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
-                <div className="w-10 h-10 rounded-xl bg-[#EBF5FF] flex items-center justify-center shrink-0">
-                  <TrendingUp className="w-5 h-5 text-[#2563EB]" />
-                </div>
-                <div>
-                  <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Approved</div>
-                  <div className="text-lg font-black text-[#0B1F3A] leading-none mt-0.5">$2.4B+</div>
-                </div>
+              <div className="bg-slate-50 rounded-xl p-3 text-center border border-slate-100">
+                <div className="text-lg font-black text-[#2563EB] leading-none">$2.4B+</div>
+                <div className="text-[10px] text-slate-500 font-medium mt-0.5">Approved</div>
               </div>
-
-              {/* Card 2 */}
-              <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
-                <div className="w-10 h-10 rounded-xl bg-[#EBF5FF] flex items-center justify-center shrink-0">
-                  <Percent className="w-5 h-5 text-[#2563EB]" />
-                </div>
-                <div>
-                  <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Approval Rate</div>
-                  <div className="text-lg font-black text-[#0B1F3A] leading-none mt-0.5">98%</div>
-                </div>
+              <div className="bg-slate-50 rounded-xl p-3 text-center border border-slate-100">
+                <div className="text-lg font-black text-[#2563EB] leading-none">98%</div>
+                <div className="text-[10px] text-slate-500 font-medium mt-0.5">Approval Rate</div>
               </div>
-
-              {/* Card 3 */}
-              <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-4 flex items-center gap-3 hover:shadow-md transition-shadow">
-                <div className="w-10 h-10 rounded-xl bg-[#EBF5FF] flex items-center justify-center shrink-0">
-                  <HomeIcon className="w-5 h-5 text-[#2563EB]" />
-                </div>
-                <div>
-                  <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Solutions</div>
-                  <div className="text-xs font-bold text-[#0B1F3A] mt-0.5">Tailored Strategies</div>
-                </div>
+              <div className="bg-slate-50 rounded-xl p-3 text-center border border-slate-100">
+                <div className="text-lg font-black text-[#2563EB] leading-none">40+</div>
+                <div className="text-[10px] text-slate-500 font-medium mt-0.5">Lenders</div>
               </div>
             </motion.div>
 
@@ -1937,10 +1897,8 @@ export default function Home() {
 
             {/* Label */}
             <div className="shrink-0 md:border-r border-slate-200 pr-6 md:mr-4 border-b md:border-b-0 pb-3 md:pb-0 w-full md:w-auto text-center md:text-left flex md:block justify-center z-10 bg-white">
-              <p className="text-[11.5px] font-bold text-[#0B1F3A] uppercase tracking-wide leading-[1.35]">
-                OUR PANEL OF<br />
-                40+ LEADING<br />
-                LENDERS
+              <p className="text-[11.5px] font-bold text-[#0B1F3A] uppercase tracking-wide whitespace-nowrap">
+                OUR PANEL OF 40+ LEADING LENDERS
               </p>
             </div>
 
@@ -2015,8 +1973,7 @@ export default function Home() {
               <br /><span className="text-[#2563EB]">For Your Goals.</span>
             </h2>
             <p className="text-slate-500 text-[15px] mt-3 max-w-xl mx-auto leading-relaxed">
-              Whether you&apos;re buying your first home, investing, refinancing or building,{" "}
-              we&apos;ll help you find the right loan with confidence.
+              From healthcare professionals to property investors — we specialise in finding the right loan for your unique situation, nationwide.
             </p>
           </motion.div>
 
@@ -2158,7 +2115,7 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* Low Deposit Loans - Amber */}
+            {/* Healthcare Professionals - Teal */}
             <motion.div
               variants={fadeInUp}
               whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
@@ -2166,22 +2123,22 @@ export default function Home() {
             >
               <div className="flex-1 p-4 flex flex-col justify-between">
                 <div>
-                  <div className="w-8 h-8 rounded-lg bg-[#FEF3C7] flex items-center justify-center mb-1.5 text-[#D97706]">
-                    <IconWallet />
+                  <div className="w-8 h-8 rounded-lg bg-[#CCFBF1] flex items-center justify-center mb-1.5 text-[#0D9488]">
+                    <Heart className="w-4 h-4" />
                   </div>
-                  <div className="w-7 h-0.5 bg-[#D97706] mb-2 rounded-full" />
-                  <h3 className="text-[13.5px] font-extrabold text-[#0B1F3A] mb-1" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>Low Deposit Loans</h3>
-                  <p className="text-[11px] text-slate-500 leading-relaxed">Get into your home sooner with low deposit solutions.</p>
+                  <div className="w-7 h-0.5 bg-[#0D9488] mb-2 rounded-full" />
+                  <h3 className="text-[13.5px] font-extrabold text-[#0B1F3A] mb-1" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>Healthcare Professionals</h3>
+                  <p className="text-[11px] text-slate-500 leading-relaxed">Exclusive lending privileges for doctors, nurses &amp; allied health.</p>
                 </div>
-                <Link href="#" className="mt-3 inline-flex items-center gap-1 text-[#D97706] text-[10px] font-semibold border border-[#D97706] px-2.5 py-1.5 rounded-full hover:bg-[#D97706] hover:text-white transition-all w-fit whitespace-nowrap hover:scale-102 active:scale-98">
+                <Link href="#" className="mt-3 inline-flex items-center gap-1 text-[#0D9488] text-[10px] font-semibold border border-[#0D9488] px-2.5 py-1.5 rounded-full hover:bg-[#0D9488] hover:text-white transition-all w-fit whitespace-nowrap hover:scale-102 active:scale-98">
                   Explore <ArrowRight className="w-2.5 h-2.5" />
                 </Link>
               </div>
               {/* Right image: 1:1 PNG, 75% width visible, 100% height taken */}
               <div className="w-[143px] shrink-0 relative overflow-hidden">
                 <Image
-                  src="/images/Low Deposit Loans.png"
-                  alt="Low Deposit"
+                  src="/images/Healthcare Professionals.png"
+                  alt="Healthcare Professionals"
                   fill
                   className="object-cover object-left"
                 />
@@ -2277,11 +2234,11 @@ export default function Home() {
       </section>
 
 
-      {/* ── WHY CHOOSE US SECTION ── */}
-      <WhyChooseUsSection />
-
       {/* ── SMART TOOLS SECTION ── */}
       <SmartToolsSection />
+
+      {/* ── WHY CHOOSE US SECTION ── */}
+      <WhyChooseUsSection />
 
       {/* ── TESTIMONIALS ── */}
       <TestimonialSection />
@@ -2303,10 +2260,10 @@ function WhyChooseUsSection() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const cards = [
-    { city: "Sydney", title: "Mortgage Broker in Sydney", desc: "Trusted Nepali mortgage broker in Sydney. Mortgage Xperts helps first home buyers, investors, and refinancers secure the right home loan with hundreds of happy clients.", img: "/images/sydney_real.png" },
-    { city: "Adelaide", title: "Mortgage Broker in Adelaide", desc: "Mortgage Xperts serves Nepali Australians in Adelaide with expert home loan and refinancing solutions. Our personalised guidance and tailored advice help you navigate Australia's complex mortgage market.", img: "/images/adelaide_real.png" },
-    { city: "Melbourne", title: "Mortgage Broker in Melbourne", desc: "Mortgage Xperts is your trusted Nepali mortgage broker in Melbourne, helping Nepali Australians get personalised home loan solutions, refinancing advice, and investment property financing with confidence.", img: "/images/melbourne_real.png" },
-    { city: "Brisbane", title: "Mortgage Broker in Brisbane", desc: "Mortgage Xperts Brisbane specialises in home loans, refinancing, and investment finance for Nepali Australians, backed by hundreds of satisfied clients.", img: "/images/brisbane_real.png" },
+    { city: "Sydney", title: "Mortgage Broker in Sydney", desc: "Expert mortgage broker in Sydney helping health professionals, first home buyers and property investors secure the right home loan with tailored lending strategies.", img: "/images/sydney_real.png" },
+    { city: "Adelaide", title: "Mortgage Broker in Adelaide", desc: "Mortgage Xperts serves health professionals and investors in Adelaide with expert home loan and refinancing solutions. Personalised guidance to navigate Australia's complex mortgage market.", img: "/images/adelaide_real.png" },
+    { city: "Melbourne", title: "Mortgage Broker in Melbourne", desc: "Trusted mortgage broker in Melbourne helping doctors, nurses, allied health professionals and property investors get personalised home loan solutions, refinancing advice and investment finance.", img: "/images/melbourne_real.png" },
+    { city: "Brisbane", title: "Mortgage Broker in Brisbane", desc: "Mortgage Xperts Brisbane specialises in home loans, refinancing, and investment finance for health professionals and property investors, backed by hundreds of satisfied clients.", img: "/images/brisbane_real.png" },
   ];
 
   return (
@@ -2321,10 +2278,10 @@ function WhyChooseUsSection() {
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 w-fit mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-[#2563EB]" />
               <span className="text-[#2563EB] text-[10px] font-extrabold tracking-widest uppercase">
-                Nepali Mortgage Broker Australia
+                Australia-Wide Mortgage Specialists
               </span>
             </div>
-            <h2 className="text-[#0B1F3A] text-[32px] sm:text-[36px] lg:text-[40px] font-black leading-[1.1] tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+            <h2 className="text-[#0B1F3A] text-[32px] sm:text-[36px] lg:text-[40px] font-extrabold leading-[1.1] tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
               Why Choose <br className="hidden lg:block" />Mortgage <span className="text-[#2563EB]">Xperts?</span>
             </h2>
           </motion.div>
@@ -2333,10 +2290,10 @@ function WhyChooseUsSection() {
             className="w-full lg:w-[40%] flex flex-col items-start lg:items-end"
           >
             <p className="text-slate-500 text-[13px] sm:text-[14px] leading-relaxed mb-6 lg:text-right max-w-md">
-              As a trusted <span className="text-[#0B1F3A] font-semibold">Nepali mortgage broker</span>, we deliver personalised home loan solutions. Whether you&apos;re purchasing your first home or investing, we have you covered.
+              We deliver <span className="text-[#0B1F3A] font-semibold">personalised lending strategies</span> for health professionals and property investors across Australia. Whether you&apos;re purchasing your first home or building a portfolio, we have you covered.
             </p>
             <Link href="#" className="relative group/btn inline-flex items-center justify-center gap-2 w-fit rounded-xl bg-[#2563EB] px-6 py-3.5 text-[13px] font-bold text-white shadow-md hover:shadow-lg hover:bg-[#1d4ed8] transition-all duration-300 hover:-translate-y-0.5">
-              Let&apos;s Talk Home Loan <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+              Book Free Strategy Call <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
             </Link>
           </motion.div>
         </div>
@@ -2391,7 +2348,7 @@ function WhyChooseUsSection() {
                     <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#2563EB] mb-4 shadow-md">
                       <MapPin className="w-5 h-5" />
                     </div>
-                    <h3 className="text-white font-black text-[24px] mb-2 leading-tight drop-shadow-md">{card.title}</h3>
+                    <h3 className="text-white font-bold text-[24px] mb-2 leading-tight drop-shadow-md">{card.title}</h3>
                     <p className="text-white/95 text-[13px] leading-relaxed max-w-md mb-5 drop-shadow-md">{card.desc}</p>
                     <div className="inline-flex items-center gap-1.5 text-white font-bold text-[13px] hover:opacity-80 transition-opacity">
                       Explore {card.city} Options <ArrowRight className="w-3.5 h-3.5" />
@@ -2418,7 +2375,7 @@ function WhyChooseUsSection() {
                 <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#2563EB] mb-4 shadow-md">
                   <MapPin className="w-5 h-5" />
                 </div>
-                <h3 className="text-white font-black text-[22px] mb-2 leading-tight drop-shadow-md">{card.title}</h3>
+                <h3 className="text-white font-bold text-[22px] mb-2 leading-tight drop-shadow-md">{card.title}</h3>
                 <p className="text-white/95 text-[13px] leading-relaxed mb-5 drop-shadow-md">{card.desc}</p>
                 <div className="inline-flex items-center gap-1.5 text-white font-bold text-[13px]">
                   Explore {card.city} Options <ArrowRight className="w-3.5 h-3.5" />
