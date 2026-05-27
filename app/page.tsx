@@ -32,6 +32,7 @@ import {
   ChevronRight,
   Lock,
   Calculator,
+  X,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -92,91 +93,7 @@ const IconHammer = () => (
   </svg>
 );
 
-// -- Refinancing Graph (GREEN curve, matching reference design) ----------------
-function RefGraph() {
-  const [progress, setProgress] = useState(0);
-  const rafRef = useRef<number>(0);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      const start = performance.now();
-      const duration = 2200;
-      const animate = (now: number) => {
-        const raw = (now - start) / duration;
-        const p = Math.min(1 - Math.pow(1 - raw, 3), 1);
-        setProgress(p);
-        if (raw < 1) rafRef.current = requestAnimationFrame(animate);
-      };
-      rafRef.current = requestAnimationFrame(animate);
-    }, 400);
-    return () => { clearTimeout(timeout); cancelAnimationFrame(rafRef.current); };
-  }, []);
-
-  const W = 195, H = 85;
-  const barW = 18, gap = 10, startX = 6;
-  const barH = 52;
-
-  // Green curve: starts high (same as bars), descends month by month
-  const curvePts: [number, number][] = [
-    [startX + 0 * (barW + gap) + barW / 2, H - barH + 2],
-    [startX + 1 * (barW + gap) + barW / 2, H - barH + 9],
-    [startX + 2 * (barW + gap) + barW / 2, H - barH + 19],
-    [startX + 3 * (barW + gap) + barW / 2, H - barH + 31],
-    [startX + 4 * (barW + gap) + barW / 2, H - barH + 42],
-    [startX + 5 * (barW + gap) + barW / 2, H - barH + 50],
-  ];
-
-  const curvePath = curvePts.reduce((acc, pt, i) => {
-    if (i === 0) return `M ${pt[0]} ${pt[1]}`;
-    const prev = curvePts[i - 1];
-    const cpx = (prev[0] + pt[0]) / 2;
-    return `${acc} C ${cpx} ${prev[1]}, ${cpx} ${pt[1]}, ${pt[0]} ${pt[1]}`;
-  }, '');
-
-  const totalLen = 260;
-  const drawn = totalLen * progress;
-  const lastIdx = Math.min(Math.floor(progress * (curvePts.length - 0.01)), curvePts.length - 1);
-  const lastPt = curvePts[lastIdx];
-
-  return (
-    <div className="bg-white rounded-xl border border-slate-100 shadow-lg p-3.5" style={{ width: 220 }}>
-      <div className="text-[9px] text-slate-400 font-semibold uppercase tracking-widest mb-0.5">Monthly Repayment</div>
-      <div className="flex items-end gap-2 mb-3">
-        <span className="text-[22px] font-black text-[#0B1F3A] leading-none">$1,243</span>
-        <span className="mb-0.5 text-[10px] font-bold text-[#16A34A] bg-[#F0FDF4] px-2 py-0.5 rounded-md">- $320 Saved</span>
-      </div>
-      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} className="overflow-visible">
-        {/* Green soft fill */}
-        {progress > 0.05 && (
-          <path
-            d={`${curvePath} L ${lastPt[0]} ${H} L ${curvePts[0][0]} ${H} Z`}
-            fill="#DCFCE7" opacity={0.45 * progress}
-          />
-        )}
-        {/* Grey bars */}
-        {[0, 1, 2, 3, 4, 5].map((i) => (
-          <rect key={i}
-            x={startX + i * (barW + gap)} y={H - barH + i * 2}
-            width={barW} height={barH - i * 2} rx={3} fill="#E2E8F0"
-          />
-        ))}
-        {/* Animated green curve */}
-        <path
-          d={curvePath} fill="none" stroke="#16A34A" strokeWidth={2}
-          strokeLinecap="round" strokeLinejoin="round"
-          strokeDasharray={totalLen} strokeDashoffset={totalLen - drawn}
-        />
-        {/* Endpoint dot */}
-        {progress > 0.88 && (
-          <>
-            <circle cx={lastPt[0]} cy={lastPt[1]} r={6} fill="#16A34A" opacity={0.2} />
-            <circle cx={lastPt[0]} cy={lastPt[1]} r={3.5} fill="#16A34A" />
-          </>
-        )}
-      </svg>
-    </div>
-  );
-}
 
 const FacebookIcon = () => (
   <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -1320,16 +1237,18 @@ function SiteFooterSection() {
               </ul>
               <div className="flex items-center gap-2.5">
                 {[
-                  { Icon: FacebookIcon, label: "Facebook" },
-                  { Icon: InstagramIcon, label: "Instagram" },
-                  { Icon: LinkedInIcon, label: "LinkedIn" },
-                  { Icon: YoutubeIcon, label: "YouTube" },
-                ].map(({ Icon, label }) => (
+                  { Icon: FacebookIcon, label: "Facebook", href: "https://www.facebook.com/MortgageXperts.au/", hoverClass: "hover:bg-[#1877F2]" },
+                  { Icon: InstagramIcon, label: "Instagram", href: "https://www.instagram.com/mortgagexperts.au/#", hoverClass: "hover:bg-[#E4405F]" },
+                  { Icon: TikTokIcon, label: "TikTok", href: "https://www.tiktok.com/@mortgagexperts.au?_t=ZS-90VgVATQ560&_r=1", hoverClass: "hover:bg-[#FE2C55]" },
+                  { Icon: YoutubeIcon, label: "YouTube", href: "https://www.youtube.com/@mortgagexpertsau", hoverClass: "hover:bg-[#FF0000]" },
+                ].map(({ Icon, label, href, hoverClass }) => (
                   <a
                     key={label}
-                    href="#"
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     aria-label={label}
-                    className="w-9 h-9 rounded-full bg-[#0a1628] border border-white/10 flex items-center justify-center text-slate-300 hover:text-white hover:border-[#2563EB]/40 transition-colors"
+                    className={`w-9 h-9 rounded-full bg-[#0a1628] border border-white/10 flex items-center justify-center text-slate-300 hover:text-white transition-all duration-300 hover:scale-110 ${hoverClass}`}
                   >
                     <Icon />
                   </a>
@@ -1623,46 +1542,124 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Mobile Drawer Navigation */}
+      {/* Mobile Drawer (Off-Canvas) Navigation */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="lg:hidden fixed inset-x-0 top-[62px] md:top-[82px] bg-white border-b border-slate-100 shadow-xl z-40 flex flex-col p-6 gap-4 font-semibold text-[#0B1F3A]"
-          >
-            <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-[#2563EB] pb-2 border-b border-slate-50">Home</Link>
-            <div className="border-b border-slate-55 pb-2 flex flex-col gap-2">
-              <span className="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Calculators</span>
-              <div className="pl-3 flex flex-col gap-2 text-sm font-medium">
-                <Link href="#" onClick={() => setIsMobileMenuOpen(false)}>Borrowing Power Calculator</Link>
-                <Link href="#" onClick={() => setIsMobileMenuOpen(false)}>Mortgage Repayment Calculator</Link>
+          <>
+            {/* Backdrop Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="lg:hidden fixed inset-0 bg-[#0B1F3A]/60 backdrop-blur-sm z-50"
+            />
+
+            {/* Sliding Panel */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 28, stiffness: 220 }}
+              className="lg:hidden fixed inset-y-0 right-0 w-[300px] sm:w-[340px] bg-white z-50 shadow-2xl flex flex-col p-6 overflow-y-auto"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-6 shrink-0">
+                <div className="relative h-9 w-32">
+                  <Image src="/images/logo.png" alt="Mortgage Xperts Logo" fill className="object-contain object-left" />
+                </div>
+                <button
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-[#0B1F3A] transition-colors"
+                  aria-label="Close Menu"
+                >
+                  <X className="w-5 h-5" />
+                </button>
               </div>
-            </div>
-            <div className="border-b border-slate-55 pb-2 flex flex-col gap-2">
-              <span className="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Guides</span>
-              <div className="pl-3 flex flex-col gap-2 text-sm font-medium">
-                <Link href="#" onClick={() => setIsMobileMenuOpen(false)}>First Home Buyer Guide</Link>
-                <Link href="#" onClick={() => setIsMobileMenuOpen(false)}>Refinancing Guide</Link>
+
+              {/* Navigation Links */}
+              <div className="flex-1 flex flex-col gap-4 font-semibold text-[#0B1F3A] text-[15px]">
+                <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors pb-2 border-b border-slate-50">
+                  Home
+                </Link>
+
+                {/* Calculators Dropdown/Block */}
+                <div className="border-b border-slate-50 pb-2 flex flex-col gap-1.5">
+                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Calculators</span>
+                  <div className="pl-2 flex flex-col gap-2.5 text-[13.5px] font-medium text-slate-600">
+                    <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">
+                      Borrowing Power Calculator
+                    </Link>
+                    <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">
+                      Mortgage Repayment Calculator
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Guides Dropdown/Block */}
+                <div className="border-b border-slate-50 pb-2 flex flex-col gap-1.5">
+                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Guides</span>
+                  <div className="pl-2 flex flex-col gap-2.5 text-[13.5px] font-medium text-slate-600">
+                    <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">
+                      First Home Buyer Guide
+                    </Link>
+                    <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">
+                      Refinancing Guide
+                    </Link>
+                  </div>
+                </div>
+
+                <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors pb-2 border-b border-slate-50">
+                  About Us
+                </Link>
+                <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors pb-2 border-b border-slate-50">
+                  Contact
+                </Link>
               </div>
-            </div>
-            <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors pb-2 border-b border-slate-50">About Us</Link>
-            <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors pb-2 border-b border-slate-50">Contact</Link>
-            <div className="flex flex-col gap-3 pt-3">
-              <a href="tel:0450240757" className="flex items-center justify-center gap-2 text-[14px] font-bold text-[#0B1F3A] py-2.5 rounded-full border border-slate-200 bg-slate-50">
-                <Phone className="w-4 h-4 text-[#2563EB]" /> Call: 0450 240 757
-              </a>
-              <Link
-                href="#"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="bg-[#2563EB] text-white text-[14px] font-bold py-3 px-5 rounded-full flex items-center justify-center gap-1.5 hover:bg-[#1d4ed8]"
-              >
-                Book Free Consultation <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </motion.div>
+
+              {/* Bottom Section: Contact & Socials */}
+              <div className="mt-auto pt-6 border-t border-slate-100 shrink-0 flex flex-col gap-4">
+                <div className="flex flex-col gap-2.5">
+                  <a href="tel:0450240757" className="flex items-center gap-2 text-[13px] font-semibold text-slate-600 hover:text-[#2563EB] transition-colors">
+                    <Phone className="w-4 h-4 text-[#2563EB] shrink-0" /> 0450 240 757
+                  </a>
+                  <a href="mailto:mortgage@mortgagexperts.com.au" className="flex items-center gap-2 text-[13px] font-semibold text-slate-600 hover:text-[#2563EB] transition-colors break-all">
+                    <Mail className="w-4 h-4 text-[#2563EB] shrink-0" /> mortgage@mortgagexperts.com.au
+                  </a>
+                </div>
+
+                {/* Social Icons */}
+                <div className="flex items-center gap-3">
+                  {[
+                    { Icon: FacebookIcon, label: "Facebook", href: "https://www.facebook.com/MortgageXperts.au/", hoverClass: "hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2]/20" },
+                    { Icon: InstagramIcon, label: "Instagram", href: "https://www.instagram.com/mortgagexperts.au/#", hoverClass: "hover:bg-[#E4405F] hover:text-white hover:border-[#E4405F]/20" },
+                    { Icon: TikTokIcon, label: "TikTok", href: "https://www.tiktok.com/@mortgagexperts.au?_t=ZS-90VgVATQ560&_r=1", hoverClass: "hover:bg-[#FE2C55] hover:text-white hover:border-[#FE2C55]/20" },
+                    { Icon: YoutubeIcon, label: "YouTube", href: "https://www.youtube.com/@mortgagexpertsau", hoverClass: "hover:bg-[#FF0000] hover:text-white hover:border-[#FF0000]/20" },
+                  ].map(({ Icon, label, href, hoverClass }) => (
+                    <a
+                      key={label}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={label}
+                      className={`w-8 h-8 rounded-full bg-slate-50 border border-slate-150 flex items-center justify-center text-slate-500 transition-all duration-300 ${hoverClass}`}
+                    >
+                      <Icon />
+                    </a>
+                  ))}
+                </div>
+
+                {/* Consultation Button */}
+                <Link
+                  href="#"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="bg-[#2563EB] text-white text-[13.5px] font-bold py-3 px-5 rounded-full flex items-center justify-center gap-1.5 hover:bg-[#1d4ed8] transition-colors shadow-md shadow-blue-100 text-center"
+                >
+                  Book Free Consultation <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
 
@@ -1933,7 +1930,6 @@ export default function Home() {
                   { src: "/images/brands/png-transparent-nab-national-australia-bank-logo-thumbnail-1.png", scale: "scale-[1.2]" },
                   { src: "/images/brands/westpac-logo-png_seeklogo-152472-1.png", scale: "scale-[1.6]" },
                   { src: "/images/brands/anz-2-logo-png-transparent-1.png", scale: "scale-[1.3]" },
-                  { src: "/images/brands/commonwealth-bank-2-logo-png-transparent-1.png", scale: "scale-[1.3]" },
                   { src: "/images/brands/ING_Group_N.V._Logo.svg-1.png", scale: "scale-100" },
                   { src: "/images/brands/St_George_Bank_logo-1-scaled.png", scale: "scale-[1.4]" },
                   { src: "/images/brands/Bankwest_new_logo-1.png", scale: "scale-[1.3]" },
@@ -1944,7 +1940,6 @@ export default function Home() {
                   { src: "/images/brands/png-transparent-nab-national-australia-bank-logo-thumbnail-1.png", scale: "scale-[1.2]" },
                   { src: "/images/brands/westpac-logo-png_seeklogo-152472-1.png", scale: "scale-[1.6]" },
                   { src: "/images/brands/anz-2-logo-png-transparent-1.png", scale: "scale-[1.3]" },
-                  { src: "/images/brands/commonwealth-bank-2-logo-png-transparent-1.png", scale: "scale-[1.3]" },
                   { src: "/images/brands/ING_Group_N.V._Logo.svg-1.png", scale: "scale-100" },
                   { src: "/images/brands/St_George_Bank_logo-1-scaled.png", scale: "scale-[1.4]" },
                   { src: "/images/brands/Bankwest_new_logo-1.png", scale: "scale-[1.3]" },
@@ -2093,8 +2088,14 @@ export default function Home() {
                   Explore Refinance Options <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
-              <div className="w-full md:w-[260px] shrink-0 flex items-center justify-center p-4 py-6 bg-slate-50/50 md:bg-transparent">
-                <RefGraph />
+              {/* Right image: 1:1 PNG, 75% width visible, 100% height taken */}
+              <div className="w-full h-48 md:w-[203px] md:h-auto shrink-0 relative overflow-hidden bg-white">
+                <Image
+                  src="/images/Refinancing.png"
+                  alt="Refinancing"
+                  fill
+                  className="object-cover object-left"
+                />
               </div>
             </motion.div>
 
