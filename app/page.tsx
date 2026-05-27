@@ -399,7 +399,7 @@ function SmartToolsSection() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={VIEWPORT}
               transition={{ delay: 0.15, duration: 0.6, ease: EASE_OUT }}
-              className="absolute left-0 lg:left-6 top-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-[0_15px_40px_rgba(11,31,58,0.06)] border border-slate-100 p-5 w-[260px] sm:w-[290px] z-10"
+              className="absolute left-0 lg:left-6 top-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-[0_20px_50px_rgba(11,31,58,0.15)] border border-slate-100 p-5 w-[260px] sm:w-[290px] z-10"
             >
               <div className="text-[14px] font-bold text-[#0B1F3A] mb-4">Repayment Calculator</div>
 
@@ -430,7 +430,7 @@ function SmartToolsSection() {
                   <div className="text-[10px] text-slate-400 font-medium">Loan Term</div>
                   <div className="relative w-28">
                     <select value={loanTerm} onChange={e => setLoanTerm(Number(e.target.value))}
-                      className="w-full border border-slate-200 rounded-md px-3 py-1.5 text-[12px] font-semibold text-[#2563EB] appearance-none bg-white focus:outline-none focus:ring-1 focus:ring-[#2563EB]/20">
+                       className="w-full border border-slate-200 rounded-md px-3 py-1.5 text-[12px] font-semibold text-[#2563EB] appearance-none bg-white focus:outline-none focus:ring-1 focus:ring-[#2563EB]/20">
                       {[10, 15, 20, 25, 30].map(y => <option key={y} value={y}>{y} years</option>)}
                     </select>
                     <ChevronDown className="w-3.5 h-3.5 text-[#2563EB] absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -458,7 +458,7 @@ function SmartToolsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={VIEWPORT}
               transition={{ delay: 0.3, duration: 0.55, ease: EASE_OUT }}
-              className="absolute bottom-6 right-0 lg:-right-4 bg-white rounded-xl shadow-[0_15px_30px_rgba(11,31,58,0.06)] border border-slate-100 p-4 flex items-center gap-3 w-[200px] z-20"
+              className="absolute bottom-6 right-0 lg:-right-4 bg-white rounded-xl shadow-[0_15px_30px_rgba(11,31,58,0.06)] border border-slate-100 p-4 hidden lg:flex items-center gap-3 w-[200px] z-20"
             >
               <div className="w-8 h-8 rounded-full bg-[#2563EB] flex items-center justify-center shrink-0">
                 <TrendingUp className="w-4 h-4 text-white" />
@@ -737,16 +737,21 @@ function SuccessStoriesSection() {
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
-            <div className="relative min-h-[200px] sm:min-h-0 sm:w-[44%] shrink-0 bg-gradient-to-br from-[#CCFBF1] to-[#A7F3D0]">
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-6">
-                <div className="w-20 h-20 rounded-full bg-white shadow-xl flex items-center justify-center">
-                  <Heart className="w-10 h-10 text-[#0D9488]" fill="currentColor" />
-                </div>
-                <div className="text-center">
-                  <div className="text-[22px] font-black text-[#0D9488]">LMI Waived</div>
-                  <div className="text-[12px] text-[#047857] font-semibold">Saved $18,000+</div>
-                </div>
-              </div>
+            <div className="relative min-h-[220px] sm:min-h-0 sm:w-[44%] shrink-0">
+              <Image
+                src="/images/Healthcare Professionals.png"
+                alt="Doctor buys first home success"
+                fill
+                className="object-cover object-center"
+                sizes="(max-width: 768px) 100vw, 45vw"
+              />
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background:
+                    "linear-gradient(to right, #ffffff 0%, rgba(255,255,255,0.9) 15%, rgba(255,255,255,0.25) 45%, transparent 75%)",
+                }}
+              />
               <div className="absolute bottom-4 right-4 z-10 bg-white rounded-xl border border-slate-100 shadow-lg px-3 py-2.5 flex items-start gap-2.5 max-w-[160px]">
                 <div className="w-8 h-8 rounded-full bg-[#CCFBF1] flex items-center justify-center shrink-0 text-[#0D9488]">
                   <Shield className="w-4 h-4" />
@@ -1040,7 +1045,7 @@ function FaqCtaSection() {
             transition={{ duration: 0.6, ease: EASE_OUT }}
             className="lg:col-span-7"
           >
-            <div className="flex flex-wrap gap-x-1 gap-y-2 border-b border-slate-200 pb-3 mb-4 overflow-x-auto">
+            <div className="flex flex-row overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] gap-2 border-b border-slate-200 pb-px mb-4 whitespace-nowrap">
               {FAQ_TABS.map((tab) => {
                 const Icon = tab.icon;
                 const isActive = activeTab === tab.id;
@@ -1052,9 +1057,9 @@ function FaqCtaSection() {
                       setActiveTab(tab.id);
                       setExpandedIndex(0);
                     }}
-                    className={`flex items-center gap-1.5 px-3 py-2 text-[12px] sm:text-[13px] font-semibold whitespace-nowrap border-b-2 transition-colors -mb-[13px] ${isActive
+                    className={`flex items-center gap-1.5 px-3.5 py-2.5 text-[12px] sm:text-[13px] font-semibold whitespace-nowrap border-b-2 transition-colors -mb-px ${isActive
                         ? "text-[#2563EB] border-[#2563EB]"
-                        : "text-slate-400 border-transparent hover:text-slate-600"
+                        : "text-slate-500 border-transparent hover:text-slate-600"
                       }`}
                   >
                     <Icon className={`w-4 h-4 shrink-0 ${isActive ? "text-[#2563EB]" : "text-slate-400"}`} />
@@ -1490,12 +1495,33 @@ function SiteFooterSection() {
 
 export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showStickyCta, setShowStickyCta] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+
+      // Show sticky CTA after scrolling past the hero (400px) but hide it when reaching near the footer
+      const isPastHero = scrollPosition > 400;
+      const isNearBottom = scrollPosition + windowHeight >= documentHeight - 450;
+
+      if (isPastHero && !isNearBottom) {
+        setShowStickyCta(true);
+      } else {
+        setShowStickyCta(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col bg-white font-inter">
 
       {/* ── TOP BAR ── */}
-      <div className="bg-gradient-to-r from-[#081324] via-[#0B1F3A] to-[#081324] border-b border-white/5 text-slate-300 text-[11.5px] font-medium font-inter">
+      <div className="hidden lg:block bg-gradient-to-r from-[#081324] via-[#0B1F3A] to-[#081324] border-b border-white/5 text-slate-300 text-[11.5px] font-medium font-inter">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-2 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2.5 group cursor-default">
@@ -1533,7 +1559,7 @@ export default function Home() {
 
       {/* ── MAIN HEADER ── */}
       <header className="bg-white border-b border-slate-100 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-3 flex items-center justify-between gap-6">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-2 lg:py-3 flex items-center justify-between gap-6">
 
           {/* Logo */}
           <Link href="/" className="shrink-0 flex items-center">
@@ -1543,7 +1569,7 @@ export default function Home() {
               width={180}
               height={56}
               priority
-              className="object-contain h-14 w-auto"
+              className="object-contain h-11 lg:h-14 w-auto"
             />
           </Link>
 
@@ -1605,7 +1631,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="lg:hidden fixed inset-x-0 top-[108px] bg-white border-b border-slate-100 shadow-xl z-40 flex flex-col p-6 gap-4 font-semibold text-[#0B1F3A]"
+            className="lg:hidden fixed inset-x-0 top-[62px] md:top-[82px] bg-white border-b border-slate-100 shadow-xl z-40 flex flex-col p-6 gap-4 font-semibold text-[#0B1F3A]"
           >
             <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-[#2563EB] pb-2 border-b border-slate-50">Home</Link>
             <div className="border-b border-slate-55 pb-2 flex flex-col gap-2">
@@ -1680,35 +1706,24 @@ export default function Home() {
           />
         </div>
 
-        {/* Mobile hero image strip */}
-        <div
-          className="relative w-full h-56 sm:h-72 lg:hidden"
-          style={{
-            backgroundImage: "url('/images/hero.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "center 15%",
-            backgroundRepeat: "no-repeat",
-          }}
-        />
-
         {/* Content container */}
-        <div className="relative z-10 max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-10 lg:py-12 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div className="relative z-10 max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 pt-5 pb-8 sm:py-10 lg:py-12 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
 
           {/* LEFT: Text + CTAs + Trust Bar */}
           <motion.div
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
-            className="lg:col-span-6 flex flex-col gap-5"
+            className="lg:col-span-6 flex flex-col gap-3.5 sm:gap-5"
           >
 
             {/* Badge */}
             <motion.div
               variants={fadeInUp}
-              className="inline-flex items-center gap-2 bg-[#EAF3FF] border border-[#2563EB]/15 rounded-full px-4 py-2 w-fit shadow-sm"
+              className="inline-flex items-center gap-1.5 sm:gap-2 bg-[#EAF3FF] border border-[#2563EB]/15 rounded-full px-3 py-1 sm:px-4 sm:py-2 w-fit shadow-sm"
             >
-              <Shield className="w-4 h-4 text-[#2563EB] shrink-0" />
-              <span className="text-[11px] font-bold tracking-widest text-[#2563EB] uppercase">
+              <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#2563EB] shrink-0" />
+              <span className="text-[9.5px] sm:text-[11px] font-bold tracking-widest text-[#2563EB] uppercase">
                 Specialists in Healthcare &amp; Investment Lending
               </span>
             </motion.div>
@@ -1716,7 +1731,7 @@ export default function Home() {
             {/* H1 */}
             <motion.h1
               variants={fadeInUp}
-              className="text-[32px] sm:text-[44px] lg:text-[50px] font-extrabold leading-[1.1] tracking-tight text-[#0B1F3A]"
+              className="text-[25px] sm:text-[40px] lg:text-[50px] font-extrabold leading-[1.15] sm:leading-[1.1] tracking-tight text-[#0B1F3A]"
               style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
             >
               Mortgage Solutions for{" "}
@@ -1729,7 +1744,7 @@ export default function Home() {
             {/* Subtext */}
             <motion.p
               variants={fadeInUp}
-              className="text-slate-500 text-[15px] leading-relaxed max-w-md"
+              className="text-slate-500 text-[13.5px] sm:text-[15px] leading-relaxed max-w-md"
             >
               Helping nurses, doctors, allied health professionals, and Australian property investors secure smarter lending solutions with expert guidance and access to 40+ lenders.
             </motion.p>
@@ -1737,48 +1752,46 @@ export default function Home() {
             {/* CTA Buttons */}
             <motion.div
               variants={fadeInUp}
-              className="flex flex-col sm:flex-row flex-wrap gap-3 pt-1"
+              className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 pt-1"
             >
               <Link
                 href="#"
-                className="bg-[#2563EB] text-white font-bold text-[14px] py-3.5 px-7 rounded-full inline-flex items-center justify-center gap-2 hover:bg-[#1d4ed8] transition-all duration-300 shadow-lg shadow-blue-200 hover:scale-[1.02] active:scale-[0.98] text-center"
+                className="bg-[#2563EB] text-white font-bold text-[13.5px] sm:text-[14px] py-3 sm:py-3.5 px-6 sm:px-7 rounded-full inline-flex items-center justify-center gap-2 hover:bg-[#1d4ed8] transition-all duration-300 shadow-lg shadow-blue-200 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto"
               >
                 Book Free Strategy Call <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="#"
-                className="border-2 border-[#2563EB] text-[#2563EB] font-bold text-[14px] py-3.5 px-6 rounded-full inline-flex items-center justify-center gap-2 hover:bg-[#EAF3FF] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center"
+                className="border-2 border-[#2563EB] text-[#2563EB] font-bold text-[13.5px] sm:text-[14px] py-3 sm:py-3.5 px-5 sm:px-6 rounded-full inline-flex items-center justify-center gap-2 hover:bg-[#EAF3FF] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto"
               >
                 <Calculator className="w-4 h-4" /> Calculate Borrowing Power
-              </Link>
-              <Link
-                href="#"
-                className="border border-slate-200 text-[#0B1F3A] font-bold text-[14px] py-3.5 px-6 rounded-full inline-flex items-center justify-center gap-2 hover:border-[#2563EB] hover:text-[#2563EB] transition-all duration-300 text-center bg-white"
-              >
-                Get Pre-Approved <ArrowRight className="w-4 h-4" />
               </Link>
             </motion.div>
 
             {/* Trust Bar — checkmark pills */}
             <motion.div
               variants={fadeInUp}
-              className="flex flex-wrap gap-2.5 pt-5 mt-1 border-t border-slate-100"
+              className="grid grid-cols-2 gap-2 pt-4 mt-1 border-t border-slate-100 sm:flex sm:flex-wrap"
             >
               {[
-                "Australia-Wide Service",
-                "40+ Lenders",
-                "First Home Buyers & Investors",
-                "Strategic Lending Solutions",
+                { full: "Australia-Wide Service", short: "Australia-Wide" },
+                { full: "40+ Lenders", short: "40+ Lenders" },
+                { full: "First Home Buyers & Investors", short: "Buyers & Investors" },
+                { full: "Strategic Lending Solutions", short: "Strategic Solutions" },
               ].map((item) => (
-                <span key={item} className="inline-flex items-center gap-1.5 bg-[#EAF3FF] border border-[#D0E5FF] text-[#2563EB] text-[11.5px] font-semibold px-3 py-1.5 rounded-full">
-                  <svg className="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="m5 13 4 4L19 7" /></svg>
-                  {item}
+                <span
+                  key={item.full}
+                  className="inline-flex items-center gap-1.5 bg-[#EAF3FF] border border-[#D0E5FF] text-[#2563EB] text-[10.5px] sm:text-[11.5px] font-semibold px-2.5 py-1.5 rounded-full justify-center whitespace-nowrap"
+                >
+                  <svg className="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="m5 13 4 4L19 7" /></svg>
+                  <span className="sm:hidden">{item.short}</span>
+                  <span className="hidden sm:inline">{item.full}</span>
                 </span>
               ))}
             </motion.div>
 
             {/* Google rating strip */}
-            <motion.div variants={fadeInUp} className="flex flex-wrap items-center gap-4">
+            <motion.div variants={fadeInUp} className="flex flex-wrap items-center gap-4 mt-2">
               <div className="flex items-center gap-2">
                 <GoogleIcon />
                 <div>
@@ -1791,29 +1804,40 @@ export default function Home() {
                 </div>
               </div>
               <div className="w-px h-7 bg-slate-200 hidden sm:block" />
-              <div className="text-[11px] text-slate-500 font-medium">$2.4B+ Loans Approved Since 2010</div>
+              <div className="text-[11.5px] text-slate-500 font-medium hidden sm:block">$2.4B+ Loans Approved Since 2010</div>
             </motion.div>
 
             {/* Mobile stats — compact row */}
             <motion.div
               variants={fadeInUp}
-              className="grid grid-cols-3 gap-3 mt-2 pt-4 border-t border-slate-100 lg:hidden"
+              className="grid grid-cols-3 gap-1 bg-slate-50 rounded-2xl p-3 border border-slate-100/80 lg:hidden mt-2"
             >
-              <div className="bg-slate-50 rounded-xl p-3 text-center border border-slate-100">
-                <div className="text-lg font-black text-[#2563EB] leading-none">$2.4B+</div>
-                <div className="text-[10px] text-slate-500 font-medium mt-0.5">Approved</div>
+              <div className="text-center border-r border-slate-200 last:border-0 px-1">
+                <div className="text-[15px] font-black text-[#0B1F3A] leading-tight">$2.4B+</div>
+                <div className="text-[8.5px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">Approved</div>
               </div>
-              <div className="bg-slate-50 rounded-xl p-3 text-center border border-slate-100">
-                <div className="text-lg font-black text-[#2563EB] leading-none">98%</div>
-                <div className="text-[10px] text-slate-500 font-medium mt-0.5">Approval Rate</div>
+              <div className="text-center border-r border-slate-200 last:border-0 px-1">
+                <div className="text-[15px] font-black text-[#0B1F3A] leading-tight">98%</div>
+                <div className="text-[8.5px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">Approval</div>
               </div>
-              <div className="bg-slate-50 rounded-xl p-3 text-center border border-slate-100">
-                <div className="text-lg font-black text-[#2563EB] leading-none">40+</div>
-                <div className="text-[10px] text-slate-500 font-medium mt-0.5">Lenders</div>
+              <div className="text-center px-1">
+                <div className="text-[15px] font-black text-[#0B1F3A] leading-tight">40+</div>
+                <div className="text-[8.5px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">Lenders</div>
               </div>
             </motion.div>
 
           </motion.div>
+
+          {/* Mobile Hero Image Card (stacked below content on mobile, hidden on desktop) */}
+          <div
+            className="relative w-full h-48 sm:h-64 lg:hidden rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-slate-100 mt-2"
+            style={{
+              backgroundImage: "url('/images/hero.png')",
+              backgroundSize: "cover",
+              backgroundPosition: "center 15%",
+              backgroundRepeat: "no-repeat",
+            }}
+          />
 
           {/* RIGHT: Floating cards (visible on lg+) */}
           <div className="hidden lg:block lg:col-span-6 relative h-[500px]">
@@ -1903,7 +1927,7 @@ export default function Home() {
             </div>
 
             {/* Logos row Marquee */}
-            <div className="flex-1 overflow-hidden relative flex items-center h-[60px] w-full" style={{ WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)" }}>
+            <div className="flex-1 overflow-hidden relative flex items-center h-[60px] w-full my-4 md:my-0" style={{ WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)" }}>
               <div className="flex w-max animate-marquee items-center hover:pause">
                 {[
                   { src: "/images/brands/png-transparent-nab-national-australia-bank-logo-thumbnail-1.png", scale: "scale-[1.2]" },
@@ -2251,6 +2275,32 @@ export default function Home() {
 
       {/* ── PRE-FOOTER + FOOTER ── */}
       <SiteFooterSection />
+
+      {/* Sticky Mobile CTA Bar */}
+      <AnimatePresence>
+        {showStickyCta && (
+          <motion.div
+            initial={{ y: 80, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 80, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="lg:hidden fixed bottom-0 inset-x-0 bg-white/90 backdrop-blur-lg border-t border-slate-200/80 px-4 py-3.5 z-40 shadow-[0_-8px_30px_rgba(0,0,0,0.08)] flex gap-2.5"
+          >
+            <Link
+              href="#"
+              className="flex-1 bg-[#2563EB] text-white font-bold text-[12.5px] py-3 rounded-full flex items-center justify-center gap-1.5 shadow-md shadow-blue-100 text-center"
+            >
+              Book Strategy Call <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+            <Link
+              href="#"
+              className="flex-1 border border-[#2563EB] text-[#2563EB] bg-white font-bold text-[12.5px] py-3 rounded-full flex items-center justify-center gap-1.5 text-center"
+            >
+              <Calculator className="w-3.5 h-3.5" /> Borrowing Power
+            </Link>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </div>
   );
