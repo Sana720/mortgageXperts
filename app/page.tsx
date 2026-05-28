@@ -1718,19 +1718,12 @@ function HeroSlider() {
               style={{
                 backgroundImage: `url('${active.image}')`,
                 backgroundSize: "cover",
-                backgroundPosition: "center center",
+                backgroundPosition: "center top",
                 backgroundRepeat: "no-repeat",
                 mixBlendMode: "multiply",
               }}
             />
           </AnimatePresence>
-          {/* Accent colored indicator block bottom right */}
-          <div
-            className="absolute bottom-3 right-3 text-[10px] font-bold text-white px-2.5 py-1 rounded-full shadow-md transition-colors duration-500"
-            style={{ backgroundColor: active.accentColor }}
-          >
-            {currentSlide + 1} / {SLIDER_DATA.length}
-          </div>
         </div>
 
         {/* RIGHT: Floating cards (visible on lg+) */}
@@ -1811,7 +1804,7 @@ function HeroSlider() {
       </div>
 
       {/* ── Dots Navigation Indicator ── */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 hidden md:flex items-center gap-2">
         {SLIDER_DATA.map((slide, index) => (
           <button
             key={slide.id}
@@ -1948,7 +1941,7 @@ export default function Home() {
           </nav>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-4 shrink-0">
+          <div className="flex items-center gap-3 sm:gap-4 shrink-0">
             <button className="hidden md:flex items-center text-[#0B1F3A] hover:text-[#2563EB] transition-colors">
               <Search className="w-5 h-5" />
             </button>
@@ -1957,11 +1950,19 @@ export default function Home() {
               <span className="text-slate-500 font-medium">Call:</span>
               <span className="font-bold text-[#0B1F3A]">0450 240 757</span>
             </div>
+            {/* Desktop Button */}
             <Link
               href="#"
               className="hidden sm:flex bg-[#2563EB] text-white text-[13px] font-bold py-2.5 px-5 rounded-full items-center gap-1.5 hover:bg-[#1d4ed8] transition-all duration-300 shadow-md shadow-blue-200 whitespace-nowrap"
             >
               Book Free Consultation <ArrowRight className="w-4 h-4" />
+            </Link>
+            {/* Mobile Button */}
+            <Link
+              href="#"
+              className="flex sm:hidden bg-[#2563EB] text-white text-[11.5px] font-extrabold py-2 px-3.5 rounded-full items-center gap-1 hover:bg-[#1d4ed8] transition-all duration-300 shadow-md shadow-blue-200 whitespace-nowrap"
+            >
+              Book <ArrowRight className="w-3 h-3" />
             </Link>
           </div>
 
