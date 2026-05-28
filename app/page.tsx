@@ -1645,6 +1645,32 @@ function HeroSlider() {
                 {active.subtext}
               </p>
 
+              {/* Mobile Hero Image — full-bleed, no border/container, before CTA on mobile only */}
+              <div className="relative lg:hidden -mx-6 md:-mx-10 transition-all duration-1000">
+                <div
+                  className="relative h-56 sm:h-64 w-full transition-all duration-1000"
+                  style={{ background: active.blobGradient }}
+                >
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={currentSlide}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                      className="absolute inset-0"
+                      style={{
+                        backgroundImage: `url('${active.image}')`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center top",
+                        backgroundRepeat: "no-repeat",
+                        mixBlendMode: "multiply",
+                      }}
+                    />
+                  </AnimatePresence>
+                </div>
+              </div>
+
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 pt-1">
                 <Link
@@ -1697,32 +1723,6 @@ function HeroSlider() {
                 <div className="text-[11.5px] text-slate-500 font-medium hidden sm:block">$2.4B+ Loans Approved Since 2010</div>
               </div>
             </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* Mobile Slide Image Card (stacked below content on mobile, hidden on desktop) */}
-        <div
-          className="relative w-full h-56 sm:h-64 lg:hidden rounded-2xl overflow-hidden border border-slate-100 mt-2 transition-all duration-1000"
-          style={{
-            background: active.blobGradient,
-          }}
-        >
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentSlide}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-              className="absolute inset-0"
-              style={{
-                backgroundImage: `url('${active.image}')`,
-                backgroundSize: "cover",
-                backgroundPosition: "center top",
-                backgroundRepeat: "no-repeat",
-                mixBlendMode: "multiply",
-              }}
-            />
           </AnimatePresence>
         </div>
 
