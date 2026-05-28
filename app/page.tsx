@@ -347,7 +347,7 @@ function SmartToolsSection() {
                   <div className="text-[10px] text-slate-400 font-medium">Loan Term</div>
                   <div className="relative w-28">
                     <select value={loanTerm} onChange={e => setLoanTerm(Number(e.target.value))}
-                       className="w-full border border-slate-200 rounded-md px-3 py-1.5 text-[12px] font-semibold text-[#2563EB] appearance-none bg-white focus:outline-none focus:ring-1 focus:ring-[#2563EB]/20">
+                      className="w-full border border-slate-200 rounded-md px-3 py-1.5 text-[12px] font-semibold text-[#2563EB] appearance-none bg-white focus:outline-none focus:ring-1 focus:ring-[#2563EB]/20">
                       {[10, 15, 20, 25, 30].map(y => <option key={y} value={y}>{y} years</option>)}
                     </select>
                     <ChevronDown className="w-3.5 h-3.5 text-[#2563EB] absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -975,8 +975,8 @@ function FaqCtaSection() {
                       setExpandedIndex(0);
                     }}
                     className={`flex items-center gap-1.5 px-3.5 py-2.5 text-[12px] sm:text-[13px] font-semibold whitespace-nowrap border-b-2 transition-colors -mb-px ${isActive
-                        ? "text-[#2563EB] border-[#2563EB]"
-                        : "text-slate-500 border-transparent hover:text-slate-600"
+                      ? "text-[#2563EB] border-[#2563EB]"
+                      : "text-slate-500 border-transparent hover:text-slate-600"
                       }`}
                   >
                     <Icon className={`w-4 h-4 shrink-0 ${isActive ? "text-[#2563EB]" : "text-slate-400"}`} />
@@ -1412,6 +1412,442 @@ function SiteFooterSection() {
   );
 }
 
+// ── HERO SLIDER COMPONENT ──
+const SLIDER_DATA = [
+  {
+    id: 1,
+    service: "first-home",
+    badge: "First Home Buyer Specialists",
+    title: "Your Journey to Your First Home, Simplified",
+    subtext: "Secure your first home with expert guidance, government grants assistance, and access to low-deposit options from 40+ leading lenders.",
+    image: "/images/hero.png",
+    accentColor: "#2563EB", // Blue
+    badgeBg: "bg-[#EAF3FF] border-[#2563EB]/15 text-[#2563EB]",
+    btnClass: "bg-[#2563EB] hover:bg-[#1d4ed8] text-white shadow-blue-200",
+    borderBtnClass: "border-[#2563EB] text-[#2563EB] hover:bg-[#EAF3FF]",
+    blobGradient: "radial-gradient(ellipse 85% 90% at 62% 52%, #D4E9FF 0%, #E8F4FF 42%, #F4F9FF 62%, transparent 82%)",
+    statIconBg: "bg-[#2563EB]",
+    statPillBg: "bg-[#EAF3FF] border-[#D0E5FF] text-[#2563EB]",
+    cardTitle: "Tailored Solutions",
+    cardDesc: "Custom loan strategies designed around your goals.",
+    cardIcon: HomeIcon,
+  },
+  {
+    id: 2,
+    service: "healthcare",
+    badge: "Specialist Lenders for Medical & Health Professionals",
+    title: "Exclusive Mortgage Benefits for Health Professionals",
+    subtext: "Get up to 95% LVR with zero Lenders Mortgage Insurance (LMI) and discounted interest rates tailored for medical practitioners and healthcare staff.",
+    image: "/images/hero_slide_2_green.png",
+    accentColor: "#0D9488", // Teal/Green
+    badgeBg: "bg-[#E6FBF7] border-[#0D9488]/15 text-[#0D9488]",
+    btnClass: "bg-[#0D9488] hover:bg-[#0f766e] text-white shadow-teal-200",
+    borderBtnClass: "border-[#0D9488] text-[#0D9488] hover:bg-[#E6FBF7]",
+    blobGradient: "radial-gradient(ellipse 85% 90% at 62% 52%, #CCFBF1 0%, #E6FBF7 42%, #F2FDFB 62%, transparent 82%)",
+    statIconBg: "bg-[#0D9488]",
+    statPillBg: "bg-[#E6FBF7] border-[#99F6E4] text-[#0D9488]",
+    cardTitle: "Zero LMI Waiver",
+    cardDesc: "Exclusive medical policy benefits for doctor loans.",
+    cardIcon: Heart,
+  },
+  {
+    id: 3,
+    service: "investment",
+    badge: "Strategic Lending for Property Investors",
+    title: "Build and Scale Your Property Portfolio",
+    subtext: "Maximize your borrowing power, optimize loan structures, and leverage equity to grow your long-term property investment wealth.",
+    image: "/images/hero_slide_3_yellow.png",
+    accentColor: "#D97706", // Yellow/Amber
+    badgeBg: "bg-[#FEF3C7] border-[#D97706]/15 text-[#D97706]",
+    btnClass: "bg-[#D97706] hover:bg-[#b45309] text-white shadow-amber-200",
+    borderBtnClass: "border-[#D97706] text-[#D97706] hover:bg-[#FEF3C7]",
+    blobGradient: "radial-gradient(ellipse 85% 90% at 62% 52%, #FEF3C7 0%, #FFFBEB 42%, #FFFDF5 62%, transparent 82%)",
+    statIconBg: "bg-[#D97706]",
+    statPillBg: "bg-[#FEF3C7] border-[#FDE68A] text-[#D97706]",
+    cardTitle: "Portfolio Strategy",
+    cardDesc: "Multi-lender setups to optimize borrowing capacity.",
+    cardIcon: BarChart3,
+  },
+  {
+    id: 4,
+    service: "refinancing",
+    badge: "Smart Refinance Strategies",
+    title: "Refinance and Save Thousands Annually",
+    subtext: "Switch to a lower rate, consolidate high-interest debts, or unlock equity for renovations with our streamlined mortgage refinance process.",
+    image: "/images/hero_slide_4_purple.png",
+    accentColor: "#7C3AED", // Purple
+    badgeBg: "bg-[#F3E8FF] border-[#7C3AED]/15 text-[#7C3AED]",
+    btnClass: "bg-[#7C3AED] hover:bg-[#6d28d9] text-white shadow-purple-200",
+    borderBtnClass: "border-[#7C3AED] text-[#7C3AED] hover:bg-[#F3E8FF]",
+    blobGradient: "radial-gradient(ellipse 85% 90% at 62% 52%, #F3E8FF 0%, #FAF5FF 42%, #FDFBFF 62%, transparent 82%)",
+    statIconBg: "bg-[#7C3AED]",
+    statPillBg: "bg-[#F3E8FF] border-[#E9D5FF] text-[#7C3AED]",
+    cardTitle: "Lower Rate Search",
+    cardDesc: "Active rate negotiations to beat your current lender.",
+    cardIcon: Clock,
+  },
+  {
+    id: 5,
+    service: "self-employed",
+    badge: "Low-Doc & Self-Employed Mortgage Experts",
+    title: "Flexible Home Loans for Business Owners",
+    subtext: "No up-to-date tax returns? We specialize in alt-doc and low-doc lending solutions to secure the home loan you deserve using alternative proof of income.",
+    image: "/images/hero_slide_5_rose.png",
+    accentColor: "#E11D48", // Rose
+    badgeBg: "bg-[#FFE4E6] border-[#E11D48]/15 text-[#E11D48]",
+    btnClass: "bg-[#E11D48] hover:bg-[#be123c] text-white shadow-rose-200",
+    borderBtnClass: "border-[#E11D48] text-[#E11D48] hover:bg-[#FFE4E6]",
+    blobGradient: "radial-gradient(ellipse 85% 90% at 62% 52%, #FFE4E6 0%, #FFF5F5 42%, #FFFBFB 62%, transparent 82%)",
+    statIconBg: "bg-[#E11D48]",
+    statPillBg: "bg-[#FFE4E6] border-[#FECDD3] text-[#E11D48]",
+    cardTitle: "Alt-Doc Solutions",
+    cardDesc: "Custom cash flow assessment using BAS or bank statements.",
+    cardIcon: User,
+  },
+];
+
+function HeroSlider() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isAutoplay, setIsAutoplay] = useState(true);
+  const autoplayTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % SLIDER_DATA.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + SLIDER_DATA.length) % SLIDER_DATA.length);
+  };
+
+  // Start autoplay timer
+  useEffect(() => {
+    if (isAutoplay) {
+      autoplayTimerRef.current = setInterval(() => {
+        nextSlide();
+      }, 5000); // 5 seconds per slide
+    }
+    return () => {
+      if (autoplayTimerRef.current) {
+        clearInterval(autoplayTimerRef.current);
+      }
+    };
+  }, [isAutoplay]);
+
+  const active = SLIDER_DATA[currentSlide];
+  const CardIcon = active.cardIcon;
+
+  return (
+    <section
+      className="relative bg-white overflow-hidden select-none"
+      style={{ minHeight: "680px" }}
+      onMouseEnter={() => setIsAutoplay(false)}
+      onMouseLeave={() => setIsAutoplay(true)}
+    >
+      {/* ── Slide Background Blob (Desktop) ── */}
+      <div
+        className="absolute top-0 right-0 h-full z-[1] hidden lg:block transition-all duration-1000 ease-in-out"
+        style={{
+          width: "52%",
+        }}
+      >
+        {/* Dynamic Light Colored Radial Blob */}
+        <div
+          className="absolute inset-0 transition-all duration-1000 ease-in-out"
+          style={{
+            background: active.blobGradient,
+          }}
+        />
+        {/* Slide Photo overlay with smooth crossfade and mix-blend-mode for cutout styling */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentSlide}
+            initial={{ opacity: 0, scale: 1.03 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: EASE_OUT }}
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `url('${active.image}')`,
+              backgroundSize: "cover",
+              backgroundPosition: "center top",
+              backgroundRepeat: "no-repeat",
+              mixBlendMode: "multiply",
+            }}
+          />
+        </AnimatePresence>
+
+        {/* White fade on left edge — blends photo into white left section */}
+        <div
+          className="absolute inset-y-0 left-0 w-48"
+          style={{ background: "linear-gradient(to right, #ffffff 0%, rgba(255,255,255,0.7) 50%, transparent 100%)" }}
+        />
+      </div>
+
+      {/* Content container */}
+      <div className="relative z-10 max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 pt-5 pb-8 sm:py-10 lg:py-16 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+
+        {/* LEFT: Text + CTAs + Trust Bar */}
+        <div className="lg:col-span-6 flex flex-col gap-3.5 sm:gap-5 min-h-[480px] justify-center">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentSlide}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={{
+                hidden: { opacity: 0, y: 15 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE_OUT } },
+                exit: { opacity: 0, y: -15, transition: { duration: 0.3 } }
+              }}
+              className="flex flex-col gap-3.5 sm:gap-5"
+            >
+              {/* Service Category Badge */}
+              <div className={`inline-flex items-center gap-1.5 sm:gap-2 border rounded-full px-3 py-1.5 sm:px-4 sm:py-2 w-fit shadow-sm font-bold tracking-wider uppercase text-[9.5px] sm:text-[11px] transition-all duration-300 ${active.badgeBg}`}>
+                <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                <span>{active.badge}</span>
+              </div>
+
+              {/* Service specific Title */}
+              <h1
+                className="text-[25px] sm:text-[40px] lg:text-[46px] font-extrabold leading-[1.15] sm:leading-[1.1] tracking-tight text-[#0B1F3A]"
+                style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
+              >
+                {active.id === 1 ? (
+                  <>
+                    Mortgage Solutions for <br />
+                    <span style={{ color: active.accentColor }}>First Home Buyers</span>
+                  </>
+                ) : active.id === 2 ? (
+                  <>
+                    Mortgage Solutions for <br />
+                    <span style={{ color: active.accentColor }}>Health Professionals</span>
+                  </>
+                ) : active.id === 3 ? (
+                  <>
+                    Property Finance &amp; <br />
+                    <span style={{ color: active.accentColor }}>Investment Loans</span>
+                  </>
+                ) : active.id === 4 ? (
+                  <>
+                    Smarter Refinancing &amp; <br />
+                    <span style={{ color: active.accentColor }}>Repayment Savings</span>
+                  </>
+                ) : (
+                  <>
+                    Home Loans for <br />
+                    <span style={{ color: active.accentColor }}>Self-Employed Borrowers</span>
+                  </>
+                )}
+              </h1>
+
+              {/* Subtext */}
+              <p className="text-slate-500 text-[13.5px] sm:text-[15px] leading-relaxed max-w-lg">
+                {active.subtext}
+              </p>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 pt-1">
+                <Link
+                  href="#"
+                  className={`font-bold text-[13.5px] sm:text-[14px] py-3 sm:py-3.5 px-6 sm:px-7 rounded-full inline-flex items-center justify-center gap-2 transition-all duration-300 shadow-lg hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto ${active.btnClass}`}
+                >
+                  Book Free Strategy Call <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link
+                  href="#"
+                  className={`border-2 font-bold text-[13.5px] sm:text-[14px] py-3 sm:py-3.5 px-5 sm:px-6 rounded-full inline-flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto ${active.borderBtnClass}`}
+                >
+                  <Calculator className="w-4 h-4" /> Calculate Borrowing Power
+                </Link>
+              </div>
+
+              {/* Trust Bar — checkmark pills */}
+              <div className="grid grid-cols-2 gap-2 pt-4 mt-1 border-t border-slate-100 sm:flex sm:flex-wrap">
+                {[
+                  { full: "Australia-Wide Service", short: "Australia-Wide" },
+                  { full: "40+ Lenders", short: "40+ Lenders" },
+                  { full: "First Home Buyers & Investors", short: "Buyers & Investors" },
+                  { full: "Strategic Lending Solutions", short: "Strategic Solutions" },
+                ].map((item) => (
+                  <span
+                    key={item.full}
+                    className={`inline-flex items-center gap-1.5 border text-[10.5px] sm:text-[11.5px] font-semibold px-2.5 py-1.5 rounded-full justify-center whitespace-nowrap transition-colors duration-500 ${active.statPillBg}`}
+                  >
+                    <svg className="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="m5 13 4 4L19 7" /></svg>
+                    <span className="sm:hidden">{item.short}</span>
+                    <span className="hidden sm:inline">{item.full}</span>
+                  </span>
+                ))}
+              </div>
+
+              {/* Google rating strip (Google rating + $2.4B approved shown in ALL slides) */}
+              <div className="flex flex-wrap items-center gap-4 mt-2">
+                <div className="flex items-center gap-2">
+                  <GoogleIcon />
+                  <div>
+                    <div className="flex gap-0.5">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+                      ))}
+                    </div>
+                    <div className="text-[10px] text-slate-500 font-semibold">4.9 · 1,200+ Reviews</div>
+                  </div>
+                </div>
+                <div className="w-px h-7 bg-slate-200 hidden sm:block" />
+                <div className="text-[11.5px] text-slate-500 font-medium hidden sm:block">$2.4B+ Loans Approved Since 2010</div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Mobile Slide Image Card (stacked below content on mobile, hidden on desktop) */}
+        <div
+          className="relative w-full h-56 sm:h-64 lg:hidden rounded-2xl overflow-hidden border border-slate-100 mt-2 transition-all duration-1000"
+          style={{
+            background: active.blobGradient,
+          }}
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentSlide}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `url('${active.image}')`,
+                backgroundSize: "cover",
+                backgroundPosition: "center center",
+                backgroundRepeat: "no-repeat",
+                mixBlendMode: "multiply",
+              }}
+            />
+          </AnimatePresence>
+          {/* Accent colored indicator block bottom right */}
+          <div
+            className="absolute bottom-3 right-3 text-[10px] font-bold text-white px-2.5 py-1 rounded-full shadow-md transition-colors duration-500"
+            style={{ backgroundColor: active.accentColor }}
+          >
+            {currentSlide + 1} / {SLIDER_DATA.length}
+          </div>
+        </div>
+
+        {/* RIGHT: Floating cards (visible on lg+) */}
+        <div className="hidden lg:block lg:col-span-6 relative h-[500px]">
+          {/* Card 1 – Loans Approved (top right) */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.15, duration: 0.65, ease: EASE_OUT }}
+            whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
+            className="absolute top-10 right-2 w-[210px] bg-white rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-4 flex items-start gap-3 z-20 transition-shadow duration-300"
+          >
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-white transition-colors duration-500 ${active.statIconBg}`}>
+              <TrendingUp className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="text-[10.5px] text-slate-400 font-semibold uppercase tracking-wide">Loans Approved</div>
+              <div className="text-[22px] font-black text-[#0B1F3A] leading-none mt-0.5">$2.4B+</div>
+              <div className="text-[10.5px] text-slate-400 font-medium mt-1">Since 2010</div>
+            </div>
+          </motion.div>
+
+          {/* Card 2 – Approval Rate (middle right) */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.25, duration: 0.65, ease: EASE_OUT }}
+            whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
+            className="absolute top-[52%] right-0 w-[210px] bg-white rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-4 flex items-start gap-3 z-20 transition-shadow duration-300"
+          >
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-white transition-colors duration-500 ${active.statIconBg}`}>
+              <Percent className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="text-[10.5px] text-slate-400 font-semibold uppercase tracking-wide">Average Approval</div>
+              <div className="text-[22px] font-black text-[#0B1F3A] leading-none mt-0.5">98%</div>
+              <div className="text-[10.5px] text-slate-400 font-medium mt-1">Helping More Australians</div>
+            </div>
+          </motion.div>
+
+          {/* Card 3 – Tailored Solutions (bottom center) */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentSlide}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -30 }}
+              transition={{ duration: 0.5, ease: EASE_OUT }}
+              whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
+              className="absolute bottom-8 left-4 right-12 bg-white rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.08)] overflow-hidden flex items-stretch z-20 transition-shadow duration-300"
+              style={{ height: "76px" }}
+            >
+              {/* Text side with padding */}
+              <div className="flex items-center gap-3 px-3.5 flex-1 min-w-0">
+                <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-white transition-colors duration-500 ${active.statIconBg}`}>
+                  {React.createElement(CardIcon, { className: "w-4.5 h-4.5" })}
+                </div>
+                <div className="min-w-0">
+                  <div className="font-bold text-[13px] text-[#0B1F3A] leading-none">{active.cardTitle}</div>
+                  <div className="text-[11px] text-slate-500 font-medium mt-1 leading-snug">
+                    {active.cardDesc}
+                  </div>
+                </div>
+              </div>
+              {/* Service picture on right */}
+              <div className="relative w-24 shrink-0 bg-slate-50 border-l border-slate-100">
+                <Image
+                  src={active.image}
+                  alt="Service Detail"
+                  fill
+                  className="object-cover object-center"
+                />
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+      </div>
+
+      {/* ── Dots Navigation Indicator ── */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+        {SLIDER_DATA.map((slide, index) => (
+          <button
+            key={slide.id}
+            type="button"
+            onClick={() => setCurrentSlide(index)}
+            className="w-2.5 h-2.5 rounded-full transition-all duration-300 focus:outline-none"
+            style={{
+              backgroundColor: currentSlide === index ? active.accentColor : "#E2E8F0",
+              width: currentSlide === index ? "24px" : "10px"
+            }}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
+      </div>
+
+      {/* ── Slide Left / Right Arrows (Desktop hover) ── */}
+      <button
+        type="button"
+        onClick={prevSlide}
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/70 hover:bg-white border border-slate-200/50 flex items-center justify-center text-slate-600 hover:text-[#0B1F3A] opacity-0 hover:opacity-100 focus:opacity-100 lg:group-hover:opacity-100 transition-all duration-300 shadow-md"
+        aria-label="Previous Slide"
+      >
+        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+      </button>
+      <button
+        type="button"
+        onClick={nextSlide}
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/70 hover:bg-white border border-slate-200/50 flex items-center justify-center text-slate-600 hover:text-[#0B1F3A] opacity-0 hover:opacity-100 focus:opacity-100 lg:group-hover:opacity-100 transition-all duration-300 shadow-md"
+        aria-label="Next Slide"
+      >
+        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+      </button>
+    </section>
+  );
+}
+
 export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showStickyCta, setShowStickyCta] = useState(false);
@@ -1663,247 +2099,8 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* ── HERO SECTION ── */}
-      <section
-        className="relative bg-white overflow-hidden"
-        style={{ minHeight: "600px" }}
-      >
-        {/* Hero image — right 52%, with blue blob behind it */}
-        <div
-          className="absolute top-0 right-0 h-full z-[1] hidden lg:block"
-          style={{
-            width: "52%",
-          }}
-        >
-          {/* Light blue radial blob — only on the right side */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(ellipse 85% 90% at 62% 52%, #D4E9FF 0%, #E8F4FF 42%, #F4F9FF 62%, transparent 82%)",
-            }}
-          />
-          {/* Actual hero photo on top of the blob */}
-          <motion.div
-            initial={{ opacity: 0, scale: 1.05 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, ease: EASE_OUT }}
-            className="absolute inset-0"
-            style={{
-              backgroundImage: "url('/images/hero.png')",
-              backgroundSize: "cover",
-              backgroundPosition: "center top",
-              backgroundRepeat: "no-repeat",
-            }}
-          />
-          {/* White fade on left edge — blends photo into white left section */}
-          <div
-            className="absolute inset-y-0 left-0 w-48"
-            style={{ background: "linear-gradient(to right, #ffffff 0%, rgba(255,255,255,0.7) 50%, transparent 100%)" }}
-          />
-        </div>
-
-        {/* Content container */}
-        <div className="relative z-10 max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 pt-5 pb-8 sm:py-10 lg:py-12 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-
-          {/* LEFT: Text + CTAs + Trust Bar */}
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-            className="lg:col-span-6 flex flex-col gap-3.5 sm:gap-5"
-          >
-
-            {/* Badge */}
-            <motion.div
-              variants={fadeInUp}
-              className="inline-flex items-center gap-1.5 sm:gap-2 bg-[#EAF3FF] border border-[#2563EB]/15 rounded-full px-3 py-1 sm:px-4 sm:py-2 w-fit shadow-sm"
-            >
-              <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#2563EB] shrink-0" />
-              <span className="text-[9.5px] sm:text-[11px] font-bold tracking-widest text-[#2563EB] uppercase">
-                Specialists in Healthcare &amp; Investment Lending
-              </span>
-            </motion.div>
-
-            {/* H1 */}
-            <motion.h1
-              variants={fadeInUp}
-              className="text-[25px] sm:text-[40px] lg:text-[50px] font-extrabold leading-[1.15] sm:leading-[1.1] tracking-tight text-[#0B1F3A]"
-              style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
-            >
-              Mortgage Solutions for{" "}
-              <br className="hidden sm:block" />
-              <span className="text-[#2563EB]">Health Professionals</span>{" "}
-              <br className="hidden sm:block" />
-              &amp; Property Investors
-            </motion.h1>
-
-            {/* Subtext */}
-            <motion.p
-              variants={fadeInUp}
-              className="text-slate-500 text-[13.5px] sm:text-[15px] leading-relaxed max-w-md"
-            >
-              Helping nurses, doctors, allied health professionals, and Australian property investors secure smarter lending solutions with expert guidance and access to 40+ lenders.
-            </motion.p>
-
-            {/* CTA Buttons */}
-            <motion.div
-              variants={fadeInUp}
-              className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 pt-1"
-            >
-              <Link
-                href="#"
-                className="bg-[#2563EB] text-white font-bold text-[13.5px] sm:text-[14px] py-3 sm:py-3.5 px-6 sm:px-7 rounded-full inline-flex items-center justify-center gap-2 hover:bg-[#1d4ed8] transition-all duration-300 shadow-lg shadow-blue-200 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto"
-              >
-                Book Free Strategy Call <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link
-                href="#"
-                className="border-2 border-[#2563EB] text-[#2563EB] font-bold text-[13.5px] sm:text-[14px] py-3 sm:py-3.5 px-5 sm:px-6 rounded-full inline-flex items-center justify-center gap-2 hover:bg-[#EAF3FF] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto"
-              >
-                <Calculator className="w-4 h-4" /> Calculate Borrowing Power
-              </Link>
-            </motion.div>
-
-            {/* Trust Bar — checkmark pills */}
-            <motion.div
-              variants={fadeInUp}
-              className="grid grid-cols-2 gap-2 pt-4 mt-1 border-t border-slate-100 sm:flex sm:flex-wrap"
-            >
-              {[
-                { full: "Australia-Wide Service", short: "Australia-Wide" },
-                { full: "40+ Lenders", short: "40+ Lenders" },
-                { full: "First Home Buyers & Investors", short: "Buyers & Investors" },
-                { full: "Strategic Lending Solutions", short: "Strategic Solutions" },
-              ].map((item) => (
-                <span
-                  key={item.full}
-                  className="inline-flex items-center gap-1.5 bg-[#EAF3FF] border border-[#D0E5FF] text-[#2563EB] text-[10.5px] sm:text-[11.5px] font-semibold px-2.5 py-1.5 rounded-full justify-center whitespace-nowrap"
-                >
-                  <svg className="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="m5 13 4 4L19 7" /></svg>
-                  <span className="sm:hidden">{item.short}</span>
-                  <span className="hidden sm:inline">{item.full}</span>
-                </span>
-              ))}
-            </motion.div>
-
-            {/* Google rating strip */}
-            <motion.div variants={fadeInUp} className="flex flex-wrap items-center gap-4 mt-2">
-              <div className="flex items-center gap-2">
-                <GoogleIcon />
-                <div>
-                  <div className="flex gap-0.5">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-3 h-3 text-yellow-400 fill-yellow-400" />
-                    ))}
-                  </div>
-                  <div className="text-[10px] text-slate-500 font-semibold">4.9 · 1,200+ Reviews</div>
-                </div>
-              </div>
-              <div className="w-px h-7 bg-slate-200 hidden sm:block" />
-              <div className="text-[11.5px] text-slate-500 font-medium hidden sm:block">$2.4B+ Loans Approved Since 2010</div>
-            </motion.div>
-
-            {/* Mobile stats — compact row */}
-            <motion.div
-              variants={fadeInUp}
-              className="grid grid-cols-3 gap-1 bg-slate-50 rounded-2xl p-3 border border-slate-100/80 lg:hidden mt-2"
-            >
-              <div className="text-center border-r border-slate-200 last:border-0 px-1">
-                <div className="text-[15px] font-black text-[#0B1F3A] leading-tight">$2.4B+</div>
-                <div className="text-[8.5px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">Approved</div>
-              </div>
-              <div className="text-center border-r border-slate-200 last:border-0 px-1">
-                <div className="text-[15px] font-black text-[#0B1F3A] leading-tight">98%</div>
-                <div className="text-[8.5px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">Approval</div>
-              </div>
-              <div className="text-center px-1">
-                <div className="text-[15px] font-black text-[#0B1F3A] leading-tight">40+</div>
-                <div className="text-[8.5px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">Lenders</div>
-              </div>
-            </motion.div>
-
-          </motion.div>
-
-          {/* Mobile Hero Image Card (stacked below content on mobile, hidden on desktop) */}
-          <div
-            className="relative w-full h-48 sm:h-64 lg:hidden rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-slate-100 mt-2"
-            style={{
-              backgroundImage: "url('/images/hero.png')",
-              backgroundSize: "cover",
-              backgroundPosition: "center 15%",
-              backgroundRepeat: "no-repeat",
-            }}
-          />
-
-          {/* RIGHT: Floating cards (visible on lg+) */}
-          <div className="hidden lg:block lg:col-span-6 relative h-[500px]">
-
-            {/* Card 1 – Loans Approved (top right) */}
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.45, duration: 0.65, ease: EASE_OUT }}
-              whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
-              className="absolute top-10 right-2 w-[210px] bg-white rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-4 flex items-start gap-3 z-20 transition-shadow duration-300"
-            >
-              <div className="w-10 h-10 rounded-xl bg-[#2563EB] flex items-center justify-center shrink-0">
-                <TrendingUp className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <div className="text-[10.5px] text-slate-400 font-semibold uppercase tracking-wide">Loans Approved</div>
-                <div className="text-[22px] font-black text-[#0B1F3A] leading-none mt-0.5">$2.4B+</div>
-                <div className="text-[10.5px] text-slate-400 font-medium mt-1">Since 2010</div>
-              </div>
-            </motion.div>
-
-            {/* Card 2 – Approval Rate (middle right) */}
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.58, duration: 0.65, ease: EASE_OUT }}
-              whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
-              className="absolute top-[52%] right-0 w-[210px] bg-white rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-4 flex items-start gap-3 z-20 transition-shadow duration-300"
-            >
-              <div className="w-10 h-10 rounded-xl bg-[#2563EB] flex items-center justify-center shrink-0">
-                <Percent className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <div className="text-[10.5px] text-slate-400 font-semibold uppercase tracking-wide">Average Approval Rate</div>
-                <div className="text-[22px] font-black text-[#0B1F3A] leading-none mt-0.5">98%</div>
-                <div className="text-[10.5px] text-slate-400 font-medium mt-1">Helping More Australians</div>
-              </div>
-            </motion.div>
-
-            {/* Card 3 – Tailored Solutions (bottom center) */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.72, duration: 0.65, ease: EASE_OUT }}
-              whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
-              className="absolute bottom-8 left-4 right-12 bg-white rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.08)] overflow-hidden flex items-stretch z-20 transition-shadow duration-300" style={{ height: "72px" }}
-            >
-              {/* Text side with padding */}
-              <div className="flex items-center gap-3 px-3.5 flex-1 min-w-0">
-                <div className="w-9 h-9 rounded-xl bg-[#2563EB] flex items-center justify-center shrink-0">
-                  <HomeIcon className="w-4.5 h-4.5 text-white" />
-                </div>
-                <div className="min-w-0">
-                  <div className="font-bold text-[13px] text-[#0B1F3A] leading-none">Tailored Solutions</div>
-                  <div className="text-[11px] text-slate-500 font-medium mt-1 leading-snug">
-                    Custom loan strategies<br />designed around your goals.
-                  </div>
-                </div>
-              </div>
-              {/* Villa image — no padding, fills full height flush to right edge */}
-              <div className="relative w-24 shrink-0">
-                <Image src="/images/villa.png" alt="Property" fill className="object-cover" />
-              </div>
-            </motion.div>
-
-          </div>
-        </div>
-      </section>
+      {/* ── HERO SLIDER SECTION ── */}
+      <HeroSlider />
 
       {/* ── LENDER PANEL ── */}
       <section className="bg-white border-t border-slate-100 py-4">
