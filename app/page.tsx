@@ -1941,7 +1941,7 @@ export default function Home() {
           </nav>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+          <div className="flex items-center gap-2.5 sm:gap-4 shrink-0">
             <button className="hidden md:flex items-center text-[#0B1F3A] hover:text-[#2563EB] transition-colors">
               <Search className="w-5 h-5" />
             </button>
@@ -1960,22 +1960,21 @@ export default function Home() {
             {/* Mobile Button */}
             <Link
               href="#"
-              className="flex sm:hidden bg-[#2563EB] text-white text-[11.5px] font-extrabold py-2 px-3.5 rounded-full items-center gap-1 hover:bg-[#1d4ed8] transition-all duration-300 shadow-md shadow-blue-200 whitespace-nowrap"
+              className="flex sm:hidden bg-gradient-to-r from-[#2563EB] to-[#1D4ED8] text-white text-[11px] font-black py-2 px-3.5 rounded-lg items-center gap-1.5 hover:shadow-md hover:shadow-blue-500/20 active:scale-[0.98] transition-all duration-300 border border-blue-400/20 whitespace-nowrap"
             >
-              Book <ArrowRight className="w-3 h-3" />
+              Let&apos;s Talk <ArrowRight className="w-3 h-3" />
             </Link>
+            {/* Mobile hamburger */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="lg:hidden flex flex-col gap-1.5 p-2 z-50 relative focus:outline-none"
+              aria-label="Toggle Menu"
+            >
+              <span className={`w-5 h-0.5 bg-[#0B1F3A] block transition-transform duration-300 ${isMobileMenuOpen ? "rotate-45 translate-y-2" : ""}`} />
+              <span className={`w-5 h-0.5 bg-[#0B1F3A] block transition-opacity duration-300 ${isMobileMenuOpen ? "opacity-0" : ""}`} />
+              <span className={`w-5 h-0.5 bg-[#0B1F3A] block transition-transform duration-300 ${isMobileMenuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+            </button>
           </div>
-
-          {/* Mobile hamburger */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden flex flex-col gap-1.5 p-2 z-50 relative"
-            aria-label="Toggle Menu"
-          >
-            <span className={`w-5 h-0.5 bg-[#0B1F3A] block transition-transform duration-300 ${isMobileMenuOpen ? "rotate-45 translate-y-2" : ""}`} />
-            <span className={`w-5 h-0.5 bg-[#0B1F3A] block transition-opacity duration-300 ${isMobileMenuOpen ? "opacity-0" : ""}`} />
-            <span className={`w-5 h-0.5 bg-[#0B1F3A] block transition-transform duration-300 ${isMobileMenuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
-          </button>
         </div>
       </header>
 
