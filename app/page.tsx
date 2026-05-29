@@ -93,6 +93,18 @@ const IconHammer = () => (
   </svg>
 );
 
+const GoldStarIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-amber-500 shrink-0">
+    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+  </svg>
+);
+
+const FlameIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-[#EA580C] shrink-0">
+    <path d="M12 2c0 0-4.5 4.5-4.5 8.5C7.5 13.5 9.5 15 12 15s4.5-1.5 4.5-4.5C16.5 6.5 12 2 12 2zm0 18c3.5 0 6-2.5 6-6 0-1.5-.5-3-1.5-4.5-1.5 2-3.5 3-4.5 4s-1.5 2-1.5 3c0 2 1.5 3.5 3 3.5z" />
+  </svg>
+);
+
 
 
 const FacebookIcon = () => (
@@ -1957,22 +1969,34 @@ export default function Home() {
             >
               Book Free Consultation <ArrowRight className="w-4 h-4" />
             </Link>
-            {/* Mobile Button */}
-            <Link
-              href="#"
-              className="flex sm:hidden bg-gradient-to-r from-[#2563EB] to-[#1D4ED8] text-white text-[11px] font-black py-2 px-3.5 rounded-lg items-center gap-1.5 hover:shadow-md hover:shadow-blue-500/20 active:scale-[0.98] transition-all duration-300 border border-blue-400/20 whitespace-nowrap"
-            >
-              Let&apos;s Talk <ArrowRight className="w-3 h-3" />
-            </Link>
+            {/* Mobile Quick Action Buttons (Replacing single Let's Talk button with 2 Stunning Circular Icons) */}
+            <div className="flex sm:hidden items-center gap-3">
+              {/* Call Icon Button */}
+              <a
+                href="tel:0450240757"
+                className="w-10 h-10 rounded-full border-2 border-[#0EA5E9] bg-[#F0F9FF] flex items-center justify-center text-[#0EA5E9] hover:bg-[#E0F2FE] hover:scale-105 active:scale-95 transition-all duration-300 shadow-sm"
+                aria-label="Call Us"
+              >
+                <Phone className="w-4.5 h-4.5" strokeWidth={2.5} />
+              </a>
+              {/* Email Icon Button */}
+              <a
+                href="mailto:mortgage@mortgagexperts.com.au"
+                className="w-10 h-10 rounded-full bg-[#FF6B00] flex items-center justify-center text-white hover:bg-[#E05E00] hover:scale-105 active:scale-95 transition-all duration-300 shadow-md shadow-orange-500/20"
+                aria-label="Email Us"
+              >
+                <Mail className="w-4.5 h-4.5" strokeWidth={2.5} />
+              </a>
+            </div>
             {/* Mobile hamburger */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden flex flex-col gap-1.5 p-2 z-50 relative focus:outline-none"
+              className="lg:hidden flex flex-col gap-1.5 p-2 z-50 relative focus:outline-none cursor-pointer"
               aria-label="Toggle Menu"
             >
-              <span className={`w-5 h-0.5 bg-[#0B1F3A] block transition-transform duration-300 ${isMobileMenuOpen ? "rotate-45 translate-y-2" : ""}`} />
-              <span className={`w-5 h-0.5 bg-[#0B1F3A] block transition-opacity duration-300 ${isMobileMenuOpen ? "opacity-0" : ""}`} />
-              <span className={`w-5 h-0.5 bg-[#0B1F3A] block transition-transform duration-300 ${isMobileMenuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+              <span className={`w-5.5 h-0.5 block transition-transform duration-300 ${isMobileMenuOpen ? "rotate-45 translate-y-2 bg-[#0B1F3A]" : "bg-[#0EA5E9] sm:bg-[#0B1F3A]"}`} />
+              <span className={`w-5.5 h-0.5 block transition-opacity duration-300 ${isMobileMenuOpen ? "opacity-0" : "bg-[#0EA5E9] sm:bg-[#0B1F3A]"}`} />
+              <span className={`w-5.5 h-0.5 block transition-transform duration-300 ${isMobileMenuOpen ? "-rotate-45 -translate-y-2 bg-[#0B1F3A]" : "bg-[#0EA5E9] sm:bg-[#0B1F3A]"}`} />
             </button>
           </div>
         </div>
@@ -2110,57 +2134,89 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={VIEWPORT}
             transition={{ duration: 0.6, ease: EASE_OUT }}
-            className="bg-white rounded-2xl border border-slate-100 shadow-sm py-4 px-5 flex flex-col md:flex-row items-center relative overflow-hidden"
+            className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 flex flex-col gap-4.5 relative overflow-hidden"
           >
+            {/* Top Row: Lender Logos */}
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              {/* Label */}
+              <div className="shrink-0 md:border-r border-slate-200 pr-6 md:mr-4 border-b md:border-b-0 pb-3 md:pb-0 w-full md:w-auto text-center md:text-left flex md:block justify-center z-10 bg-white">
+                <p className="text-[11.5px] font-bold text-[#0B1F3A] uppercase tracking-wide whitespace-nowrap">
+                  OUR PANEL OF 40+ LEADING LENDERS
+                </p>
+              </div>
 
-            {/* Label */}
-            <div className="shrink-0 md:border-r border-slate-200 pr-6 md:mr-4 border-b md:border-b-0 pb-3 md:pb-0 w-full md:w-auto text-center md:text-left flex md:block justify-center z-10 bg-white">
-              <p className="text-[11.5px] font-bold text-[#0B1F3A] uppercase tracking-wide whitespace-nowrap">
-                OUR PANEL OF 40+ LEADING LENDERS
-              </p>
-            </div>
-
-            {/* Logos row Marquee */}
-            <div className="flex-1 overflow-hidden relative flex items-center h-[60px] w-full my-4 md:my-0" style={{ WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)" }}>
-              <div className="flex w-max animate-marquee items-center hover:pause">
-                {[
-                  { src: "/images/brands/png-transparent-nab-national-australia-bank-logo-thumbnail-1.png", scale: "scale-[1.2]" },
-                  { src: "/images/brands/westpac-logo-png_seeklogo-152472-1.png", scale: "scale-[1.6]" },
-                  { src: "/images/brands/anz-2-logo-png-transparent-1.png", scale: "scale-[1.3]" },
-                  { src: "/images/brands/ING_Group_N.V._Logo.svg-1.png", scale: "scale-100" },
-                  { src: "/images/brands/St_George_Bank_logo-1-scaled.png", scale: "scale-[1.4]" },
-                  { src: "/images/brands/Bankwest_new_logo-1.png", scale: "scale-[1.3]" },
-                  { src: "/images/brands/Suncorp-Bank-Logo-1-scaled.png", scale: "scale-[1.4]" },
-                  { src: "/images/brands/images-3-1.png", scale: "scale-100" },
-                  { src: "/images/brands/adelaide-bank-vector-logo-11574265916rvuvsw06fg-1.png", scale: "scale-[1.7]" },
-                  { src: "/images/brands/firstmac-limited-logo-vector-1.png", scale: "scale-105" },
-                  { src: "/images/brands/png-transparent-nab-national-australia-bank-logo-thumbnail-1.png", scale: "scale-[1.2]" },
-                  { src: "/images/brands/westpac-logo-png_seeklogo-152472-1.png", scale: "scale-[1.6]" },
-                  { src: "/images/brands/anz-2-logo-png-transparent-1.png", scale: "scale-[1.3]" },
-                  { src: "/images/brands/ING_Group_N.V._Logo.svg-1.png", scale: "scale-100" },
-                  { src: "/images/brands/St_George_Bank_logo-1-scaled.png", scale: "scale-[1.4]" },
-                  { src: "/images/brands/Bankwest_new_logo-1.png", scale: "scale-[1.3]" },
-                  { src: "/images/brands/Suncorp-Bank-Logo-1-scaled.png", scale: "scale-[1.4]" },
-                  { src: "/images/brands/images-3-1.png", scale: "scale-100" },
-                  { src: "/images/brands/adelaide-bank-vector-logo-11574265916rvuvsw06fg-1.png", scale: "scale-[1.7]" },
-                  { src: "/images/brands/firstmac-limited-logo-vector-1.png", scale: "scale-105" }
-                ].map((brand, i) => (
-                  <div key={i} className={`relative h-10 w-[120px] shrink-0 mr-12 flex items-center justify-center cursor-pointer transition-transform duration-300 hover:scale-105`}>
-                    <div className={`relative h-full w-full ${brand.scale}`}>
-                      <Image src={brand.src} alt="Lender Logo" fill className="object-contain" sizes="120px" />
+              {/* Logos row Marquee */}
+              <div className="flex-1 overflow-hidden relative flex items-center h-[60px] w-full my-4 md:my-0" style={{ WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)" }}>
+                <div className="flex w-max animate-marquee items-center hover:pause">
+                  {[
+                    { src: "/images/brands/png-transparent-nab-national-australia-bank-logo-thumbnail-1.png", scale: "scale-[1.2]" },
+                    { src: "/images/brands/westpac-logo-png_seeklogo-152472-1.png", scale: "scale-[1.6]" },
+                    { src: "/images/brands/anz-2-logo-png-transparent-1.png", scale: "scale-[1.3]" },
+                    { src: "/images/brands/ING_Group_N.V._Logo.svg-1.png", scale: "scale-100" },
+                    { src: "/images/brands/St_George_Bank_logo-1-scaled.png", scale: "scale-[1.4]" },
+                    { src: "/images/brands/Bankwest_new_logo-1.png", scale: "scale-[1.3]" },
+                    { src: "/images/brands/Suncorp-Bank-Logo-1-scaled.png", scale: "scale-[1.4]" },
+                    { src: "/images/brands/images-3-1.png", scale: "scale-100" },
+                    { src: "/images/brands/adelaide-bank-vector-logo-11574265916rvuvsw06fg-1.png", scale: "scale-[1.7]" },
+                    { src: "/images/brands/firstmac-limited-logo-vector-1.png", scale: "scale-105" },
+                    { src: "/images/brands/png-transparent-nab-national-australia-bank-logo-thumbnail-1.png", scale: "scale-[1.2]" },
+                    { src: "/images/brands/westpac-logo-png_seeklogo-152472-1.png", scale: "scale-[1.6]" },
+                    { src: "/images/brands/anz-2-logo-png-transparent-1.png", scale: "scale-[1.3]" },
+                    { src: "/images/brands/ING_Group_N.V._Logo.svg-1.png", scale: "scale-100" },
+                    { src: "/images/brands/St_George_Bank_logo-1-scaled.png", scale: "scale-[1.4]" },
+                    { src: "/images/brands/Bankwest_new_logo-1.png", scale: "scale-[1.3]" },
+                    { src: "/images/brands/Suncorp-Bank-Logo-1-scaled.png", scale: "scale-[1.4]" },
+                    { src: "/images/brands/images-3-1.png", scale: "scale-100" },
+                    { src: "/images/brands/adelaide-bank-vector-logo-11574265916rvuvsw06fg-1.png", scale: "scale-[1.7]" },
+                    { src: "/images/brands/firstmac-limited-logo-vector-1.png", scale: "scale-105" }
+                  ].map((brand, i) => (
+                    <div key={i} className={`relative h-10 w-[120px] shrink-0 mr-12 flex items-center justify-center cursor-pointer transition-transform duration-300 hover:scale-105`}>
+                      <div className={`relative h-full w-full ${brand.scale}`}>
+                        <Image src={brand.src} alt="Lender Logo" fill className="object-contain" sizes="120px" />
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              </div>
+
+              {/* View all */}
+              <div className="shrink-0 md:border-l border-slate-200 md:pl-5 md:ml-2 w-full md:w-auto text-center border-t md:border-t-0 pt-3 md:pt-0 z-10 bg-white">
+                <Link href="#" className="text-[#2563EB] text-[12px] font-bold inline-flex items-center gap-1 hover:underline whitespace-nowrap">
+                  View all lenders <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
               </div>
             </div>
 
-            {/* View all */}
-            <div className="shrink-0 md:border-l border-slate-200 md:pl-5 md:ml-2 w-full md:w-auto text-center border-t md:border-t-0 pt-3 md:pt-0 z-10 bg-white">
-              <Link href="#" className="text-[#2563EB] text-[12px] font-bold inline-flex items-center gap-1 hover:underline whitespace-nowrap">
-                View all lenders <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
+            {/* Subtle Horizontal Divider */}
+            <div className="h-px bg-slate-100 w-full" />
 
+            {/* Bottom Row: Elite Bank Broker Status Badges */}
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-1">
+              <div className="flex items-center gap-2 shrink-0">
+                <Shield className="w-4 h-4 text-[#2563EB]" />
+                <span className="text-[11.5px] font-bold text-[#0B1F3A] uppercase tracking-wider">
+                  Premium Bank Partnerships
+                </span>
+              </div>
+              
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                {/* CBA Platinum */}
+                <div className="inline-flex items-center gap-2 bg-[#FDFBF7] border border-[#EBE6DD] rounded-xl px-4 py-2 shadow-[0_2px_8px_rgba(0,0,0,0.01)] transition-all duration-300 hover:scale-[1.02] hover:shadow-sm">
+                  <GoldStarIcon />
+                  <span className="text-[#0B1F3A] font-bold text-[12.5px] tracking-wide">CBA Platinum</span>
+                </div>
+                {/* Westpac Platinum */}
+                <div className="inline-flex items-center gap-2 bg-[#FDFBF7] border border-[#EBE6DD] rounded-xl px-4 py-2 shadow-[0_2px_8px_rgba(0,0,0,0.01)] transition-all duration-300 hover:scale-[1.02] hover:shadow-sm">
+                  <GoldStarIcon />
+                  <span className="text-[#0B1F3A] font-bold text-[12.5px] tracking-wide">Westpac Platinum</span>
+                </div>
+                {/* St.George Flame */}
+                <div className="inline-flex items-center gap-2 bg-[#FDFBF7] border border-[#EBE6DD] rounded-xl px-4 py-2 shadow-[0_2px_8px_rgba(0,0,0,0.01)] transition-all duration-300 hover:scale-[1.02] hover:shadow-sm">
+                  <FlameIcon />
+                  <span className="text-[#0B1F3A] font-bold text-[12.5px] tracking-wide">St.George Flame</span>
+                </div>
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>
