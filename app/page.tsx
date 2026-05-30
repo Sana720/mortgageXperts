@@ -2518,6 +2518,138 @@ export default function Home() {
       {/* ── WHY CHOOSE US SECTION ── */}
       <WhyChooseUsSection />
 
+      {/* ── AWARDS & RECOGNITION SECTION ── */}
+      <section className="bg-white pb-16 pt-16 md:pb-20 border-t border-slate-100">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 text-center">
+          
+          {/* Eyebrow Pill */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={VIEWPORT_LOOSE}
+            variants={fadeInUp}
+            className="inline-flex items-center gap-2 bg-white border border-slate-200 rounded-full px-4 py-1.5 mb-4 shadow-sm"
+          >
+            <span className="text-[#2563EB] text-[11px] font-extrabold tracking-widest uppercase">
+              🏆 Award-Winning Excellence
+            </span>
+          </motion.div>
+
+          {/* Heading */}
+          <motion.h2
+            initial="hidden"
+            whileInView="visible"
+            viewport={VIEWPORT_LOOSE}
+            variants={fadeInUp}
+            className="text-[34px] md:text-[42px] font-extrabold text-[#0B1F3A] leading-tight font-montserrat"
+            style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
+          >
+            Proven Track Record. <br />
+            <span className="text-[#2563EB]">Recognised For Excellence.</span>
+          </motion.h2>
+
+          {/* Description */}
+          <motion.p
+            initial="hidden"
+            whileInView="visible"
+            viewport={VIEWPORT_LOOSE}
+            variants={fadeInUp}
+            className="text-slate-500 text-[15px] mt-3 max-w-2xl mx-auto leading-relaxed font-inter"
+          >
+            We take pride in our commitment to excellence, customer satisfaction, and building elite bank partnerships. Here are our recent achievements and industry recognitions.
+          </motion.p>
+
+          {/* Grid Layout for Awards */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12"
+          >
+            {[
+              {
+                img: "/images/2.png",
+                title: "Quality Business Awards",
+                subtitle: "2026 Winner",
+                desc: "Quality Rating Over 95%",
+              },
+              {
+                img: "/images/3.png",
+                title: "Quality Business Awards",
+                subtitle: "2026 Winner",
+                desc: "Gold Medalist",
+              },
+              {
+                img: "/images/4.png",
+                title: "Achievement Award",
+                subtitle: "2026 Honor",
+                desc: "Wreath of Excellence",
+              },
+              {
+                img: "/images/5.png",
+                title: "Best Self-Employed Broker",
+                subtitle: "Australia 2026",
+                desc: "Specialist Mortgage Broker",
+              },
+              {
+                img: "/images/6.png",
+                title: "Westpac Platinum Broker",
+                subtitle: "Elite Partner Status",
+                desc: "Platinum Broker Status",
+              },
+              {
+                img: "/images/7.png",
+                title: "Quality Business Awards",
+                subtitle: "2026 Winner",
+                desc: "Gold Medalist",
+              },
+              {
+                img: "/images/8.png",
+                title: "CBA Elite Broker",
+                subtitle: "Elite Partner Status",
+                desc: "Elite Broker Status",
+              },
+            ].map((award, idx) => (
+              <motion.div
+                key={idx}
+                variants={fadeInUp}
+                whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
+                className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 flex flex-col items-center justify-center text-center transition-all duration-300 group"
+              >
+                {/* Image Container with bold visual scaling */}
+                <div className="relative w-44 h-44 flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-105">
+                  <Image
+                    src={award.img}
+                    alt={award.title}
+                    fill
+                    className="object-contain"
+                    sizes="176px"
+                  />
+                </div>
+                
+                {/* Text Details (Extremely short and precise) */}
+                <div className="w-full">
+                  <h3 className="text-[#0B1F3A] font-extrabold text-[15px] leading-tight mb-1" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                    {award.title}
+                  </h3>
+                  <div className="text-[#2563EB] font-bold text-[12px] mb-1">
+                    {award.subtitle}
+                  </div>
+                  <p className="text-slate-500 text-[11px] font-medium leading-snug">
+                    {award.desc}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+
+            {/* Empty grid cell to represent clean blank space for the future without any placeholder content */}
+            <div className="hidden lg:block" />
+
+          </motion.div>
+        </div>
+      </section>
+
       {/* ── TESTIMONIALS ── */}
       <TestimonialSection />
 
