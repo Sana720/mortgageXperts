@@ -15,7 +15,6 @@ import {
   Percent,
   Home as HomeIcon,
   ChevronDown,
-  Building2,
   PiggyBank,
   Settings,
   Heart,
@@ -72,12 +71,7 @@ const IconBarChart = () => (
     <rect x="2" y="13" width="4" height="8" rx="1" />
   </svg>
 );
-const IconWallet = () => (
-  <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
-    <path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5" />
-    <path d="M16 12h5v4h-5a2 2 0 0 1 0-4z" />
-  </svg>
-);
+
 const IconUser = () => (
   <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -133,11 +127,7 @@ const YoutubeIcon = () => (
   </svg>
 );
 
-const LinkedInIcon = () => (
-  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-  </svg>
-);
+
 
 function FooterNavLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
@@ -210,16 +200,16 @@ function ProcessStepCard({ step }: { step: ProcessStepItem }) {
       variants={staggerItem}
       whileHover={{ y: -3 }}
       transition={{ duration: 0.3, ease: EASE_OUT }}
-      className="flex flex-col items-center text-center px-2"
+      className="flex flex-col items-center text-center px-1 sm:px-2"
     >
-      <div className="w-[68px] h-[68px] rounded-full border border-[#E2ECFF] bg-white shadow-[0_6px_20px_rgba(37,99,235,0.08)] text-[#1D63F1] flex items-center justify-center relative mb-3">
+      <div className="w-[68px] h-[68px] rounded-full border border-[#E2ECFF] bg-white shadow-[0_6px_20px_rgba(37,99,235,0.08)] text-[#1D63F1] flex items-center justify-center relative mb-3 self-center">
         {step.icon}
         <div className="absolute -left-1 -bottom-1 w-5 h-5 rounded-full bg-[#1D63F1] text-white text-[10px] font-black flex items-center justify-center">
           {step.num}
         </div>
       </div>
       <div className="text-[14px] font-extrabold text-[#0B1F3A] leading-tight">{step.title}</div>
-      <div className="text-[12px] text-slate-500 leading-snug mt-1.5 max-w-[160px]">{step.desc}</div>
+      <div className="text-[12px] text-slate-500 leading-snug mt-1.5 max-w-[220px] lg:max-w-[160px]">{step.desc}</div>
     </motion.div>
   );
 }
@@ -431,23 +421,25 @@ function SmartToolsSection() {
           variants={fadeInUp}
           className="mt-5 bg-white rounded-2xl border border-slate-200 p-5 md:p-6"
         >
-          <motion.div variants={fadeInUp} className="text-center mb-6">
+          <motion.div variants={fadeInUp} className="text-left lg:text-center mb-6">
             <div className="inline-flex items-center gap-2 bg-[#F4F8FF] border border-[#D8E7FF] rounded-full px-3 py-1.5 mb-3">
               <div className="w-4 h-4 rounded-full bg-[#2563EB] flex items-center justify-center">
                 <span className="text-[9px] text-white font-bold">5</span>
               </div>
               <span className="text-[11px] font-semibold text-[#2563EB] uppercase tracking-wide">Our Simple Process</span>
             </div>
-            <h2 className="text-[30px] md:text-[42px] font-extrabold text-[#0B1F3A] leading-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+            <h2 className="text-[26px] sm:text-[32px] md:text-[42px] font-extrabold text-[#0B1F3A] leading-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
               A Clear Process. Every Step of the Way.
             </h2>
           </motion.div>
 
           <div className="relative">
             <div className="hidden lg:block absolute top-[34px] left-[8%] right-[8%] h-px border-t-2 border-dashed border-[#2563EB]/25" />
-            <Stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 relative">
+            <Stagger className="grid grid-cols-2 lg:grid-cols-5 gap-x-4 gap-y-6 sm:gap-6 relative">
               {steps.map((step) => (
-                <ProcessStepCard key={step.num} step={step} />
+                <div key={step.num} className="last:col-span-2 lg:last:col-span-1">
+                  <ProcessStepCard step={step} />
+                </div>
               ))}
             </Stagger>
           </div>
@@ -2199,21 +2191,21 @@ export default function Home() {
                 </span>
               </div>
               
-              <div className="flex flex-wrap items-center justify-center gap-3">
+              <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
                 {/* CBA Platinum */}
-                <div className="inline-flex items-center gap-2 bg-[#FDFBF7] border border-[#EBE6DD] rounded-xl px-4 py-2 shadow-[0_2px_8px_rgba(0,0,0,0.01)] transition-all duration-300 hover:scale-[1.02] hover:shadow-sm">
+                <div className="inline-flex items-center gap-1.5 bg-[#FDFBF7] border border-[#EBE6DD] rounded-xl px-2.5 py-1.5 sm:px-4 sm:py-2 shadow-[0_2px_8px_rgba(0,0,0,0.01)] transition-all duration-300 hover:scale-[1.02] hover:shadow-sm">
                   <GoldStarIcon />
-                  <span className="text-[#0B1F3A] font-bold text-[12.5px] tracking-wide">CBA Platinum</span>
+                  <span className="text-[#0B1F3A] font-bold text-[11px] sm:text-[12.5px] tracking-wide whitespace-nowrap">CBA Platinum</span>
                 </div>
                 {/* Westpac Platinum */}
-                <div className="inline-flex items-center gap-2 bg-[#FDFBF7] border border-[#EBE6DD] rounded-xl px-4 py-2 shadow-[0_2px_8px_rgba(0,0,0,0.01)] transition-all duration-300 hover:scale-[1.02] hover:shadow-sm">
+                <div className="inline-flex items-center gap-1.5 bg-[#FDFBF7] border border-[#EBE6DD] rounded-xl px-2.5 py-1.5 sm:px-4 sm:py-2 shadow-[0_2px_8px_rgba(0,0,0,0.01)] transition-all duration-300 hover:scale-[1.02] hover:shadow-sm">
                   <GoldStarIcon />
-                  <span className="text-[#0B1F3A] font-bold text-[12.5px] tracking-wide">Westpac Platinum</span>
+                  <span className="text-[#0B1F3A] font-bold text-[11px] sm:text-[12.5px] tracking-wide whitespace-nowrap">Westpac Platinum</span>
                 </div>
                 {/* St.George Flame */}
-                <div className="inline-flex items-center gap-2 bg-[#FDFBF7] border border-[#EBE6DD] rounded-xl px-4 py-2 shadow-[0_2px_8px_rgba(0,0,0,0.01)] transition-all duration-300 hover:scale-[1.02] hover:shadow-sm">
+                <div className="inline-flex items-center gap-1.5 bg-[#FDFBF7] border border-[#EBE6DD] rounded-xl px-2.5 py-1.5 sm:px-4 sm:py-2 shadow-[0_2px_8px_rgba(0,0,0,0.01)] transition-all duration-300 hover:scale-[1.02] hover:shadow-sm">
                   <FlameIcon />
-                  <span className="text-[#0B1F3A] font-bold text-[12.5px] tracking-wide">St.George Flame</span>
+                  <span className="text-[#0B1F3A] font-bold text-[11px] sm:text-[12.5px] tracking-wide whitespace-nowrap">St.George Flame</span>
                 </div>
               </div>
             </div>
@@ -2231,20 +2223,20 @@ export default function Home() {
             whileInView="visible"
             viewport={VIEWPORT_LOOSE}
             variants={fadeInUp}
-            className="text-center mb-12"
+            className="text-left lg:text-center mb-12"
           >
             <div className="inline-flex items-center gap-2 bg-white border border-slate-200 rounded-full px-4 py-1.5 mb-4 shadow-sm">
               <Settings className="w-3.5 h-3.5 text-[#2563EB]" />
               <span className="text-[11px] font-semibold text-[#2563EB]">Solutions Designed Around You</span>
             </div>
             <h2
-              className="text-[34px] md:text-[42px] font-extrabold text-[#0B1F3A] leading-tight"
+              className="text-[28px] sm:text-[34px] md:text-[42px] font-extrabold text-[#0B1F3A] leading-tight"
               style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
             >
               Find The Right Loan Path
               <br /><span className="text-[#2563EB]">For Your Goals.</span>
             </h2>
-            <p className="text-slate-500 text-[15px] mt-3 max-w-xl mx-auto leading-relaxed">
+            <p className="text-slate-500 text-[15px] mt-3 max-w-xl mx-0 lg:mx-auto leading-relaxed">
               From healthcare professionals to property investors — we specialise in finding the right loan for your unique situation, nationwide.
             </p>
           </motion.div>
@@ -2518,9 +2510,12 @@ export default function Home() {
       {/* ── WHY CHOOSE US SECTION ── */}
       <WhyChooseUsSection />
 
+      {/* ── FOUNDER & OWNER SECTION ── */}
+      <FounderProfileSection />
+
       {/* ── AWARDS & RECOGNITION SECTION ── */}
       <section className="bg-white pb-16 pt-16 md:pb-20 border-t border-slate-100">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 text-center">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 text-left lg:text-center">
           
           {/* Eyebrow Pill */}
           <motion.div
@@ -2530,8 +2525,9 @@ export default function Home() {
             variants={fadeInUp}
             className="inline-flex items-center gap-2 bg-white border border-slate-200 rounded-full px-4 py-1.5 mb-4 shadow-sm"
           >
+            <Star className="w-3 h-3 text-[#2563EB] fill-[#2563EB]" />
             <span className="text-[#2563EB] text-[11px] font-extrabold tracking-widest uppercase">
-              🏆 Award-Winning Excellence
+              Award-Winning Excellence
             </span>
           </motion.div>
 
@@ -2541,7 +2537,7 @@ export default function Home() {
             whileInView="visible"
             viewport={VIEWPORT_LOOSE}
             variants={fadeInUp}
-            className="text-[34px] md:text-[42px] font-extrabold text-[#0B1F3A] leading-tight font-montserrat"
+            className="text-[28px] sm:text-[34px] md:text-[42px] font-extrabold text-[#0B1F3A] leading-tight font-montserrat"
             style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
           >
             Proven Track Record. <br />
@@ -2554,7 +2550,7 @@ export default function Home() {
             whileInView="visible"
             viewport={VIEWPORT_LOOSE}
             variants={fadeInUp}
-            className="text-slate-500 text-[15px] mt-3 max-w-2xl mx-auto leading-relaxed font-inter"
+            className="text-slate-500 text-[15px] mt-3 max-w-2xl mx-0 lg:mx-auto leading-relaxed font-inter"
           >
             We take pride in our commitment to excellence, customer satisfaction, and building elite bank partnerships. Here are our recent achievements and industry recognitions.
           </motion.p>
@@ -2565,7 +2561,7 @@ export default function Home() {
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
             variants={staggerContainer}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12"
+            className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-12"
           >
             {[
               {
@@ -2615,28 +2611,28 @@ export default function Home() {
                 key={idx}
                 variants={fadeInUp}
                 whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
-                className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 flex flex-col items-center justify-center text-center transition-all duration-300 group"
+                className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-6 flex flex-col items-center justify-center text-center transition-all duration-300 group last:col-span-2 lg:last:col-span-1"
               >
                 {/* Image Container with bold visual scaling */}
-                <div className="relative w-44 h-44 flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-105">
+                <div className="relative w-28 h-28 xs:w-32 xs:h-32 sm:w-44 sm:h-44 flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-105 self-center">
                   <Image
                     src={award.img}
                     alt={award.title}
                     fill
                     className="object-contain"
-                    sizes="176px"
+                    sizes="(max-width: 640px) 120px, 176px"
                   />
                 </div>
                 
                 {/* Text Details (Extremely short and precise) */}
                 <div className="w-full">
-                  <h3 className="text-[#0B1F3A] font-extrabold text-[15px] leading-tight mb-1" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                  <h3 className="text-[#0B1F3A] font-extrabold text-[13px] sm:text-[15px] leading-tight mb-1" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
                     {award.title}
                   </h3>
-                  <div className="text-[#2563EB] font-bold text-[12px] mb-1">
+                  <div className="text-[#2563EB] font-bold text-[11px] sm:text-[12px] mb-1">
                     {award.subtitle}
                   </div>
-                  <p className="text-slate-500 text-[11px] font-medium leading-snug">
+                  <p className="text-slate-500 text-[10px] sm:text-[11px] font-medium leading-snug">
                     {award.desc}
                   </p>
                 </div>
@@ -2813,13 +2809,327 @@ function WhyChooseUsSection() {
                 </div>
                 <h3 className="text-white font-bold text-[22px] mb-2 leading-tight drop-shadow-md">{card.title}</h3>
                 <p className="text-white/95 text-[13px] leading-relaxed mb-5 drop-shadow-md">{card.desc}</p>
-                <div className="inline-flex items-center gap-1.5 text-white font-bold text-[13px]">
+                <div className="inline-flex items-center gap-1.5 text-white font-bold text-[13px] hover:opacity-80 transition-opacity">
                   Explore {card.city} Options <ArrowRight className="w-3.5 h-3.5" />
                 </div>
               </div>
             </motion.div>
           ))}
         </Stagger>
+
+      </div>
+    </section>
+  );
+}
+
+function FounderProfileSection() {
+  const skills = [
+    "Mortgage advisory and loan structuring",
+    "Investment property finance",
+    "Lender policy analysis",
+    "Portfolio finance strategy",
+    "Refinancing and debt optimisation",
+    "Client advisory and relationship management"
+  ];
+
+  return (
+    <section className="relative overflow-hidden bg-slate-50/40 py-10 lg:py-12 border-t border-slate-100">
+      {/* Background patterns */}
+      <div className="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-blue-50/50 rounded-full blur-3xl -z-10 pointer-events-none" />
+      <div className="absolute top-1/3 right-0 w-80 h-80 bg-slate-50/60 rounded-full blur-3xl -z-10 pointer-events-none" />
+      
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10 flex flex-col gap-10">
+        
+        {/* Main Content Grid aligned to items-start */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          
+          {/* LEFT COLUMN: Borderless Portrait + Quote */}
+          <div className="lg:col-span-5 flex flex-col gap-4">
+            
+            {/* Aspect ratio wrapper for absolute placement of borderless photo */}
+            <div className="relative w-full max-w-[440px] aspect-[3/4] overflow-visible self-center lg:self-start">
+              <Image
+                src="/images/aakash_new.png"
+                alt="Aakash K C"
+                fill
+                className="object-cover object-top"
+                sizes="(max-width: 1024px) 100vw, 440px"
+                priority
+              />
+
+              {/* Floating Card 1 (Top Left: Fluent Languages) */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, x: -20 }}
+                whileInView={{ opacity: 1, scale: 1, x: 0 }}
+                viewport={VIEWPORT}
+                transition={{ delay: 0.15, duration: 0.5 }}
+                className="absolute -top-4 -left-4 bg-white rounded-xl shadow-[0_5px_15px_rgba(11,31,58,0.04)] border border-slate-100 p-3 z-20 flex items-center gap-2.5 max-w-[190px]"
+              >
+                <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center shrink-0 text-[#2563EB]">
+                  {/* Globe SVG */}
+                  <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="2" y1="12" x2="22" y2="12" />
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                  </svg>
+                </div>
+                <div>
+                  <div className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">Fluent in</div>
+                  <div className="text-[12px] font-black text-[#0B1F3A] leading-snug mt-0.5">Nepali, Hindi &amp; English</div>
+                </div>
+              </motion.div>
+
+              {/* Floating Card 2 (Bottom Left: Lenders Network) */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                viewport={VIEWPORT}
+                transition={{ delay: 0.25, duration: 0.5 }}
+                className="absolute -bottom-4 -left-4 bg-gradient-to-br from-[#0A2540] to-[#004899] rounded-xl shadow-[0_10px_25px_rgba(11,31,58,0.12)] border border-[#0A2540]/30 p-4 z-20 flex items-start gap-3 max-w-[210px]"
+              >
+                <div className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center shrink-0 text-white bg-white/5 mt-0.5">
+                  <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                </div>
+                <div>
+                  <div className="text-[22px] font-black text-white leading-none">40+</div>
+                  <div className="text-[11.5px] font-extrabold text-white mt-0.5">Lenders Network</div>
+                  <div className="text-[9px] text-slate-200/80 leading-snug mt-0.5">Direct network access</div>
+                </div>
+              </motion.div>
+
+            </div>
+
+            {/* Bottom Quote / Strategy Call CTA */}
+            <div className="border-l-4 border-blue-600 bg-blue-50/40 rounded-r-xl p-3.5 w-full max-w-[440px] self-center lg:self-start mt-2">
+              <p className="text-[12px] italic text-[#0B1F3A] font-semibold leading-relaxed font-inter">
+                &quot;Whether you’re a first-home buyer or an experienced investor, I can guide you through every step of securing the right home loan. Contact me today for a free strategy consultation.&quot;
+              </p>
+            </div>
+
+          </div>
+
+          {/* RIGHT COLUMN: Bio + Details */}
+          <div className="lg:col-span-7 flex flex-col gap-4 lg:pl-4">
+            
+            {/* Owner Eyebrow */}
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 bg-[#EBF5FF] text-[#2563EB] rounded-full px-3 py-1 text-[9px] font-bold uppercase tracking-widest shadow-sm">
+                <Star className="w-3 h-3 fill-[#2563EB]" /> Founder &amp; Principal Broker
+              </span>
+              <span className="inline-flex items-center gap-1.5 bg-[#FFFBEB] text-[#D97706] rounded-full px-3 py-1 text-[9px] font-bold uppercase tracking-widest shadow-sm">
+                <TrendingUp className="w-3 h-3 text-[#D97706]" /> Investment Strategist
+              </span>
+            </div>
+
+            {/* Name & Headline */}
+            <div>
+              <h2 className="text-[#0B1F3A] text-[36px] sm:text-[44px] font-extrabold leading-[1.1] tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                Aakash K C
+              </h2>
+              <p className="text-[#2563EB] text-[14px] sm:text-[16px] font-bold mt-1.5 leading-snug">
+                Nepali Mortgage Broker in Perth | Helping First-Home Buyers &amp; Investors Nationwide
+              </p>
+            </div>
+
+            {/* Main Bio Paragraphs */}
+            <div className="space-y-3.5 text-slate-600 text-[13px] sm:text-[14px] leading-relaxed font-inter">
+              <p>
+                Aakash K C is a trusted Nepali mortgage and investment property broker at <strong>Mortgage Xperts</strong>, helping clients across Australia secure home loans and investment property finance. With direct access to <strong>40+ leading Australian lenders</strong>, he provides fast, personalised solutions tailored to each client&apos;s unique goals.
+              </p>
+              <p>
+                Aakash has helped multiple property investors purchase multiple properties each and has personally built a <strong>$4.5 million property portfolio over just 3 years</strong>. By combining real-world investment experience with expert mortgage guidance, he helps first-home buyers and seasoned investors make confident, informed financial decisions.
+              </p>
+              <p>
+                Trusted by hundreds of clients nationwide, Aakash is committed to simplifying the mortgage process, maximising opportunities, and delivering results.
+              </p>
+            </div>
+
+            {/* Experience & Skills List */}
+            <div className="mt-1">
+              <div className="text-[11px] font-extrabold text-[#0B1F3A] uppercase tracking-wider mb-3 flex items-center gap-2">
+                <svg viewBox="0 0 24 24" fill="none" className="w-3.5 h-3.5 text-blue-600 shrink-0" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 20h9" />
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                </svg>
+                AREAS OF EXPERTISE &amp; SKILL
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2.5">
+                {skills.map((skill, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, x: 10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={VIEWPORT}
+                    transition={{ delay: idx * 0.05, duration: 0.3 }}
+                    className="flex items-start gap-2 text-[12px] text-slate-600"
+                  >
+                    <div className="w-4.5 h-4.5 rounded-full bg-blue-50 flex items-center justify-center shrink-0 mt-0.5 text-blue-600">
+                      <svg viewBox="0 0 24 24" fill="none" className="w-2.5 h-2.5" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                    </div>
+                    <span className="leading-snug">{skill}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Direct Contact Details & Information Grid */}
+            <div className="mt-6 bg-white border border-slate-100 rounded-xl p-5 shadow-[0_8px_30px_rgba(11,31,58,0.015)] space-y-4">
+              <div className="text-[10px] text-slate-400 font-extrabold uppercase tracking-widest leading-none flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span> Get in Touch Directly
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Phone */}
+                <a href="tel:0450240757" className="flex items-center gap-3 group text-[#0B1F3A] hover:text-[#2563EB] transition-colors">
+                  <div className="w-8.5 h-8.5 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-[#2563EB] group-hover:bg-blue-50 transition-colors shrink-0">
+                    <Phone className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[9px] text-slate-400 uppercase tracking-wider font-bold leading-none">Call Mobile</div>
+                    <div className="text-[13px] font-extrabold mt-0.5">0450 240 757</div>
+                  </div>
+                </a>
+
+                {/* Email */}
+                <a href="mailto:mortgage@mortgagexperts.com.au" className="flex items-center gap-3 group text-[#0B1F3A] hover:text-[#2563EB] transition-colors">
+                  <div className="w-8.5 h-8.5 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-[#2563EB] group-hover:bg-blue-50 transition-colors shrink-0">
+                    <Mail className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[9px] text-slate-400 uppercase tracking-wider font-bold leading-none">Email Address</div>
+                    <div className="text-[12.5px] font-extrabold mt-0.5 truncate">
+                      mortgage@mortgagexperts.com.au
+                    </div>
+                  </div>
+                </a>
+
+                {/* Website */}
+                <a href="https://mortgagexperts.com.au" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 group text-[#0B1F3A] hover:text-[#2563EB] transition-colors">
+                  <div className="w-8.5 h-8.5 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-[#2563EB] group-hover:bg-blue-50 transition-colors shrink-0">
+                    <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="2" y1="12" x2="22" y2="12" />
+                      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                    </svg>
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[9px] text-slate-400 uppercase tracking-wider font-bold leading-none">Website</div>
+                    <div className="text-[13px] font-extrabold mt-0.5">
+                      mortgagexperts.com.au
+                    </div>
+                  </div>
+                </a>
+
+                {/* Location */}
+                <div className="flex items-center gap-3 text-[#0B1F3A]">
+                  <div className="w-8.5 h-8.5 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 shrink-0">
+                    <MapPin className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[9px] text-slate-400 uppercase tracking-wider font-bold leading-none">Office Address</div>
+                    <div className="text-[12px] font-bold mt-0.5 leading-snug">
+                      57 Anomia Road, Jindalee, WA 6027
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Service Focus Badges */}
+              <div className="flex flex-wrap gap-2 pt-3 border-t border-slate-100">
+                {["First Home Buyers", "Investment Loan", "Refinancing"].map((tag) => (
+                  <span key={tag} className="bg-blue-50/50 border border-blue-100/50 rounded-lg px-2.5 py-1 text-[9px] font-extrabold text-[#2563EB] uppercase tracking-widest shadow-sm">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* BOTTOM METRICS CARD (Spans full width across sections) */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={VIEWPORT}
+          transition={{ duration: 0.65, ease: EASE_OUT }}
+          className="bg-white border border-slate-100 rounded-2xl shadow-[0_15px_45px_rgba(11,31,58,0.05)] p-6 md:p-8"
+        >
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-8 lg:gap-8 lg:divide-x divide-slate-100">
+            
+            {/* Metric 1 - Portfolio */}
+            <div className="flex flex-col items-center text-center lg:flex-row lg:items-center lg:text-left gap-3 lg:gap-4">
+              <div className="w-11 h-11 xs:w-12 xs:h-12 rounded-full bg-blue-50 flex items-center justify-center shrink-0 text-blue-600 self-center">
+                <HomeIcon className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="text-[18px] xs:text-[20px] font-black text-[#0B1F3A] leading-tight">$4.5M+</div>
+                <div className="text-[11.5px] xs:text-[12px] font-extrabold text-[#0B1F3A] mt-0.5">Property Portfolio</div>
+                <div className="text-[9px] xs:text-[10px] text-slate-400 font-semibold mt-0.5">Built in just 3 years</div>
+              </div>
+            </div>
+
+            {/* Metric 2 - Clients */}
+            <div className="flex flex-col items-center text-center lg:flex-row lg:items-center lg:text-left gap-3 lg:gap-4 lg:pl-8">
+              <div className="w-11 h-11 xs:w-12 xs:h-12 rounded-full bg-blue-50 flex items-center justify-center shrink-0 text-blue-600 self-center">
+                <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+              </div>
+              <div>
+                <div className="text-[18px] xs:text-[20px] font-black text-[#0B1F3A] leading-tight">500+</div>
+                <div className="text-[11.5px] xs:text-[12px] font-extrabold text-[#0B1F3A] mt-0.5">Happy Clients</div>
+                <div className="text-[9px] xs:text-[10px] text-slate-400 font-semibold mt-0.5">Across Australia</div>
+              </div>
+            </div>
+
+            {/* Metric 3 - Settled */}
+            <div className="flex flex-col items-center text-center lg:flex-row lg:items-center lg:text-left gap-3 lg:gap-4 lg:pl-8">
+              <div className="w-11 h-11 xs:w-12 xs:h-12 rounded-full bg-blue-50 flex items-center justify-center shrink-0 text-blue-600 self-center">
+                {/* Handshake SVG */}
+                <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+              </div>
+              <div>
+                <div className="text-[18px] xs:text-[20px] font-black text-[#0B1F3A] leading-tight">$250M+</div>
+                <div className="text-[11.5px] xs:text-[12px] font-extrabold text-[#0B1F3A] mt-0.5">Loans Settled</div>
+                <div className="text-[9px] xs:text-[10px] text-slate-400 font-semibold mt-0.5">For clients</div>
+              </div>
+            </div>
+
+            {/* Metric 4 - Experience */}
+            <div className="flex flex-col items-center text-center lg:flex-row lg:items-center lg:text-left gap-3 lg:gap-4 lg:pl-8">
+              <div className="w-11 h-11 xs:w-12 xs:h-12 rounded-full bg-blue-50 flex items-center justify-center shrink-0 text-blue-600 self-center">
+                {/* Award Badge SVG */}
+                <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="8" r="7" />
+                  <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                </svg>
+              </div>
+              <div>
+                <div className="text-[18px] xs:text-[20px] font-black text-[#0B1F3A] leading-tight">10+ Years</div>
+                <div className="text-[11.5px] xs:text-[12px] font-extrabold text-[#0B1F3A] mt-0.5">Industry Experience</div>
+                <div className="text-[9px] xs:text-[10px] text-slate-400 font-semibold mt-0.5">In finance &amp; lending</div>
+              </div>
+            </div>
+
+          </div>
+        </motion.div>
 
       </div>
     </section>
@@ -2883,7 +3193,7 @@ function TestimonialSection() {
   const row2 = [...reviews2, ...reviews2, ...reviews2];
 
   return (
-    <section className="py-20 lg:py-28 bg-white overflow-hidden border-b border-slate-100">
+    <section className="py-20 lg:py-28 bg-slate-50 overflow-hidden border-y border-slate-100">
       <Stagger className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 mb-12 text-center flex flex-col items-center">
         <StaggerItem>
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 w-fit mb-4 mx-auto">
