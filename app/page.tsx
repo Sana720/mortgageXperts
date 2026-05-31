@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { SiteHeader } from "./components/SiteHeader";
+import { SiteFooter } from "./components/SiteFooter";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -27,11 +29,7 @@ import {
   Minus,
   Clock,
   BarChart3,
-  BookOpen,
-  ChevronRight,
-  Lock,
   Calculator,
-  X,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -47,7 +45,6 @@ import {
   motionCardShadow,
   Stagger,
   StaggerItem,
-  Reveal,
 } from "@/lib/motion";
 
 // ── Premium inline SVG icons (match finalized design style) ───
@@ -101,51 +98,7 @@ const FlameIcon = () => (
 
 
 
-const FacebookIcon = () => (
-  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-    <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z" />
-  </svg>
-);
 
-const InstagramIcon = () => (
-  <svg className="w-4 h-4 fill-none stroke-current stroke-[1.8]" viewBox="0 0 24 24">
-    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-  </svg>
-);
-
-const TikTokIcon = () => (
-  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-    <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.89-.6-4.09-1.5-1.15-1.02-1.92-2.48-2.18-3.99-.02.72-.01 1.44-.02 2.15-.05 4.18.06 8.39-.06 12.57-.15 2.1-1.04 4.17-2.73 5.48-1.74 1.4-4.17 1.93-6.38 1.62-2.3-.23-4.52-1.53-5.69-3.56-1.3-2.17-1.41-5-.36-7.17 1.01-2.19 3.25-3.8 5.67-4.01v4.2c-1.2.14-2.45.89-2.99 2.02-.63 1.27-.47 2.97.45 4.02.82.97 2.16 1.36 3.39 1.08 1.25-.23 2.37-1.3 2.58-2.58.17-1.63.1-3.28.12-4.93V.02z" />
-  </svg>
-);
-
-const YoutubeIcon = () => (
-  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-    <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.517 3.545 12 3.545 12 3.545s-7.517 0-9.388.508a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.11c1.871.508 9.388.508 9.388.508s7.517 0 9.388-.508a3.003 3.003 0 0 0 2.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-  </svg>
-);
-
-
-
-function FooterNavLink({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <Link href={href} className="flex items-center gap-1.5 text-[12.5px] text-slate-300 hover:text-white transition-colors leading-snug">
-      <ChevronRight className="w-3 h-3 text-[#2563EB] shrink-0" strokeWidth={2.5} />
-      <span>{children}</span>
-    </Link>
-  );
-}
-
-function FooterColumnCta({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <Link href={href} className="inline-flex items-center gap-1 text-[12px] font-bold text-[#38BDF8] hover:underline mt-3">
-      {children}
-      <ArrowRight className="w-3.5 h-3.5" />
-    </Link>
-  );
-}
 
 const GoogleIcon = () => (
   <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
@@ -1142,279 +1095,7 @@ function FaqCtaSection() {
   );
 }
 
-// ── PRE-FOOTER BAR + SITE FOOTER ─────────────────────────────────────────────
-function SiteFooterSection() {
-  const [newsletterEmail, setNewsletterEmail] = useState("");
 
-  return (
-    <div className="bg-[#F0F4FA]">
-      {/* Pre-footer contact card */}
-      <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 pt-4 pb-10 md:pb-12">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={VIEWPORT}
-          transition={{ duration: 0.6, ease: EASE_OUT }}
-          className="bg-white rounded-2xl border border-slate-100 shadow-[0_12px_40px_rgba(15,23,42,0.08)] px-5 py-5 sm:px-8 sm:py-6 flex flex-col xl:flex-row xl:items-center justify-between gap-6"
-        >
-          <div className="flex items-start sm:items-center gap-4 flex-1 min-w-0">
-            <div className="w-12 h-12 rounded-full bg-[#EAF3FF] border border-[#D8E7FF] flex items-center justify-center shrink-0">
-              <HomeIcon className="w-6 h-6 text-[#2563EB]" />
-            </div>
-            <p
-              className="text-[18px] sm:text-[20px] lg:text-[22px] font-extrabold text-[#0B1F3A] leading-snug"
-              style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
-            >
-              Specialists in <span className="text-[#2563EB]">Healthcare</span> &amp; <span className="text-[#2563EB]">Investment</span> lending across Australia.
-            </p>
-          </div>
-
-          <div className="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-0 shrink-0">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-0">
-              <div className="flex items-start gap-3 sm:px-6 lg:border-l lg:border-slate-200">
-                <MessageCircle className="w-5 h-5 text-[#2563EB] shrink-0 mt-0.5" />
-                <div>
-                  <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Speak to an Expert</div>
-                  <a href="tel:0450240757" className="text-[16px] font-extrabold text-[#2563EB] hover:underline">
-                    0450 240 757
-                  </a>
-                  <div className="text-[11px] text-slate-400 mt-0.5">Mon - Fri 8am - 6pm AEST</div>
-                </div>
-              </div>
-              <div className="flex items-start gap-3 sm:px-6 sm:border-l sm:border-slate-200">
-                <Mail className="w-5 h-5 text-[#2563EB] shrink-0 mt-0.5" />
-                <div>
-                  <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Email Us</div>
-                  <a href="mailto:mortgage@mortgagexperts.com.au" className="text-[14px] sm:text-[15px] font-extrabold text-[#2563EB] hover:underline break-all">
-                    mortgage@mortgagexperts.com.au
-                  </a>
-                  <div className="text-[11px] text-slate-400 mt-0.5">We reply within 24 hours</div>
-                </div>
-              </div>
-            </div>
-            <Link
-              href="#"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#2563EB] text-white font-bold text-[13px] px-6 py-3.5 hover:bg-[#1d4ed8] transition-colors shadow-md shadow-blue-200 whitespace-nowrap lg:ml-6"
-            >
-              Book a Free Consultation
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Main footer */}
-      <footer className="bg-[#000b1e] rounded-t-[28px] text-white">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 pt-12 md:pt-14 pb-8">
-          <Stagger className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 mb-12">
-            {/* Brand column */}
-            <StaggerItem className="lg:col-span-3">
-              <Link href="/" className="inline-block mb-5">
-                <Image
-                  src="/images/footer-logo.png"
-                  alt="Mortgage Xperts"
-                  width={200}
-                  height={56}
-                  className="h-11 sm:h-12 w-auto object-contain object-left"
-                />
-              </Link>
-              <p className="text-[13px] text-slate-400 leading-relaxed mb-6 max-w-xs">
-                We simplify the home loan journey and help Australians achieve their property goals with confidence and clarity.
-              </p>
-              <ul className="space-y-3 mb-6">
-                <li>
-                  <a href="tel:0450240757" className="flex items-center gap-2.5 text-[13px] text-slate-300 hover:text-white transition-colors">
-                    <Phone className="w-4 h-4 text-[#2563EB] shrink-0" />
-                    0450 240 757
-                  </a>
-                </li>
-                <li>
-                  <a href="mailto:mortgage@mortgagexperts.com.au" className="flex items-center gap-2.5 text-[13px] text-slate-300 hover:text-white transition-colors break-all">
-                    <Mail className="w-4 h-4 text-[#2563EB] shrink-0" />
-                    mortgage@mortgagexperts.com.au
-                  </a>
-                </li>
-                <li className="flex items-start gap-2.5 text-[13px] text-slate-300">
-                  <MapPin className="w-4 h-4 text-[#2563EB] shrink-0 mt-0.5" />
-                  <span>Level 20, 1 Market St, Sydney NSW 2000</span>
-                </li>
-              </ul>
-              <div className="flex items-center gap-2.5">
-                {[
-                  { Icon: FacebookIcon, label: "Facebook", href: "https://www.facebook.com/MortgageXperts.au/", hoverClass: "hover:bg-[#1877F2]" },
-                  { Icon: InstagramIcon, label: "Instagram", href: "https://www.instagram.com/mortgagexperts.au/#", hoverClass: "hover:bg-[#E4405F]" },
-                  { Icon: TikTokIcon, label: "TikTok", href: "https://www.tiktok.com/@mortgagexperts.au?_t=ZS-90VgVATQ560&_r=1", hoverClass: "hover:bg-[#FE2C55]" },
-                  { Icon: YoutubeIcon, label: "YouTube", href: "https://www.youtube.com/@mortgagexpertsau", hoverClass: "hover:bg-[#FF0000]" },
-                ].map(({ Icon, label, href, hoverClass }) => (
-                  <a
-                    key={label}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={label}
-                    className={`w-9 h-9 rounded-full bg-[#0a1628] border border-white/10 flex items-center justify-center text-slate-300 hover:text-white transition-all duration-300 hover:scale-110 ${hoverClass}`}
-                  >
-                    <Icon />
-                  </a>
-                ))}
-              </div>
-            </StaggerItem>
-
-            {/* Nav columns */}
-            <StaggerItem className="lg:col-span-9 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8">
-              <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <HomeIcon className="w-4 h-4 text-[#2563EB]" />
-                  <h4 className="text-[13px] font-extrabold text-white">Home Loan Solutions</h4>
-                </div>
-                <div className="flex flex-col gap-2.5">
-                  <FooterNavLink href="#">Healthcare Professionals</FooterNavLink>
-                  <FooterNavLink href="#">Investment Loans</FooterNavLink>
-                  <FooterNavLink href="#">First Home Buyers</FooterNavLink>
-                  <FooterNavLink href="#">Refinancing</FooterNavLink>
-                  <FooterNavLink href="#">Self-Employed Loans</FooterNavLink>
-                </div>
-                <FooterColumnCta href="#">Explore solutions</FooterColumnCta>
-              </div>
-
-              <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <Calculator className="w-4 h-4 text-[#2563EB]" />
-                  <h4 className="text-[13px] font-extrabold text-white">Calculators &amp; Tools</h4>
-                </div>
-                <div className="flex flex-col gap-2.5">
-                  <FooterNavLink href="#">Borrowing Power</FooterNavLink>
-                  <FooterNavLink href="#">Repayment</FooterNavLink>
-                  <FooterNavLink href="#">Stamp Duty</FooterNavLink>
-                  <FooterNavLink href="#">Loan Comparison</FooterNavLink>
-                  <FooterNavLink href="#">Refinance</FooterNavLink>
-                </div>
-                <FooterColumnCta href="#">View all tools</FooterColumnCta>
-              </div>
-
-              <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <BookOpen className="w-4 h-4 text-[#2563EB]" />
-                  <h4 className="text-[13px] font-extrabold text-white">Resources</h4>
-                </div>
-                <div className="flex flex-col gap-2.5">
-                  <FooterNavLink href="#">Home Loan Guides</FooterNavLink>
-                  <FooterNavLink href="#">FAQs</FooterNavLink>
-                  <FooterNavLink href="#">Knowledge Hub</FooterNavLink>
-                  <FooterNavLink href="#">Market Insights</FooterNavLink>
-                  <FooterNavLink href="#">Blog</FooterNavLink>
-                </div>
-                <FooterColumnCta href="#">Explore resources</FooterColumnCta>
-              </div>
-
-              <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <MapPin className="w-4 h-4 text-[#2563EB]" />
-                  <h4 className="text-[13px] font-extrabold text-white">Locations</h4>
-                </div>
-                <div className="flex flex-col gap-2.5">
-                  <FooterNavLink href="#">NSW</FooterNavLink>
-                  <FooterNavLink href="#">Victoria</FooterNavLink>
-                  <FooterNavLink href="#">QLD</FooterNavLink>
-                  <FooterNavLink href="#">SA</FooterNavLink>
-                  <FooterNavLink href="#">WA</FooterNavLink>
-                </div>
-                <FooterColumnCta href="#">View all locations</FooterColumnCta>
-              </div>
-
-              <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <Shield className="w-4 h-4 text-[#2563EB]" />
-                  <h4 className="text-[13px] font-extrabold text-white">About Us</h4>
-                </div>
-                <div className="flex flex-col gap-2.5">
-                  <FooterNavLink href="#">About Mortgage Xperts</FooterNavLink>
-                  <FooterNavLink href="#">Our Lenders</FooterNavLink>
-                  <FooterNavLink href="#">Reviews</FooterNavLink>
-                  <FooterNavLink href="#">Careers</FooterNavLink>
-                  <FooterNavLink href="#">Contact Us</FooterNavLink>
-                </div>
-              </div>
-            </StaggerItem>
-          </Stagger>
-
-          {/* Newsletter */}
-          <Reveal direction="up" className="rounded-2xl border border-white/10 bg-[#0a1628]/80 p-5 sm:p-6 mb-10">
-            <div className="flex flex-col xl:flex-row xl:items-center gap-6">
-              <div className="flex items-start gap-4 flex-1 min-w-0">
-                <div className="relative shrink-0">
-                  <div className="w-11 h-11 rounded-full bg-[#2563EB]/20 border border-[#2563EB]/30 flex items-center justify-center">
-                    <Mail className="w-5 h-5 text-[#38BDF8]" />
-                  </div>
-                  <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-[#2563EB] border-2 border-[#0a1628]" />
-                </div>
-                <p className="text-[14px] sm:text-[15px] text-slate-300 leading-relaxed">
-                  Stay ahead with the latest{" "}
-                  <span className="text-white font-bold">mortgage insights.</span> News, rate updates and expert tips delivered straight to your inbox.
-                </p>
-              </div>
-
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4 xl:max-w-[480px] shrink-0 w-full xl:w-auto">
-                <div className="relative flex-1 min-w-[220px]">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
-                  <input
-                    type="email"
-                    value={newsletterEmail}
-                    onChange={(e) => setNewsletterEmail(e.target.value)}
-                    placeholder="Enter your email address"
-                    className="w-full rounded-xl border border-white/20 bg-[#000b1e] py-3.5 pl-11 pr-[120px] text-[13px] text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/40"
-                  />
-                  <button
-                    type="button"
-                    className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-lg bg-[#2563EB] px-4 py-2 text-[12px] font-bold text-white hover:bg-[#1d4ed8] transition-colors inline-flex items-center gap-1"
-                  >
-                    Subscribe
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 text-[11px] text-slate-400 xl:shrink-0">
-                <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
-                  <Shield className="w-3.5 h-3.5 text-[#2563EB] shrink-0" />
-                  No spam. Ever. Unsubscribe anytime.
-                </span>
-                <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
-                  <Lock className="w-3.5 h-3.5 text-[#2563EB] shrink-0" />
-                  Your privacy is our priority.
-                </span>
-              </div>
-            </div>
-          </Reveal>
-
-          {/* Legal bar */}
-          <Reveal delay={0.08} direction="fade" className="border-t border-white/10 pt-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4 text-[11px] sm:text-[12px] text-slate-400">
-            <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-3">
-              <span>© 2026 Mortgage Xperts. All Rights Reserved.</span>
-              <span className="hidden sm:inline text-white/20">·</span>
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                {["Privacy Policy", "Terms & Conditions", "Credit Guide", "Disclaimer"].map((item, i) => (
-                  <span key={item} className="flex items-center gap-3">
-                    {i > 0 && <span className="text-white/20 hidden sm:inline">·</span>}
-                    <Link href="#" className="hover:text-white transition-colors">
-                      {item}
-                    </Link>
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div className="flex items-center gap-2 text-slate-400 shrink-0">
-              <svg className="w-4 h-4 text-[#2563EB] shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                <path d="M12 2C8.5 2 5.5 4 4 7c-1.2 2.2-1 5 .5 7.2.8 1.1 2 2.5 3.5 4.3.9 1.1 1.8 2.2 2.5 3.2.4.6.9 1.3 1 1.3s.6-.7 1-1.3c.7-1 1.6-2.1 2.5-3.2 1.5-1.8 2.7-3.2 3.5-4.3 1.5-2.2 1.7-5 .5-7.2C18.5 4 15.5 2 12 2zm0 5.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5z" />
-              </svg>
-              <span>Australian Credit Licence 00000</span>
-            </div>
-          </Reveal>
-        </div>
-      </footer>
-    </div>
-  );
-}
 
 // ── HERO SLIDER COMPONENT ──
 const SLIDER_DATA = [
@@ -1732,13 +1413,13 @@ function HeroSlider() {
 
         {/* RIGHT: Floating cards (visible on lg+) */}
         <div className="hidden lg:block lg:col-span-6 relative h-[500px]">
-          {/* Card 1 – Loans Approved (top right) */}
+          {/* Card 1 – Loans Approved (top-left of right column) */}
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
+            initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.15, duration: 0.65, ease: EASE_OUT }}
             whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
-            className="absolute top-10 right-2 w-[210px] bg-white rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-4 flex items-start gap-3 z-20 transition-shadow duration-300"
+            className="absolute top-10 left-6 w-[210px] bg-white rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-4 flex items-start gap-3 z-20 transition-shadow duration-300"
           >
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-white transition-colors duration-500 ${active.statIconBg}`}>
               <TrendingUp className="w-5 h-5" />
@@ -1750,13 +1431,13 @@ function HeroSlider() {
             </div>
           </motion.div>
 
-          {/* Card 2 – Approval Rate (middle right) */}
+          {/* Card 2 – Approval Rate (middle-left of right column, staggered) */}
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
+            initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.25, duration: 0.65, ease: EASE_OUT }}
             whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
-            className="absolute top-[52%] right-0 w-[210px] bg-white rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-4 flex items-start gap-3 z-20 transition-shadow duration-300"
+            className="absolute top-[52%] left-24 w-[210px] bg-white rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-4 flex items-start gap-3 z-20 transition-shadow duration-300"
           >
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-white transition-colors duration-500 ${active.statIconBg}`}>
               <Percent className="w-5 h-5" />
@@ -1768,7 +1449,7 @@ function HeroSlider() {
             </div>
           </motion.div>
 
-          {/* Card 3 – Tailored Solutions (bottom center) */}
+          {/* Card 3 – Tailored Solutions (bottom-left of right column) */}
           <AnimatePresence mode="wait">
             <motion.div
               key={currentSlide}
@@ -1777,7 +1458,7 @@ function HeroSlider() {
               exit={{ opacity: 0, y: -30 }}
               transition={{ duration: 0.5, ease: EASE_OUT }}
               whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
-              className="absolute bottom-8 left-4 right-12 bg-white rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.08)] overflow-hidden flex items-stretch z-20 transition-shadow duration-300"
+              className="absolute bottom-8 left-8 w-[340px] bg-white rounded-2xl border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.08)] overflow-hidden flex items-stretch z-20 transition-shadow duration-300"
               style={{ height: "76px" }}
             >
               {/* Text side with padding */}
@@ -1846,7 +1527,6 @@ function HeroSlider() {
 }
 
 export default function Home() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showStickyCta, setShowStickyCta] = useState(false);
 
   useEffect(() => {
@@ -1872,248 +1552,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-white font-inter">
 
-      {/* ── TOP BAR ── */}
-      <div className="hidden lg:block bg-gradient-to-r from-[#081324] via-[#0B1F3A] to-[#081324] border-b border-white/5 text-slate-300 text-[11.5px] font-medium font-inter">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-2 flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2.5 group cursor-default">
-              <div className="w-5 h-5 rounded-full bg-[#38BDF8]/10 flex items-center justify-center group-hover:bg-[#38BDF8]/20 transition-colors">
-                <MapPin className="w-3 h-3 text-[#38BDF8]" />
-              </div>
-              <span className="hidden sm:inline tracking-wide">Locations: NSW | VIC | QLD | SA | WA | TAS | ACT | NT</span>
-              <span className="sm:hidden text-[10.5px]">Locations: NSW | VIC | QLD | SA...</span>
-            </div>
-            <div className="hidden md:flex items-center gap-2.5 border-l border-white/10 pl-6 group">
-              <div className="w-5 h-5 rounded-full bg-[#38BDF8]/10 flex items-center justify-center group-hover:bg-[#38BDF8]/20 transition-colors">
-                <Mail className="w-3 h-3 text-[#38BDF8]" />
-              </div>
-              <a href="mailto:mortgage@mortgagexperts.com.au" className="hover:text-white transition-colors tracking-wide">
-                mortgage@mortgagexperts.com.au
-              </a>
-            </div>
-          </div>
-          <div className="flex items-center gap-2.5">
-            <a href="https://www.facebook.com/MortgageXperts.au/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-6 h-6 rounded-full flex items-center justify-center bg-white/5 hover:bg-[#1877F2] text-white/70 hover:text-white transition-all duration-300 hover:scale-110">
-              <FacebookIcon />
-            </a>
-            <a href="https://www.instagram.com/mortgagexperts.au/#" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-6 h-6 rounded-full flex items-center justify-center bg-white/5 hover:bg-[#E4405F] text-white/70 hover:text-white transition-all duration-300 hover:scale-110">
-              <InstagramIcon />
-            </a>
-            <a href="https://www.tiktok.com/@mortgagexperts.au?_t=ZS-90VgVATQ560&_r=1" target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="w-6 h-6 rounded-full flex items-center justify-center bg-white/5 hover:bg-[#FE2C55] text-white/70 hover:text-white transition-all duration-300 hover:scale-110">
-              <TikTokIcon />
-            </a>
-            <a href="https://www.youtube.com/@mortgagexpertsau" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="w-6 h-6 rounded-full flex items-center justify-center bg-white/5 hover:bg-[#FF0000] text-white/70 hover:text-white transition-all duration-300 hover:scale-110">
-              <YoutubeIcon />
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {/* ── MAIN HEADER ── */}
-      <header className="bg-white border-b border-slate-100 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-2 lg:py-3 flex items-center justify-between gap-6">
-
-          {/* Logo */}
-          <Link href="/" className="shrink-0 flex items-center">
-            <Image
-              src="/images/logo.png"
-              alt="Mortgage Xperts Logo"
-              width={180}
-              height={56}
-              priority
-              className="object-contain h-11 lg:h-14 w-auto"
-            />
-          </Link>
-
-          {/* Center Navigation */}
-          <nav className="hidden lg:flex items-center gap-7 text-[13.5px] font-semibold text-[#0B1F3A]">
-            <Link href="/" className="text-[#2563EB] border-b-2 border-[#2563EB] pb-0.5">Home</Link>
-            <button className="flex items-center gap-1 hover:text-[#2563EB] transition-colors">
-              Calculators <ChevronDown className="w-3.5 h-3.5 mt-0.5" />
-            </button>
-            <button className="flex items-center gap-1 hover:text-[#2563EB] transition-colors">
-              Guides <ChevronDown className="w-3.5 h-3.5 mt-0.5" />
-            </button>
-            <button className="flex items-center gap-1 hover:text-[#2563EB] transition-colors">
-              Home Loans <ChevronDown className="w-3.5 h-3.5 mt-0.5" />
-            </button>
-            <Link href="#" className="hover:text-[#2563EB] transition-colors">About Us</Link>
-            <button className="flex items-center gap-1 hover:text-[#2563EB] transition-colors">
-              Resources <ChevronDown className="w-3.5 h-3.5 mt-0.5" />
-            </button>
-            <Link href="#" className="hover:text-[#2563EB] transition-colors">Contact</Link>
-          </nav>
-
-          {/* Right Actions */}
-          <div className="flex items-center gap-2.5 sm:gap-4 shrink-0">
-            <button className="hidden md:flex items-center text-[#0B1F3A] hover:text-[#2563EB] transition-colors">
-              <Search className="w-5 h-5" />
-            </button>
-            <div className="hidden md:flex items-center gap-1.5 text-[13.5px]">
-              <Phone className="w-4 h-4 text-[#2563EB] shrink-0" />
-              <span className="text-slate-500 font-medium">Call:</span>
-              <span className="font-bold text-[#0B1F3A]">0450 240 757</span>
-            </div>
-            {/* Desktop Button */}
-            <Link
-              href="#"
-              className="hidden sm:flex bg-[#2563EB] text-white text-[13px] font-bold py-2.5 px-5 rounded-full items-center gap-1.5 hover:bg-[#1d4ed8] transition-all duration-300 shadow-md shadow-blue-200 whitespace-nowrap"
-            >
-              Book Free Consultation <ArrowRight className="w-4 h-4" />
-            </Link>
-            {/* Mobile Quick Action Buttons (Replacing single Let's Talk button with 2 Stunning Circular Icons) */}
-            <div className="flex sm:hidden items-center gap-3">
-              {/* Call Icon Button */}
-              <a
-                href="tel:0450240757"
-                className="w-10 h-10 rounded-full border-2 border-[#0EA5E9] bg-[#F0F9FF] flex items-center justify-center text-[#0EA5E9] hover:bg-[#E0F2FE] hover:scale-105 active:scale-95 transition-all duration-300 shadow-sm"
-                aria-label="Call Us"
-              >
-                <Phone className="w-4.5 h-4.5" strokeWidth={2.5} />
-              </a>
-              {/* Email Icon Button */}
-              <a
-                href="mailto:mortgage@mortgagexperts.com.au"
-                className="w-10 h-10 rounded-full bg-[#FF6B00] flex items-center justify-center text-white hover:bg-[#E05E00] hover:scale-105 active:scale-95 transition-all duration-300 shadow-md shadow-orange-500/20"
-                aria-label="Email Us"
-              >
-                <Mail className="w-4.5 h-4.5" strokeWidth={2.5} />
-              </a>
-            </div>
-            {/* Mobile hamburger */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden flex flex-col gap-1.5 p-2 z-50 relative focus:outline-none cursor-pointer"
-              aria-label="Toggle Menu"
-            >
-              <span className={`w-5.5 h-0.5 block transition-transform duration-300 ${isMobileMenuOpen ? "rotate-45 translate-y-2 bg-[#0B1F3A]" : "bg-[#0EA5E9] sm:bg-[#0B1F3A]"}`} />
-              <span className={`w-5.5 h-0.5 block transition-opacity duration-300 ${isMobileMenuOpen ? "opacity-0" : "bg-[#0EA5E9] sm:bg-[#0B1F3A]"}`} />
-              <span className={`w-5.5 h-0.5 block transition-transform duration-300 ${isMobileMenuOpen ? "-rotate-45 -translate-y-2 bg-[#0B1F3A]" : "bg-[#0EA5E9] sm:bg-[#0B1F3A]"}`} />
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* Mobile Drawer (Off-Canvas) Navigation */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <>
-            {/* Backdrop Overlay */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="lg:hidden fixed inset-0 bg-[#0B1F3A]/60 backdrop-blur-sm z-50"
-            />
-
-            {/* Sliding Panel */}
-            <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 28, stiffness: 220 }}
-              className="lg:hidden fixed inset-y-0 right-0 w-[300px] sm:w-[340px] bg-white z-50 shadow-2xl flex flex-col p-6 overflow-y-auto"
-            >
-              {/* Header */}
-              <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-6 shrink-0">
-                <div className="relative h-9 w-32">
-                  <Image src="/images/logo.png" alt="Mortgage Xperts Logo" fill className="object-contain object-left" />
-                </div>
-                <button
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-[#0B1F3A] transition-colors"
-                  aria-label="Close Menu"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Navigation Links */}
-              <div className="flex-1 flex flex-col gap-4 font-semibold text-[#0B1F3A] text-[15px]">
-                <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors pb-2 border-b border-slate-50">
-                  Home
-                </Link>
-
-                {/* Calculators Dropdown/Block */}
-                <div className="border-b border-slate-50 pb-2 flex flex-col gap-1.5">
-                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Calculators</span>
-                  <div className="pl-2 flex flex-col gap-2.5 text-[13.5px] font-medium text-slate-600">
-                    <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">
-                      Borrowing Power Calculator
-                    </Link>
-                    <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">
-                      Mortgage Repayment Calculator
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Guides Dropdown/Block */}
-                <div className="border-b border-slate-50 pb-2 flex flex-col gap-1.5">
-                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Guides</span>
-                  <div className="pl-2 flex flex-col gap-2.5 text-[13.5px] font-medium text-slate-600">
-                    <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">
-                      First Home Buyer Guide
-                    </Link>
-                    <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">
-                      Refinancing Guide
-                    </Link>
-                  </div>
-                </div>
-
-                <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors pb-2 border-b border-slate-50">
-                  About Us
-                </Link>
-                <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors pb-2 border-b border-slate-50">
-                  Contact
-                </Link>
-              </div>
-
-              {/* Bottom Section: Contact & Socials */}
-              <div className="mt-auto pt-6 border-t border-slate-100 shrink-0 flex flex-col gap-4">
-                <div className="flex flex-col gap-2.5">
-                  <a href="tel:0450240757" className="flex items-center gap-2 text-[13px] font-semibold text-slate-600 hover:text-[#2563EB] transition-colors">
-                    <Phone className="w-4 h-4 text-[#2563EB] shrink-0" /> 0450 240 757
-                  </a>
-                  <a href="mailto:mortgage@mortgagexperts.com.au" className="flex items-center gap-2 text-[13px] font-semibold text-slate-600 hover:text-[#2563EB] transition-colors break-all">
-                    <Mail className="w-4 h-4 text-[#2563EB] shrink-0" /> mortgage@mortgagexperts.com.au
-                  </a>
-                </div>
-
-                {/* Social Icons */}
-                <div className="flex items-center gap-3">
-                  {[
-                    { Icon: FacebookIcon, label: "Facebook", href: "https://www.facebook.com/MortgageXperts.au/", hoverClass: "hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2]/20" },
-                    { Icon: InstagramIcon, label: "Instagram", href: "https://www.instagram.com/mortgagexperts.au/#", hoverClass: "hover:bg-[#E4405F] hover:text-white hover:border-[#E4405F]/20" },
-                    { Icon: TikTokIcon, label: "TikTok", href: "https://www.tiktok.com/@mortgagexperts.au?_t=ZS-90VgVATQ560&_r=1", hoverClass: "hover:bg-[#FE2C55] hover:text-white hover:border-[#FE2C55]/20" },
-                    { Icon: YoutubeIcon, label: "YouTube", href: "https://www.youtube.com/@mortgagexpertsau", hoverClass: "hover:bg-[#FF0000] hover:text-white hover:border-[#FF0000]/20" },
-                  ].map(({ Icon, label, href, hoverClass }) => (
-                    <a
-                      key={label}
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={label}
-                      className={`w-8 h-8 rounded-full bg-slate-50 border border-slate-150 flex items-center justify-center text-slate-500 transition-all duration-300 ${hoverClass}`}
-                    >
-                      <Icon />
-                    </a>
-                  ))}
-                </div>
-
-                {/* Consultation Button */}
-                <Link
-                  href="#"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="bg-[#2563EB] text-white text-[13.5px] font-bold py-3 px-5 rounded-full flex items-center justify-center gap-1.5 hover:bg-[#1d4ed8] transition-colors shadow-md shadow-blue-100 text-center"
-                >
-                  Book Free Consultation <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+      <SiteHeader />
 
       {/* ── HERO SLIDER SECTION ── */}
       <HeroSlider />
@@ -2183,7 +1622,7 @@ export default function Home() {
             <div className="h-px bg-slate-100 w-full" />
 
             {/* Bottom Row: Elite Bank Broker Status Badges */}
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-1">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-1 w-full overflow-hidden">
               <div className="flex items-center gap-2 shrink-0">
                 <Shield className="w-4 h-4 text-[#2563EB]" />
                 <span className="text-[11.5px] font-bold text-[#0B1F3A] uppercase tracking-wider">
@@ -2191,7 +1630,8 @@ export default function Home() {
                 </span>
               </div>
               
-              <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+              {/* Desktop-only Static Badges */}
+              <div className="hidden md:flex flex-wrap items-center justify-center gap-2 sm:gap-3">
                 {/* CBA Platinum */}
                 <div className="inline-flex items-center gap-1.5 bg-[#FDFBF7] border border-[#EBE6DD] rounded-xl px-2.5 py-1.5 sm:px-4 sm:py-2 shadow-[0_2px_8px_rgba(0,0,0,0.01)] transition-all duration-300 hover:scale-[1.02] hover:shadow-sm">
                   <GoldStarIcon />
@@ -2206,6 +1646,34 @@ export default function Home() {
                 <div className="inline-flex items-center gap-1.5 bg-[#FDFBF7] border border-[#EBE6DD] rounded-xl px-2.5 py-1.5 sm:px-4 sm:py-2 shadow-[0_2px_8px_rgba(0,0,0,0.01)] transition-all duration-300 hover:scale-[1.02] hover:shadow-sm">
                   <FlameIcon />
                   <span className="text-[#0B1F3A] font-bold text-[11px] sm:text-[12.5px] tracking-wide whitespace-nowrap">St.George Flame</span>
+                </div>
+              </div>
+
+              {/* Mobile-only Scrolling Marquee */}
+              <div 
+                className="md:hidden flex-1 overflow-hidden relative flex items-center h-[45px] w-full my-1" 
+                style={{ WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)" }}
+              >
+                <div className="flex w-max animate-marquee items-center hover:pause">
+                  {[1, 2, 3, 4].map((_, index) => (
+                    <React.Fragment key={index}>
+                      {/* CBA Platinum */}
+                      <div className="inline-flex items-center gap-1.5 bg-[#FDFBF7] border border-[#EBE6DD] rounded-xl px-3 py-1.5 shadow-[0_2px_8px_rgba(0,0,0,0.01)] mr-3 shrink-0">
+                        <GoldStarIcon />
+                        <span className="text-[#0B1F3A] font-bold text-[11px] tracking-wide whitespace-nowrap">CBA Platinum</span>
+                      </div>
+                      {/* Westpac Platinum */}
+                      <div className="inline-flex items-center gap-1.5 bg-[#FDFBF7] border border-[#EBE6DD] rounded-xl px-3 py-1.5 shadow-[0_2px_8px_rgba(0,0,0,0.01)] mr-3 shrink-0">
+                        <GoldStarIcon />
+                        <span className="text-[#0B1F3A] font-bold text-[11px] tracking-wide whitespace-nowrap">Westpac Platinum</span>
+                      </div>
+                      {/* St.George Flame */}
+                      <div className="inline-flex items-center gap-1.5 bg-[#FDFBF7] border border-[#EBE6DD] rounded-xl px-3 py-1.5 shadow-[0_2px_8px_rgba(0,0,0,0.01)] mr-3 shrink-0">
+                        <FlameIcon />
+                        <span className="text-[#0B1F3A] font-bold text-[11px] tracking-wide whitespace-nowrap">St.George Flame</span>
+                      </div>
+                    </React.Fragment>
+                  ))}
                 </div>
               </div>
             </div>
@@ -2656,7 +2124,7 @@ export default function Home() {
       <FaqCtaSection />
 
       {/* ── PRE-FOOTER + FOOTER ── */}
-      <SiteFooterSection />
+      <SiteFooter />
 
       {/* Sticky Mobile CTA Bar */}
       <AnimatePresence>

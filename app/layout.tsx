@@ -15,20 +15,58 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "MORTGAGE XPERTS | Smarter Home Loan Solutions for Australians",
-  description: "Expert guidance. Better choices. Stronger outcomes. We simplify the home loan journey and help you make confident financial decisions across Australia.",
-  keywords: ["Mortgage Australia", "Home Loans", "Mortgage Brokers", "Refinance", "Australian Home Loans", "Mortgage Experts"],
+  metadataBase: new URL("https://mortgagexperts.com.au"),
+  title: "Mortgage Xperts - Australia | Leading Nepali Mortgage Brokerage Firm",
+  description: "Australia’s top-rated Nepali mortgage experts, helping clients secure better home loans, refinance smarter, and invest with confidence - backed by 5-star reviews and trusted by hundreds of satisfied clients, led by Aakash, The Mortgage Mate.",
+  keywords: [
+    "Nepali mortgage broker",
+    "Nepali mortgage broker Australia",
+    "Nepali mortgage broker Sydney",
+    "Nepali mortgage broker Melbourne",
+    "Nepali mortgage broker Brisbane",
+    "Nepali mortgage broker Adelaide",
+    "Nepali mortgage broker Perth",
+    "Mortgage Xperts",
+    "Aakash Mortgage Mate",
+    "Aakash K C Mortgage Broker",
+    "Nepali home loan broker",
+    "Refinance home loan",
+    "First home buyer Nepali broker",
+    "Best mortgage broker Sydney",
+    "Australian mortgage broker"
+  ],
   authors: [{ name: "Mortgage Xperts" }],
-  viewport: "width=device-width, initial-scale=1, maximum-scale=5",
   robots: "index, follow",
+  alternates: {
+    canonical: "https://mortgagexperts.com.au/",
+  },
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.png",
+  },
   openGraph: {
-    title: "MORTGAGE XPERTS | Smarter Home Loan Solutions for Australians",
-    description: "Expert guidance. Better choices. Stronger outcomes. We simplify the home loan journey and help you make confident financial decisions.",
-    url: "https://mortgagexperts.com.au",
+    title: "Mortgage Xperts - Australia | Leading Nepali Mortgage Brokerage Firm",
+    description: "Australia’s top-rated Nepali mortgage experts, helping clients secure better home loans, refinance smarter, and invest with confidence - backed by 5-star reviews and trusted by hundreds of satisfied clients, led by Aakash, The Mortgage Mate.",
+    url: "https://mortgagexperts.com.au/",
     siteName: "Mortgage Xperts",
     locale: "en_AU",
     type: "website",
+    images: [
+      {
+        url: "/favicon.png",
+        width: 512,
+        height: 512,
+        alt: "Mortgage Xperts Logo",
+      }
+    ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Mortgage Xperts - Australia | Leading Nepali Mortgage Brokerage Firm",
+    description: "Australia’s top-rated Nepali mortgage experts, helping clients secure better home loans, refinance smarter, and invest with confidence - backed by 5-star reviews and trusted by hundreds of satisfied clients.",
+    images: ["/favicon.png"],
+  }
 };
 
 export default function RootLayout({
