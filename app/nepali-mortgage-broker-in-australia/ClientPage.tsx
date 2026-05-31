@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Sparkles,
   ArrowRight,
@@ -173,17 +173,6 @@ export function ClientPage() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // NavSticky IntersectionObserver — triggers fixed sub-nav when sentinel leaves viewport
-  useEffect(() => {
-    if (!navSentinelRef.current) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setNavSticky(!entry.isIntersecting),
-      { threshold: 0, rootMargin: "0px" }
-    );
-    observer.observe(navSentinelRef.current);
-    return () => observer.disconnect();
   }, []);
 
   // Borrowing Capacity Widget State
