@@ -2088,7 +2088,7 @@ export function ClientPage() {
                     <motion.button
                       key={type.key}
                       variants={premiumFadeUp}
-                      onClick={() => setActiveLoanType(type.key as any)}
+                      onClick={() => setActiveLoanType(type.key as "variable" | "fixed" | "split")}
                       whileHover={{ x: 4 }}
                       className={`text-left p-5 rounded-2xl border font-bold text-[14px] transition-all duration-300 flex items-center justify-between group ${
                         isSelected
@@ -2334,7 +2334,7 @@ export function ClientPage() {
               ].map((tab) => (
                 <button
                   key={tab.key}
-                  onClick={() => { setActiveFaqTab(tab.key as any); setOpenFaq(null); }}
+                  onClick={() => { setActiveFaqTab(tab.key as "buying" | "loans" | "grants"); setOpenFaq(null); }}
                   className={`px-6 py-2.5 rounded-xl text-[13px] font-bold transition-all duration-300 ${
                     activeFaqTab === tab.key
                       ? "bg-[#2563EB] text-white shadow-sm"
