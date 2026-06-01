@@ -41,7 +41,7 @@ const YoutubeIcon = () => (
   </svg>
 );
 
-export function SiteHeader() {
+export function SiteHeader({ isSticky = true }: { isSticky?: boolean }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileHomeLoansOpen, setIsMobileHomeLoansOpen] = useState(false);
 
@@ -66,14 +66,14 @@ export function SiteHeader() {
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2.5 group cursor-default">
               <div className="w-5 h-5 rounded-full bg-[#38BDF8]/10 flex items-center justify-center group-hover:bg-[#38BDF8]/20 transition-colors">
-                <MapPin className="w-3 h-3 text-[#38BDF8]" />
+                <MapPin className="w-3.5 h-3.5 text-[#38BDF8]" />
               </div>
               <span className="hidden sm:inline tracking-wide">Locations: NSW | VIC | QLD | SA | WA | TAS | ACT | NT</span>
               <span className="sm:hidden text-[10.5px]">Locations: NSW | VIC | QLD | SA...</span>
             </div>
             <div className="hidden md:flex items-center gap-2.5 border-l border-white/10 pl-6 group">
               <div className="w-5 h-5 rounded-full bg-[#38BDF8]/10 flex items-center justify-center group-hover:bg-[#38BDF8]/20 transition-colors">
-                <Mail className="w-3 h-3 text-[#38BDF8]" />
+                <Mail className="w-3.5 h-3.5 text-[#38BDF8]" />
               </div>
               <a href="mailto:mortgage@mortgagexperts.com.au" className="hover:text-white transition-colors tracking-wide">
                 mortgage@mortgagexperts.com.au
@@ -98,7 +98,7 @@ export function SiteHeader() {
       </div>
 
       {/* ── MAIN HEADER ── */}
-      <header className="bg-white border-b border-slate-100 sticky top-0 z-50 shadow-sm">
+      <header className={`bg-white border-b border-slate-100 z-50 shadow-sm ${isSticky ? "sticky top-0" : "relative"}`}>
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-2 lg:py-3 flex items-center justify-between gap-6">
 
           {/* Logo */}

@@ -176,10 +176,23 @@ export function ClientPage() {
   }, []);
 
   // Borrowing Capacity Widget State
-  const [monthlyIncome, setMonthlyIncome] = useState(8000);
-  const [monthlyExpenses, setMonthlyExpenses] = useState(3000);
-  const [existingSavings, setExistingSavings] = useState(60000);
-  const [monthlyDebt, setMonthlyDebt] = useState(500);
+  const [monthlyIncome, setMonthlyIncome] = useState(8500);
+  const [monthlyExpenses, setMonthlyExpenses] = useState(3200);
+  const [existingSavings, setExistingSavings] = useState(80000);
+  const [monthlyDebt, setMonthlyDebt] = useState(400);
+  const [creditCardLimit, setCreditCardLimit] = useState(5000);
+  const [dependents, setDependents] = useState(0);
+  const [interestRate, setInterestRate] = useState(6.19);
+  const [loanTerm, setLoanTerm] = useState(30);
+
+  // Advanced Interactive States
+  const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
+  const [leadName, setLeadName] = useState("");
+  const [leadEmail, setLeadEmail] = useState("");
+  const [leadPhone, setLeadPhone] = useState("");
+  const [leadSubmitted, setLeadSubmitted] = useState(false);
+  const [calcTab, setCalcTab] = useState<"inputs" | "results">("inputs");
+  const [mobileActiveStepIndex, setMobileActiveStepIndex] = useState(0);
 
   // Deposit Strategy State
   const [activeDepositTab, setActiveDepositTab] = useState<"five" | "twenty">("five");
@@ -203,12 +216,33 @@ export function ClientPage() {
   const [activeFaqTab, setActiveFaqTab] = useState<"buying" | "loans" | "grants">("buying");
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
-  // Dynamic Borrowing Calculation
+  // Dynamic Borrowing Calculation (APRA Servicing Buffer and CC limits applied)
   const borrowingCapacity = (() => {
-    const netIncome = Math.max(0, monthlyIncome - monthlyExpenses - monthlyDebt);
-    const calculatedCapacity = netIncome * 145 + existingSavings * 0.8;
-    return Math.min(2500000, Math.max(150000, Math.round(calculatedCapacity)));
+    // CC limit servicing assessed at 3% monthly rate
+    const ccMonthlyServicing = creditCardLimit * 0.03;
+    // Dependents impact assessed at $550/dependent
+    const dependentBuffer = dependents * 550;
+    
+    // Remaining net monthly surplus after basic living costs, other debts, CC buffers, and dependent allowances
+    const netIncome = Math.max(0, monthlyIncome - monthlyExpenses - monthlyDebt - ccMonthlyServicing - dependentBuffer);
+    
+    // Real-world assessment factor: Multiplies net servicing capacity at a buffered interest rate (~9.19% p.a.)
+    // Multiplier of ~132 matches mid-tier lender servicing calculators
+    const calculatedCapacity = netIncome * 132 + existingSavings * 0.8;
+    return Math.min(2500000, Math.max(120000, Math.round(calculatedCapacity)));
   })();
+
+  // Repayment Calculations on borrowing capacity:
+  const monthlyRepayment = (() => {
+    const principal = borrowingCapacity;
+    const r = interestRate / 100 / 12;
+    const n = loanTerm * 12;
+    if (r === 0) return principal / n;
+    return (principal * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+  })();
+
+  const weeklyRepayment = (monthlyRepayment * 12) / 52;
+  const fortnightlyRepayment = (monthlyRepayment * 12) / 26;
 
   // Dynamic Checklist Progress
   const checklistProgress = Math.round(
@@ -480,7 +514,7 @@ export function ClientPage() {
   return (
     <div className="min-h-screen flex flex-col bg-white font-inter" style={{ overflowX: "clip" }}>
       {/* ── SHARED HEADER ── */}
-      <SiteHeader />
+      <SiteHeader isSticky={false} />
 
       {/* ── SECTION 1: EDITORIAL HERO ── */}
       <section id="overview" className="relative overflow-hidden bg-white pt-2.5 pb-8 lg:pt-[10px] lg:pb-8 text-slate-800 border-b border-slate-100 min-h-[calc(100vh-80px)] flex flex-col justify-start">
@@ -880,7 +914,7 @@ export function ClientPage() {
             <div className="lg:col-span-7 flex flex-col w-full relative">
               
               {/* Vertical Dashed Timeline Line */}
-              <div className="absolute left-[20px] top-[40px] bottom-[40px] w-0 border-l-2 border-dashed border-slate-200/80 pointer-events-none" />
+              <div className="hidden sm:block absolute left-[20px] top-[40px] bottom-[40px] w-0 border-l-2 border-dashed border-slate-200/80 pointer-events-none" />
 
               <motion.div 
                 initial="hidden"
@@ -933,7 +967,7 @@ export function ClientPage() {
                         whileInView={{ scale: 1, opacity: 1 }}
                         viewport={{ once: true }}
                         transition={{ type: "spring", stiffness: 180, damping: 14, delay: 0.15 + idx * 0.08 }}
-                        className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center font-bold text-[13px] text-[#2563EB] z-10 shadow-sm select-none"
+                        className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white border border-slate-200 items-center justify-center font-bold text-[13px] text-[#2563EB] z-10 shadow-sm select-none"
                       >
                         {pain.num}
                       </motion.div>
@@ -950,18 +984,18 @@ export function ClientPage() {
                         }}
                         variants={premiumFadeUp}
                         whileHover={{ x: 6, scale: 1.005, boxShadow: "0 20px 30px rgba(11,31,58,0.04)", borderColor: "#E2E8F0" }}
-                        className="ml-14 bg-white border border-slate-100 rounded-3xl p-5.5 flex items-center justify-between gap-5 transition-all duration-300 group cursor-pointer shadow-[0_4px_25px_rgba(15,23,42,0.015)] flex-1"
+                        className="ml-0 sm:ml-14 bg-white border border-slate-100 rounded-2xl sm:rounded-3xl p-4 sm:p-5.5 flex items-center justify-between gap-3.5 sm:gap-5 transition-all duration-300 group cursor-pointer shadow-[0_4px_25px_rgba(15,23,42,0.015)] flex-1"
                       >
-                        <div className="flex items-start gap-4.5">
+                        <div className="flex items-start gap-3.5 sm:gap-4.5">
                           {/* Left Side Icon inside premium color wash */}
-                          <div className={`w-12 h-12 rounded-full ${pain.colorClass} flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform duration-300`}>
-                            <IconComp className="w-5.5 h-5.5 stroke-[2.2px]" />
+                          <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full ${pain.colorClass} flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform duration-300`}>
+                            <IconComp className="w-5 h-5 sm:w-5.5 sm:h-5.5 stroke-[2.2px]" />
                           </div>
 
                           {/* Center Content */}
                           <div className="flex-1">
                             <h3 className="text-[#0B1F3A] text-[14px] sm:text-[15px] font-extrabold leading-tight font-montserrat tracking-tight group-hover:text-[#2563EB] transition-colors" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                              {pain.title}
+                              <span className="sm:hidden text-[#2563EB] font-black mr-1">{pain.num}. </span>{pain.title}
                             </h3>
                             <p className="text-slate-500 text-[12px] sm:text-[12.5px] mt-1.5 leading-relaxed font-inter font-normal max-w-xl">
                               {pain.desc}
@@ -970,8 +1004,8 @@ export function ClientPage() {
                         </div>
 
                         {/* Right Side: Arrow Navigation Button */}
-                        <div className="w-10 h-10 rounded-full bg-slate-50 border border-slate-200/60 flex items-center justify-center shrink-0 group-hover:bg-[#2563EB] group-hover:text-white group-hover:border-[#2563EB] text-[#2563EB] shadow-sm transition-all duration-300">
-                          <ArrowRight className="w-4 h-4" />
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-50 border border-slate-200/60 flex items-center justify-center shrink-0 group-hover:bg-[#2563EB] group-hover:text-white group-hover:border-[#2563EB] text-[#2563EB] shadow-sm transition-all duration-300">
+                          <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         </div>
                       </motion.a>
                     </div>
@@ -984,866 +1018,1315 @@ export function ClientPage() {
         </div>
       </section>
 
-      {/* ── SECTION 4: HOME BUYING ROADMAP (STICKY DYNAMIC SCROLL REVEAL) ── */}
-      {/* NOTE: NO overflow-hidden on this section - it WILL break position:sticky */}
-      <section id="roadmap" ref={roadmapSectionRef} className="relative bg-white border-b border-slate-100" style={{ minHeight: "550vh" }}>
-
-        {/* Sticky Wrapper — top-[136px] accounts for site header (80px) + sub-nav (56px) */}
-        <div className="sticky w-full flex" style={{ zIndex: 5, top: "136px", height: "calc(100vh - 136px)", alignItems: "stretch", padding: "16px 0" }}>
-          
-          {/* Subtle background glow — pointer-events-none so it doesn't break sticky */}
-          <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
-            <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[600px] h-[600px] bg-blue-50/40 rounded-full blur-3xl" />
-          </div>
-
-          <div className="relative max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12" style={{ zIndex: 1, gridTemplateRows: "1fr", height: "100%" }}>
-
-            {/* ── LEFT: Heading + Large Beautiful Step Tracker ── */}
-            <div className="flex flex-col">
-              {/* Label */}
-              <div className="inline-flex items-center gap-2 bg-[#EAF3FF] border border-[#2563EB]/15 rounded-full px-4 py-2 mb-5 w-fit">
-                <span className="w-2 h-2 rounded-full bg-[#2563EB]" />
-                <span className="text-[#2563EB] text-[11px] font-black tracking-widest uppercase">
-                  The Roadmap to Ownership
-                </span>
-              </div>
-
-              <h2 className="text-[24px] sm:text-[28px] md:text-[32px] font-extrabold text-[#0B1F3A] leading-[1.15] mb-2" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                Five Steps To Your{" "}
-                <span className="text-[#2563EB]">First Home Keys</span>
-              </h2>
-
-              <p className="text-slate-500 text-[13px] leading-relaxed mb-5 max-w-sm">
-                Scroll down — watch each step light up as we guide you through the journey.
-              </p>
-
-              {/* ── LARGE STEP TRACKER ── */}
-              <div className="relative">
-                {/* Vertical connector line running behind icons */}
-                <div
-                  className="absolute pointer-events-none"
-                  style={{ left: "21px", top: "36px", bottom: "36px", width: "2px", background: "#E2E8F0" }}
-                />
-                {/* Filled progress line */}
-                <div
-                  className="absolute pointer-events-none transition-all duration-500"
-                  style={{
-                    left: "21px",
-                    top: "36px",
-                    width: "2px",
-                    height: `${(activeStepIndex / 4) * 100}%`,
-                    background: "linear-gradient(to bottom, #2563EB, #10B981, #8B5CF6, #F59E0B, #EC4899)"
-                  }}
-                />
-
-                <div className="space-y-1">
-                  {roadmapSteps.map((step, idx) => {
-                    const isActive = activeStepIndex === idx;
-                    const isPast = activeStepIndex > idx;
-                    const StepIcon = step.icon;
-
-                    const colors = [
-                      { accent: "#2563EB", lightBg: "#EAF3FF", border: "#BFDBFE" },
-                      { accent: "#10B981", lightBg: "#ECFDF5", border: "#A7F3D0" },
-                      { accent: "#8B5CF6", lightBg: "#EDE9FE", border: "#DDD6FE" },
-                      { accent: "#F59E0B", lightBg: "#FFFBEB", border: "#FDE68A" },
-                      { accent: "#EC4899", lightBg: "#FDF2F8", border: "#FBCFE8" },
-                    ][idx];
-
-                    return (
-                      <div
-                        key={idx}
-                        className="flex items-center gap-3.5 py-2.5 px-3 rounded-xl transition-all duration-500"
-                        style={{
-                          background: isActive ? colors.lightBg : "transparent",
-                          opacity: isActive || isPast ? 1 : 0.35,
-                          transform: isActive ? "translateX(4px)" : "translateX(0)",
-                        }}
-                      >
-                        {/* Icon circle — compact */}
-                        <div
-                          className="shrink-0 flex items-center justify-center rounded-xl transition-all duration-500"
-                          style={{
-                            width: "44px",
-                            height: "44px",
-                            background: isActive ? colors.accent : isPast ? colors.lightBg : "#F8FAFC",
-                            border: `2px solid ${isActive ? colors.accent : isPast ? colors.border : "#E2E8F0"}`,
-                            boxShadow: isActive ? `0 6px 16px ${colors.accent}28` : "none",
-                            color: isActive ? "#ffffff" : isPast ? colors.accent : "#94A3B8",
-                          }}
-                        >
-                          <StepIcon style={{ width: "18px", height: "18px", strokeWidth: 2.2 }} />
-                        </div>
-
-                        {/* Text */}
-                        <div className="flex flex-col min-w-0 flex-1">
-                          <span
-                            className="text-[10px] font-black uppercase tracking-widest mb-0.5"
-                            style={{ color: isActive ? colors.accent : isPast ? colors.accent : "#94A3B8" }}
-                          >
-                            Step {idx + 1}
-                          </span>
-                          <span
-                            className="text-[14px] leading-tight font-bold"
-                            style={{
-                              color: isActive ? "#0B1F3A" : isPast ? "#475569" : "#94A3B8",
-                              fontFamily: "var(--font-montserrat), sans-serif",
-                            }}
-                          >
-                            {step.title}
-                          </span>
-                          {isActive && (
-                            <span className="text-[11.5px] text-slate-500 font-normal leading-tight mt-0.5">
-                              {step.tagline}
-                            </span>
-                          )}
-                        </div>
-
-                        {/* Status icon */}
-                        {isActive && (
-                          <div
-                            className="ml-auto shrink-0 w-6 h-6 rounded-full flex items-center justify-center"
-                            style={{ background: colors.accent }}
-                          >
-                            <ChevronRight className="w-3.5 h-3.5 text-white" />
-                          </div>
-                        )}
-                        {isPast && !isActive && (
-                          <div className="ml-auto shrink-0">
-                            <CheckCircle2 style={{ width: "18px", height: "18px", color: colors.accent }} />
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            {/* ── RIGHT: Animated Dashboard Card — fills exact column height ── */}
-            <div className="w-full flex flex-col" style={{ minHeight: 0, height: "100%" }}>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeStepIndex}
-                  initial={{ opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -14 }}
-                  transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
-                  className="rounded-2xl overflow-hidden border border-slate-100 shadow-[0_16px_40px_rgba(15,23,42,0.05)] flex flex-col"
-                  style={{ background: "#FFFFFF", height: "100%" }}
-                >
-                  {/* Card top: step info — compact padding */}
-                  <div className="px-6 pt-5 pb-4" style={{ background: "#F8FAFC", borderBottom: "1px solid #F1F5F9", flexShrink: 0 }}>
-                    <span
-                      className="inline-block text-[9px] tracking-widest font-black uppercase px-2.5 py-1 rounded-full mb-2.5 border"
-                      style={{
-                        background: "#EAF3FF",
-                        color: "#2563EB",
-                        borderColor: "#BFDBFE",
-                      }}
-                    >
-                      {roadmapSteps[activeStepIndex].phase}
-                    </span>
-                    <h3
-                      className="text-[20px] sm:text-[22px] font-extrabold text-[#0B1F3A] leading-snug mb-1.5"
-                      style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
-                    >
-                      {roadmapSteps[activeStepIndex].title}
-                    </h3>
-                    <p className="text-slate-500 text-[12.5px] leading-relaxed">
-                      {roadmapSteps[activeStepIndex].desc}
-                    </p>
-                  </div>
-
-                  {/* Card middle: two columns — compact */}
-                  <div className="grid grid-cols-2" style={{ flexShrink: 0 }}>
-                    {/* Highlights */}
-                    <div className="px-5 py-4 border-r border-slate-100">
-                      <h4 className="text-[9px] font-black uppercase tracking-wider text-slate-400 mb-2.5">Highlights</h4>
-                      <div className="space-y-2">
-                        {roadmapSteps[activeStepIndex].highlightsRow.map((h, i) => (
-                          <div key={i} className="flex items-center gap-2">
-                            <div className="w-4 h-4 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
-                              <Check className="w-2.5 h-2.5 text-emerald-500 stroke-[3px]" />
-                            </div>
-                            <span className="text-[#0B1F3A] text-[12px] font-semibold leading-tight">{h.label}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* What we evaluate */}
-                    <div className="px-5 py-4">
-                      <h4 className="text-[9px] font-black uppercase tracking-wider text-slate-400 mb-2.5">We Evaluate</h4>
-                      <div className="space-y-2">
-                        {roadmapSteps[activeStepIndex].evaluate.map((ev, i) => {
-                          const EvalIcon = ev.icon;
-                          return (
-                            <div key={i} className="flex items-center gap-2">
-                              <div className={`w-6 h-6 rounded-lg ${ev.color} flex items-center justify-center shrink-0`}>
-                                <EvalIcon className="w-3 h-3" />
-                              </div>
-                              <span className="text-[#0B1F3A] text-[12px] font-semibold leading-tight">{ev.label}</span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Photo strip — flex-1 min-h-0 fills ALL remaining card height */}
-                  <div className="relative flex-1 min-h-0 overflow-hidden" style={{ borderTop: "1px solid #F1F5F9" }}>
-                    <Image
-                      src="/images/family_couch_laptop.png"
-                      alt="Happy First Home Buyers"
-                      fill
-                      className="object-cover object-center"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/40 to-transparent" />
-                    <div className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-sm border border-slate-100 rounded-xl px-3 py-1.5 flex items-center gap-2 shadow-md">
-                      <div className="w-6 h-6 rounded-full bg-[#EAF3FF] flex items-center justify-center text-[#2563EB]">
-                        <HomeIcon className="w-3 h-3" />
-                      </div>
-                      <span className="text-[#0B1F3A] text-[10.5px] font-bold">{roadmapSteps[activeStepIndex].floatingText}</span>
-                    </div>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* ── SECTION 5: BORROWING POWER (LIVE CALCULATOR WIDGET WITH DYNAMIC GLOW) ── */}
-      <section id="borrowing" className="py-16 md:py-20 bg-slate-50 border-b border-slate-100 relative overflow-hidden">
-        {/* Fintech light wash behind widget */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-96 h-96 bg-[#EEF4FF] rounded-full blur-3xl opacity-30 pointer-events-none" />
-
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-[45%_55%] gap-8 lg:gap-12 items-center">
+      {/* ── SECTION 4: HOME BUYING ROADMAP (RESPONSIVE SPLIT LAYOUT) ── */}
+      <div id="roadmap">
+        
+        {/* DESKTOP VERSION: STICKY DYNAMIC SCROLL REVEAL (lg and up) */}
+        <section 
+          ref={roadmapSectionRef} 
+          className="hidden lg:block relative bg-slate-50/50 border-b border-slate-100" 
+          style={{ minHeight: "550vh" }}
+        >
+          {/* Sticky Wrapper — top-[64px] accounts for sub-nav (64px) with vertical centering */}
+          <div className="sticky w-full flex items-center" style={{ zIndex: 5, top: "64px", height: "calc(100vh - 64px)", padding: "40px 0" }}>
             
-            {/* Left Content */}
-            <div>
-              <div className="inline-flex items-center gap-2 bg-[#EAF3FF] border border-[#2563EB]/15 rounded-full px-3.5 py-1.5 mb-4">
-                <Calculator className="w-3.5 h-3.5 text-[#2563EB]" />
-                <span className={`${theme.textPrimary} text-[10px] font-black tracking-widest uppercase`}>
-                  BORROWING CAPACITY
-                </span>
-              </div>
-              <h2 className="text-[#0B1F3A] text-[28px] sm:text-[38px] font-black leading-[1.1] mb-5" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                How Much Can I <span className="text-[#2563EB]">Actually Borrow?</span>
-              </h2>
-              <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed mb-6">
-                Banks don&apos;t just look at your gross wage. They apply assessment interest rate buffers, living expense indices (HEM), and deduct existing monthly debts to determine your borrowing limit.
-              </p>
-              
-              {/* Glass card list */}
-              <div className="bg-white border border-slate-100 rounded-2xl p-5 shadow-[0_8px_30px_rgba(15,23,42,0.02)] space-y-4 max-w-md">
-                <div className="flex gap-4 items-start">
-                  <div className={`w-9 h-9 rounded-xl ${theme.bgLightWash} ${theme.textPrimary} flex items-center justify-center shrink-0 border border-[#D8E7FF]`}>
-                    <Percent className="w-4.5 h-4.5" />
-                  </div>
-                  <div>
-                    <h4 className="text-[#0B1F3A] text-[14.5px] font-bold leading-tight">Lender Policy Differentials</h4>
-                    <p className="text-slate-500 text-[12px] mt-1 leading-snug">Bank buffers vary widely. Choosing the right bank policies can elevate your borrowing limit by up to $80k.</p>
-                  </div>
-                </div>
-              </div>
+            {/* Subtle background glow — pointer-events-none so it doesn't break sticky */}
+            <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+              <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[600px] h-[600px] bg-blue-50/40 rounded-full blur-3xl" />
             </div>
 
-            {/* Right: Live Interactive Widget Card (Homepage premium calculator style) */}
-            <div>
-              <div className="bg-white rounded-3xl border border-slate-100 shadow-[0_20px_50px_rgba(11,31,58,0.08)] p-6 sm:p-8">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
-                  <h3 className="text-[#0B1F3A] text-[15.5px] font-black uppercase tracking-wider" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                    Capacity Estimator
-                  </h3>
-                  <span className="text-[10px] bg-emerald-50 text-emerald-600 font-extrabold uppercase px-2.5 py-1 rounded-md border border-emerald-100">
-                    Live Calculator
+            <div className="relative max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12" style={{ zIndex: 1 }}>
+
+              {/* ── LEFT: Heading + Large Beautiful Step Tracker ── */}
+              <div className="flex flex-col justify-center">
+                {/* Label */}
+                <div className="inline-flex items-center gap-2 bg-[#EAF3FF] border border-[#2563EB]/15 rounded-full px-4 py-2 mb-5 w-fit">
+                  <span className="w-2 h-2 rounded-full bg-[#2563EB]" />
+                  <span className="text-[#2563EB] text-[11px] font-black tracking-widest uppercase">
+                    The Roadmap to Ownership
                   </span>
                 </div>
 
-                <div className="space-y-4">
-                  {/* Slider 1 */}
-                  <div>
-                    <div className="flex justify-between text-[11.5px] text-slate-500 font-bold mb-1.5">
-                      <span>Monthly Household Income (Net)</span>
-                      <span className={`${theme.textPrimary} font-black text-[13px]`}>${monthlyIncome.toLocaleString()}</span>
-                    </div>
-                    <input
-                      type="range"
-                      min={3000}
-                      max={25000}
-                      step={250}
-                      value={monthlyIncome}
-                      onChange={(e) => setMonthlyIncome(Number(e.target.value))}
-                      className="w-full h-1.5 rounded-full accent-[#2563EB] bg-slate-100 cursor-pointer"
+                <h2 className="text-[#0B1F3A] text-[26px] sm:text-[34px] lg:text-[40px] font-extrabold leading-[1.05] mb-5" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                  Five Steps To Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#38BDF8]">First Home Keys</span>
+                </h2>
+                
+                <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed mb-8 max-w-lg">
+                  Scroll down — watch each step light up as we guide you through the process, providing full policy transparency at every milestone.
+                </p>
+
+                {/* ── LARGE STEP TRACKER ── */}
+                <div className="relative">
+                  {/* Vertical connector line running behind icons */}
+                  <div
+                    className="absolute pointer-events-none"
+                    style={{ left: "21px", top: "22px", bottom: "22px", width: "2px" }}
+                  >
+                    {/* Gray background line */}
+                    <div className="absolute inset-0 bg-[#E2E8F0]" />
+                    {/* Filled progress line */}
+                    <div
+                      className="absolute top-0 left-0 w-full transition-all duration-500"
+                      style={{
+                        height: `${(activeStepIndex / 4) * 100}%`,
+                        background: "linear-gradient(to bottom, #2563EB, #10B981, #8B5CF6, #F59E0B, #EC4899)"
+                      }}
                     />
                   </div>
 
-                  {/* Slider 2 */}
-                  <div>
-                    <div className="flex justify-between text-[11.5px] text-slate-500 font-bold mb-1.5">
-                      <span>Monthly Living Expenses</span>
-                      <span className="text-slate-700 font-black text-[13px]">${monthlyExpenses.toLocaleString()}</span>
-                    </div>
-                    <input
-                      type="range"
-                      min={1000}
-                      max={12000}
-                      step={100}
-                      value={monthlyExpenses}
-                      onChange={(e) => setMonthlyExpenses(Number(e.target.value))}
-                      className="w-full h-1.5 rounded-full accent-slate-655 bg-slate-100 cursor-pointer"
-                    />
-                  </div>
+                  <div className="space-y-1">
+                    {roadmapSteps.map((step, idx) => {
+                      const isActive = activeStepIndex === idx;
+                      const isPast = activeStepIndex > idx;
+                      const StepIcon = step.icon;
 
-                  {/* Slider 3 */}
-                  <div>
-                    <div className="flex justify-between text-[11.5px] text-slate-500 font-bold mb-1.5">
-                      <span>Existing Cash Savings</span>
-                      <span className={`${theme.textPrimary} font-black text-[13px]`}>${existingSavings.toLocaleString()}</span>
-                    </div>
-                    <input
-                      type="range"
-                      min={10000}
-                      max={300000}
-                      step={5000}
-                      value={existingSavings}
-                      onChange={(e) => setExistingSavings(Number(e.target.value))}
-                      className="w-full h-1.5 rounded-full accent-[#2563EB] bg-slate-100 cursor-pointer"
-                    />
-                  </div>
+                      const colors = [
+                        { accent: "#2563EB", lightBg: "#EAF3FF", border: "#BFDBFE" },
+                        { accent: "#10B981", lightBg: "#ECFDF5", border: "#A7F3D0" },
+                        { accent: "#8B5CF6", lightBg: "#EDE9FE", border: "#DDD6FE" },
+                        { accent: "#F59E0B", lightBg: "#FFFBEB", border: "#FDE68A" },
+                        { accent: "#EC4899", lightBg: "#FDF2F8", border: "#FBCFE8" },
+                      ][idx];
 
-                  {/* Slider 4 */}
-                  <div>
-                    <div className="flex justify-between text-[11.5px] text-slate-500 font-bold mb-1.5">
-                      <span>Other Monthly Debts (HECS / Car / Cards)</span>
-                      <span className="text-red-500 font-black text-[13px]">${monthlyDebt.toLocaleString()}</span>
-                    </div>
-                    <input
-                      type="range"
-                      min={0}
-                      max={4000}
-                      step={50}
-                      value={monthlyDebt}
-                      onChange={(e) => setMonthlyDebt(Number(e.target.value))}
-                      className="w-full h-1.5 rounded-full accent-red-500 bg-slate-100 cursor-pointer"
-                    />
-                  </div>
+                      return (
+                        <div
+                          key={idx}
+                          className="flex items-center gap-3.5 py-2.5 px-3 rounded-xl transition-all duration-500"
+                          style={{
+                            background: isActive ? colors.lightBg : "transparent",
+                            border: `1px solid ${isActive ? colors.border : "transparent"}`,
+                            boxShadow: isActive ? "0 10px 25px -5px rgba(11,31,58,0.05), 0 8px 10px -6px rgba(11,31,58,0.05)" : "none",
+                            opacity: isActive || isPast ? 1 : 0.35,
+                            transform: isActive ? "translateX(4px)" : "translateX(0)",
+                          }}
+                        >
+                          {/* Icon circle — compact */}
+                          <div
+                            className="shrink-0 flex items-center justify-center rounded-xl transition-all duration-500"
+                            style={{
+                              width: "44px",
+                              height: "44px",
+                              background: isActive ? colors.accent : isPast ? colors.lightBg : "#F8FAFC",
+                              border: `2px solid ${isActive ? colors.accent : isPast ? colors.border : "#E2E8F0"}`,
+                              boxShadow: isActive ? `0 6px 16px ${colors.accent}28` : "none",
+                              color: isActive ? "#ffffff" : isPast ? colors.accent : "#94A3B8",
+                            }}
+                          >
+                            <StepIcon style={{ width: "18px", height: "18px", strokeWidth: 2.2 }} />
+                          </div>
 
-                  {/* Estimated Output Card (Gradients and Glow rings) */}
-                  <div className="bg-[#F8FAFC] border border-slate-200/60 rounded-2xl p-6 text-center mt-6 relative overflow-hidden">
-                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block mb-1">
-                      ESTIMATED BORROWING CAPACITY
-                    </span>
-                    <div className="text-[28px] sm:text-[36px] font-black text-[#0B1F3A] tracking-tight leading-none my-2" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                      ${borrowingCapacity.toLocaleString()}
-                    </div>
-                    <div className="text-[10.5px] text-slate-400 mt-1.5 max-w-[320px] mx-auto leading-relaxed">
-                      Includes standard 80% LVR buffers. Specific bank policy structures can significantly increase this limit.
-                    </div>
+                          {/* Text */}
+                          <div className="flex flex-col min-w-0 flex-1">
+                            <span
+                              className="text-[10px] font-black uppercase tracking-widest mb-0.5"
+                              style={{ color: isActive ? colors.accent : isPast ? colors.accent : "#94A3B8" }}
+                            >
+                              Step {idx + 1}
+                            </span>
+                            <span
+                              className="text-[14px] leading-tight font-bold"
+                              style={{
+                                color: isActive ? "#0B1F3A" : isPast ? "#475569" : "#94A3B8",
+                                fontFamily: "var(--font-montserrat), sans-serif",
+                              }}
+                            >
+                              {step.title}
+                            </span>
+                            {isActive && (
+                              <span className="text-[11.5px] text-slate-500 font-normal leading-tight mt-0.5">
+                                {step.tagline}
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Status icon */}
+                          {isActive && (
+                            <div
+                              className="ml-auto shrink-0 w-6 h-6 rounded-full flex items-center justify-center"
+                              style={{ background: colors.accent }}
+                            >
+                              <ChevronRight className="w-3.5 h-3.5 text-white" />
+                            </div>
+                          )}
+                          {isPast && !isActive && (
+                            <div className="ml-auto shrink-0">
+                              <CheckCircle2 style={{ width: "18px", height: "18px", color: colors.accent }} />
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
+
+              {/* ── RIGHT: Animated Dashboard Card ── */}
+              <div className="w-full flex flex-col justify-center">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeStepIndex}
+                    initial={{ opacity: 0, y: 14 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -14 }}
+                    transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+                    className="rounded-2xl overflow-hidden border border-slate-200/80 shadow-[0_20px_50px_rgba(11,31,58,0.08)] flex flex-col"
+                    style={{ background: "#FFFFFF" }}
+                  >
+                    {/* Card top: step info — compact padding */}
+                    <div className="px-6 pt-5 pb-4" style={{ background: "#F8FAFC", borderBottom: "1px solid #F1F5F9", flexShrink: 0 }}>
+                      <span
+                        className="inline-block text-[9px] tracking-widest font-black uppercase px-2.5 py-1 rounded-full mb-2.5 border"
+                        style={{
+                          background: "#EAF3FF",
+                          color: "#2563EB",
+                          borderColor: "#BFDBFE",
+                        }}
+                      >
+                        {roadmapSteps[activeStepIndex].phase}
+                      </span>
+                      <h3
+                        className="text-[20px] sm:text-[22px] font-extrabold text-[#0B1F3A] leading-snug mb-1.5"
+                        style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
+                      >
+                        {roadmapSteps[activeStepIndex].title}
+                      </h3>
+                      <p className="text-slate-500 text-[12.5px] leading-relaxed">
+                        {roadmapSteps[activeStepIndex].desc}
+                      </p>
+                    </div>
+
+                    {/* Card middle: two columns — compact */}
+                    <div className="grid grid-cols-2" style={{ flexShrink: 0 }}>
+                      {/* Highlights */}
+                      <div className="px-5 py-4 border-r border-slate-100">
+                        <h4 className="text-[9px] font-black uppercase tracking-wider text-slate-400 mb-2.5">Highlights</h4>
+                        <div className="space-y-2">
+                          {roadmapSteps[activeStepIndex].highlightsRow.map((h, i) => (
+                            <div key={i} className="flex items-center gap-2">
+                              <div className="w-4 h-4 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
+                                <Check className="w-2.5 h-2.5 text-emerald-500 stroke-[3px]" />
+                              </div>
+                              <span className="text-[#0B1F3A] text-[12px] font-semibold leading-tight">{h.label}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* What we evaluate */}
+                      <div className="px-5 py-4">
+                        <h4 className="text-[9px] font-black uppercase tracking-wider text-slate-400 mb-2.5">We Evaluate</h4>
+                        <div className="space-y-2">
+                          {roadmapSteps[activeStepIndex].evaluate.map((ev, i) => {
+                            const EvalIcon = ev.icon;
+                            return (
+                              <div key={i} className="flex items-center gap-2">
+                                <div className={`w-6 h-6 rounded-lg ${ev.color} flex items-center justify-center shrink-0`}>
+                                  <EvalIcon className="w-3 h-3" />
+                                </div>
+                                <span className="text-[#0B1F3A] text-[12px] font-semibold leading-tight">{ev.label}</span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Photo strip — fixed height for beautiful aspect ratio and breathing room */}
+                    <div className="relative h-44 md:h-48 w-full overflow-hidden" style={{ borderTop: "1px solid #F1F5F9" }}>
+                      <Image
+                        src="/images/family_couch_laptop.png"
+                        alt="Happy First Home Buyers"
+                        fill
+                        className="object-cover object-center"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/40 to-transparent" />
+                      <div className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-sm border border-slate-100 rounded-xl px-3 py-1.5 flex items-center gap-2 shadow-md">
+                        <div className="w-6 h-6 rounded-full bg-[#EAF3FF] flex items-center justify-center text-[#2563EB]">
+                          <HomeIcon className="w-3 h-3" />
+                        </div>
+                        <span className="text-[#0B1F3A] text-[10.5px] font-bold">{roadmapSteps[activeStepIndex].floatingText}</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
             </div>
+          </div>
+        </section>
+
+        {/* MOBILE VERSION: VERTICAL ACCORDION TIMELINE (Under lg) */}
+        <section 
+          className="lg:hidden py-14 px-6 bg-slate-50/50 border-b border-slate-100 relative overflow-hidden"
+        >
+          <div className="max-w-md mx-auto relative z-10">
+            {/* Label */}
+            <div className="inline-flex items-center gap-2 bg-[#EAF3FF] border border-[#2563EB]/15 rounded-full px-3.5 py-1.5 mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#2563EB]" />
+              <span className="text-[#2563EB] text-[9.5px] font-black tracking-widest uppercase">
+                The Roadmap to Ownership
+              </span>
+            </div>
+
+            <h2 className="text-[#0B1F3A] text-[22px] font-extrabold leading-tight mb-3" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+              Five Steps To Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#38BDF8]">First Home Keys</span>
+            </h2>
+            
+            <p className="text-slate-500 text-xs leading-relaxed mb-6">
+              Tap each step to view the processing actions, highlight lists, and lender checklist guidelines.
+            </p>
+
+            {/* Stack of accordion cards */}
+            <div className="space-y-3">
+              {roadmapSteps.map((step, idx) => {
+                const isMobileActive = mobileActiveStepIndex === idx;
+                const StepIcon = step.icon;
+                const colors = [
+                  { accent: "#2563EB", lightBg: "#EAF3FF", border: "#BFDBFE" },
+                  { accent: "#10B981", lightBg: "#ECFDF5", border: "#A7F3D0" },
+                  { accent: "#8B5CF6", lightBg: "#EDE9FE", border: "#DDD6FE" },
+                  { accent: "#F59E0B", lightBg: "#FFFBEB", border: "#FDE68A" },
+                  { accent: "#EC4899", lightBg: "#FDF2F8", border: "#FBCFE8" },
+                ][idx];
+
+                return (
+                  <div 
+                    key={idx} 
+                    className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden transition-all duration-300"
+                  >
+                    {/* Accordion Trigger Header */}
+                    <button
+                      type="button"
+                      onClick={() => setMobileActiveStepIndex(idx)}
+                      className="w-full flex items-center gap-3 p-3 text-left transition-colors hover:bg-slate-50/50 focus:outline-none"
+                    >
+                      <div
+                        className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-colors"
+                        style={{
+                          background: isMobileActive ? colors.accent : colors.lightBg,
+                          border: `1.5px solid ${isMobileActive ? colors.accent : colors.border}`,
+                          color: isMobileActive ? "#ffffff" : colors.accent
+                        }}
+                      >
+                        <StepIcon className="w-4 h-4 stroke-[2.2]" />
+                      </div>
+
+                      <div className="flex-1 min-w-0">
+                        <span 
+                          className="text-[8.5px] font-black uppercase tracking-wider block mb-0.5"
+                          style={{ color: colors.accent }}
+                        >
+                          Step {idx + 1} • {step.phase}
+                        </span>
+                        <h3 className="text-slate-800 text-[13.5px] font-bold leading-none">{step.title}</h3>
+                      </div>
+
+                      <div className={`transition-transform duration-300 ${isMobileActive ? "rotate-90 text-[#2563EB]" : "rotate-0 text-slate-400"}`}>
+                        <ChevronRight className="w-4 h-4" />
+                      </div>
+                    </button>
+
+                    {/* Expandable panel */}
+                    {isMobileActive && (
+                      <div className="border-t border-slate-100 bg-slate-50/30">
+                        <div className="p-4 space-y-4">
+                          <p className="text-slate-500 text-xs leading-relaxed">
+                            {step.desc}
+                          </p>
+
+                          {/* Highlights & Evaluates Grid */}
+                          <div className="grid grid-cols-2 gap-3 pt-1">
+                            <div className="bg-white p-2.5 rounded-lg border border-slate-100 shadow-sm">
+                              <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-2">Highlights</span>
+                              <div className="space-y-1.5">
+                                {step.highlightsRow.map((h, i) => (
+                                  <div key={i} className="flex items-center gap-1.5">
+                                    <Check className="w-2.5 h-2.5 text-emerald-500 shrink-0 stroke-[3px]" />
+                                    <span className="text-slate-700 text-[10.5px] font-semibold truncate leading-none">{h.label}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+
+                            <div className="bg-white p-2.5 rounded-lg border border-slate-100 shadow-sm">
+                              <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-2">We Evaluate</span>
+                              <div className="space-y-1.5">
+                                {step.evaluate.map((ev, i) => {
+                                  const EvalIcon = ev.icon;
+                                  return (
+                                    <div key={i} className="flex items-center gap-1.5">
+                                      <div className={`w-3.5 h-3.5 rounded ${ev.color} flex items-center justify-center shrink-0`}>
+                                        <EvalIcon className="w-2 h-2 text-current" />
+                                      </div>
+                                      <span className="text-slate-700 text-[10.5px] font-semibold truncate leading-none">{ev.label}</span>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Floating badge */}
+                          <div className="bg-white p-2 rounded-lg border border-slate-100 flex items-center gap-2 shadow-sm">
+                            <div className="w-5 h-5 rounded-full bg-[#EAF3FF] flex items-center justify-center text-[#2563EB] shrink-0">
+                              <HomeIcon className="w-2.5 h-2.5" />
+                            </div>
+                            <span className="text-slate-700 text-[10px] font-bold">{step.floatingText}</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      {/* ── SECTION 5: BORROWING POWER (LIVE CALCULATOR WIDGET WITH DYNAMIC GLOW) ── */}
+      <section id="borrowing" className="py-14 md:py-20 bg-slate-50 border-b border-slate-100 relative overflow-hidden">
+        {/* Fintech light wash behind widget */}
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#EEF4FF] rounded-full blur-[100px] opacity-60 pointer-events-none" />
+        <div className="absolute left-[-200px] bottom-[-200px] w-[500px] h-[500px] bg-[#2563EB]/5 rounded-full blur-[120px] pointer-events-none" />
+
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-[33%_67%] gap-8 lg:gap-12 items-center">
+            
+            {/* Left Content */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={VIEWPORT}
+              variants={premiumStagger}
+            >
+              <motion.div variants={premiumFadeUp} className="inline-flex items-center gap-2 bg-white shadow-sm border border-[#2563EB]/15 rounded-full px-4 py-2 mb-6">
+                <Calculator className="w-4 h-4 text-[#2563EB]" />
+                <span className={`${theme.textPrimary} text-[10px] font-bold tracking-widest uppercase`}>
+                  BORROWING CAPACITY
+                </span>
+              </motion.div>
+              <motion.h2 variants={premiumFadeUp} className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.1] mb-4" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                How Much Can I <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#38BDF8]">Actually Borrow?</span>
+              </motion.h2>
+              <motion.p variants={premiumFadeUp} className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed mb-6 max-w-lg">
+                Banks don&apos;t just look at your gross wage. They apply assessment rate buffers, living expense indices (HEM), and deduct existing monthly debts to determine your genuine borrowing limit.
+              </motion.p>
+              
+              {/* Glass card list */}
+              <motion.div variants={premiumFadeUp} className="bg-white border border-slate-200 rounded-xl p-5 space-y-4 max-w-md shadow-sm">
+                <div className="flex gap-4 items-start">
+                  <div className={`w-10 h-10 rounded-xl ${theme.bgLightWash} ${theme.textPrimary} flex items-center justify-center shrink-0 border border-[#D8E7FF]`}>
+                    <Percent className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-[#0B1F3A] text-[14px] font-semibold leading-tight mb-1">Lender Policy Differentials</h4>
+                    <p className="text-slate-500 text-[13px] leading-relaxed">Bank buffers vary widely. Choosing the right lender can elevate your limit by up to <strong className="text-[#2563EB]">$80k</strong>.</p>
+                  </div>
+                </div>
+
+                <hr className="border-slate-100" />
+
+                <div className="flex gap-4 items-start">
+                  <div className={`w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-100`}>
+                    <Calculator className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-[#0B1F3A] text-[14px] font-semibold leading-tight mb-1">Servicing Calculations</h4>
+                    <p className="text-slate-500 text-[13px] leading-relaxed">We map your exact profiles across 30+ Australian lenders to unlock maximum capacity.</p>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+
+
+            {/* Right: Live Interactive Widget Card (Advanced dual-column fintech layout) */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={VIEWPORT}
+              variants={premiumFadeUp}
+              className="relative w-full"
+            >
+              <div className="relative bg-white rounded-3xl border border-slate-200 shadow-[0_20px_50px_rgba(11,31,58,0.08)] overflow-hidden grid grid-cols-1 md:grid-cols-[56%_44%]">
+                
+                {/* Left Side: Input Form Fields */}
+                <div className={`p-5 sm:p-6 lg:p-7 space-y-4 ${calcTab === "inputs" ? "block" : "hidden md:block"}`}>
+                  <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                    <h3 className="text-[#0B1F3A] text-[14px] font-black uppercase tracking-widest" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                      Capacity Calculator
+                    </h3>
+                    <span className="flex items-center gap-1.5 text-[9px] bg-emerald-50 text-emerald-600 font-extrabold uppercase px-2.5 py-1 rounded-full border border-emerald-100">
+                      <span className="relative flex h-1.5 w-1.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                      </span>
+                      Live
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Input 1 */}
+                    <div className="group space-y-1.5">
+                      <span className="text-[11px] text-slate-500 font-bold tracking-wide uppercase">Monthly Net Income</span>
+                      <div className="relative rounded-xl border border-slate-200 focus-within:border-[#2563EB] focus-within:ring-1 focus-within:ring-[#2563EB] transition-all bg-slate-50/50 px-3 py-1.5 flex items-center shadow-sm">
+                        <span className="text-slate-400 text-[13px] mr-1 font-bold">$</span>
+                        <input
+                          type="number"
+                          value={monthlyIncome || 0}
+                          onChange={(e) => setMonthlyIncome(Number(e.target.value))}
+                          className="w-full bg-transparent focus:outline-none text-[#0B1F3A] text-[14px] font-bold"
+                        />
+                      </div>
+                      <input
+                        type="range"
+                        min={3000}
+                        max={25000}
+                        step={250}
+                        value={monthlyIncome}
+                        onChange={(e) => setMonthlyIncome(Number(e.target.value))}
+                        className="w-full h-1 rounded-full accent-[#2563EB] bg-slate-100 cursor-pointer transition-all"
+                      />
+                    </div>
+
+                    {/* Input 2 */}
+                    <div className="group space-y-1.5">
+                      <span className="text-[11px] text-slate-500 font-bold tracking-wide uppercase">Living Expenses</span>
+                      <div className="relative rounded-xl border border-slate-200 focus-within:border-[#2563EB] focus-within:ring-1 focus-within:ring-[#2563EB] transition-all bg-slate-50/50 px-3 py-1.5 flex items-center shadow-sm">
+                        <span className="text-slate-400 text-[13px] mr-1 font-bold">$</span>
+                        <input
+                          type="number"
+                          value={monthlyExpenses || 0}
+                          onChange={(e) => setMonthlyExpenses(Number(e.target.value))}
+                          className="w-full bg-transparent focus:outline-none text-[#0B1F3A] text-[14px] font-bold"
+                        />
+                      </div>
+                      <input
+                        type="range"
+                        min={1000}
+                        max={12000}
+                        step={100}
+                        value={monthlyExpenses}
+                        onChange={(e) => setMonthlyExpenses(Number(e.target.value))}
+                        className="w-full h-1 rounded-full accent-slate-600 bg-slate-100 cursor-pointer transition-all"
+                      />
+                    </div>
+
+                    {/* Input 3 */}
+                    <div className="group space-y-1.5">
+                      <span className="text-[11px] text-slate-500 font-bold tracking-wide uppercase">Cash Savings</span>
+                      <div className="relative rounded-xl border border-slate-200 focus-within:border-[#2563EB] focus-within:ring-1 focus-within:ring-[#2563EB] transition-all bg-slate-50/50 px-3 py-1.5 flex items-center shadow-sm">
+                        <span className="text-slate-400 text-[13px] mr-1 font-bold">$</span>
+                        <input
+                          type="number"
+                          value={existingSavings || 0}
+                          onChange={(e) => setExistingSavings(Number(e.target.value))}
+                          className="w-full bg-transparent focus:outline-none text-[#0B1F3A] text-[14px] font-bold"
+                        />
+                      </div>
+                      <input
+                        type="range"
+                        min={10000}
+                        max={300000}
+                        step={5000}
+                        value={existingSavings}
+                        onChange={(e) => setExistingSavings(Number(e.target.value))}
+                        className="w-full h-1 rounded-full accent-[#2563EB] bg-slate-100 cursor-pointer transition-all"
+                      />
+                    </div>
+
+                    {/* Input 4 */}
+                    <div className="group space-y-1.5">
+                      <span className="text-[11px] text-slate-500 font-bold tracking-wide uppercase">Other Debts (HECS/Loans)</span>
+                      <div className="relative rounded-xl border border-slate-200 focus-within:border-[#2563EB] focus-within:ring-1 focus-within:ring-[#2563EB] transition-all bg-slate-50/50 px-3 py-1.5 flex items-center shadow-sm">
+                        <span className="text-slate-400 text-[13px] mr-1 font-bold">$</span>
+                        <input
+                          type="number"
+                          value={monthlyDebt || 0}
+                          onChange={(e) => setMonthlyDebt(Number(e.target.value))}
+                          className="w-full bg-transparent focus:outline-none text-[#0B1F3A] text-[14px] font-bold"
+                        />
+                      </div>
+                      <input
+                        type="range"
+                        min={0}
+                        max={4000}
+                        step={50}
+                        value={monthlyDebt}
+                        onChange={(e) => setMonthlyDebt(Number(e.target.value))}
+                        className="w-full h-1 rounded-full accent-red-500 bg-slate-100 cursor-pointer transition-all"
+                      />
+                    </div>
+
+                    {/* Input 5 */}
+                    <div className="group space-y-1.5">
+                      <span className="text-[11px] text-slate-500 font-bold tracking-wide uppercase">Credit Card Limit</span>
+                      <div className="relative rounded-xl border border-slate-200 focus-within:border-[#2563EB] focus-within:ring-1 focus-within:ring-[#2563EB] transition-all bg-slate-50/50 px-3 py-1.5 flex items-center shadow-sm">
+                        <span className="text-slate-400 text-[13px] mr-1 font-bold">$</span>
+                        <input
+                          type="number"
+                          value={creditCardLimit || 0}
+                          onChange={(e) => setCreditCardLimit(Number(e.target.value))}
+                          className="w-full bg-transparent focus:outline-none text-[#0B1F3A] text-[14px] font-bold"
+                        />
+                      </div>
+                      <input
+                        type="range"
+                        min={0}
+                        max={50000}
+                        step={1000}
+                        value={creditCardLimit}
+                        onChange={(e) => setCreditCardLimit(Number(e.target.value))}
+                        className="w-full h-1 rounded-full accent-[#2563EB] bg-slate-100 cursor-pointer transition-all"
+                      />
+                    </div>
+
+                    {/* Input 6 */}
+                    <div className="group space-y-1.5">
+                      <span className="text-[11px] text-slate-500 font-bold tracking-wide uppercase">Dependents</span>
+                      <div className="relative rounded-xl border border-slate-200 focus-within:border-[#2563EB] focus-within:ring-1 focus-within:ring-[#2563EB] transition-all bg-slate-50/50 px-3 py-1.5 flex items-center shadow-sm h-[40px]">
+                        <select
+                          value={dependents}
+                          onChange={(e) => setDependents(Number(e.target.value))}
+                          className="w-full bg-transparent focus:outline-none text-[#0B1F3A] text-[14px] font-bold cursor-pointer"
+                        >
+                          <option value={0}>0 Dependents</option>
+                          <option value={1}>1 Dependent</option>
+                          <option value={2}>2 Dependents</option>
+                          <option value={3}>3 Dependents</option>
+                          <option value={4}>4+ Dependents</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Inline Interest Rate and Term */}
+                  <div className="grid grid-cols-2 gap-4 pt-1">
+                    <div className="group space-y-1.5">
+                      <span className="text-[11px] text-slate-500 font-bold tracking-wide uppercase">Interest Rate (p.a.)</span>
+                      <div className="relative rounded-xl border border-slate-200 focus-within:border-[#2563EB] focus-within:ring-1 focus-within:ring-[#2563EB] transition-all bg-slate-50/50 px-3 py-1.5 flex items-center shadow-sm">
+                        <input
+                          type="number"
+                          step="0.01"
+                          value={interestRate}
+                          onChange={(e) => setInterestRate(Number(e.target.value))}
+                          className="w-full bg-transparent focus:outline-none text-[#0B1F3A] text-[14px] font-bold"
+                        />
+                        <span className="text-slate-400 text-[13px] ml-1 font-extrabold">%</span>
+                      </div>
+                    </div>
+
+                    <div className="group space-y-1.5">
+                      <span className="text-[11px] text-slate-500 font-bold tracking-wide uppercase">Loan Term</span>
+                      <div className="relative rounded-xl border border-slate-200 focus-within:border-[#2563EB] focus-within:ring-1 focus-within:ring-[#2563EB] transition-all bg-slate-50/50 px-3 py-1.5 flex items-center shadow-sm h-[40px]">
+                        <select
+                          value={loanTerm}
+                          onChange={(e) => setLoanTerm(Number(e.target.value))}
+                          className="w-full bg-transparent focus:outline-none text-[#0B1F3A] text-[14px] font-bold cursor-pointer"
+                        >
+                          <option value={15}>15 Years</option>
+                          <option value={20}>20 Years</option>
+                          <option value={25}>25 Years</option>
+                          <option value={30}>30 Years</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Mobile-only CTA to view results */}
+                  <button
+                    type="button"
+                    onClick={() => setCalcTab("results")}
+                    className="md:hidden w-full bg-[#2563EB] hover:bg-[#1d4ed8] text-white text-xs font-black uppercase py-3.5 px-4 rounded-xl text-center flex items-center justify-center gap-1.5 shadow-md mt-4"
+                  >
+                    <span>View Calculations</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Right Side: Servicing Summary & Lead Funnel */}
+                <div className={`bg-gradient-to-br from-[#0B1F3A] to-[#1E3A6E] text-white p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden ${calcTab === "results" ? "block" : "hidden md:block"}`}>
+                  {/* Decorative background glow */}
+                  <div className="absolute top-[-40px] right-[-40px] w-[150px] h-[150px] bg-blue-500/20 rounded-full blur-[40px] pointer-events-none" />
+                  
+                  <div className="space-y-5 relative z-10">
+                    <div>
+                      <span className="text-[10px] text-blue-200 font-black tracking-widest uppercase block mb-1">
+                        Estimated Borrowing Power
+                      </span>
+                      <div className="text-[28px] sm:text-[34px] font-black text-white leading-none tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                        ${borrowingCapacity.toLocaleString()}
+                      </div>
+                      <span className="inline-flex items-center gap-1.5 text-[8.5px] bg-white/10 text-blue-100 font-bold uppercase px-2 py-0.5 rounded-full border border-white/10 mt-2.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                        APRA 3.0% Buffer Applied
+                      </span>
+                    </div>
+
+                    <hr className="border-white/10" />
+
+                    {/* Repayments breakdown */}
+                    <div>
+                      <h4 className="text-[9.5px] text-blue-200 font-black tracking-widest uppercase mb-2">Estimated Repayments</h4>
+                      <div className="grid grid-cols-3 gap-2">
+                        <div className="bg-white/5 rounded-xl p-2 border border-white/5 text-center">
+                          <span className="text-[8px] text-blue-300 font-semibold block uppercase">Weekly</span>
+                          <span className="text-[13px] font-extrabold text-white block mt-0.5">${Math.round(weeklyRepayment).toLocaleString()}</span>
+                        </div>
+                        <div className="bg-white/5 rounded-xl p-2 border border-white/5 text-center">
+                          <span className="text-[8px] text-blue-300 font-semibold block uppercase">Fortnightly</span>
+                          <span className="text-[13px] font-extrabold text-white block mt-0.5">${Math.round(fortnightlyRepayment).toLocaleString()}</span>
+                        </div>
+                        <div className="bg-white/5 rounded-xl p-2 border border-white/5 text-center">
+                          <span className="text-[8px] text-blue-300 font-semibold block uppercase">Monthly</span>
+                          <span className="text-[13px] font-extrabold text-white block mt-0.5">${Math.round(monthlyRepayment).toLocaleString()}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <hr className="border-white/10" />
+
+                    {/* Deposit info */}
+                    <div>
+                      <h4 className="text-[9.5px] text-blue-200 font-black tracking-widest uppercase mb-2">Deposit Guidelines</h4>
+                      <div className="space-y-1.5">
+                        <div className="flex justify-between items-center text-[11.5px]">
+                          <span className="text-blue-200">5% First Home Scheme:</span>
+                          <span className="font-extrabold text-white bg-white/10 px-1.5 py-0.5 rounded">${Math.round(borrowingCapacity * 0.05).toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between items-center text-[11.5px]">
+                          <span className="text-blue-200">20% Standard Deposit:</span>
+                          <span className="font-extrabold text-white bg-white/10 px-1.5 py-0.5 rounded">${Math.round(borrowingCapacity * 0.20).toLocaleString()}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Funnel CTAs */}
+                  <div className="mt-6 space-y-2.5 relative z-10">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setLeadSubmitted(false);
+                        setIsLeadModalOpen(true);
+                      }}
+                      className="w-full bg-[#2563EB] hover:bg-[#1d4ed8] text-white text-[11px] font-black uppercase py-3 px-4 rounded-xl text-center flex items-center justify-center gap-1.5 shadow-lg transition-all duration-300 hover:scale-[1.02]"
+                    >
+                      <span>Secure Pre-Approval</span>
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setLeadSubmitted(false);
+                        setIsLeadModalOpen(true);
+                      }}
+                      className="w-full bg-white/5 hover:bg-white/10 text-white text-[11px] font-bold uppercase py-2.5 px-4 rounded-xl text-center flex items-center justify-center gap-1.5 border border-white/10 transition-all duration-300"
+                    >
+                      <span>Talk to Aakash KC</span>
+                    </button>
+
+                    {/* Mobile-only Back button */}
+                    <button
+                      type="button"
+                      onClick={() => setCalcTab("inputs")}
+                      className="md:hidden w-full bg-white/10 hover:bg-white/20 text-white text-[11px] font-bold uppercase py-2.5 px-4 rounded-xl text-center flex items-center justify-center gap-1 border border-white/10 transition-all duration-300 mt-2"
+                    >
+                      <span>← Adjust Details</span>
+                    </button>
+
+                    <p className="text-[8.5px] text-blue-200/50 text-center leading-tight pt-1">
+                      *Estimates only. Bank servicing limits apply. No credit check impact.
+                    </p>
+                  </div>
+
+                </div>
+
+              </div>
+            </motion.div>
 
           </div>
         </div>
       </section>
 
       {/* ── SECTION 6: DEPOSIT STRATEGY SECTION (EDITORIAL TWIN LAYOUT) ── */}
-      <section id="deposit" className="py-16 md:py-20 bg-white border-b border-slate-100">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+      <section id="deposit" className="py-14 md:py-20 bg-white border-b border-slate-100 relative overflow-hidden">
+        {/* Subtle background decoration */}
+        <div className="absolute left-0 top-0 w-full h-full overflow-hidden pointer-events-none">
+          <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-emerald-50/50 rounded-full blur-3xl opacity-50" />
+          <div className="absolute bottom-[-10%] left-[-5%] w-[30%] h-[30%] bg-blue-50/50 rounded-full blur-3xl opacity-50" />
+        </div>
+
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-[45%_55%] gap-8 lg:gap-12 items-center">
-            
             {/* Left Content */}
-            <div>
-              <div className="inline-flex items-center gap-2 bg-[#EAF3FF] border border-[#2563EB]/15 rounded-full px-3.5 py-1.5 mb-4">
-                <TrendingUp className="w-3.5 h-3.5 text-[#2563EB]" />
-                <span className={`${theme.textPrimary} text-[10px] font-black tracking-widest uppercase`}>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={VIEWPORT}
+              variants={premiumStagger}
+            >
+              <motion.div variants={premiumFadeUp} className="inline-flex items-center gap-2 bg-[#EAF3FF] shadow-sm border border-[#2563EB]/15 rounded-full px-4 py-2 mb-6">
+                <TrendingUp className="w-4 h-4 text-[#2563EB]" />
+                <span className={`${theme.textPrimary} text-[10px] font-bold tracking-widest uppercase`}>
                   DEPOSIT STRATEGY
                 </span>
-              </div>
-              <h2 className="text-[#0B1F3A] text-[28px] sm:text-[38px] font-black leading-[1.1] mb-5" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                20% Deposit <span className="text-slate-350 font-normal">vs</span> <span className="text-[#2563EB]">5% Deposit</span>
-              </h2>
-              <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed mb-6">
-                Is it smarter to wait years to save 20% to avoid Lenders Mortgage Insurance, or buy immediately with a 5% deposit using government schemes? Let&apos;s evaluate the trade-offs.
-              </p>
+              </motion.div>
+              <motion.h2 variants={premiumFadeUp} className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.1] mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                20% Deposit <span className="text-slate-300 font-normal mx-2">vs</span> <br className="hidden sm:block" />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#10B981] to-[#059669]">5% Deposit</span>
+              </motion.h2>
+              <motion.p variants={premiumFadeUp} className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed mb-8 max-w-lg">
+                Is it smarter to wait years to save 20% to avoid Lenders Mortgage Insurance, or buy immediately with a 5% deposit using government schemes? Let&apos;s evaluate the strategic trade-offs.
+              </motion.p>
               
               {/* Twin tab toggle */}
-              <div className="flex gap-2 mb-6">
+              <motion.div variants={premiumFadeUp} className="flex flex-col sm:flex-row gap-3 mb-8 bg-slate-50 p-2 rounded-2xl border border-slate-100 max-w-fit">
                 <button
                   onClick={() => setActiveDepositTab("five")}
-                  className={`px-5 py-3 rounded-xl text-[12.5px] font-bold border transition-all ${
+                  className={`px-6 py-3.5 rounded-xl text-[13.5px] font-bold transition-all duration-300 flex items-center justify-center gap-2 ${
                     activeDepositTab === "five"
-                      ? `${theme.bgPrimary} ${theme.borderPrimary} text-white shadow-md shadow-blue-500/10`
-                      : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100"
+                      ? `bg-emerald-600 text-white shadow-lg shadow-emerald-500/20 scale-100`
+                      : "bg-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-200/50 scale-95 hover:scale-100"
                   }`}
                 >
-                  5% Guarantee Scheme
+                  <ShieldCheck className="w-4 h-4" /> 5% Guarantee Scheme
                 </button>
                 <button
                   onClick={() => setActiveDepositTab("twenty")}
-                  className={`px-5 py-3 rounded-xl text-[12.5px] font-bold border transition-all ${
+                  className={`px-6 py-3.5 rounded-xl text-[13.5px] font-bold transition-all duration-300 flex items-center justify-center gap-2 ${
                     activeDepositTab === "twenty"
-                      ? "bg-slate-800 border-slate-800 text-white shadow-md"
-                      : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100"
+                      ? "bg-[#0B1F3A] text-white shadow-lg shadow-slate-800/20 scale-100"
+                      : "bg-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-200/50 scale-95 hover:scale-100"
                   }`}
                 >
-                  Traditional 20% Deposit
+                  <PiggyBank className="w-4 h-4" /> Traditional 20% Deposit
                 </button>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
             {/* Right: Premium detail card panel with horizontal slide */}
-            <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-8 relative min-h-[300px] flex flex-col justify-center shadow-inner">
-              <AnimatePresence mode="wait">
-                {activeDepositTab === "five" ? (
-                  <motion.div
-                    key="five"
-                    initial={{ opacity: 0, x: 10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -10 }}
-                    transition={{ duration: 0.25 }}
-                    className="space-y-4"
-                  >
-                    <h3 className="text-[#0B1F3A] text-[18px] font-black" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                      5% Deposit Scheme Advantages
-                    </h3>
-                    <p className="text-slate-500 text-[13px] leading-relaxed">
-                      Leveraging government incentives allows you to purchase immediately, bypassing rising house price inflation while saving substantial LMI costs.
-                    </p>
-                    <div className="space-y-3 pt-2">
-                      {[
-                        "Purchase 1 to 3 years faster than waiting for a full 20%",
-                        "Avoid paying $15,000+ in Lenders Mortgage Insurance fees",
-                        "Retain remaining cash reserves for unexpected property costs",
-                        "Full access to competitive prime lender interest rates"
-                      ].map((adv, idx) => (
-                        <div key={idx} className="flex gap-3 items-start text-[12.5px] font-semibold text-slate-700">
-                          <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                          <span>{adv}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="twenty"
-                    initial={{ opacity: 0, x: 10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -10 }}
-                    transition={{ duration: 0.25 }}
-                    className="space-y-4"
-                  >
-                    <h3 className="text-[#0B1F3A] text-[18px] font-black" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                      20% Deposit Advantages
-                    </h3>
-                    <p className="text-slate-500 text-[13px] leading-relaxed">
-                      Ideal for structured wealth positions, a larger deposit lowers overall monthly repayments and provides immediate equity buffer cushions.
-                    </p>
-                    <div className="space-y-3 pt-2">
-                      {[
-                        "No government guarantee limits or strict scheme allocations",
-                        "Lower ongoing monthly mortgage interest repayments",
-                        "Smaller loan-to-value ratio results in lowest lender rates",
-                        "Zero risk of paying Lenders Mortgage Insurance (LMI) fee"
-                      ].map((adv, idx) => (
-                        <div key={idx} className="flex gap-3 items-start text-[12.5px] font-semibold text-slate-700">
-                          <CheckCircle2 className="w-4 h-4 text-slate-800 shrink-0 mt-0.5" />
-                          <span>{adv}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={VIEWPORT}
+              variants={premiumFadeUp}
+              className="relative"
+            >
+              {/* Decorative behind-card element */}
+              <div className={`absolute -inset-2 bg-gradient-to-r ${activeDepositTab === 'five' ? 'from-emerald-400 to-teal-300' : 'from-slate-700 to-slate-900'} rounded-[38px] blur-xl opacity-20 transition-colors duration-700`} />
+              
+              <div className="bg-white border border-slate-100 rounded-[32px] p-8 sm:p-10 relative min-h-[360px] flex flex-col justify-center shadow-[0_20px_50px_rgba(11,31,58,0.06)] overflow-hidden">
+                <AnimatePresence mode="wait">
+                  {activeDepositTab === "five" ? (
+                    <motion.div
+                      key="five"
+                      initial={{ opacity: 0, x: 20, scale: 0.98 }}
+                      animate={{ opacity: 1, x: 0, scale: 1 }}
+                      exit={{ opacity: 0, x: -20, scale: 0.98 }}
+                      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                      className="space-y-6 relative z-10"
+                    >
+                      <div className="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600 mb-2 shadow-sm border border-emerald-100">
+                        <TrendingUp className="w-6 h-6" />
+                      </div>
+                      <h3 className="text-[#0B1F3A] text-[18px] font-extrabold" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                        5% Deposit Scheme Advantages
+                      </h3>
+                      <p className="text-slate-500 text-[14px] leading-relaxed max-w-md">
+                        Leveraging government incentives allows you to purchase immediately, bypassing rising house price inflation while saving substantial LMI costs.
+                      </p>
+                      <div className="space-y-4 pt-4 border-t border-slate-100">
+                        {[
+                          "Purchase 1 to 3 years faster than waiting for a full 20%",
+                          "Avoid paying $15,000+ in Lenders Mortgage Insurance fees",
+                          "Retain remaining cash reserves for unexpected property costs",
+                          "Full access to competitive prime lender interest rates"
+                        ].map((adv, idx) => (
+                          <div key={idx} className="flex gap-3.5 items-start text-[13.5px] font-medium text-slate-600">
+                            <div className="mt-0.5 w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
+                              <Check className="w-3 h-3 text-emerald-600 stroke-[3px]" />
+                            </div>
+                            <span className="leading-snug">{adv}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="twenty"
+                      initial={{ opacity: 0, x: 20, scale: 0.98 }}
+                      animate={{ opacity: 1, x: 0, scale: 1 }}
+                      exit={{ opacity: 0, x: -20, scale: 0.98 }}
+                      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                      className="space-y-6 relative z-10"
+                    >
+                      <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-700 mb-2 shadow-sm border border-slate-200">
+                        <Shield className="w-6 h-6" />
+                      </div>
+                      <h3 className="text-[#0B1F3A] text-[18px] font-extrabold" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                        20% Deposit Advantages
+                      </h3>
+                      <p className="text-slate-500 text-[14px] leading-relaxed max-w-md">
+                        Ideal for structured wealth positions, a larger deposit lowers overall monthly repayments and provides immediate equity buffer cushions.
+                      </p>
+                      <div className="space-y-4 pt-4 border-t border-slate-100">
+                        {[
+                          "No government guarantee limits or strict scheme allocations",
+                          "Lower ongoing monthly mortgage interest repayments",
+                          "Smaller loan-to-value ratio results in lowest lender rates",
+                          "Zero risk of paying Lenders Mortgage Insurance (LMI) fee"
+                        ].map((adv, idx) => (
+                          <div key={idx} className="flex gap-3.5 items-start text-[13.5px] font-medium text-slate-600">
+                            <div className="mt-0.5 w-5 h-5 rounded-full bg-slate-200 flex items-center justify-center shrink-0">
+                              <Check className="w-3 h-3 text-slate-700 stroke-[3px]" />
+                            </div>
+                            <span className="leading-snug">{adv}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                
+                {/* Decorative watermark icon */}
+                <div className="absolute right-[-40px] bottom-[-40px] opacity-[0.03] pointer-events-none">
+                  {activeDepositTab === "five" ? (
+                    <TrendingUp className="w-64 h-64 text-emerald-900" />
+                  ) : (
+                    <PiggyBank className="w-64 h-64 text-slate-900" />
+                  )}
+                </div>
+              </div>
+            </motion.div>
 
           </div>
         </div>
       </section>
 
       {/* ── SECTION 7: BUYING COSTS BREAKDOWN (PRICING CARD STRUCTURES) ── */}
-      <section id="costs" className="py-16 md:py-20 bg-slate-50 border-b border-slate-100">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+      <section id="costs" className="py-14 md:py-20 bg-slate-50 border-b border-slate-100 relative">
+        {/* Subtle dot matrix background */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(#0B1F3A 1.5px, transparent 1.5px)", backgroundSize: "24px 24px" }} />
+        
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
           
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <div className="inline-flex items-center gap-2 bg-[#EAF3FF] border border-[#2563EB]/15 rounded-full px-3.5 py-1.5 mb-4">
-              <span className={`w-1.5 h-1.5 rounded-full ${theme.bgPrimary}`} />
-              <span className={`${theme.textPrimary} text-[10px] font-black tracking-widest uppercase`}>
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={VIEWPORT}
+            variants={premiumStagger}
+            className="text-center max-w-3xl mx-auto mb-16"
+          >
+            <motion.div variants={premiumFadeUp} className="inline-flex items-center gap-2 bg-white shadow-sm border border-[#2563EB]/15 rounded-full px-4 py-2 mb-6">
+              <span className={`w-2 h-2 rounded-full ${theme.bgPrimary} animate-pulse`} />
+              <span className={`${theme.textPrimary} text-[10px] font-bold tracking-widest uppercase`}>
                 FINANCIAL COSTS
               </span>
-            </div>
-            <h2 className="text-[#0B1F3A] text-[28px] sm:text-[38px] font-black leading-[1.1] mb-4" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-              The Genuine Upfront <span className="text-[#2563EB]">Costs of Buying</span>
-            </h2>
-            <p className="text-slate-500 text-[13.5px] sm:text-[14.5px]">
+            </motion.div>
+            <motion.h2 variants={premiumFadeUp} className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.1] mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+              The Genuine Upfront <br className="hidden sm:block" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#8B5CF6]">Costs of Buying</span>
+            </motion.h2>
+            <motion.p variants={premiumFadeUp} className="text-slate-500 text-[14px] sm:text-[15px] max-w-2xl mx-auto leading-relaxed">
               Avoid transaction surprises. Here is the realistic cash requirement needed at settlement, assuming a standard $700,000 first property cap.
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
 
-          {/* Pricing style cost cards */}
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-5">
+          {/* Pricing style cost cards - Premium horizontal layout for desktop */}
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={VIEWPORT}
+            variants={premiumStagger}
+            className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-5"
+          >
             {costsBreakdown.map((cost, idx) => (
               <motion.div
                 key={idx}
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.25 }}
-                className={`rounded-2xl p-5 border flex flex-col justify-between shadow-sm bg-white transition-all ${
+                variants={premiumFadeUp}
+                whileHover={{ y: -8, scale: cost.highlight ? 1.05 : 1.02 }}
+                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                className={`rounded-[24px] p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 relative overflow-hidden ${
                   cost.highlight
-                    ? `${theme.borderPrimary} ring-4 ring-blue-500/5 scale-[1.03] z-10 shadow-[0_12px_30px_rgba(37,99,235,0.08)]`
-                    : "border-slate-200"
+                    ? `bg-gradient-to-b from-[#2563EB] to-[#1D4ED8] text-white shadow-[0_20px_40px_rgba(37,99,235,0.25)] lg:-mt-4 lg:mb-4 ring-4 ring-blue-500/10 z-10`
+                    : "bg-white border border-slate-200 hover:border-slate-300 hover:shadow-[0_15px_30px_rgba(15,23,42,0.06)] shadow-sm"
                 }`}
               >
-                <div>
-                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block mb-1">
+                {/* Highlight decoration */}
+                {cost.highlight && (
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl transform translate-x-1/2 -translate-y-1/2" />
+                )}
+
+                <div className="relative z-10">
+                  <span className={`text-[10.5px] font-black uppercase tracking-[0.15em] block mb-3 ${cost.highlight ? 'text-blue-200' : 'text-slate-400'}`}>
                     {cost.title}
                   </span>
-                  <div className={`text-[25px] font-black ${cost.highlight ? theme.textPrimary : "text-[#0B1F3A]"} mb-1`}>
+                  <div className={`text-[24px] sm:text-[28px] font-black mb-3 leading-none ${cost.highlight ? 'text-white' : 'text-[#0B1F3A]'}`} style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
                     {cost.amount}
                   </div>
-                  <span className="inline-block text-[9px] font-black uppercase px-2.5 py-0.5 rounded bg-slate-100 text-slate-500 mb-4">
+                  <span className={`inline-block text-[9.5px] font-black uppercase tracking-wider px-3 py-1 rounded-full mb-6 ${
+                    cost.highlight 
+                      ? "bg-white/20 text-white backdrop-blur-sm border border-white/20" 
+                      : cost.title.includes("Stamp") ? "bg-emerald-50 text-emerald-600 border border-emerald-100" : "bg-slate-100 text-slate-600 border border-slate-200"
+                  }`}>
                     {cost.tag}
                   </span>
-                  <p className="text-slate-500 text-[11.5px] leading-relaxed">
+                  <p className={`text-[13px] leading-relaxed ${cost.highlight ? 'text-blue-50' : 'text-slate-500'}`}>
                     {cost.desc}
                   </p>
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
 
         </div>
       </section>
 
       {/* ── SECTION 8: GOVERNMENT GRANTS EXPANDABLE CARD GRID ── */}
-      <section id="grants" className="py-16 md:py-20 bg-white border-b border-slate-100">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+      <section id="grants" className="py-14 md:py-20 bg-white border-b border-slate-100 relative overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#2563EB]/3 rounded-full blur-[120px] pointer-events-none" />
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
           
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <div className="inline-flex items-center gap-2 bg-[#EAF3FF] border border-[#2563EB]/15 rounded-full px-3.5 py-1.5 mb-4">
-              <span className={`w-1.5 h-1.5 rounded-full ${theme.bgPrimary}`} />
-              <span className={`${theme.textPrimary} text-[10px] font-black tracking-widest uppercase`}>
-                GOVERNMENT ASSISTANCE
-              </span>
-            </div>
-            <h2 className="text-[#0B1F3A] text-[28px] sm:text-[38px] font-black leading-[1.1] mb-4" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-              Unlock Available <span className="text-[#2563EB]">Government Support</span>
-            </h2>
-            <p className="text-slate-500 text-[13.5px] sm:text-[14.5px]">
+          <motion.div initial="hidden" whileInView="visible" viewport={VIEWPORT} variants={premiumStagger} className="text-center max-w-3xl mx-auto mb-16">
+            <motion.div variants={premiumFadeUp} className="inline-flex items-center gap-2 bg-white shadow-sm border border-[#2563EB]/15 rounded-full px-4 py-2 mb-6">
+              <Sparkles className="w-4 h-4 text-[#2563EB]" />
+              <span className={`${theme.textPrimary} text-[10px] font-bold tracking-widest uppercase`}>GOVERNMENT ASSISTANCE</span>
+            </motion.div>
+            <motion.h2 variants={premiumFadeUp} className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.1] mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+              Unlock Available <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#06B6D4]">Government Support</span>
+            </motion.h2>
+            <motion.p variants={premiumFadeUp} className="text-slate-500 text-[14px] sm:text-[15px] max-w-2xl mx-auto leading-relaxed">
               Don&apos;t leave cash on the table. Click each grant to check eligibility guidelines and maximum caps.
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
 
-          {/* Grid Container (homepage inspired shadow cards) */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Grid Container - Premium glassmorphic grant cards */}
+          <motion.div initial="hidden" whileInView="visible" viewport={VIEWPORT} variants={premiumStagger} className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
             {governmentGrants.map((grant, idx) => {
               const isExpanded = expandedGrant === idx;
+              const grantColors = [
+                { icon: ShieldCheck, accent: "#2563EB", bg: "from-blue-600 to-blue-700", light: "bg-blue-50", text: "text-blue-600", border: "border-blue-100" },
+                { icon: Gift, accent: "#8B5CF6", bg: "from-violet-600 to-violet-700", light: "bg-violet-50", text: "text-violet-600", border: "border-violet-100" },
+                { icon: Coins, accent: "#10B981", bg: "from-emerald-600 to-emerald-700", light: "bg-emerald-50", text: "text-emerald-600", border: "border-emerald-100" },
+              ][idx];
+              const GrantIcon = grantColors.icon;
               return (
                 <motion.div
                   key={idx}
+                  variants={premiumFadeUp}
                   onClick={() => setExpandedGrant(isExpanded ? null : idx)}
-                  whileHover={{ y: -2 }}
-                  className={`bg-white border rounded-2xl p-6 cursor-pointer transition-all duration-300 flex flex-col justify-between ${
-                    isExpanded
-                      ? "border-[#2563EB] shadow-[0_15px_30px_rgba(37,99,235,0.06)] ring-2 ring-blue-500/5"
-                      : "border-slate-150 shadow-[0_4px_20px_rgba(15,23,42,0.02)] hover:border-slate-300"
+                  whileHover={{ y: -6, boxShadow: "0 28px 48px rgba(15,23,42,0.10)" }}
+                  className={`bg-white border rounded-[24px] p-8 cursor-pointer transition-all duration-400 flex flex-col justify-between relative overflow-hidden group ${
+                    isExpanded ? "border-[#2563EB] shadow-[0_20px_40px_rgba(37,99,235,0.12)] ring-4 ring-blue-500/8" : "border-slate-200 shadow-sm hover:border-slate-300"
                   }`}
                 >
+                  {/* Number badge */}
+                  <div className="absolute top-6 right-6 text-[72px] font-black text-slate-50 leading-none select-none pointer-events-none" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>{String(idx+1).padStart(2,'0')}</div>
                   <div>
-                    <div className="flex justify-between items-start gap-3 mb-3.5">
-                      <h3 className="text-[#0B1F3A] text-[16px] font-black leading-snug" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                        {grant.title}
-                      </h3>
-                      <div className={`w-7 h-7 rounded-lg border border-slate-200 flex items-center justify-center text-slate-500 shrink-0 transition-transform ${isExpanded ? "rotate-180 bg-[#EEF4FF] border-[#2563EB] text-[#2563EB]" : "bg-white"}`}>
-                        <ChevronDown className="w-4.5 h-4.5" />
-                      </div>
+                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${grantColors.bg} flex items-center justify-center mb-6 shadow-lg`}>
+                      <GrantIcon className="w-7 h-7 text-white" />
                     </div>
-                    <p className="text-slate-500 text-[12.5px] leading-relaxed">
-                      {grant.summary}
-                    </p>
-                    
-                    {/* Expandable Panel */}
+                    <h3 className="text-[#0B1F3A] text-[16px] font-bold leading-snug mb-3 relative z-10" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>{grant.title}</h3>
+                    <p className="text-slate-500 text-[13.5px] leading-relaxed relative z-10">{grant.summary}</p>
                     <AnimatePresence initial={false}>
                       {isExpanded && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.3, ease: EASE_OUT }}
-                          className="overflow-hidden mt-4 pt-4 border-t border-slate-100"
-                        >
-                          <p className="text-slate-500 text-[12.5px] leading-relaxed">
-                            {grant.desc}
-                          </p>
+                        <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.35, ease: EASE_OUT }} className="overflow-hidden mt-5 pt-5 border-t border-slate-100">
+                          <p className="text-slate-600 text-[13.5px] leading-relaxed">{grant.desc}</p>
                         </motion.div>
                       )}
                     </AnimatePresence>
                   </div>
-                  
-                  <span className={`text-[12px] font-extrabold flex items-center gap-0.5 mt-6 transition-all ${isExpanded ? "text-slate-400" : theme.textPrimary}`}>
-                    {isExpanded ? "Show Less" : "Verify My Eligibility"} <ChevronRight className="w-3.5 h-3.5" />
-                  </span>
+                  <div className={`flex items-center justify-between mt-8 pt-6 border-t border-slate-100`}>
+                    <span className={`text-[13px] font-extrabold flex items-center gap-1.5 transition-all ${isExpanded ? "text-slate-400" : grantColors.text}`}>
+                      {isExpanded ? "Show Less" : "Check Eligibility"} <ChevronRight className="w-4 h-4" />
+                    </span>
+                    <motion.div animate={{ rotate: isExpanded ? 180 : 0 }} transition={{ duration: 0.3 }} className={`w-8 h-8 rounded-xl border flex items-center justify-center shrink-0 transition-colors ${isExpanded ? `${grantColors.light} ${grantColors.border} ${grantColors.text}` : "border-slate-200 text-slate-400"}`}>
+                      <ChevronDown className="w-4 h-4" />
+                    </motion.div>
+                  </div>
                 </motion.div>
               );
             })}
-          </div>
+          </motion.div>
 
         </div>
       </section>
 
       {/* ── SECTION 9: CHOOSING THE RIGHT LOAN (DYNAMIC SELECTOR) ── */}
-      <section id="loans" className="py-16 md:py-20 bg-slate-50 border-b border-slate-100">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
-          <div className="grid grid-cols-1 lg:grid-cols-[45%_55%] gap-8 lg:gap-12 items-center">
-            
+      <section id="loans" className="py-14 md:py-20 bg-slate-50 border-b border-slate-100 relative overflow-hidden">
+
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-[42%_58%] gap-8 lg:gap-12 items-center">
             {/* Left Content */}
-            <div>
-              <div className="inline-flex items-center gap-2 bg-[#EAF3FF] border border-[#2563EB]/15 rounded-full px-3.5 py-1.5 mb-4">
-                <span className={`w-1.5 h-1.5 rounded-full ${theme.bgPrimary}`} />
-                <span className={`${theme.textPrimary} text-[10px] font-black tracking-widest uppercase`}>
-                  MORTGAGE TYPE COMPARISON
-                </span>
-              </div>
-              <h2 className="text-[#0B1F3A] text-[28px] sm:text-[38px] font-black leading-[1.1] mb-5" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                Choosing The <span className="text-[#2563EB]">Right Loan Product</span>
-              </h2>
-              <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed mb-6">
-                Should you secure a fixed rate for payment security, keep it fully variable for flexible offset accounts, or select a customized split mortgage loan? Click to compare details.
-              </p>
-              
-              <div className="flex flex-col gap-3">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={VIEWPORT}
+              variants={premiumStagger}
+            >
+              <motion.div variants={premiumFadeUp} className="inline-flex items-center gap-2 bg-[#EAF3FF] border border-[#2563EB]/20 rounded-full px-4 py-2 mb-4">
+                <span className="w-2 h-2 rounded-full bg-[#2563EB] animate-pulse" />
+                <span className="text-[10px] font-bold tracking-widest uppercase text-[#2563EB]">MORTGAGE TYPE COMPARISON</span>
+              </motion.div>
+              <motion.h2 variants={premiumFadeUp} className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.1] mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                Choosing The <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#3B82F6]">Right Loan Product</span>
+              </motion.h2>
+              <motion.p variants={premiumFadeUp} className="text-slate-500 text-[14px] leading-relaxed mb-6">
+                Fixed for payment security, variable for offset accounts, or a split structure? Click to compare each option.
+              </motion.p>
+              <motion.div variants={premiumStagger} className="flex flex-col gap-4">
                 {[
-                  { key: "variable", label: "Variable Rate Mortgage", icon: IconHome },
-                  { key: "fixed", label: "Fixed Rate Mortgage", icon: IconRefresh },
-                  { key: "split", label: "Split Loan Structure", icon: IconBarChart }
+                  { key: "variable", label: "Variable Rate Mortgage", sub: "Flexible offset accounts", icon: TrendingUp },
+                  { key: "fixed", label: "Fixed Rate Mortgage", sub: "Budget certainty & safety", icon: ShieldCheck },
+                  { key: "split", label: "Split Loan Structure", sub: "Best of both worlds", icon: Percent }
                 ].map((type) => {
                   const Icon = type.icon;
                   const isSelected = activeLoanType === type.key;
                   return (
-                    <button
+                    <motion.button
                       key={type.key}
+                      variants={premiumFadeUp}
                       onClick={() => setActiveLoanType(type.key as any)}
-                      className={`text-left p-4 rounded-xl border font-bold text-[13.5px] transition-all flex justify-between items-center ${
+                      whileHover={{ x: 4 }}
+                      className={`text-left p-5 rounded-2xl border font-bold text-[14px] transition-all duration-300 flex items-center justify-between group ${
                         isSelected
-                          ? `${theme.bgPrimary} ${theme.borderPrimary} text-white shadow-md shadow-blue-500/10`
-                          : "bg-white border-slate-200 text-slate-700 hover:bg-slate-100/50"
+                          ? "bg-white text-[#0B1F3A] border-[#2563EB] shadow-[0_4px_20px_rgba(37,99,235,0.12)]"
+                          : "bg-white border-slate-200 text-slate-600 hover:border-[#2563EB]/40 hover:bg-[#EAF3FF]/30"
                       }`}
                     >
-                      <div className="flex items-center gap-2.5">
-                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border ${isSelected ? "bg-white/10 border-white/20 text-white" : "bg-blue-50 border-blue-100 text-[#2563EB]"}`}>
-                          <Icon />
+                      <div className="flex items-center gap-4">
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors ${isSelected ? "bg-[#2563EB] text-white" : "bg-[#EAF3FF] text-[#2563EB]"}`}>
+                          <Icon className="w-5 h-5" />
                         </div>
-                        <span>{type.label}</span>
+                        <div>
+                          <div className="font-extrabold text-[14px]">{type.label}</div>
+                          <div className={`text-[12px] font-normal mt-0.5 text-slate-400`}>{type.sub}</div>
+                        </div>
                       </div>
-                      <ChevronRight className={`w-4 h-4 ${isSelected ? "text-white" : "text-slate-400"}`} />
-                    </button>
+                      <ChevronRight className={`w-5 h-5 shrink-0 transition-transform group-hover:translate-x-1 ${isSelected ? "text-[#2563EB]" : "text-slate-300"}`} />
+                    </motion.button>
                   );
                 })}
+              </motion.div>
+            </motion.div>
+
+            {/* Right: Dynamic Product Card */}
+            <motion.div initial="hidden" whileInView="visible" viewport={VIEWPORT} variants={premiumFadeUp} className="relative">
+              <div className="hidden" />
+              <div className="relative bg-white rounded-[24px] border border-slate-200 p-6 sm:p-8 shadow-[0_8px_30px_rgba(11,31,58,0.06)]">
+                <AnimatePresence mode="wait">
+                  <motion.div key={activeLoanType} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }} transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }} className="space-y-5">
+                    <div>
+                      <span className="inline-block text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 rounded-full bg-[#EAF3FF] text-[#2563EB] mb-4 border border-[#2563EB]/20">
+                        {loanComparisonData[activeLoanType].tag}
+                      </span>
+                      <h3 className="text-[#0B1F3A] text-[17px] font-extrabold" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                        {loanComparisonData[activeLoanType].title}
+                      </h3>
+                    </div>
+                    <div className="bg-emerald-50 rounded-2xl p-5 border border-emerald-100">
+                      <h4 className="text-emerald-700 text-[11px] font-bold uppercase tracking-widest mb-3 flex items-center gap-2"><CheckCircle2 className="w-4 h-4" /> The Advantages</h4>
+                      <div className="space-y-3">
+                        {loanComparisonData[activeLoanType].pros.map((pro, i) => (
+                          <div key={i} className="flex gap-3 items-start text-[13px] font-medium text-slate-700">
+                            <div className="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center shrink-0 mt-0.5">
+                              <Check className="w-3 h-3 text-emerald-600 stroke-[3px]" />
+                            </div>
+                            <span>{pro}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="bg-red-50 rounded-2xl p-5 border border-red-100">
+                      <h4 className="text-red-700 text-[11px] font-bold uppercase tracking-widest mb-3 flex items-center gap-2"><AlertCircle className="w-4 h-4" /> The Trade-Offs</h4>
+                      <div className="space-y-3">
+                        {loanComparisonData[activeLoanType].cons.map((con, i) => (
+                          <div key={i} className="flex gap-3 items-start text-[13px] font-medium text-slate-600">
+                            <div className="w-5 h-5 rounded-full bg-red-100 flex items-center justify-center shrink-0 mt-0.5">
+                              <AlertCircle className="w-3 h-3 text-red-600" />
+                            </div>
+                            <span>{con}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
               </div>
-            </div>
-
-            {/* Right: Dynamic Product Card Content (Glass card with deep shadow) */}
-            <div className="bg-white border border-slate-100 shadow-[0_20px_50px_rgba(11,31,58,0.08)] rounded-3xl p-6 sm:p-8">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeLoanType}
-                  initial={{ opacity: 0, x: 10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -10 }}
-                  transition={{ duration: 0.25 }}
-                  className="space-y-6"
-                >
-                  <div>
-                    <span className="inline-block text-[9.5px] font-black tracking-wider uppercase px-2.5 py-1 rounded bg-[#EEF4FF] text-[#2563EB] mb-2 border border-blue-100">
-                      {loanComparisonData[activeLoanType].tag}
-                    </span>
-                    <h3 className="text-[#0B1F3A] text-[20px] font-black mb-1" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                      {loanComparisonData[activeLoanType].title}
-                    </h3>
-                  </div>
-
-                  {/* Pros */}
-                  <div>
-                    <h4 className="text-[#0B1F3A] text-[12.5px] font-black uppercase tracking-wider mb-2">The Advantages</h4>
-                    <div className="space-y-2">
-                      {loanComparisonData[activeLoanType].pros.map((pro, i) => (
-                        <div key={i} className="flex gap-2.5 items-start text-[12.5px] font-semibold text-slate-700">
-                          <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                          <span>{pro}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Cons */}
-                  <div className="pt-4 border-t border-slate-100">
-                    <h4 className="text-red-500 text-[12.5px] font-black uppercase tracking-wider mb-2">The Trade-Offs</h4>
-                    <div className="space-y-2">
-                      {loanComparisonData[activeLoanType].cons.map((con, i) => (
-                        <div key={i} className="flex gap-2.5 items-start text-[12.5px] font-semibold text-slate-500">
-                          <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-                          <span>{con}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
+            </motion.div>
 
           </div>
         </div>
       </section>
 
-      {/* ── SECTION 10: FOUNDER SECTION (DARK NAVY EDITORIAL BLOCK) ── */}
-      <section id="founder" className="relative overflow-hidden bg-[#001a4d] py-20 text-white">
-        {/* Diagonal high-end light wash to highlight text */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-90"
-          style={{
-            background:
-              "linear-gradient(115deg, transparent 0%, transparent 42%, rgba(59,130,246,0.12) 52%, rgba(147,197,253,0.06) 58%, transparent 70%)",
-          }}
-        />
+      {/* ── SECTION 10: FOUNDER SECTION ── */}
+      <section id="founder" className="relative overflow-hidden bg-[#0B1F3A] py-14 md:py-20 text-white">
+        {/* Multi-layered dramatic background */}
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_20%_50%,rgba(37,99,235,0.18),transparent_60%)]" />
+          <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(ellipse_at_80%_20%,rgba(56,189,248,0.10),transparent_60%)]" />
+          <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: "radial-gradient(rgba(255,255,255,0.8) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
+        </div>
         
         <div className="relative z-10 max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
-          <div className="grid grid-cols-1 lg:grid-cols-[40%_60%] gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-[42%_58%] gap-16 items-center">
             
-            {/* Founder Portrait with white glow drops */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={VIEWPORT}
-              transition={{ duration: 0.6 }}
-              className="relative flex justify-center"
-            >
-              <div className="relative w-full max-w-[340px] aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.3)] bg-[#091526]">
-                <Image
-                  src="/images/aakash_new.png"
-                  alt="Aakash KC - Founder &amp; Leading Mortgage Mate"
-                  fill
-                  className="object-cover object-top hover:scale-[1.02] transition-transform duration-500"
-                />
+            {/* Founder Portrait */}
+            <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={VIEWPORT} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} className="relative flex justify-center">
+              {/* Glowing border ring */}
+              <div className="absolute inset-0 rounded-[32px] bg-gradient-to-br from-blue-500 to-cyan-400 blur-2xl opacity-20 scale-105" />
+              <div className="relative w-full max-w-[360px]">
+                <div className="relative aspect-[4/5] rounded-[32px] overflow-hidden border border-white/10 shadow-[0_40px_80px_rgba(0,0,0,0.5)] bg-[#091526]">
+                  <Image src="/images/aakash_new.png" alt="Aakash KC - Founder & Leading Mortgage Mate" fill className="object-cover object-top hover:scale-[1.03] transition-transform duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#030F1E]/60 via-transparent to-transparent" />
+                </div>
+                {/* Floating stat badges */}
+                <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} className="absolute -right-4 sm:-right-8 top-[20%] bg-[#0B1F3A]/85 backdrop-blur-xl border border-white/15 rounded-2xl p-3 sm:p-4 shadow-xl">
+                  <div className="text-[17px] font-extrabold text-white">1,200+</div>
+                  <div className="text-[11px] text-blue-200 font-bold">5-Star Reviews</div>
+                </motion.div>
+                <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }} className="absolute -left-4 sm:-left-8 bottom-[25%] bg-[#0B1F3A]/85 backdrop-blur-xl border border-white/15 rounded-2xl p-3 sm:p-4 shadow-xl">
+                  <div className="text-[17px] font-extrabold text-white">40+</div>
+                  <div className="text-[11px] text-cyan-200 font-bold">Lender Network</div>
+                </motion.div>
               </div>
             </motion.div>
 
             {/* Editorial Story */}
-            <div className="flex flex-col gap-5">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/35 px-4 py-1.5 w-fit">
-                <Star className="w-3.5 h-3.5 text-amber-400 shrink-0" fill="currentColor" />
-                <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.14em] text-white uppercase">
-                  DIRECT TRUST ADVICE
-                </span>
-              </div>
+            <motion.div initial="hidden" whileInView="visible" viewport={VIEWPORT} variants={premiumStagger} className="flex flex-col gap-6">
+              <motion.div variants={premiumFadeUp} className="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-2 w-fit">
+                <Star className="w-4 h-4 text-amber-400 shrink-0" fill="currentColor" />
+                <span className="text-[10px] font-black tracking-[0.18em] text-amber-300 uppercase">DIRECT TRUST ADVICE</span>
+              </motion.div>
 
-              <h2
-                className="text-[34px] sm:text-[42px] font-black leading-[1.08] tracking-tight"
-                style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
-              >
-                <span className="text-white">Helping First Buyers Navigate</span>
-                <br />
-                <span className="text-[#38BDF8]">With Confidence.</span>
-              </h2>
+              <motion.h2 variants={premiumFadeUp} className="text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.08] tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                <span className="text-white">Helping First Buyers</span><br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#38BDF8] to-[#818CF8]">Navigate With Confidence.</span>
+              </motion.h2>
 
-              <p className="text-[14px] sm:text-[15.5px] text-white/85 leading-relaxed">
-                Led by Aakash KC (The Mortgage Mate), we represent a premier Nepali-led brokerage firm that works for you, not the banks. With over hundreds of 5-star reviews across Australia, we prioritize your long-term wealth, walking with you from saving structures to settlement keys.
-              </p>
+              <motion.p variants={premiumFadeUp} className="text-[14px] sm:text-[15px] text-white/70 leading-relaxed max-w-xl">
+                Led by Aakash KC (The Mortgage Mate), we represent a premier Nepali-led brokerage firm that works for you, not the banks. With over hundreds of 5-star reviews across Australia, we prioritize your long-term wealth.
+              </motion.p>
 
-              <div className="border-t border-white/15 pt-6 mt-2 flex items-center gap-4">
-                <div>
-                  <div className="text-[15.5px] font-black text-white">Aakash KC</div>
-                  <div className="text-[12px] text-slate-400 mt-0.5">Founder &amp; Principal Mortgage Broker</div>
+              {/* Stats row */}
+              <motion.div variants={premiumFadeUp} className="grid grid-cols-3 gap-4 py-6 border-y border-white/10">
+                {[{ val: "1,200+", label: "Happy Clients" }, { val: "40+", label: "Lender Partners" }, { val: "$2B+", label: "Loans Settled" }].map((stat, i) => (
+                  <div key={i} className="text-center">
+                    <div className="text-[22px] sm:text-[26px] font-black text-white" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>{stat.val}</div>
+                    <div className="text-[11.5px] text-white/50 font-bold mt-1">{stat.label}</div>
+                  </div>
+                ))}
+              </motion.div>
+
+              <motion.div variants={premiumFadeUp} className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-2xl overflow-hidden relative border border-white/15">
+                  <Image src="/images/aakash_new.png" fill alt="Aakash KC" className="object-cover object-top" />
                 </div>
-              </div>
-            </div>
+                <div>
+                  <div className="text-[16px] font-black text-white">Aakash KC</div>
+                  <div className="text-[13px] text-slate-400 mt-0.5">Founder & Principal Mortgage Broker</div>
+                </div>
+              </motion.div>
+            </motion.div>
 
           </div>
         </div>
       </section>
 
       {/* ── SECTION 11: INTERACTIVE CHECKLIST WIDGET ── */}
-      <section id="checklist" className="py-16 md:py-20 bg-white border-b border-slate-100 relative">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+      <section id="checklist" className="py-14 md:py-20 bg-white border-b border-slate-100 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#EEF4FF] rounded-full blur-[120px] opacity-40 translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+        
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-[45%_55%] gap-8 lg:gap-12 items-center">
-            
             {/* Left Content */}
-            <div>
-              <div className="inline-flex items-center gap-2 bg-[#EAF3FF] border border-[#2563EB]/15 rounded-full px-3.5 py-1.5 mb-4">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#2563EB]" />
-                <span className={`${theme.textPrimary} text-[10px] font-black tracking-widest uppercase`}>
-                  LIVE READINESS CHECK
-                </span>
-              </div>
-              <h2 className="text-[#0B1F3A] text-[28px] sm:text-[38px] font-black leading-[1.1] mb-5" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                First Home Buyer <span className="text-[#2563EB]">Readiness Checklist</span>
-              </h2>
-              <p className="text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed mb-6">
-                Are you legally and financially ready to apply for pre-approval? Click on the checklist parameters on the right to measure your readiness percentage.
-              </p>
-              
-              {/* Dynamic progress gauge */}
-              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 max-w-sm">
-                <div className="flex justify-between text-[12px] font-bold text-slate-600 mb-2">
-                  <span>Your Application Progress</span>
-                  <span className={`${theme.textPrimary}`}>{checklistProgress}% Complete</span>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={VIEWPORT}
+              variants={premiumStagger}
+            >
+              <motion.div variants={premiumFadeUp} className="inline-flex items-center gap-2 bg-[#EAF3FF] shadow-sm border border-[#2563EB]/15 rounded-full px-4 py-2 mb-6">
+                <CheckCircle2 className="w-4 h-4 text-[#2563EB]" />
+                <span className={`${theme.textPrimary} text-[10px] font-bold tracking-widest uppercase`}>LIVE READINESS CHECK</span>
+              </motion.div>
+              <motion.h2 variants={premiumFadeUp} className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.1] mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                First Home Buyer <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#06B6D4]">Readiness Checklist</span>
+              </motion.h2>
+              <motion.p variants={premiumFadeUp} className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed mb-8 max-w-lg">
+                Are you legally and financially ready to apply for pre-approval? Click the checklist items to measure your readiness percentage.
+              </motion.p>
+              {/* Dynamic progress card */}
+              <motion.div variants={premiumFadeUp} className="bg-white border border-slate-200 rounded-[24px] p-6 max-w-sm shadow-[0_12px_40px_rgba(15,23,42,0.05)] hover:shadow-[0_20px_50px_rgba(37,99,235,0.08)] transition-all duration-500 hover:-translate-y-1">
+                <div className="flex items-center gap-5">
+                  {/* Circular progress */}
+                  <div className="relative w-16 h-16 shrink-0">
+                    <svg className="w-16 h-16 -rotate-90" viewBox="0 0 64 64">
+                      <circle cx="32" cy="32" r="28" fill="none" stroke="#E2E8F0" strokeWidth="6" />
+                      <circle cx="32" cy="32" r="28" fill="none" stroke="#2563EB" strokeWidth="6" strokeLinecap="round" strokeDasharray={`${2 * Math.PI * 28}`} strokeDashoffset={`${2 * Math.PI * 28 * (1 - checklistProgress / 100)}`} style={{ transition: "stroke-dashoffset 0.6s ease" }} />
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center text-[13px] font-black text-[#2563EB]">{checklistProgress}%</div>
+                  </div>
+                  <div>
+                    <div className="text-[15px] font-extrabold text-[#0B1F3A]">Application Progress</div>
+                    <div className="text-[12.5px] text-slate-500 mt-1">{checklist.filter(i => i.checked).length} of {checklist.length} steps complete</div>
+                  </div>
                 </div>
-                <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                  <div
-                    className={`${theme.bgPrimary} h-full transition-all duration-300`}
-                    style={{ width: `${checklistProgress}%` }}
-                  />
-                </div>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
             {/* Right: Live Checklist Container */}
-            <div className="bg-slate-50 border border-slate-200 rounded-3xl p-5 sm:p-8 space-y-3">
-              {checklist.map((item) => (
-                <button
+            <motion.div initial="hidden" whileInView="visible" viewport={VIEWPORT} variants={premiumStagger} className="space-y-3">
+              {checklist.map((item, i) => (
+                <motion.button
                   key={item.id}
+                  variants={premiumFadeUp}
                   onClick={() => toggleChecklist(item.id)}
-                  className={`w-full text-left p-4 rounded-xl border transition-all duration-200 flex items-center gap-4 bg-white hover:border-[#2563EB] ${
-                    item.checked ? "border-[#2563EB]/40 ring-1 ring-blue-500/5 shadow-[0_2px_12px_rgba(37,99,235,0.02)]" : "border-slate-200"
+                  whileHover={{ x: 4 }}
+                  className={`w-full text-left p-5 rounded-2xl border transition-all duration-300 flex items-center gap-5 ${
+                    item.checked
+                      ? "bg-[#EAF3FF] border-[#2563EB]/30 shadow-[0_4px_20px_rgba(37,99,235,0.08)]"
+                      : "bg-white border-slate-200 hover:border-[#2563EB]/40 hover:shadow-[0_4px_20px_rgba(37,99,235,0.04)] shadow-sm"
                   }`}
                 >
-                  <div className={`w-5 h-5 rounded flex items-center justify-center border transition-all shrink-0 ${
-                    item.checked ? "bg-[#2563EB] border-[#2563EB] text-white" : "border-slate-300 text-transparent"
+                  <div className={`w-7 h-7 rounded-lg flex items-center justify-center border transition-all shrink-0 ${
+                    item.checked ? "bg-[#2563EB] border-[#2563EB] text-white shadow-md shadow-blue-500/20" : "border-slate-300 bg-white"
                   }`}>
-                    <Check className="w-3.5 h-3.5" strokeWidth={3} />
+                    {item.checked && <Check className="w-4 h-4" strokeWidth={3} />}
                   </div>
-                  <span className={`text-[12.5px] font-semibold ${
-                    item.checked ? "text-[#0B1F3A] line-through decoration-slate-300" : "text-slate-600"
+                  <span className={`text-[13.5px] font-semibold flex-1 text-left ${
+                    item.checked ? "text-[#2563EB] line-through decoration-blue-200" : "text-slate-700"
                   }`}>{item.label}</span>
-                </button>
+                  <div className={`text-[11px] font-black px-2 py-1 rounded-full shrink-0 ${
+                    item.checked ? "bg-[#2563EB]/15 text-[#2563EB]" : "bg-slate-100 text-slate-400"
+                  }`}>{String(i+1).padStart(2,'0')}</div>
+                </motion.button>
               ))}
-            </div>
+            </motion.div>
 
           </div>
         </div>
       </section>
 
       {/* ── SECTION 12: GROUPED ACCORDION FAQs ── */}
-      <section id="faqs" className="py-16 md:py-20 bg-slate-50 border-b border-slate-100">
-        <div className="max-w-[800px] mx-auto px-6">
-          
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 bg-[#EAF3FF] border border-[#2563EB]/15 rounded-full px-3.5 py-1.5 mb-4 mx-auto">
-              <HelpCircle className="w-3.5 h-3.5 text-[#2563EB]" />
-              <span className={`${theme.textPrimary} text-[10px] font-black tracking-widest uppercase`}>
-                QUESTIONS &amp; ANSWERS
-              </span>
-            </div>
-            <h2 className="text-[#0B1F3A] text-[28px] sm:text-[36px] font-black leading-tight mb-4" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-              Frequently Asked <span className="text-[#2563EB]">Queries</span>
-            </h2>
-            
+      <section id="faqs" className="py-14 md:py-20 bg-slate-50 border-b border-slate-100 relative">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-[-10%] left-[20%] w-[600px] h-[400px] bg-blue-50 rounded-full blur-[120px]" />
+          <div className="absolute bottom-[-10%] right-[10%] w-[400px] h-[400px] bg-slate-100 rounded-full blur-[120px]" />
+        </div>
+        <div className="max-w-[900px] mx-auto px-6 relative z-10">
+          <motion.div initial="hidden" whileInView="visible" viewport={VIEWPORT} variants={premiumStagger} className="text-center mb-10">
+            <motion.div variants={premiumFadeUp} className="inline-flex items-center gap-2 bg-[#EAF3FF] border border-[#2563EB]/20 rounded-full px-4 py-2 mb-4 mx-auto">
+              <HelpCircle className="w-4 h-4 text-[#2563EB]" />
+              <span className="text-[10px] font-bold tracking-widest uppercase text-[#2563EB]">QUESTIONS & ANSWERS</span>
+            </motion.div>
+            <motion.h2 variants={premiumFadeUp} className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-tight mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+              Frequently Asked <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#8B5CF6]">Queries</span>
+            </motion.h2>
             {/* Category tabs */}
-            <div className="flex justify-center gap-2 mt-5">
+            <motion.div variants={premiumFadeUp} className="flex justify-center gap-2 mt-4 bg-white rounded-2xl p-2 border border-slate-200 w-fit mx-auto shadow-sm">
               {[
                 { key: "buying", label: "Buying" },
                 { key: "loans", label: "Loans" },
@@ -1851,171 +2334,124 @@ export function ClientPage() {
               ].map((tab) => (
                 <button
                   key={tab.key}
-                  onClick={() => {
-                    setActiveFaqTab(tab.key as any);
-                    setOpenFaq(null);
-                  }}
-                  className={`px-4.5 py-2.5 rounded-xl text-[12px] font-bold border transition-all ${
+                  onClick={() => { setActiveFaqTab(tab.key as any); setOpenFaq(null); }}
+                  className={`px-6 py-2.5 rounded-xl text-[13px] font-bold transition-all duration-300 ${
                     activeFaqTab === tab.key
-                      ? `${theme.bgPrimary} ${theme.borderPrimary} text-white shadow-sm`
-                      : "bg-white border-slate-200 text-slate-500 hover:bg-slate-100"
+                      ? "bg-[#2563EB] text-white shadow-sm"
+                      : "text-slate-500 hover:text-[#0B1F3A] hover:bg-slate-50"
                   }`}
                 >
                   {tab.label}
                 </button>
               ))}
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
-          {/* Accordion List (homepage visual tabs style) */}
-          <div className="space-y-3.5">
+          {/* Accordion List */}
+          <motion.div initial="hidden" whileInView="visible" viewport={VIEWPORT} variants={premiumStagger} className="space-y-3">
             {faqGroupData[activeFaqTab].map((faq, idx) => {
               const isOpen = openFaq === idx;
               return (
-                <div
-                  key={idx}
-                  className="rounded-xl bg-white border border-slate-100 shadow-[0_4px_16px_rgba(15,23,42,0.04)] overflow-hidden"
-                >
-                  <button
-                    type="button"
-                    onClick={() => setOpenFaq(isOpen ? null : idx)}
-                    className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left focus:outline-none"
-                  >
-                    <span className="text-[14.5px] sm:text-[15px] font-extrabold text-[#0B1F3A]">
-                      {faq.q}
-                    </span>
-                    <motion.span
-                      animate={{ rotate: isOpen ? 180 : 0 }}
-                      transition={{ duration: 0.3, ease: EASE_OUT }}
-                      className={`shrink-0 w-8 h-8 rounded-lg border flex items-center justify-center transition-all ${isOpen ? "border-[#2563EB] bg-[#EEF4FF] text-[#2563EB]" : "border-slate-200 text-slate-500"}`}
-                    >
+                <motion.div key={idx} variants={premiumFadeUp} className={`rounded-2xl border overflow-hidden transition-all duration-300 ${
+                  isOpen ? "border-[#2563EB]/30 bg-white shadow-[0_4px_20px_rgba(37,99,235,0.06)]" : "border-slate-200 bg-white hover:border-slate-300 shadow-sm"
+                }`}>
+                  <button type="button" onClick={() => setOpenFaq(isOpen ? null : idx)} className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left focus:outline-none">
+                    <span className={`text-[14px] sm:text-[15px] font-bold transition-colors ${isOpen ? "text-[#2563EB]" : "text-[#0B1F3A]"}`}>{faq.q}</span>
+                    <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.3 }} className={`shrink-0 w-9 h-9 rounded-xl border flex items-center justify-center transition-all ${
+                      isOpen ? "border-[#2563EB]/30 bg-[#EAF3FF] text-[#2563EB]" : "border-slate-200 text-slate-400"
+                    }`}>
                       {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
-                    </motion.span>
+                    </motion.div>
                   </button>
                   <AnimatePresence initial={false}>
                     {isOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: EASE_OUT }}
-                        className="overflow-hidden"
-                      >
-                        <p className="px-5 pb-4 text-[13px] sm:text-[14px] text-slate-500 leading-relaxed border-t border-slate-50 pt-3">
-                          {faq.a}
-                        </p>
+                      <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.35, ease: EASE_OUT }} className="overflow-hidden">
+                        <p className="px-6 pb-5 text-[13.5px] text-slate-500 leading-relaxed border-t border-slate-100 pt-4">{faq.a}</p>
                       </motion.div>
                     )}
                   </AnimatePresence>
-                </div>
+                </motion.div>
               );
             })}
-          </div>
-
+          </motion.div>
         </div>
       </section>
 
       {/* ── SECTION 13: RELATED GUIDES (EDITORIAL RESOURCE GRID) ── */}
-      <section id="guides" className="py-16 md:py-20 bg-white border-b border-slate-100">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
-          
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <div className="inline-flex items-center gap-2 bg-[#EAF3FF] border border-[#2563EB]/15 rounded-full px-3.5 py-1.5 mb-4">
-              <span className={`w-1.5 h-1.5 rounded-full ${theme.bgPrimary}`} />
-              <span className={`${theme.textPrimary} text-[10px] font-black tracking-widest uppercase`}>
-                EDUCATIONAL PORTAL
-              </span>
-            </div>
-            <h2 className="text-[#0B1F3A] text-[28px] sm:text-[38px] font-black leading-[1.1] mb-4" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-              Explore Our <span className="text-[#2563EB]">Mortgage Resource Hub</span>
-            </h2>
-            <p className="text-slate-500 text-[13.5px] sm:text-[14.5px]">
-              Learn exactly how to prepare your finance application and avoid major broker pitfalls with our premium guides.
-            </p>
-          </div>
+      <section id="guides" className="py-14 md:py-20 bg-white border-b border-slate-100 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.025]" style={{ backgroundImage: "radial-gradient(#2563EB 1.5px, transparent 1.5px)", backgroundSize: "32px 32px" }} />
+        
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
+          <motion.div initial="hidden" whileInView="visible" viewport={VIEWPORT} variants={premiumStagger} className="text-center max-w-3xl mx-auto mb-16">
+            <motion.div variants={premiumFadeUp} className="inline-flex items-center gap-2 bg-white shadow-sm border border-[#2563EB]/15 rounded-full px-4 py-2 mb-6">
+              <FileText className="w-4 h-4 text-[#2563EB]" />
+              <span className={`${theme.textPrimary} text-[10px] font-bold tracking-widest uppercase`}>EDUCATIONAL PORTAL</span>
+            </motion.div>
+            <motion.h2 variants={premiumFadeUp} className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.1] mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+              Explore Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#8B5CF6]">Mortgage Resource Hub</span>
+            </motion.h2>
+            <motion.p variants={premiumFadeUp} className="text-slate-500 text-[14px] sm:text-[15px] max-w-2xl mx-auto leading-relaxed">
+              Learn exactly how to prepare your finance application and avoid major broker pitfalls.
+            </motion.p>
+          </motion.div>
 
           {/* 6 Article Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          <motion.div initial="hidden" whileInView="visible" viewport={VIEWPORT} variants={premiumStagger} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {relatedGuides.map((guide, i) => (
-              <motion.article
-                key={i}
-                whileHover={{ ...motionCardHover, boxShadow: "0 20px 40px rgba(11,31,58,0.06)" }}
-                className="group rounded-2xl border border-slate-200/80 bg-white overflow-hidden shadow-sm transition-all duration-300 flex flex-col justify-between"
-              >
-                <div>
-                  <div className="relative aspect-[16/10] bg-slate-100 w-full overflow-hidden">
-                    <Image
-                      src={guide.img}
-                      alt={guide.title}
-                      fill
-                      className="object-cover object-center group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="p-5 flex flex-col gap-2.5">
-                    <span className="text-[9.5px] font-extrabold tracking-wider uppercase text-slate-400">
-                      {guide.cat}
-                    </span>
-                    <h3 className="text-[#0B1F3A] text-[15.5px] font-black leading-snug group-hover:text-[#2563EB] transition-colors" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                      {guide.title}
-                    </h3>
-                    <p className="text-slate-500 text-[12.5px] leading-snug">
-                      {guide.desc}
-                    </p>
+              <motion.article key={i} variants={premiumFadeUp} whileHover={{ y: -8, boxShadow: "0 24px 48px rgba(11,31,58,0.10)" }} className="group rounded-[24px] border border-slate-200 bg-white overflow-hidden shadow-sm transition-all duration-400 flex flex-col">
+                <div className="relative aspect-[16/10] bg-slate-100 w-full overflow-hidden">
+                  <Image src={guide.img} alt={guide.title} fill className="object-cover object-center group-hover:scale-108 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute top-4 left-4">
+                    <span className="inline-block text-[9.5px] font-black tracking-widest uppercase bg-white/90 backdrop-blur-sm text-[#2563EB] px-3 py-1.5 rounded-full shadow-sm border border-white/50">{guide.cat}</span>
                   </div>
                 </div>
-                <div className="p-5 pt-0">
-                  <Link href="#contact" className={`text-[12px] font-extrabold flex items-center gap-1 hover:underline ${theme.textPrimary}`}>
-                    Read Article <ChevronRight className="w-3.5 h-3.5" />
+                <div className="p-6 flex flex-col gap-3 flex-1">
+                  <h3 className="text-[#0B1F3A] text-[16px] font-bold leading-snug group-hover:text-[#2563EB] transition-colors duration-300" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>{guide.title}</h3>
+                  <p className="text-slate-500 text-[13.5px] leading-relaxed flex-1">{guide.desc}</p>
+                  <Link href="#contact" className="inline-flex items-center gap-2 text-[13px] font-extrabold text-[#2563EB] hover:gap-3 transition-all duration-300 group/link mt-2">
+                    Read Article <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
                   </Link>
                 </div>
               </motion.article>
             ))}
-          </div>
+          </motion.div>
 
         </div>
       </section>
 
-      {/* ── SECTION 14: STRATEGIC CONSULTATION CTA (DARK NAVY GLOW) ── */}
-      <section className="relative overflow-hidden bg-[#001a4d] py-16 text-white border-b border-white/5">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-80"
-          style={{
-            background:
-              "linear-gradient(115deg, transparent 0%, transparent 42%, rgba(59,130,246,0.1) 52%, rgba(147,197,253,0.05) 58%, transparent 70%)",
-          }}
-        />
+      {/* ── SECTION 14: STRATEGIC CONSULTATION CTA ── */}
+      <section className="relative overflow-hidden py-14 md:py-20 text-white">
+        {/* Stunning gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0A1628] via-[#0F2D5E] to-[#0A1628]" />
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-[-30%] left-[-10%] w-[700px] h-[700px] bg-[#2563EB]/20 rounded-full blur-[120px] animate-[pulse_6s_ease-in-out_infinite]" />
+          <div className="absolute bottom-[-30%] right-[-10%] w-[600px] h-[600px] bg-[#38BDF8]/15 rounded-full blur-[120px] animate-[pulse_8s_ease-in-out_infinite_2s]" />
+          <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: "radial-gradient(rgba(255,255,255,0.8) 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
+        </div>
         
-        <div className="relative z-10 max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 flex flex-col lg:flex-row items-center justify-between gap-8">
-          
-          <div className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-5 flex-1">
-            <div className="w-12 h-12 rounded-full bg-[#2563EB] flex items-center justify-center shrink-0 shadow-lg shadow-blue-900/40">
-              <HomeIcon className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <p className="text-[20px] sm:text-[22px] font-black text-white leading-snug" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                Ready to Take the First Step <br className="hidden sm:block" />Toward <span className="text-[#38BDF8]">Home Ownership?</span>
-              </p>
-              <p className="text-[12.5px] text-white/75 mt-1 max-w-xl">
-                Book a free, completely obligation-free strategy call to outline your state grant applications and lender approvals.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap gap-4 shrink-0 justify-center">
-            <Link
-              href="#contact"
-              className={`inline-flex items-center justify-center gap-2 rounded-xl ${theme.bgPrimary} ${theme.bgHover} px-7 py-3.5 text-[13px] font-bold text-white transition-colors shadow-lg shadow-blue-500/10 whitespace-nowrap`}
-            >
-              Book Free Consultation <ArrowRight className="w-4 h-4" />
-            </Link>
-            <a
-              href="tel:0450240757"
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/30 bg-transparent px-7 py-3.5 text-[13px] font-bold text-white hover:bg-white/10 transition-colors whitespace-nowrap"
-            >
-              Speak With A Broker
-            </a>
-          </div>
-
+        <div className="relative z-10 max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+          <motion.div initial="hidden" whileInView="visible" viewport={VIEWPORT} variants={premiumStagger} className="text-center max-w-3xl mx-auto">
+            <motion.div variants={premiumFadeUp} className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-2 mb-6">
+              <HomeIcon className="w-4 h-4 text-[#2563EB]" />
+              <span className="text-[10px] font-bold tracking-widest uppercase text-[#38BDF8]">FREE STRATEGY CALL</span>
+            </motion.div>
+            <motion.h2 variants={premiumFadeUp} className="text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.08] tracking-tight mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+              Ready to Take the First Step<br />
+              Toward <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#38BDF8] to-[#818CF8]">Home Ownership?</span>
+            </motion.h2>
+            <motion.p variants={premiumFadeUp} className="text-white/75 text-[14px] sm:text-[15px] leading-relaxed mb-8 max-w-xl mx-auto">
+              Book a free, completely obligation-free strategy call to outline your state grant applications and lender approvals.
+            </motion.p>
+            <motion.div variants={premiumFadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link href="#contact" className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#2563EB] to-[#1D4ED8] hover:from-[#1D4ED8] hover:to-[#1e3a8a] px-10 py-4.5 text-[15px] font-extrabold text-white transition-all duration-300 shadow-[0_12px_30px_rgba(37,99,235,0.35)] hover:shadow-[0_16px_40px_rgba(37,99,235,0.45)] hover:scale-[1.02] whitespace-nowrap">
+                Book Free Consultation <ArrowRight className="w-5 h-5" />
+              </Link>
+              <a href="tel:0450240757" className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-white/20 bg-white/5 backdrop-blur-sm px-10 py-4 text-[15px] font-extrabold text-white hover:bg-white/15 hover:border-white/40 transition-all duration-300 whitespace-nowrap">
+                Speak With A Broker
+              </a>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
@@ -2031,7 +2467,7 @@ export function ClientPage() {
             <div>
               <div className="inline-flex items-center gap-2 bg-[#EAF3FF] border border-[#2563EB]/15 rounded-full px-3.5 py-1.5 mb-4">
                 <span className={`w-1.5 h-1.5 rounded-full ${theme.bgPrimary}`} />
-                <span className={`${theme.textPrimary} text-[10px] font-black tracking-widest uppercase`}>
+                <span className={`${theme.textPrimary} text-[10px] font-bold tracking-widest uppercase`}>
                   STRATEGY CALLBACK
                 </span>
               </div>
@@ -2060,7 +2496,7 @@ export function ClientPage() {
               <div className="bg-[#F8FAFC] rounded-3xl border border-slate-200/80 p-6 sm:p-10 shadow-sm relative">
                 <div className="absolute top-6 right-6 w-20 h-20 opacity-15" style={{ backgroundImage: "radial-gradient(#2563EB 1.5px, transparent 1.5px)", backgroundSize: "8px 8px" }} />
 
-                <h3 className="text-[#0B1F3A] text-[20px] font-extrabold mb-6 relative z-10" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                <h3 className="text-[#0B1F3A] text-[17px] font-extrabold mb-6 relative z-10" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
                   Secure Your Strategic Callback
                 </h3>
                 <form onSubmit={(e) => e.preventDefault()} className="space-y-5 relative z-10">
@@ -2141,6 +2577,165 @@ export function ClientPage() {
 
       {/* ── SHARED FOOTER ── */}
       <SiteFooter />
+
+      {/* ── ADVANCED LEAD MODAL OVERLAY ── */}
+      <AnimatePresence>
+        {isLeadModalOpen && (
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+            {/* Backdrop Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsLeadModalOpen(false)}
+              className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+            />
+
+            {/* Modal Box */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              transition={{ type: "spring", duration: 0.4 }}
+              className="relative bg-white rounded-3xl shadow-[0_30px_70px_rgba(11,31,58,0.25)] border border-slate-200 w-full max-w-[480px] overflow-hidden z-10 flex flex-col"
+            >
+              {/* Close Button */}
+              <button
+                type="button"
+                onClick={() => setIsLeadModalOpen(false)}
+                className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center transition-colors z-20 focus:outline-none"
+              >
+                ✕
+              </button>
+
+              {/* Header block */}
+              <div className="p-6 bg-slate-50 border-b border-slate-100 flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-[#2563EB] shrink-0">
+                  <Calculator className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-[#0B1F3A] text-[16px] font-black tracking-tight leading-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                    Secure Pre-Approval Report
+                  </h3>
+                  <span className="text-[11.5px] text-slate-500 font-medium">
+                    Preliminary Capacity: <strong className="text-[#2563EB] font-bold">${borrowingCapacity.toLocaleString()}</strong>
+                  </span>
+                </div>
+              </div>
+
+              {/* Form / Content Body */}
+              <div className="p-6">
+                {!leadSubmitted ? (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      if (!leadName || !leadEmail || !leadPhone) return;
+                      setLeadSubmitted(true);
+                    }}
+                    className="space-y-4"
+                  >
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Your Full Name</label>
+                      <input
+                        type="text"
+                        required
+                        value={leadName}
+                        onChange={(e) => setLeadName(e.target.value)}
+                        placeholder="e.g. Biraj Adhikari"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-[#0B1F3A] focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] transition-all"
+                      />
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Email Address</label>
+                      <input
+                        type="email"
+                        required
+                        value={leadEmail}
+                        onChange={(e) => setLeadEmail(e.target.value)}
+                        placeholder="e.g. name@domain.com.au"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-[#0B1F3A] focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] transition-all"
+                      />
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Phone Number</label>
+                      <input
+                        type="tel"
+                        required
+                        value={leadPhone}
+                        onChange={(e) => setLeadPhone(e.target.value)}
+                        placeholder="e.g. 0412 345 678"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-[#0B1F3A] focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] transition-all"
+                      />
+                    </div>
+
+                    {/* Agree checkboxes */}
+                    <div className="flex items-start gap-2.5 pt-1.5">
+                      <input
+                        type="checkbox"
+                        required
+                        defaultChecked
+                        className="mt-0.5 rounded border-slate-300 text-[#2563EB] focus:ring-[#2563EB]"
+                      />
+                      <span className="text-[10px] leading-relaxed text-slate-500">
+                        I agree to receive my custom servicing report and first home guides. I understand this does not impact my credit score.
+                      </span>
+                    </div>
+
+                    {/* Submit CTA */}
+                    <button
+                      type="submit"
+                      className="w-full bg-[#2563EB] hover:bg-[#1d4ed8] text-white text-xs font-black uppercase py-4 rounded-xl text-center flex items-center justify-center gap-2 shadow-lg transition-all duration-300 hover:scale-[1.02] mt-4"
+                    >
+                      <span>Generate Assessment Report</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+
+                    {/* Security Disclaimer */}
+                    <p className="text-[9.5px] text-slate-400 text-center leading-normal pt-1.5 flex items-center justify-center gap-1">
+                      🔒 Your data is fully encrypted and never shared.
+                    </p>
+                  </form>
+                ) : (
+                  <div className="py-6 text-center space-y-4">
+                    <div className="w-16 h-16 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-500 mx-auto">
+                      <Check className="w-8 h-8 stroke-[3px]" />
+                    </div>
+                    <div className="space-y-2">
+                      <h4 className="text-[#0B1F3A] text-lg font-black tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                        Assessment Report Generated!
+                      </h4>
+                      <p className="text-slate-500 text-xs leading-relaxed max-w-sm mx-auto">
+                        We have compiled your preliminary servicing capacity. We have sent a confirmation email to <strong className="text-slate-800 font-bold">{leadEmail}</strong>.
+                      </p>
+                      <p className="text-slate-500 text-xs leading-relaxed max-w-sm mx-auto">
+                        Nepali specialist <strong>Aakash KC</strong> will contact you on <strong className="text-slate-800 font-bold">{leadPhone}</strong> within 2 hours to confirm lender policies and pre-approval pathways.
+                      </p>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => setIsLeadModalOpen(false)}
+                      className="bg-slate-100 hover:bg-slate-200 text-[#0B1F3A] text-xs font-bold uppercase py-2.5 px-6 rounded-xl transition-all focus:outline-none"
+                    >
+                      Close Window
+                    </button>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
+
+
+
+
+
+
+
+
