@@ -191,6 +191,8 @@ export function ClientPage() {
   const [leadEmail, setLeadEmail] = useState("");
   const [leadPhone, setLeadPhone] = useState("");
   const [leadSubmitted, setLeadSubmitted] = useState(false);
+  const [callbackSubmitted, setCallbackSubmitted] = useState(false);
+  const [showFullReport, setShowFullReport] = useState(false);
   const [calcTab, setCalcTab] = useState<"inputs" | "results">("inputs");
   const [mobileActiveStepIndex, setMobileActiveStepIndex] = useState(0);
 
@@ -389,7 +391,7 @@ export function ClientPage() {
       title: "Loan Approval",
       tagline: "Formal confirmation",
       desc: "We package and submit your loan application to your chosen lender, managing communications until formal approval is secured.",
-      highlight: "Fast-tracked broker channel submission.",
+      highlight: "Fast-tracked expert channel submission.",
       floatingText: "Stress-Free Processing. Fast-Tracked.",
       accentClass: "from-[#F59E0B] to-[#D97706]",
       glowColor: "rgba(245,158,11,0.12)",
@@ -496,7 +498,7 @@ export function ClientPage() {
       { q: "Is HECS debt going to stop me from getting pre-approved?", a: "No. HECS debt does reduce your overall borrowing power because it affects your monthly net take-home salary, but it absolutely does not prevent approval. We'll guide you to the lenders with the friendliest HECS policies." }
     ],
     grants: [
-      { q: "How do I apply for the First Home Guarantee?", a: "This scheme has limited annual allocations and can only be secured through authorized lenders. As your brokers, we reserve your spot and handle the entire scheme submission on your behalf." },
+      { q: "How do I apply for the First Home Guarantee?", a: "This scheme has limited annual allocations and can only be secured through authorized lenders. As your experts, we reserve your spot and handle the entire scheme submission on your behalf." },
       { q: "Can I get the First Home Owner Grant for established homes?", a: "No. The FHOG is strictly reserved for newly constructed properties, off-the-plan builds, or cases where you build a brand-new home. Established homes are eligible for stamp duty concessions instead." },
       { q: "What are the income limits for government guarantees?", a: "For the First Home Guarantee, singles must earn less than $125,000 per year, and couples must earn less than $200,000 per year, as verified by your ATO Notice of Assessment." }
     ]
@@ -1720,11 +1722,12 @@ export function ClientPage() {
                       type="button"
                       onClick={() => {
                         setLeadSubmitted(false);
+                        setShowFullReport(false);
                         setIsLeadModalOpen(true);
                       }}
                       className="w-full bg-white/5 hover:bg-white/10 text-white text-[11px] font-bold uppercase py-2.5 px-4 rounded-xl text-center flex items-center justify-center gap-1.5 border border-white/10 transition-all duration-300"
                     >
-                      <span>Talk to Aakash KC</span>
+                      <span>Talk to Home Loan Expert</span>
                     </button>
 
                     {/* Mobile-only Back button */}
@@ -2226,7 +2229,7 @@ export function ClientPage() {
                 </div>
                 <div>
                   <div className="text-[16px] font-black text-white">Aakash KC</div>
-                  <div className="text-[13px] text-slate-400 mt-0.5">Founder & Principal Mortgage Broker</div>
+                  <div className="text-[13px] text-slate-400 mt-0.5">Founder & Principal Home Loan Expert</div>
                 </div>
               </motion.div>
             </motion.div>
@@ -2391,7 +2394,7 @@ export function ClientPage() {
               Explore Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#8B5CF6]">Mortgage Resource Hub</span>
             </motion.h2>
             <motion.p variants={premiumFadeUp} className="text-slate-500 text-[14px] sm:text-[15px] max-w-2xl mx-auto leading-relaxed">
-              Learn exactly how to prepare your finance application and avoid major broker pitfalls.
+              Learn exactly how to prepare your finance application and avoid major mortgage pitfalls.
             </motion.p>
           </motion.div>
 
@@ -2448,7 +2451,7 @@ export function ClientPage() {
                 Book Free Consultation <ArrowRight className="w-5 h-5" />
               </Link>
               <a href="tel:0450240757" className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-white/20 bg-white/5 backdrop-blur-sm px-10 py-4 text-[15px] font-extrabold text-white hover:bg-white/15 hover:border-white/40 transition-all duration-300 whitespace-nowrap">
-                Speak With A Broker
+                Speak With An Expert
               </a>
             </motion.div>
           </motion.div>
@@ -2472,7 +2475,7 @@ export function ClientPage() {
                 </span>
               </div>
               <h2 className="text-[#0B1F3A] text-[28px] sm:text-[38px] font-black leading-[1.1] mb-5" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                Request A <span className="text-[#2563EB]">Callback Strategy Call</span>
+                Secure Your <span className="text-[#2563EB]">Strategic Callback</span>
               </h2>
               <p className="text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed mb-6">
                 Fill out your details below and a first home advisor will contact you within 2 business hours. We&apos;ll explain borrowing capacity calculations, low-deposit schemes, and answer any grant eligibility questions.
@@ -2496,75 +2499,140 @@ export function ClientPage() {
               <div className="bg-[#F8FAFC] rounded-3xl border border-slate-200/80 p-6 sm:p-10 shadow-sm relative">
                 <div className="absolute top-6 right-6 w-20 h-20 opacity-15" style={{ backgroundImage: "radial-gradient(#2563EB 1.5px, transparent 1.5px)", backgroundSize: "8px 8px" }} />
 
-                <h3 className="text-[#0B1F3A] text-[17px] font-extrabold mb-6 relative z-10" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                  Secure Your Strategic Callback
-                </h3>
-                <form onSubmit={(e) => e.preventDefault()} className="space-y-5 relative z-10">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Full Name</label>
-                      <input
-                        type="text"
-                        placeholder="John Doe"
-                        className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] shadow-sm"
-                        required
-                      />
+                {!callbackSubmitted ? (
+                  <>
+                    <h3 className="text-[#0B1F3A] text-[17px] font-extrabold mb-6 relative z-10" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                      Secure Your Strategic Callback
+                    </h3>
+                    <form 
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        setCallbackSubmitted(true);
+                      }} 
+                      className="space-y-5 relative z-10"
+                    >
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Full Name</label>
+                          <input
+                            type="text"
+                            placeholder="John Doe"
+                            className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] shadow-sm"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Phone Number</label>
+                          <input
+                            type="tel"
+                            placeholder="0450 000 000"
+                            className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] shadow-sm"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Email Address</label>
+                          <input
+                            type="email"
+                            placeholder="john@example.com.au"
+                            className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] shadow-sm"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">State</label>
+                          <select className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] font-semibold text-slate-700 shadow-sm">
+                            <option>New South Wales (NSW)</option>
+                            <option>Victoria (VIC)</option>
+                            <option>Queensland (QLD)</option>
+                            <option>Western Australia (WA)</option>
+                            <option>South Australia (SA)</option>
+                            <option>ACT / Tasmania / NT</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">What is your current savings position?</label>
+                          <select className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] font-semibold text-slate-700 shadow-sm">
+                            <option>Under $20,000</option>
+                            <option>$20,000 - $50,000</option>
+                            <option>$50,000 - $100,000</option>
+                            <option>Over $100,000</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">What is your gross annual income?</label>
+                          <select className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] font-semibold text-slate-700 shadow-sm">
+                            <option>Under $80,000</option>
+                            <option>$80,000 - $120,000</option>
+                            <option>$120,000 - $180,000</option>
+                            <option>Over $180,000</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <button
+                        type="submit"
+                        className={`w-full ${theme.bgPrimary} ${theme.bgHover} text-white font-bold py-4 rounded-xl text-[13.5px] transition-all flex items-center justify-center gap-1.5 shadow-md shadow-blue-100`}
+                      >
+                        Secure Strategic Callback <ArrowRight className="w-4 h-4" />
+                      </button>
+
+                      <p className="text-[10px] text-slate-400 text-center mt-3">
+                        We guard your privacy with top-tier security standards.
+                      </p>
+                    </form>
+                  </>
+                ) : (
+                  <div className="py-6 text-center space-y-5 relative z-10">
+                    <div className="w-12 h-12 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-500 mx-auto shadow-sm">
+                      <Check className="w-6 h-6 stroke-[3px]" />
                     </div>
-                    <div>
-                      <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Phone Number</label>
-                      <input
-                        type="tel"
-                        placeholder="0450 000 000"
-                        className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] shadow-sm"
-                        required
-                      />
+                    
+                    <div className="space-y-2">
+                      <h4 className="text-[#0B1F3A] text-lg font-black tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                        Thank You!
+                      </h4>
+                      <p className="text-slate-600 text-xs sm:text-sm leading-relaxed max-w-md mx-auto">
+                        You are expecting a call from Home Loan Expert <strong className="font-bold text-[#0B1F3A]">Aakash</strong> within 2 business hours.
+                      </p>
+                    </div>
+
+                    {/* Premium Mini-Profile Card with Aakash's Story */}
+                    <div className="bg-white rounded-2xl border border-slate-100 p-4 sm:p-5 text-left shadow-sm max-w-md mx-auto space-y-4">
+                      <div className="flex items-center gap-3.5 pb-3 border-b border-slate-100">
+                        <div className="w-12 h-12 rounded-xl overflow-hidden relative border border-slate-100 shrink-0">
+                          <Image src="/images/aakash_new.png" fill alt="Aakash KC" className="object-cover object-top" />
+                        </div>
+                        <div>
+                          <div className="text-[14px] font-extrabold text-[#0B1F3A]">Aakash KC</div>
+                          <div className="text-[11px] text-[#2563EB] font-bold">Principal Home Loan Expert</div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400 block">His Story & Mission</span>
+                        <p className="text-slate-600 text-[11.5px] leading-relaxed italic">
+                          &ldquo;Aakash founded Mortgage Xperts to provide the Nepalese community in Australia with transparent, client-first mortgage advice. Having arrived as an immigrant himself, he understands the dream of home ownership. He has helped over 500+ families secure low-deposit approvals and max borrowing capacity.&rdquo;
+                        </p>
+                      </div>
+
+                      <div className="pt-2">
+                        <Link
+                          href="#founder"
+                          className="w-full text-center bg-[#2563EB] hover:bg-[#1d4ed8] text-white text-[11px] font-black uppercase py-3 rounded-xl transition-all block"
+                        >
+                          Check Full Profile & Reviews
+                        </Link>
+                      </div>
                     </div>
                   </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Email Address</label>
-                      <input
-                        type="email"
-                        placeholder="john@example.com.au"
-                        className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] shadow-sm"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">State</label>
-                      <select className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] font-semibold text-slate-700 shadow-sm">
-                        <option>New South Wales (NSW)</option>
-                        <option>Victoria (VIC)</option>
-                        <option>Queensland (QLD)</option>
-                        <option>Western Australia (WA)</option>
-                        <option>South Australia (SA)</option>
-                        <option>ACT / Tasmania / NT</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">What is your current savings position?</label>
-                    <select className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] font-semibold text-slate-700 shadow-sm">
-                      <option>Under $20,000</option>
-                      <option>$20,000 - $50,000</option>
-                      <option>$50,000 - $100,000</option>
-                      <option>Over $100,000</option>
-                    </select>
-                  </div>
-
-                  <button
-                    type="submit"
-                    className={`w-full ${theme.bgPrimary} ${theme.bgHover} text-white font-bold py-4 rounded-xl text-[13.5px] transition-all flex items-center justify-center gap-1.5 shadow-md shadow-blue-100`}
-                  >
-                    Submit Booking Request <ArrowRight className="w-4 h-4" />
-                  </button>
-
-                  <p className="text-[10px] text-slate-400 text-center mt-3">
-                    We guard your privacy with top-tier security standards.
-                  </p>
-                </form>
+                )}
               </div>
             </div>
 
@@ -2697,30 +2765,152 @@ export function ClientPage() {
                       🔒 Your data is fully encrypted and never shared.
                     </p>
                   </form>
-                ) : (
-                  <div className="py-6 text-center space-y-4">
-                    <div className="w-16 h-16 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-500 mx-auto">
-                      <Check className="w-8 h-8 stroke-[3px]" />
+                ) : showFullReport ? (
+                  <div className="py-2 text-left space-y-4 max-h-[70vh] overflow-y-auto pr-1">
+                    {/* Report Header */}
+                    <div className="border-b border-slate-200 pb-2.5 flex items-center justify-between">
+                      <div>
+                        <h4 className="text-[#0B1F3A] text-[15px] font-black uppercase tracking-tight font-montserrat">
+                          Capacity Assessment Report
+                        </h4>
+                        <p className="text-[10px] text-slate-400 font-medium">
+                          Prepared for: <span className="font-bold text-slate-600">{leadName || "Client"}</span>
+                        </p>
+                      </div>
+                      <span className="text-[9px] font-black uppercase bg-emerald-50 text-emerald-600 border border-emerald-100 rounded px-2 py-0.5">
+                        Generated
+                      </span>
                     </div>
-                    <div className="space-y-2">
-                      <h4 className="text-[#0B1F3A] text-lg font-black tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                        Assessment Report Generated!
-                      </h4>
-                      <p className="text-slate-500 text-xs leading-relaxed max-w-sm mx-auto">
-                        We have compiled your preliminary servicing capacity. We have sent a confirmation email to <strong className="text-slate-800 font-bold">{leadEmail}</strong>.
-                      </p>
-                      <p className="text-slate-500 text-xs leading-relaxed max-w-sm mx-auto">
-                        Nepali specialist <strong>Aakash KC</strong> will contact you on <strong className="text-slate-800 font-bold">{leadPhone}</strong> within 2 hours to confirm lender policies and pre-approval pathways.
+
+                    {/* Big Numbers Grid */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="bg-slate-50 border border-slate-200/60 rounded-xl p-3">
+                        <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">Estimated Borrowing</span>
+                        <span className="text-[#2563EB] text-[18px] sm:text-[20px] font-black tracking-tight block">
+                          ${borrowingCapacity.toLocaleString()}
+                        </span>
+                      </div>
+                      <div className="bg-slate-50 border border-slate-200/60 rounded-xl p-3">
+                        <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">Est. Monthly Payment</span>
+                        <span className="text-[#0B1F3A] text-[18px] sm:text-[20px] font-black tracking-tight block">
+                          ${Math.round((borrowingCapacity * (interestRate / 100 / 12) * Math.pow(1 + (interestRate / 100 / 12), loanTerm * 12)) / (Math.pow(1 + (interestRate / 100 / 12), loanTerm * 12) - 1) || 0).toLocaleString()}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Financial Inputs Summary */}
+                    <div className="space-y-1.5">
+                      <span className="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider block">Assessed Inputs</span>
+                      <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-[11px] bg-slate-50 border border-slate-200/60 rounded-xl p-3 text-slate-600">
+                        <div>Income: <strong className="text-slate-800">${monthlyIncome.toLocaleString()}/mo</strong></div>
+                        <div>Expenses: <strong className="text-slate-800">${monthlyExpenses.toLocaleString()}/mo</strong></div>
+                        <div>Other Debts: <strong className="text-slate-800">${monthlyDebt.toLocaleString()}/mo</strong></div>
+                        <div>Credit Card Limit: <strong className="text-slate-800">${creditCardLimit.toLocaleString()}</strong></div>
+                        <div>Interest Rate: <strong className="text-slate-800">{interestRate}%</strong></div>
+                        <div>Assessed Term: <strong className="text-slate-800">{loanTerm} Years</strong></div>
+                      </div>
+                    </div>
+
+                    {/* Deposit Recommendations */}
+                    <div className="space-y-1.5">
+                      <span className="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider block">Deposit Requirements</span>
+                      <div className="grid grid-cols-2 gap-3 text-[11px] bg-slate-50 border border-slate-200/60 rounded-xl p-3 text-slate-605 font-medium">
+                        <div>
+                          <div className="text-[9px] font-semibold text-slate-400 uppercase">5% Scheme Deposit</div>
+                          <strong className="text-slate-800 text-[12px] font-bold">${Math.round(borrowingCapacity * 0.05).toLocaleString()}</strong>
+                        </div>
+                        <div>
+                          <div className="text-[9px] font-semibold text-slate-400 uppercase">20% Standard Deposit</div>
+                          <strong className="text-slate-800 text-[12px] font-bold">${Math.round(borrowingCapacity * 0.20).toLocaleString()}</strong>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Assessor Recommendation */}
+                    <div className="bg-blue-50/50 border border-blue-100 rounded-xl p-3.5 space-y-1">
+                      <div className="text-[9.5px] font-bold uppercase tracking-wider text-[#2563EB]">Assessor Recommendation</div>
+                      <p className="text-[11px] text-slate-600 leading-relaxed font-medium">
+                        Based on your savings position of <strong className="text-slate-800 font-bold">${existingSavings.toLocaleString()}</strong>, you may qualify for government low-deposit schemes. Book a validation call with Aakash to verify lender specific policies.
                       </p>
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={() => setIsLeadModalOpen(false)}
-                      className="bg-slate-100 hover:bg-slate-200 text-[#0B1F3A] text-xs font-bold uppercase py-2.5 px-6 rounded-xl transition-all focus:outline-none"
-                    >
-                      Close Window
-                    </button>
+                    {/* Actions */}
+                    <div className="pt-2 flex gap-2">
+                      <button
+                        type="button"
+                        onClick={() => window.print()}
+                        className="flex-1 text-center border border-slate-200 hover:bg-slate-50 text-slate-700 text-[10.5px] font-black uppercase py-2.5 rounded-xl transition-all"
+                      >
+                        Print Report
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setShowFullReport(false)}
+                        className="flex-1 text-center bg-[#2563EB] hover:bg-[#1d4ed8] text-white text-[10.5px] font-black uppercase py-2.5 rounded-xl transition-all"
+                      >
+                        Back
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="py-5 text-center space-y-4">
+                    <div className="w-12 h-12 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-500 mx-auto shadow-sm">
+                      <Check className="w-6 h-6 stroke-[3px]" />
+                    </div>
+                    
+                    <div className="space-y-1.5">
+                      <h4 className="text-[#0B1F3A] text-lg font-black tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                        Thank You! Report Generated.
+                      </h4>
+                      <p className="text-slate-600 text-[12.5px] leading-relaxed max-w-sm mx-auto">
+                        Your custom assessment report has been generated and sent to <strong className="text-[#0B1F3A] font-semibold">{leadEmail}</strong>.
+                      </p>
+                      <p className="text-slate-500 text-[12.5px] leading-relaxed max-w-sm mx-auto">
+                        You are expecting a call from Home Loan Expert <strong className="font-bold text-[#0B1F3A]">Aakash</strong> on <strong className="text-slate-800 font-bold">{leadPhone}</strong> to review your pre-approval options.
+                      </p>
+                    </div>
+
+                    {/* Premium Mini-Profile Card with Aakash's Story */}
+                    <div className="bg-slate-50 rounded-2xl border border-slate-200/50 p-4 text-left shadow-sm max-w-sm mx-auto space-y-3.5">
+                      <div className="flex items-center gap-3 pb-2.5 border-b border-slate-200/60">
+                        <div className="w-10 h-10 rounded-xl overflow-hidden relative border border-slate-200/40 shrink-0">
+                          <Image src="/images/aakash_new.png" fill alt="Aakash KC" className="object-cover object-top" />
+                        </div>
+                        <div>
+                          <div className="text-[13px] font-extrabold text-[#0B1F3A]">Aakash KC</div>
+                          <div className="text-[10px] text-[#2563EB] font-bold">Principal Home Loan Expert</div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <span className="text-[8.5px] font-bold uppercase tracking-wider text-slate-400 block">His Story & Mission</span>
+                        <p className="text-slate-600 text-[11px] leading-relaxed italic">
+                          &ldquo;Aakash founded Mortgage Xperts to provide the Nepalese community in Australia with transparent, client-first mortgage advice. Having arrived as an immigrant himself, he understands the dream of home ownership. He has helped over 500+ families secure low-deposit approvals.&rdquo;
+                        </p>
+                      </div>
+
+                      <div className="pt-1.5 flex gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setShowFullReport(true)}
+                          className="flex-1 text-center bg-[#2563EB] hover:bg-[#1d4ed8] text-white text-[10.5px] font-black uppercase py-2.5 rounded-xl transition-all"
+                        >
+                          View Report
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIsLeadModalOpen(false);
+                            setTimeout(() => {
+                              document.getElementById("founder")?.scrollIntoView({ behavior: "smooth" });
+                            }, 100);
+                          }}
+                          className="flex-1 text-center border border-slate-200 hover:bg-slate-50 text-slate-700 text-[10.5px] font-bold uppercase py-2.5 rounded-xl transition-all"
+                        >
+                          Check Profile
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>
