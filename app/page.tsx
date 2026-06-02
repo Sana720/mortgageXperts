@@ -84,11 +84,6 @@ const IconHammer = () => (
   </svg>
 );
 
-const GoldStarIcon = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-amber-500 shrink-0">
-    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-  </svg>
-);
 
 const FlameIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-[#EA580C] shrink-0">
@@ -1634,7 +1629,7 @@ export default function Home() {
             <div className="h-px bg-slate-100 w-full" />
 
             {/* Bottom Row: Elite Bank Broker Status Badges */}
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-1 w-full overflow-hidden">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-1 w-full">
               <div className="flex items-center gap-2 shrink-0">
                 <Shield className="w-4 h-4 text-[#2563EB]" />
                 <span className="text-[11.5px] font-bold text-[#0B1F3A] uppercase tracking-wider">
@@ -1642,50 +1637,12 @@ export default function Home() {
                 </span>
               </div>
               
-              {/* Desktop-only Static Badges */}
-              <div className="hidden md:flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-                {/* CBA Platinum */}
-                <div className="inline-flex items-center gap-1.5 bg-[#FDFBF7] border border-[#EBE6DD] rounded-xl px-2.5 py-1.5 sm:px-4 sm:py-2 shadow-[0_2px_8px_rgba(0,0,0,0.01)] transition-all duration-300 hover:scale-[1.02] hover:shadow-sm">
-                  <GoldStarIcon />
-                  <span className="text-[#0B1F3A] font-bold text-[11px] sm:text-[12.5px] tracking-wide whitespace-nowrap">CBA Platinum</span>
-                </div>
-                {/* Westpac Platinum */}
-                <div className="inline-flex items-center gap-1.5 bg-[#FDFBF7] border border-[#EBE6DD] rounded-xl px-2.5 py-1.5 sm:px-4 sm:py-2 shadow-[0_2px_8px_rgba(0,0,0,0.01)] transition-all duration-300 hover:scale-[1.02] hover:shadow-sm">
-                  <GoldStarIcon />
-                  <span className="text-[#0B1F3A] font-bold text-[11px] sm:text-[12.5px] tracking-wide whitespace-nowrap">Westpac Platinum</span>
-                </div>
+              {/* Partnership Badge */}
+              <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
                 {/* St.George Flame */}
                 <div className="inline-flex items-center gap-1.5 bg-[#FDFBF7] border border-[#EBE6DD] rounded-xl px-2.5 py-1.5 sm:px-4 sm:py-2 shadow-[0_2px_8px_rgba(0,0,0,0.01)] transition-all duration-300 hover:scale-[1.02] hover:shadow-sm">
                   <FlameIcon />
                   <span className="text-[#0B1F3A] font-bold text-[11px] sm:text-[12.5px] tracking-wide whitespace-nowrap">St.George Flame</span>
-                </div>
-              </div>
-
-              {/* Mobile-only Scrolling Marquee */}
-              <div 
-                className="md:hidden flex-1 overflow-hidden relative flex items-center h-[45px] w-full my-1" 
-                style={{ WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)" }}
-              >
-                <div className="flex w-max animate-marquee items-center hover:pause">
-                  {[1, 2, 3, 4].map((_, index) => (
-                    <React.Fragment key={index}>
-                      {/* CBA Platinum */}
-                      <div className="inline-flex items-center gap-1.5 bg-[#FDFBF7] border border-[#EBE6DD] rounded-xl px-3 py-1.5 shadow-[0_2px_8px_rgba(0,0,0,0.01)] mr-3 shrink-0">
-                        <GoldStarIcon />
-                        <span className="text-[#0B1F3A] font-bold text-[11px] tracking-wide whitespace-nowrap">CBA Platinum</span>
-                      </div>
-                      {/* Westpac Platinum */}
-                      <div className="inline-flex items-center gap-1.5 bg-[#FDFBF7] border border-[#EBE6DD] rounded-xl px-3 py-1.5 shadow-[0_2px_8px_rgba(0,0,0,0.01)] mr-3 shrink-0">
-                        <GoldStarIcon />
-                        <span className="text-[#0B1F3A] font-bold text-[11px] tracking-wide whitespace-nowrap">Westpac Platinum</span>
-                      </div>
-                      {/* St.George Flame */}
-                      <div className="inline-flex items-center gap-1.5 bg-[#FDFBF7] border border-[#EBE6DD] rounded-xl px-3 py-1.5 shadow-[0_2px_8px_rgba(0,0,0,0.01)] mr-3 shrink-0">
-                        <FlameIcon />
-                        <span className="text-[#0B1F3A] font-bold text-[11px] tracking-wide whitespace-nowrap">St.George Flame</span>
-                      </div>
-                    </React.Fragment>
-                  ))}
                 </div>
               </div>
             </div>
@@ -2041,7 +1998,7 @@ export default function Home() {
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
             variants={staggerContainer}
-            className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-12"
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 mt-12"
           >
             {[
               {
@@ -2069,29 +2026,17 @@ export default function Home() {
                 desc: "Specialist Mortgage Broker",
               },
               {
-                img: "/images/6.png",
-                title: "Westpac Platinum Broker",
-                subtitle: "Elite Partner Status",
-                desc: "Platinum Broker Status",
-              },
-              {
                 img: "/images/7.png",
                 title: "Quality Business Awards",
                 subtitle: "2026 Winner",
                 desc: "Gold Medalist",
-              },
-              {
-                img: "/images/8.png",
-                title: "CBA Elite Broker",
-                subtitle: "Elite Partner Status",
-                desc: "Elite Broker Status",
               },
             ].map((award, idx) => (
               <motion.div
                 key={idx}
                 variants={fadeInUp}
                 whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
-                className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-6 flex flex-col items-center justify-center text-center transition-all duration-300 group last:col-span-2 lg:last:col-span-1"
+                className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-6 flex flex-col items-center justify-center text-center transition-all duration-300 group last:col-span-2 md:last:col-span-1 lg:last:col-span-1"
               >
                 {/* Image Container with bold visual scaling */}
                 <div className="relative w-28 h-28 xs:w-32 xs:h-32 sm:w-44 sm:h-44 flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-105 self-center">
@@ -2118,9 +2063,6 @@ export default function Home() {
                 </div>
               </motion.div>
             ))}
-
-            {/* Empty grid cell to represent clean blank space for the future without any placeholder content */}
-            <div className="hidden lg:block" />
 
           </motion.div>
         </div>
