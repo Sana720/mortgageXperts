@@ -140,7 +140,26 @@ const theme = {
   accentLabel: "FIRST HOME BUYER EXPERTS"
 };
 
-export function ClientPage() {
+export interface PageHeroSettings {
+  hero_badge?: string;
+  hero_title?: string;
+  hero_subtext?: string;
+  hero_image?: string;
+  hero_btn1_text?: string;
+  hero_btn1_link?: string;
+  hero_btn2_text?: string;
+  hero_btn2_link?: string;
+}
+
+export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings }) {
+  const badgeText = pageHeroSettings?.hero_badge || "First Home Buyer Specialists";
+  const titleText = pageHeroSettings?.hero_title || "Your First Home Doesn't Need To Feel Complicated.";
+  const subtextText = pageHeroSettings?.hero_subtext || "Securing your first home is a momentous milestone. We match you to the right lender policies, calculate your genuine limits, and unlock stamp duty concessions to make the process completely stress-free.";
+  const imageSrc = pageHeroSettings?.hero_image || "/images/first_home_family.png";
+  const btn1Text = pageHeroSettings?.hero_btn1_text || "Book Free Strategy Call";
+  const btn1Link = pageHeroSettings?.hero_btn1_link || "#contact";
+  const btn2Text = pageHeroSettings?.hero_btn2_text || "Calculate Borrowing Power";
+  const btn2Link = pageHeroSettings?.hero_btn2_link || "#borrowing";
   // ── STATE VARIABLES FOR INTERACTIVE UX ──
   const [activeStep, setActiveStep] = useState(0);
   const [activeNav, setActiveNav] = useState("overview");
@@ -184,6 +203,12 @@ export function ClientPage() {
   const [dependents, setDependents] = useState(0);
   const [interestRate, setInterestRate] = useState(6.19);
   const [loanTerm, setLoanTerm] = useState(30);
+
+  useEffect(() => {
+    if (settings.interest_rate) {
+      setInterestRate(parseFloat(settings.interest_rate));
+    }
+  }, [settings.interest_rate]);
 
   // Advanced Interactive States
   const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
@@ -309,6 +334,7 @@ export function ClientPage() {
   const roadmapSteps = [
     {
       num: "01",
+      img: "/images/step_1.png",
       phase: "PHASE 01",
       title: "Borrowing Power",
       tagline: "Know your limit",
@@ -335,6 +361,7 @@ export function ClientPage() {
     },
     {
       num: "02",
+      img: "/images/step_2.png",
       phase: "PHASE 02",
       title: "Deposit Planning",
       tagline: "Leverage schemes",
@@ -361,6 +388,7 @@ export function ClientPage() {
     },
     {
       num: "03",
+      img: "/images/step_3.png",
       phase: "PHASE 03",
       title: "Find Property",
       tagline: "Shop with budget",
@@ -387,6 +415,7 @@ export function ClientPage() {
     },
     {
       num: "04",
+      img: "/images/step_4.png",
       phase: "PHASE 04",
       title: "Loan Approval",
       tagline: "Formal confirmation",
@@ -413,6 +442,7 @@ export function ClientPage() {
     },
     {
       num: "05",
+      img: "/images/step_5.png",
       phase: "PHASE 05",
       title: "Settlement",
       tagline: "Collect your keys",
@@ -516,7 +546,7 @@ export function ClientPage() {
   return (
     <div className="min-h-screen flex flex-col bg-white font-inter" style={{ overflowX: "clip" }}>
       {/* ── SHARED HEADER ── */}
-      <SiteHeader isSticky={false} />
+      <SiteHeader isSticky={false} settings={settings} />
 
       {/* ── SECTION 1: EDITORIAL HERO ── */}
       <section id="overview" className="relative overflow-hidden bg-white pt-2.5 pb-8 lg:pt-[10px] lg:pb-8 text-slate-800 border-b border-slate-100 min-h-[calc(100vh-80px)] flex flex-col justify-start">
@@ -548,7 +578,7 @@ export function ClientPage() {
             >
               <motion.div variants={premiumFadeUp} className="inline-flex items-center gap-1.5 sm:gap-2 border rounded-full px-3.5 py-1.5 bg-[#EAF3FF] border-[#2563EB]/15 text-[#2563EB] w-fit mb-4 shadow-sm font-bold tracking-wider uppercase text-[10.5px] sm:text-[11px] transition-all duration-300">
                 <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#2563EB] shrink-0" />
-                <span>First Home Buyer Specialists</span>
+                <span>{badgeText}</span>
               </motion.div>
 
               <motion.h1
@@ -556,30 +586,29 @@ export function ClientPage() {
                 className="text-[25px] sm:text-[38px] lg:text-[44px] font-extrabold leading-[1.15] sm:leading-[1.1] tracking-tight text-[#0B1F3A] mb-4"
                 style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
               >
-                Your First Home Doesn&apos;t <br className="hidden sm:inline" />
-                Need To Feel <span className="text-[#2563EB]">Complicated.</span>
+                {titleText}
               </motion.h1>
 
               <motion.div variants={premiumFadeUp} className={`w-14 h-[3px] ${theme.bgPrimary} mb-5 rounded-full`} />
 
               <motion.p variants={premiumFadeUp} className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed mb-5 max-w-xl font-inter">
-                Securing your first home is a momentous milestone. We match you to the right lender policies, calculate your genuine limits, and unlock stamp duty concessions to make the process completely stress-free.
+                {subtextText}
               </motion.p>
 
               {/* CTAs */}
               <motion.div variants={premiumFadeUp} className="flex flex-wrap items-center gap-4">
                 <Link
-                  href="#contact"
+                  href={btn1Link}
                   className={`inline-flex items-center justify-center gap-2 bg-[#2563EB] hover:bg-[#1d4ed8] text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-blue-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap`}
                 >
-                  Book Free Strategy Call <ArrowRight className="w-4 h-4" />
+                  {btn1Text} <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
-                  href="#borrowing"
+                  href={btn2Link}
                   className={`inline-flex items-center justify-center gap-2 border-2 border-[#2563EB] text-[#2563EB] bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-[#2563EB] hover:text-white group/sec text-center w-full sm:w-auto whitespace-nowrap`}
                 >
                   <Calculator className="w-4 h-4 text-current transition-colors" />
-                  Calculate Borrowing Power
+                  {btn2Text}
                 </Link>
               </motion.div>
 
@@ -639,7 +668,7 @@ export function ClientPage() {
                 className="relative w-full max-w-[540px]"
               >
                 <Image
-                  src="/images/first_home_family.png"
+                  src={imageSrc}
                   alt="Happy First Home Buying Family"
                   width={560}
                   height={440}
@@ -863,13 +892,13 @@ export function ClientPage() {
                     {/* Rounded avatars overlapping */}
                     <div className="flex -space-x-2 shrink-0">
                       <div className="w-7 h-7 rounded-full border-2 border-[#082245] overflow-hidden bg-slate-200 relative">
-                        <Image src="/images/aakash_new.png" fill className="object-cover" alt="User Avatar" />
+                        <Image src="/images/avatar_client_1.png" fill className="object-cover" alt="User Avatar" />
                       </div>
                       <div className="w-7 h-7 rounded-full border-2 border-[#082245] overflow-hidden bg-slate-300 relative">
-                        <Image src="/images/aakash_new.png" fill className="object-cover" alt="User Avatar" />
+                        <Image src="/images/avatar_client_2.png" fill className="object-cover" alt="User Avatar" />
                       </div>
                       <div className="w-7 h-7 rounded-full border-2 border-[#082245] overflow-hidden bg-slate-400 relative">
-                        <Image src="/images/aakash_new.png" fill className="object-cover" alt="User Avatar" />
+                        <Image src="/images/avatar_client_3.png" fill className="object-cover" alt="User Avatar" />
                       </div>
                     </div>
                     <span className="text-[11.5px] text-slate-200 font-bold">Trusted by 1,200+ Australians</span>
@@ -1236,8 +1265,8 @@ export function ClientPage() {
                     {/* Photo strip — fixed height for beautiful aspect ratio and breathing room */}
                     <div className="relative h-44 md:h-48 w-full overflow-hidden" style={{ borderTop: "1px solid #F1F5F9" }}>
                       <Image
-                        src="/images/family_couch_laptop.png"
-                        alt="Happy First Home Buyers"
+                        src={roadmapSteps[activeStepIndex].img}
+                        alt={roadmapSteps[activeStepIndex].title}
                         fill
                         className="object-cover object-center"
                       />
@@ -2505,8 +2534,29 @@ export function ClientPage() {
                       Secure Your Strategic Callback
                     </h3>
                     <form 
-                      onSubmit={(e) => {
+                      onSubmit={async (e) => {
                         e.preventDefault();
+                        const formData = new FormData(e.currentTarget);
+                        const payload = {
+                          type: 'callback',
+                          name: formData.get('name'),
+                          phone: formData.get('phone'),
+                          email: formData.get('email'),
+                          state: formData.get('state'),
+                          savings: formData.get('savings'),
+                          income: formData.get('income')
+                        };
+                        
+                        try {
+                          await fetch('/api/enquiry', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                          });
+                        } catch (error) {
+                          console.error('Failed to submit callback enquiry:', error);
+                        }
+
                         setCallbackSubmitted(true);
                       }} 
                       className="space-y-5 relative z-10"
@@ -2516,6 +2566,7 @@ export function ClientPage() {
                           <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Full Name</label>
                           <input
                             type="text"
+                            name="name"
                             placeholder="John Doe"
                             className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] shadow-sm"
                             required
@@ -2525,6 +2576,7 @@ export function ClientPage() {
                           <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Phone Number</label>
                           <input
                             type="tel"
+                            name="phone"
                             placeholder="0450 000 000"
                             className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] shadow-sm"
                             required
@@ -2537,6 +2589,7 @@ export function ClientPage() {
                           <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Email Address</label>
                           <input
                             type="email"
+                            name="email"
                             placeholder="john@example.com.au"
                             className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] shadow-sm"
                             required
@@ -2544,13 +2597,13 @@ export function ClientPage() {
                         </div>
                         <div>
                           <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">State</label>
-                          <select className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] font-semibold text-slate-700 shadow-sm">
-                            <option>New South Wales (NSW)</option>
-                            <option>Victoria (VIC)</option>
-                            <option>Queensland (QLD)</option>
-                            <option>Western Australia (WA)</option>
-                            <option>South Australia (SA)</option>
-                            <option>ACT / Tasmania / NT</option>
+                          <select name="state" className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] font-semibold text-slate-700 shadow-sm">
+                            <option value="NSW">New South Wales (NSW)</option>
+                            <option value="VIC">Victoria (VIC)</option>
+                            <option value="QLD">Queensland (QLD)</option>
+                            <option value="WA">Western Australia (WA)</option>
+                            <option value="SA">South Australia (SA)</option>
+                            <option value="ACT/TAS/NT">ACT / Tasmania / NT</option>
                           </select>
                         </div>
                       </div>
@@ -2558,20 +2611,20 @@ export function ClientPage() {
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                           <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">What is your current savings position?</label>
-                          <select className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] font-semibold text-slate-700 shadow-sm">
-                            <option>Under $20,000</option>
-                            <option>$20,000 - $50,000</option>
-                            <option>$50,000 - $100,000</option>
-                            <option>Over $100,000</option>
+                          <select name="savings" className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] font-semibold text-slate-700 shadow-sm">
+                            <option value="Under $20,000">Under $20,000</option>
+                            <option value="$20,000 - $50,000">$20,000 - $50,000</option>
+                            <option value="$50,000 - $100,000">$50,000 - $100,000</option>
+                            <option value="Over $100,000">Over $100,000</option>
                           </select>
                         </div>
                         <div>
                           <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">What is your gross annual income?</label>
-                          <select className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] font-semibold text-slate-700 shadow-sm">
-                            <option>Under $80,000</option>
-                            <option>$80,000 - $120,000</option>
-                            <option>$120,000 - $180,000</option>
-                            <option>Over $180,000</option>
+                          <select name="income" className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] font-semibold text-slate-700 shadow-sm">
+                            <option value="Under $80,000">Under $80,000</option>
+                            <option value="$80,000 - $120,000">$80,000 - $120,000</option>
+                            <option value="$120,000 - $180,000">$120,000 - $180,000</option>
+                            <option value="Over $180,000">Over $180,000</option>
                           </select>
                         </div>
                       </div>
@@ -2624,7 +2677,7 @@ export function ClientPage() {
 
                       <div className="pt-2">
                         <Link
-                          href="#founder"
+                          href="/mortgage-mate"
                           className="w-full text-center bg-[#2563EB] hover:bg-[#1d4ed8] text-white text-[11px] font-black uppercase py-3 rounded-xl transition-all block"
                         >
                           Check Full Profile & Reviews
@@ -2644,7 +2697,7 @@ export function ClientPage() {
       <div className="h-20 md:hidden" />
 
       {/* ── SHARED FOOTER ── */}
-      <SiteFooter />
+      <SiteFooter settings={settings} />
 
       {/* ── ADVANCED LEAD MODAL OVERLAY ── */}
       <AnimatePresence>
@@ -2695,9 +2748,28 @@ export function ClientPage() {
               <div className="p-6">
                 {!leadSubmitted ? (
                   <form
-                    onSubmit={(e) => {
+                    onSubmit={async (e) => {
                       e.preventDefault();
                       if (!leadName || !leadEmail || !leadPhone) return;
+                      
+                      try {
+                        await fetch('/api/enquiry', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            type: 'calculator',
+                            name: leadName,
+                            email: leadEmail,
+                            phone: leadPhone,
+                            savings: String(existingSavings),
+                            income: String(monthlyIncome * 12),
+                            state: 'NSW'
+                          })
+                        });
+                      } catch (error) {
+                        console.error('Failed to submit calculator lead:', error);
+                      }
+                      
                       setLeadSubmitted(true);
                     }}
                     className="space-y-4"

@@ -41,9 +41,17 @@ const YoutubeIcon = () => (
   </svg>
 );
 
-export function SiteHeader({ isSticky = true }: { isSticky?: boolean }) {
+export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: boolean; settings?: Record<string, string> }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileHomeLoansOpen, setIsMobileHomeLoansOpen] = useState(false);
+
+  const phoneVal = settings.header_phone || "0450 240 757";
+  const emailVal = settings.support_email || "mortgage@mortgagexperts.com.au";
+  const logoVal = settings.logo_url || "/images/logo.png";
+  const fbVal = settings.facebook_url || "https://www.facebook.com/MortgageXperts.au/";
+  const igVal = settings.instagram_url || "https://www.instagram.com/mortgagexperts.au/#";
+  const ttVal = settings.tiktok_url || "https://www.tiktok.com/@mortgagexperts.au?_t=ZS-90VgVATQ560&_r=1";
+  const ytVal = settings.youtube_url || "https://www.youtube.com/@mortgagexpertsau";
 
   const homeLoanMenu = [
     { name: "Buying a First Home", href: "/nepali-mortgage-broker-in-australia" },
@@ -75,22 +83,22 @@ export function SiteHeader({ isSticky = true }: { isSticky?: boolean }) {
               <div className="w-5 h-5 rounded-full bg-[#38BDF8]/10 flex items-center justify-center group-hover:bg-[#38BDF8]/20 transition-colors">
                 <Mail className="w-3.5 h-3.5 text-[#38BDF8]" />
               </div>
-              <a href="mailto:mortgage@mortgagexperts.com.au" className="hover:text-white transition-colors tracking-wide">
-                mortgage@mortgagexperts.com.au
+              <a href={`mailto:${emailVal}`} className="hover:text-white transition-colors tracking-wide">
+                {emailVal}
               </a>
             </div>
           </div>
           <div className="flex items-center gap-2.5">
-            <a href="https://www.facebook.com/MortgageXperts.au/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-6 h-6 rounded-full flex items-center justify-center bg-white/5 hover:bg-[#1877F2] text-white/70 hover:text-white transition-all duration-300 hover:scale-110">
+            <a href={fbVal} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-6 h-6 rounded-full flex items-center justify-center bg-white/5 hover:bg-[#1877F2] text-white/70 hover:text-white transition-all duration-300 hover:scale-110">
               <FacebookIcon />
             </a>
-            <a href="https://www.instagram.com/mortgagexperts.au/#" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-6 h-6 rounded-full flex items-center justify-center bg-white/5 hover:bg-[#E4405F] text-white/70 hover:text-white transition-all duration-300 hover:scale-110">
+            <a href={igVal} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-6 h-6 rounded-full flex items-center justify-center bg-white/5 hover:bg-[#E4405F] text-white/70 hover:text-white transition-all duration-300 hover:scale-110">
               <InstagramIcon />
             </a>
-            <a href="https://www.tiktok.com/@mortgagexperts.au?_t=ZS-90VgVATQ560&_r=1" target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="w-6 h-6 rounded-full flex items-center justify-center bg-white/5 hover:bg-[#FE2C55] text-white/70 hover:text-white transition-all duration-300 hover:scale-110">
+            <a href={ttVal} target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="w-6 h-6 rounded-full flex items-center justify-center bg-white/5 hover:bg-[#FE2C55] text-white/70 hover:text-white transition-all duration-300 hover:scale-110">
               <TikTokIcon />
             </a>
-            <a href="https://www.youtube.com/@mortgagexpertsau" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="w-6 h-6 rounded-full flex items-center justify-center bg-white/5 hover:bg-[#FF0000] text-white/70 hover:text-white transition-all duration-300 hover:scale-110">
+            <a href={ytVal} target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="w-6 h-6 rounded-full flex items-center justify-center bg-white/5 hover:bg-[#FF0000] text-white/70 hover:text-white transition-all duration-300 hover:scale-110">
               <YoutubeIcon />
             </a>
           </div>
@@ -104,7 +112,7 @@ export function SiteHeader({ isSticky = true }: { isSticky?: boolean }) {
           {/* Logo */}
           <Link href="/" className="shrink-0 flex items-center">
             <Image
-              src="/images/logo.png"
+              src={logoVal}
               alt="Mortgage Xperts Logo"
               width={180}
               height={56}
@@ -116,18 +124,57 @@ export function SiteHeader({ isSticky = true }: { isSticky?: boolean }) {
           {/* Center Navigation */}
           <nav className="hidden xl:flex items-center gap-7 text-[13.5px] font-semibold text-[#0B1F3A]">
             <Link href="/" className="hover:text-[#2563EB] transition-colors pb-0.5">Home</Link>
-            <button className="flex items-center gap-1 hover:text-[#2563EB] transition-colors">
-              Calculators <ChevronDown className="w-3.5 h-3.5 mt-0.5" />
-            </button>
-            <button className="flex items-center gap-1 hover:text-[#2563EB] transition-colors">
-              Guides <ChevronDown className="w-3.5 h-3.5 mt-0.5" />
-            </button>
+            
+            {/* Calculators Dropdown */}
             <div className="relative group py-2">
               <button className="flex items-center gap-1 hover:text-[#2563EB] transition-colors focus:outline-none">
-                Home Loans <ChevronDown className="w-3.5 h-3.5 mt-0.5 transition-transform duration-200 group-hover:rotate-180" />
+                Calculators <ChevronDown className="w-3.5 h-3.5 mt-0.5 transition-transform duration-200 group-hover:rotate-180" />
               </button>
-              <div className="absolute top-full left-0 pt-2.5 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div className="absolute top-full left-0 pt-2.5 w-60 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 <div className="bg-white border border-slate-100 rounded-xl shadow-xl py-2">
+                  <Link href="/#borrowing" className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold">
+                    Borrowing Capacity
+                  </Link>
+                  <Link href="/#calculator" className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold">
+                    Mortgage Repayments
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* Resources Dropdown */}
+            <div className="relative group py-2">
+              <button className="flex items-center gap-1 hover:text-[#2563EB] transition-colors focus:outline-none">
+                Resources <ChevronDown className="w-3.5 h-3.5 mt-0.5 transition-transform duration-200 group-hover:rotate-180" />
+              </button>
+              <div className="absolute top-full left-0 pt-2.5 w-60 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div className="bg-white border border-slate-100 rounded-xl shadow-xl py-2">
+                  <Link href="/#guides" className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold">
+                    Mortgage Resource Hub
+                  </Link>
+                  <Link href="/home-guarantee-scheme" className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold">
+                    Home Guarantee Scheme
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* Mortgage Mate (Direct Link) */}
+            <Link href="/mortgage-mate" className="hover:text-[#2563EB] transition-colors pb-0.5">Mortgage Mate</Link>
+
+            {/* About Us (Direct Link) */}
+            <Link href="/#about" className="hover:text-[#2563EB] transition-colors pb-0.5">About Us</Link>
+
+            {/* Contact (Direct Link) */}
+            <Link href="/#contact" className="hover:text-[#2563EB] transition-colors pb-0.5">Contact</Link>
+
+            {/* Xpert's Range Dropdown */}
+            <div className="relative group py-2">
+              <button className="flex items-center gap-1 text-[#2563EB] hover:text-[#1d4ed8] transition-colors focus:outline-none font-bold">
+                Xpert&apos;s Range <ChevronDown className="w-3.5 h-3.5 mt-0.5 transition-transform duration-200 group-hover:rotate-180" />
+              </button>
+              <div className="absolute top-full right-0 pt-2.5 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div className="bg-white border border-slate-100 rounded-xl shadow-xl py-2 max-h-[400px] overflow-y-auto">
                   {homeLoanMenu.map((item) => (
                     <Link
                       key={item.name}
@@ -140,11 +187,6 @@ export function SiteHeader({ isSticky = true }: { isSticky?: boolean }) {
                 </div>
               </div>
             </div>
-            <Link href="#" className="hover:text-[#2563EB] transition-colors">About Us</Link>
-            <button className="flex items-center gap-1 hover:text-[#2563EB] transition-colors">
-              Resources <ChevronDown className="w-3.5 h-3.5 mt-0.5" />
-            </button>
-            <Link href="#" className="hover:text-[#2563EB] transition-colors">Contact</Link>
           </nav>
 
           {/* Right Actions */}
@@ -155,11 +197,11 @@ export function SiteHeader({ isSticky = true }: { isSticky?: boolean }) {
             <div className="hidden xl:flex items-center gap-1.5 text-[13.5px]">
               <Phone className="w-4 h-4 text-[#2563EB] shrink-0" />
               <span className="text-slate-500 font-medium">Call:</span>
-              <span className="font-bold text-[#0B1F3A]">0450 240 757</span>
+              <span className="font-bold text-[#0B1F3A]">{phoneVal}</span>
             </div>
             {/* Desktop Button */}
             <Link
-              href="#"
+              href="/#contact"
               className="hidden xl:flex bg-[#2563EB] text-white text-[13px] font-bold py-2.5 px-5 rounded-full items-center gap-1.5 hover:bg-[#1d4ed8] transition-all duration-300 shadow-md shadow-blue-200 whitespace-nowrap"
             >
               Book Free Consultation <ArrowRight className="w-4 h-4" />
@@ -168,7 +210,7 @@ export function SiteHeader({ isSticky = true }: { isSticky?: boolean }) {
             <div className="flex xl:hidden items-center gap-3">
               {/* Call Icon Button */}
               <a
-                href="tel:0450240757"
+                href={`tel:${phoneVal.replace(/\s+/g, "")}`}
                 className="w-10 h-10 rounded-full border-2 border-[#0EA5E9] bg-[#F0F9FF] flex items-center justify-center text-[#0EA5E9] hover:bg-[#E0F2FE] hover:scale-105 active:scale-95 transition-all duration-300 shadow-sm"
                 aria-label="Call Us"
               >
@@ -176,7 +218,7 @@ export function SiteHeader({ isSticky = true }: { isSticky?: boolean }) {
               </a>
               {/* Email Icon Button */}
               <a
-                href="mailto:mortgage@mortgagexperts.com.au"
+                href={`mailto:${emailVal}`}
                 className="w-10 h-10 rounded-full bg-[#FF6B00] flex items-center justify-center text-white hover:bg-[#E05E00] hover:scale-105 active:scale-95 transition-all duration-300 shadow-md shadow-orange-500/20"
                 aria-label="Email Us"
               >
@@ -242,39 +284,52 @@ export function SiteHeader({ isSticky = true }: { isSticky?: boolean }) {
                 <div className="border-b border-slate-50 pb-2 flex flex-col gap-1.5">
                   <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Calculators</span>
                   <div className="pl-2 flex flex-col gap-2.5 text-[13.5px] font-medium text-slate-600">
-                    <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">
-                      Borrowing Power Calculator
+                    <Link href="/#borrowing" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">
+                      Borrowing Capacity
                     </Link>
-                    <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">
+                    <Link href="/#calculator" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">
                       Mortgage Repayment Calculator
                     </Link>
                   </div>
                 </div>
 
-                {/* Guides Dropdown/Block */}
+                {/* Resources Dropdown/Block */}
                 <div className="border-b border-slate-50 pb-2 flex flex-col gap-1.5">
-                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Guides</span>
+                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Resources</span>
                   <div className="pl-2 flex flex-col gap-2.5 text-[13.5px] font-medium text-slate-600">
-                    <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">
-                      First Home Buyer Guide
+                    <Link href="/#guides" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">
+                      Mortgage Resource Hub
                     </Link>
-                    <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">
-                      Refinancing Guide
+                    <Link href="/home-guarantee-scheme" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">
+                      Home Guarantee Scheme
                     </Link>
                   </div>
                 </div>
 
-                {/* Home Loans Dropdown/Block */}
+                {/* Mortgage Mate */}
+                <Link href="/mortgage-mate" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors pb-2 border-b border-slate-50">
+                  Mortgage Mate
+                </Link>
+
+                <Link href="/#about" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors pb-2 border-b border-slate-50">
+                  About Us
+                </Link>
+
+                <Link href="/#contact" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors pb-2 border-b border-slate-50">
+                  Contact
+                </Link>
+
+                {/* Xpert's Range Dropdown/Block */}
                 <div className="border-b border-slate-50 pb-2 flex flex-col gap-1.5">
                   <button
                     onClick={() => setIsMobileHomeLoansOpen(!isMobileHomeLoansOpen)}
                     className="flex items-center justify-between w-full text-left focus:outline-none"
                   >
-                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Home Loans</span>
+                    <span className="text-[10px] text-[#2563EB] font-bold uppercase tracking-wider block">Xpert&apos;s Range</span>
                     <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${isMobileHomeLoansOpen ? "rotate-180" : ""}`} />
                   </button>
                   {isMobileHomeLoansOpen && (
-                    <div className="pl-2 flex flex-col gap-2.5 text-[13.5px] font-medium text-slate-600 mt-1">
+                    <div className="pl-2 flex flex-col gap-2.5 text-[13.5px] font-medium text-slate-600 mt-1 max-h-[200px] overflow-y-auto">
                       {homeLoanMenu.map((item) => (
                         <Link
                           key={item.name}
@@ -288,33 +343,26 @@ export function SiteHeader({ isSticky = true }: { isSticky?: boolean }) {
                     </div>
                   )}
                 </div>
-
-                <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors pb-2 border-b border-slate-50">
-                  About Us
-                </Link>
-                <Link href="#" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors pb-2 border-b border-slate-50">
-                  Contact
-                </Link>
               </div>
 
               {/* Bottom Section: Contact & Socials */}
               <div className="mt-auto pt-6 border-t border-slate-100 shrink-0 flex flex-col gap-4">
                 <div className="flex flex-col gap-2.5">
-                  <a href="tel:0450240757" className="flex items-center gap-2 text-[13px] font-semibold text-slate-600 hover:text-[#2563EB] transition-colors">
-                    <Phone className="w-4 h-4 text-[#2563EB] shrink-0" /> 0450 240 757
+                  <a href={`tel:${phoneVal.replace(/\s+/g, "")}`} className="flex items-center gap-2 text-[13px] font-semibold text-slate-600 hover:text-[#2563EB] transition-colors">
+                    <Phone className="w-4 h-4 text-[#2563EB] shrink-0" /> {phoneVal}
                   </a>
-                  <a href="mailto:mortgage@mortgagexperts.com.au" className="flex items-center gap-2 text-[13px] font-semibold text-slate-600 hover:text-[#2563EB] transition-colors break-all">
-                    <Mail className="w-4 h-4 text-[#2563EB] shrink-0" /> mortgage@mortgagexperts.com.au
+                  <a href={`mailto:${emailVal}`} className="flex items-center gap-2 text-[13px] font-semibold text-slate-600 hover:text-[#2563EB] transition-colors break-all">
+                    <Mail className="w-4 h-4 text-[#2563EB] shrink-0" /> {emailVal}
                   </a>
                 </div>
 
                 {/* Social Icons */}
                 <div className="flex items-center gap-3">
                   {[
-                    { Icon: FacebookIcon, label: "Facebook", href: "https://www.facebook.com/MortgageXperts.au/", hoverClass: "hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2]/20" },
-                    { Icon: InstagramIcon, label: "Instagram", href: "https://www.instagram.com/mortgagexperts.au/#", hoverClass: "hover:bg-[#E4405F] hover:text-white hover:border-[#E4405F]/20" },
-                    { Icon: TikTokIcon, label: "TikTok", href: "https://www.tiktok.com/@mortgagexperts.au?_t=ZS-90VgVATQ560&_r=1", hoverClass: "hover:bg-[#FE2C55] hover:text-white hover:border-[#FE2C55]/20" },
-                    { Icon: YoutubeIcon, label: "YouTube", href: "https://www.youtube.com/@mortgagexpertsau", hoverClass: "hover:bg-[#FF0000] hover:text-white hover:border-[#FF0000]/20" },
+                    { Icon: FacebookIcon, label: "Facebook", href: fbVal, hoverClass: "hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2]/20" },
+                    { Icon: InstagramIcon, label: "Instagram", href: igVal, hoverClass: "hover:bg-[#E4405F] hover:text-white hover:border-[#E4405F]/20" },
+                    { Icon: TikTokIcon, label: "TikTok", href: ttVal, hoverClass: "hover:bg-[#FE2C55] hover:text-white hover:border-[#FE2C55]/20" },
+                    { Icon: YoutubeIcon, label: "YouTube", href: ytVal, hoverClass: "hover:bg-[#FF0000] hover:text-white hover:border-[#FF0000]/20" },
                   ].map(({ Icon, label, href, hoverClass }) => (
                     <a
                       key={label}
@@ -322,7 +370,7 @@ export function SiteHeader({ isSticky = true }: { isSticky?: boolean }) {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={label}
-                      className={`w-8 h-8 rounded-full bg-slate-50 border border-slate-150 flex items-center justify-center text-slate-500 transition-all duration-300 ${hoverClass}`}
+                      className={`w-8 h-8 rounded-full bg-slate-55 border border-slate-200 flex items-center justify-center text-slate-500 transition-all duration-300 ${hoverClass}`}
                     >
                       <Icon />
                     </a>
@@ -332,7 +380,7 @@ export function SiteHeader({ isSticky = true }: { isSticky?: boolean }) {
                 {/* Consultation Button */}
                 <Link
                   key="cta"
-                  href="#"
+                  href="/#contact"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="bg-[#2563EB] text-white text-[13.5px] font-bold py-3 px-5 rounded-full flex items-center justify-center gap-1.5 hover:bg-[#1d4ed8] transition-colors shadow-md shadow-blue-100 text-center"
                 >

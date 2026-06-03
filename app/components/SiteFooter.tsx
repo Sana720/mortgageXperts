@@ -65,8 +65,17 @@ const YoutubeIcon = () => (
   </svg>
 );
 
-export function SiteFooter() {
+export function SiteFooter({ settings = {} }: { settings?: Record<string, string> }) {
   const [newsletterEmail, setNewsletterEmail] = useState("");
+
+  const phoneVal = settings.header_phone || "0450 240 757";
+  const emailVal = settings.support_email || "mortgage@mortgagexperts.com.au";
+  const addressVal = settings.footer_address || "Level 20, 1 Market St, Sydney NSW 2000";
+  const logoVal = settings.logo_url || "/images/logo.png";
+  const fbVal = settings.facebook_url || "https://www.facebook.com/MortgageXperts.au/";
+  const igVal = settings.instagram_url || "https://www.instagram.com/mortgagexperts.au/#";
+  const ttVal = settings.tiktok_url || "https://www.tiktok.com/@mortgagexperts.au?_t=ZS-90VgVATQ560&_r=1";
+  const ytVal = settings.youtube_url || "https://www.youtube.com/@mortgagexpertsau";
 
   return (
     <div className="bg-[#F0F4FA] w-full">
@@ -97,8 +106,8 @@ export function SiteFooter() {
                 <MessageCircle className="w-5 h-5 text-[#2563EB] shrink-0 mt-0.5" />
                 <div>
                   <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Speak to an Expert</div>
-                  <a href="tel:0450240757" className="text-[16px] font-extrabold text-[#2563EB] hover:underline">
-                    0450 240 757
+                  <a href={`tel:${phoneVal.replace(/\s+/g, "")}`} className="text-[16px] font-extrabold text-[#2563EB] hover:underline">
+                    {phoneVal}
                   </a>
                   <div className="text-[11px] text-slate-400 mt-0.5">Mon - Fri 8am - 6pm AEST</div>
                 </div>
@@ -107,8 +116,8 @@ export function SiteFooter() {
                 <Mail className="w-5 h-5 text-[#2563EB] shrink-0 mt-0.5" />
                 <div>
                   <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Email Us</div>
-                  <a href="mailto:mortgage@mortgagexperts.com.au" className="text-[14px] sm:text-[15px] font-extrabold text-[#2563EB] hover:underline break-all">
-                    mortgage@mortgagexperts.com.au
+                  <a href={`mailto:${emailVal}`} className="text-[14px] sm:text-[15px] font-extrabold text-[#2563EB] hover:underline break-all">
+                    {emailVal}
                   </a>
                   <div className="text-[11px] text-slate-400 mt-0.5">We reply within 24 hours</div>
                 </div>
@@ -129,15 +138,14 @@ export function SiteFooter() {
       <footer className="bg-[#000b1e] rounded-t-[28px] text-white">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 pt-12 md:pt-14 pb-8">
           <Stagger className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 mb-12">
-            {/* Brand column */}
             <StaggerItem className="lg:col-span-3">
-              <Link href="/" className="inline-block mb-5">
+              <Link href="/" className="inline-flex items-center bg-white rounded-xl px-4 py-2 mb-6 hover:opacity-95 transition-all">
                 <Image
-                  src="/images/footer-logo.png"
+                  src={logoVal}
                   alt="Mortgage Xperts"
-                  width={200}
-                  height={56}
-                  className="h-11 sm:h-12 w-auto object-contain object-left"
+                  width={180}
+                  height={50}
+                  className="h-9 sm:h-10 w-auto object-contain"
                 />
               </Link>
               <p className="text-[13px] text-slate-400 leading-relaxed mb-6 max-w-xs">
@@ -145,28 +153,28 @@ export function SiteFooter() {
               </p>
               <ul className="space-y-3 mb-6">
                 <li>
-                  <a href="tel:0450240757" className="flex items-center gap-2.5 text-[13px] text-slate-300 hover:text-white transition-colors">
+                  <a href={`tel:${phoneVal.replace(/\s+/g, "")}`} className="flex items-center gap-2.5 text-[13px] text-slate-300 hover:text-white transition-colors">
                     <Phone className="w-4 h-4 text-[#2563EB] shrink-0" />
-                    0450 240 757
+                    {phoneVal}
                   </a>
                 </li>
                 <li>
-                  <a href="mailto:mortgage@mortgagexperts.com.au" className="flex items-center gap-2.5 text-[13px] text-slate-300 hover:text-white transition-colors break-all">
+                  <a href={`mailto:${emailVal}`} className="flex items-center gap-2.5 text-[13px] text-slate-300 hover:text-white transition-colors break-all">
                     <Mail className="w-4 h-4 text-[#2563EB] shrink-0" />
-                    mortgage@mortgagexperts.com.au
+                    {emailVal}
                   </a>
                 </li>
                 <li className="flex items-start gap-2.5 text-[13px] text-slate-300">
                   <MapPin className="w-4 h-4 text-[#2563EB] shrink-0 mt-0.5" />
-                  <span>Level 20, 1 Market St, Sydney NSW 2000</span>
+                  <span>{addressVal}</span>
                 </li>
               </ul>
               <div className="flex items-center gap-2.5">
                 {[
-                  { Icon: FacebookIcon, label: "Facebook", href: "https://www.facebook.com/MortgageXperts.au/", hoverClass: "hover:bg-[#1877F2]" },
-                  { Icon: InstagramIcon, label: "Instagram", href: "https://www.instagram.com/mortgagexperts.au/#", hoverClass: "hover:bg-[#E4405F]" },
-                  { Icon: TikTokIcon, label: "TikTok", href: "https://www.tiktok.com/@mortgagexperts.au?_t=ZS-90VgVATQ560&_r=1", hoverClass: "hover:bg-[#FE2C55]" },
-                  { Icon: YoutubeIcon, label: "YouTube", href: "https://www.youtube.com/@mortgagexpertsau", hoverClass: "hover:bg-[#FF0000]" },
+                  { Icon: FacebookIcon, label: "Facebook", href: fbVal, hoverClass: "hover:bg-[#1877F2]" },
+                  { Icon: InstagramIcon, label: "Instagram", href: igVal, hoverClass: "hover:bg-[#E4405F]" },
+                  { Icon: TikTokIcon, label: "TikTok", href: ttVal, hoverClass: "hover:bg-[#FE2C55]" },
+                  { Icon: YoutubeIcon, label: "YouTube", href: ytVal, hoverClass: "hover:bg-[#FF0000]" },
                 ].map(({ Icon, label, href, hoverClass }) => (
                   <a
                     key={label}
@@ -252,7 +260,7 @@ export function SiteFooter() {
                 <div className="flex flex-col gap-2.5">
                   <FooterNavLink href="#">About Mortgage Xperts</FooterNavLink>
                   <FooterNavLink href="#">Our Lenders</FooterNavLink>
-                  <FooterNavLink href="#">Reviews</FooterNavLink>
+                  <FooterNavLink href="/mortgage-mate">Reviews</FooterNavLink>
                   <FooterNavLink href="#">Careers</FooterNavLink>
                   <FooterNavLink href="#">Contact Us</FooterNavLink>
                 </div>

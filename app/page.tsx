@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { SiteHeader } from "./components/SiteHeader";
 import { SiteFooter } from "./components/SiteFooter";
 import Image from "next/image";
@@ -175,10 +175,16 @@ function ProcessStepCard({ step }: { step: ProcessStepItem }) {
 }
 
 // ── SMART TOOLS + PROCESS SECTION ────────────────────────────────────────────
-function SmartToolsSection() {
+function SmartToolsSection({ settings = {} }: { settings?: Record<string, string> }) {
   const [loanAmount, setLoanAmount] = useState(600000);
   const [interestRate, setInterestRate] = useState(5.49);
   const [loanTerm, setLoanTerm] = useState(30);
+
+  useEffect(() => {
+    if (settings.interest_rate) {
+      setInterestRate(parseFloat(settings.interest_rate));
+    }
+  }, [settings.interest_rate]);
 
   const monthlyPayment = (() => {
     const principal = loanAmount;
@@ -1199,17 +1205,23 @@ const SLIDER_DATA = [
 ];
 
 function HeroSlider() {
+  const [slides, setSlides] = useState<Array<typeof SLIDER_DATA[0] & {
+    btnText1?: string;
+    btnLink1?: string;
+    btnText2?: string;
+    btnLink2?: string;
+  }>>(SLIDER_DATA);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoplay, setIsAutoplay] = useState(true);
   const autoplayTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % SLIDER_DATA.length);
-  };
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  }, [slides.length]);
 
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + SLIDER_DATA.length) % SLIDER_DATA.length);
-  };
+  const prevSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  }, [slides.length]);
 
   // Start autoplay timer
   useEffect(() => {
@@ -1223,9 +1235,56 @@ function HeroSlider() {
         clearInterval(autoplayTimerRef.current);
       }
     };
-  }, [isAutoplay]);
+  }, [isAutoplay, nextSlide]);
 
-  const active = SLIDER_DATA[currentSlide];
+  // Load dynamic slides configuration from page-settings
+  useEffect(() => {
+    const fetchDynamicSlides = async () => {
+      try {
+        const res = await fetch("/api/admin/page-settings?page_path=/");
+        const data = await res.json();
+        if (data?.pageSettings?.slides) {
+          const parsed = JSON.parse(data.pageSettings.slides);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            const mapped = parsed.map((item: {
+              badge?: string;
+              title?: string;
+              subtext?: string;
+              image?: string;
+              btnText1?: string;
+              btnLink1?: string;
+              btnText2?: string;
+              btnLink2?: string;
+            }, idx: number) => {
+              const defaultItem = (SLIDER_DATA[idx] || SLIDER_DATA[0]) as (typeof SLIDER_DATA[0] & {
+                btnText1?: string;
+                btnLink1?: string;
+                btnText2?: string;
+                btnLink2?: string;
+              });
+              return {
+                ...defaultItem,
+                badge: item.badge || defaultItem.badge,
+                title: item.title || defaultItem.title,
+                subtext: item.subtext || defaultItem.subtext,
+                image: item.image || defaultItem.image,
+                btnText1: item.btnText1 || defaultItem.btnText1,
+                btnLink1: item.btnLink1 || defaultItem.btnLink1,
+                btnText2: item.btnText2 || defaultItem.btnText2,
+                btnLink2: item.btnLink2 || defaultItem.btnLink2,
+              };
+            });
+            setSlides(mapped);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching dynamic homepage slides:", err);
+      }
+    };
+    fetchDynamicSlides();
+  }, []);
+
+  const active = slides[currentSlide] || SLIDER_DATA[0];
   const CardIcon = active.cardIcon;
 
   return (
@@ -1304,32 +1363,7 @@ function HeroSlider() {
                 className="text-[25px] sm:text-[40px] lg:text-[46px] font-extrabold leading-[1.15] sm:leading-[1.1] tracking-tight text-[#0B1F3A]"
                 style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
               >
-                {active.id === 1 ? (
-                  <>
-                    Mortgage Solutions for <br />
-                    <span style={{ color: active.accentColor }}>First Home Buyers</span>
-                  </>
-                ) : active.id === 2 ? (
-                  <>
-                    Mortgage Solutions for <br />
-                    <span style={{ color: active.accentColor }}>Health Professionals</span>
-                  </>
-                ) : active.id === 3 ? (
-                  <>
-                    Property Finance &amp; <br />
-                    <span style={{ color: active.accentColor }}>Investment Loans</span>
-                  </>
-                ) : active.id === 4 ? (
-                  <>
-                    Smarter Refinancing &amp; <br />
-                    <span style={{ color: active.accentColor }}>Repayment Savings</span>
-                  </>
-                ) : (
-                  <>
-                    Home Loans for <br />
-                    <span style={{ color: active.accentColor }}>Self-Employed Borrowers</span>
-                  </>
-                )}
+                {active.title}
               </h1>
 
               {/* Subtext */}
@@ -1365,18 +1399,36 @@ function HeroSlider() {
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 pt-1">
-                <Link
-                  href="#"
-                  className={`font-bold text-[13.5px] sm:text-[14px] py-3 sm:py-3.5 px-6 sm:px-7 rounded-full inline-flex items-center justify-center gap-2 transition-all duration-300 shadow-lg hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto ${active.btnClass}`}
-                >
-                  Book Free Strategy Call <ArrowRight className="w-4 h-4" />
-                </Link>
-                <Link
-                  href="#"
-                  className={`border-2 font-bold text-[13.5px] sm:text-[14px] py-3 sm:py-3.5 px-5 sm:px-6 rounded-full inline-flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto ${active.borderBtnClass}`}
-                >
-                  <Calculator className="w-4 h-4" /> Calculate Borrowing Power
-                </Link>
+                {(active.btnText1 !== undefined || active.btnLink1 !== undefined) ? (
+                  <Link
+                    href={active.btnLink1 || "#"}
+                    className={`font-bold text-[13.5px] sm:text-[14px] py-3 sm:py-3.5 px-6 sm:px-7 rounded-full inline-flex items-center justify-center gap-2 transition-all duration-300 shadow-lg hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto ${active.btnClass}`}
+                  >
+                    {active.btnText1 || "Book Free Strategy Call"} <ArrowRight className="w-4 h-4" />
+                  </Link>
+                ) : (
+                  <Link
+                    href="#"
+                    className={`font-bold text-[13.5px] sm:text-[14px] py-3 sm:py-3.5 px-6 sm:px-7 rounded-full inline-flex items-center justify-center gap-2 transition-all duration-300 shadow-lg hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto ${active.btnClass}`}
+                  >
+                    Book Free Strategy Call <ArrowRight className="w-4 h-4" />
+                  </Link>
+                )}
+                {(active.btnText2 !== undefined || active.btnLink2 !== undefined) ? (
+                  <Link
+                    href={active.btnLink2 || "#"}
+                    className={`border-2 font-bold text-[13.5px] sm:text-[14px] py-3 sm:py-3.5 px-5 sm:px-6 rounded-full inline-flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto ${active.borderBtnClass}`}
+                  >
+                    <Calculator className="w-4 h-4" /> {active.btnText2 || "Calculate Borrowing Power"}
+                  </Link>
+                ) : (
+                  <Link
+                    href="#"
+                    className={`border-2 font-bold text-[13.5px] sm:text-[14px] py-3 sm:py-3.5 px-5 sm:px-6 rounded-full inline-flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto ${active.borderBtnClass}`}
+                  >
+                    <Calculator className="w-4 h-4" /> Calculate Borrowing Power
+                  </Link>
+                )}
               </div>
 
               {/* Trust Bar — checkmark pills */}
@@ -1535,6 +1587,18 @@ function HeroSlider() {
 
 export default function Home() {
   const [showStickyCta, setShowStickyCta] = useState(false);
+  const [settings, setSettings] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    fetch("/api/admin/settings")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.settings) {
+          setSettings(data.settings);
+        }
+      })
+      .catch((err) => console.error("Error fetching settings:", err));
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -1559,7 +1623,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-white font-inter">
 
-      <SiteHeader />
+      <SiteHeader settings={settings} />
 
       {/* ── HERO SLIDER SECTION ── */}
       <HeroSlider />
@@ -1942,7 +2006,7 @@ export default function Home() {
 
 
       {/* ── SMART TOOLS SECTION ── */}
-      <SmartToolsSection />
+      <SmartToolsSection settings={settings} />
 
       {/* ── WHY CHOOSE US SECTION ── */}
       <WhyChooseUsSection />
@@ -2078,7 +2142,7 @@ export default function Home() {
       <FaqCtaSection />
 
       {/* ── PRE-FOOTER + FOOTER ── */}
-      <SiteFooter />
+      <SiteFooter settings={settings} />
 
       {/* Sticky Mobile CTA Bar */}
       <AnimatePresence>
