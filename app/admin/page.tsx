@@ -3,6 +3,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import {
   LayoutDashboard,
   Settings,
@@ -25,7 +26,9 @@ import {
   CheckCircle,
   Clock,
   Archive,
-  Menu
+  Menu,
+  Eye,
+  EyeOff
 } from "lucide-react";
 
 type Enquiry = {
@@ -66,7 +69,9 @@ type SettingsMap = Record<string, string>;
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [username, setUsername] = useState("admin");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState("");
   const [activeTab, setActiveTab] = useState<"enquiries" | "settings" | "hero" | "blogs" | "testimonials">("enquiries");
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -212,6 +217,48 @@ export default function AdminPage() {
     }
   };
 
+  const handleTestimonialAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        setTestimonialForm(prev => ({ ...prev, avatar: data.url }));
+      } else {
+        alert(data.error || "Upload failed");
+      }
+    } catch {
+      alert("Error uploading file");
+    }
+  };
+
+  const handleBlogCoverImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        setBlogForm(prev => ({ ...prev, coverImage: data.url }));
+      } else {
+        alert(data.error || "Upload failed");
+      }
+    } catch {
+      alert("Error uploading file");
+    }
+  };
+
   // Fetch data when authenticated state changes or active tab changes
   useEffect(() => {
     if (isAuthenticated) {
@@ -237,13 +284,13 @@ export default function AdminPage() {
       const res = await fetch("/api/admin/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ username, password }),
       });
       const data = await res.json();
       if (data.success) {
         setIsAuthenticated(true);
       } else {
-        setAuthError(data.error || "Invalid password");
+        setAuthError(data.error || "Invalid username or password");
       }
     } catch {
       setAuthError("Failed to login");
@@ -493,49 +540,136 @@ export default function AdminPage() {
     setTestimonialModalOpen(true);
   };
 
-  // Login Screen (Beautiful Light Theme)
+  // Login Screen (Beautiful Light/Dark Two-Pane Split Theme)
   if (isAuthenticated === false || isAuthenticated === null) {
     return (
-      <div className="min-h-screen bg-slate-50/60 flex items-center justify-center p-6 relative overflow-hidden">
-        {/* Glow Effects */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-blue-100/50 blur-[120px] -z-10" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-indigo-100/40 blur-[120px] -z-10" />
-        
-        <div className="w-full max-w-md bg-white border border-slate-200/80 rounded-3xl p-8 shadow-xl shadow-slate-100 relative z-10 space-y-6">
-          <div className="text-center space-y-2.5">
-            <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white mx-auto shadow-lg shadow-blue-500/20">
-              <Lock className="w-5.5 h-5.5" />
+      <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4 md:p-10 font-inter antialiased">
+        <div className="w-full max-w-[1000px] min-h-[600px] bg-white rounded-3xl shadow-2xl flex overflow-hidden border border-slate-200">
+          
+          {/* LEFT PANE: Form Block */}
+          <div className="w-full md:w-1/2 p-8 sm:p-12 md:p-16 flex flex-col justify-between bg-white">
+            {/* Header: Logo */}
+            <div className="flex items-center gap-2 mb-6">
+              <div className="relative w-36 h-12">
+                <Image
+                  src="/images/logo.png"
+                  alt="Mortgage Xperts Logo"
+                  fill
+                  className="object-contain object-left"
+                  priority
+                />
+              </div>
             </div>
-            <h2 className="text-slate-900 text-2xl font-bold tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-              Administrator Panel
-            </h2>
-            <p className="text-slate-500 text-xs font-semibold">Enter your secure passcode to access control configurations.</p>
+
+            {/* Login Form Body */}
+            <div className="space-y-6 my-auto">
+              <div>
+                <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                  Welcome Back
+                </h1>
+                <p className="text-sm text-slate-500 font-medium mt-1">
+                  Please enter your details to sign in.
+                </p>
+              </div>
+
+              <form onSubmit={handleLogin} className="space-y-5">
+                {/* Username Input */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">
+                    Username
+                  </label>
+                  <div className="relative flex items-center">
+                    <User className="absolute left-4 w-4 h-4 text-slate-400" />
+                    <input
+                      type="text"
+                      value={username}
+                      onChange={e => setUsername(e.target.value)}
+                      placeholder="Username"
+                      className="w-full bg-[#f0f4f9]/60 hover:bg-[#f0f4f9] focus:bg-[#f0f4f9] border border-transparent focus:border-blue-500/30 rounded-xl pl-11 pr-4 py-3.5 text-slate-800 text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-all placeholder:text-slate-400"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Password Input */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">
+                      Password
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => alert("Please contact system administrators to reset your login credentials.")}
+                      className="text-[10px] font-extrabold text-[#1e40af] hover:text-[#1d4ed8] hover:underline uppercase tracking-wider"
+                    >
+                      Forgot password?
+                    </button>
+                  </div>
+                  <div className="relative flex items-center">
+                    <Lock className="absolute left-4 w-4 h-4 text-slate-400" />
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={e => setPassword(e.target.value)}
+                      placeholder="Password"
+                      className="w-full bg-[#f0f4f9]/60 hover:bg-[#f0f4f9] focus:bg-[#f0f4f9] border border-transparent focus:border-blue-500/30 rounded-xl pl-11 pr-12 py-3.5 text-slate-800 text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-all placeholder:text-slate-400"
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 p-1 rounded hover:bg-slate-200/50 text-slate-400 hover:text-slate-600 transition-colors"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {authError && (
+                  <div className="bg-red-50/70 border border-red-100/60 rounded-xl p-3 text-center">
+                    <p className="text-rose-600 text-xs font-bold">{authError}</p>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  className="w-full bg-[#1e40af] hover:bg-[#1d4ed8] text-white text-xs font-black uppercase tracking-wider py-4 rounded-xl transition-all shadow-md shadow-blue-500/10 cursor-pointer active:scale-[0.99] flex items-center justify-center gap-1.5"
+                >
+                  Sign In to Dashboard
+                </button>
+              </form>
+            </div>
+
+            {/* Footer */}
+            <div className="text-[10px] text-slate-400 font-semibold mt-6 uppercase tracking-wider">
+              © 2026 Mortgage Xperts. Protected System.
+            </div>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Secure Passcode</label>
-              <input
-                type="password"
-                placeholder="••••••••••••"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/10 transition-all placeholder:text-slate-400 font-medium"
-                required
-              />
+          {/* RIGHT PANE: Branding Panel */}
+          <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-[#0f294a] via-[#091a2f] to-[#040c17] relative p-16 flex-col justify-center text-white overflow-hidden">
+            {/* Glowing Orb/Blob */}
+            <div className="absolute -bottom-24 -right-24 w-80 h-80 rounded-full bg-blue-500/10 blur-[60px]" />
+            <div className="absolute top-12 left-12 w-64 h-64 rounded-full bg-blue-400/5 blur-[80px]" />
+
+            <div className="relative z-10 max-w-sm space-y-6">
+              {/* Colored underline decoration */}
+              <div className="w-12 h-1 bg-[#2563EB] rounded-full" />
+              
+              <h2 className="text-3xl font-extrabold tracking-tight leading-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                Manage Your Mortgage Vision
+              </h2>
+              
+              <p className="text-slate-300 text-sm leading-relaxed font-medium">
+                Access the complete suite of tools to manage client enquiries, update page testimonials, success stories and website settings securely.
+              </p>
             </div>
+          </div>
 
-            {authError && (
-              <p className="text-rose-600 text-xs font-bold text-center">{authError}</p>
-            )}
-
-            <button
-              type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-black uppercase py-3 rounded-xl transition-all shadow-md shadow-blue-500/10"
-            >
-              Unlock Dashboard
-            </button>
-          </form>
         </div>
       </div>
     );
@@ -1167,10 +1301,11 @@ export default function AdminPage() {
                     <option value="/home-loan-for-accountants">Home Loan for Accountants (/home-loan-for-accountants)</option>
                     <option value="/home-guarantee-scheme">Home Guarantee Scheme (/home-guarantee-scheme)</option>
                     <option value="/no-deposit-home-loans">No Deposit Home Loans (/no-deposit-home-loans)</option>
-                    <option value="/non-resident-home-loans">Non-Resident Home Loans (/non-resident-home-loans)</option>
+                    <option value="/home-loan-with-visas">Visa & Non-Resident Home Loans (/home-loan-with-visas)</option>
                     <option value="/refinancing-a-loan">Refinancing a Loan (/refinancing-a-loan)</option>
                     <option value="/self-employed-home-loans">Self-Employed Home Loans (/self-employed-home-loans)</option>
                     <option value="/investing-in-property">Investing in Property (/investing-in-property)</option>
+                    <option value="/investing-in-property-nepali-mortgage-broker">Investing in Property (Nepali Broker Slug) (/investing-in-property-nepali-mortgage-broker)</option>
                   </select>
                 </div>
                 <div className="text-right sm:block hidden">
@@ -1664,10 +1799,19 @@ export default function AdminPage() {
           {activeTab === "blogs" && (
             <div className="space-y-4">
               {blogs.length === 0 ? (
-                <div className="bg-white border border-slate-200/70 rounded-2xl p-12 text-center text-slate-400 space-y-2">
-                  <FileText className="w-10 h-10 mx-auto text-slate-300" />
-                  <h3 className="font-bold text-slate-700">No Published Blogs Found</h3>
-                  <p className="text-xs">Create your first educational resource guide to display on the website.</p>
+                <div className="bg-white border border-slate-200/70 rounded-2xl p-12 text-center text-slate-400 space-y-4 flex flex-col items-center justify-center">
+                  <FileText className="w-10 h-10 text-slate-300" />
+                  <div className="space-y-1">
+                    <h3 className="font-bold text-slate-700">No Published Blogs Found</h3>
+                    <p className="text-xs">Create your first educational resource guide to display on the website.</p>
+                  </div>
+                  <button
+                    onClick={handleNewBlog}
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all flex items-center gap-1.5 shadow-sm shadow-blue-500/10 hover:scale-[1.02] active:scale-[0.98]"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>Create First Blog</span>
+                  </button>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -1726,10 +1870,19 @@ export default function AdminPage() {
           {activeTab === "testimonials" && (
             <div className="space-y-4">
               {testimonials.length === 0 ? (
-                <div className="bg-white border border-slate-200/70 rounded-2xl p-12 text-center text-slate-400 space-y-2">
-                  <MessageSquare className="w-10 h-10 mx-auto text-slate-300" />
-                  <h3 className="font-bold text-slate-700">No Testimonials Yet</h3>
-                  <p className="text-xs">Add dynamic client success reviews to display on client landing sections.</p>
+                <div className="bg-white border border-slate-200/70 rounded-2xl p-12 text-center text-slate-400 space-y-4 flex flex-col items-center justify-center">
+                  <MessageSquare className="w-10 h-10 text-slate-300" />
+                  <div className="space-y-1">
+                    <h3 className="font-bold text-slate-700">No Testimonials Yet</h3>
+                    <p className="text-xs">Add dynamic client success reviews to display on client landing sections.</p>
+                  </div>
+                  <button
+                    onClick={handleNewTestimonial}
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all flex items-center gap-1.5 shadow-sm shadow-blue-500/10 hover:scale-[1.02] active:scale-[0.98]"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>Add First Testimonial</span>
+                  </button>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1829,13 +1982,33 @@ export default function AdminPage() {
 
                 <div className="col-span-2">
                   <label className="text-[9.5px] font-extrabold uppercase tracking-wider block mb-1">Cover Image File Path</label>
-                  <input
-                    type="text"
-                    value={blogForm.coverImage}
-                    onChange={e => setBlogForm(prev => ({ ...prev, coverImage: e.target.value }))}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white"
-                    placeholder="/images/logo.png"
-                  />
+                  <div className="flex gap-2 items-center">
+                    <div className="flex-1">
+                      <input
+                        type="text"
+                        value={blogForm.coverImage}
+                        onChange={e => setBlogForm(prev => ({ ...prev, coverImage: e.target.value }))}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white"
+                        placeholder="/images/logo.png"
+                      />
+                    </div>
+                    <div className="flex gap-2 items-center shrink-0">
+                      <label className="bg-slate-100 hover:bg-slate-200 border border-slate-250 cursor-pointer text-slate-700 text-xs font-bold px-3 py-2.5 rounded-xl transition-all inline-block select-none">
+                        Upload
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleBlogCoverImageUpload}
+                          className="hidden"
+                        />
+                      </label>
+                      {blogForm.coverImage && (
+                        <div className="w-9 h-9 border border-slate-200 rounded-xl overflow-hidden flex items-center justify-center p-0.5 bg-slate-50">
+                          <img src={blogForm.coverImage} alt="Preview" className="w-full h-full object-cover rounded-lg" />
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
 
                 <div className="col-span-2">
@@ -1935,7 +2108,7 @@ export default function AdminPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="text-[9.5px] font-extrabold uppercase tracking-wider block mb-1">Rating (1 to 5 Stars)</label>
                   <input
@@ -1951,13 +2124,33 @@ export default function AdminPage() {
 
                 <div>
                   <label className="text-[9.5px] font-extrabold uppercase tracking-wider block mb-1">Avatar Image Path</label>
-                  <input
-                    type="text"
-                    value={testimonialForm.avatar}
-                    onChange={e => setTestimonialForm(prev => ({ ...prev, avatar: e.target.value }))}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white"
-                    placeholder="/images/aakash_new.png"
-                  />
+                  <div className="flex gap-2 items-center">
+                    <div className="flex-1">
+                      <input
+                        type="text"
+                        value={testimonialForm.avatar}
+                        onChange={e => setTestimonialForm(prev => ({ ...prev, avatar: e.target.value }))}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white"
+                        placeholder="/images/aakash_new.png"
+                      />
+                    </div>
+                    <div className="flex gap-2 items-center shrink-0">
+                      <label className="bg-slate-100 hover:bg-slate-200 border border-slate-250 cursor-pointer text-slate-700 text-xs font-bold px-3 py-2.5 rounded-xl transition-all inline-block select-none">
+                        Upload
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleTestimonialAvatarUpload}
+                          className="hidden"
+                        />
+                      </label>
+                      {testimonialForm.avatar && (
+                        <div className="w-9 h-9 border border-slate-200 rounded-xl overflow-hidden flex items-center justify-center p-0.5 bg-slate-50">
+                          <img src={testimonialForm.avatar} alt="Preview" className="w-full h-full object-cover rounded-lg" />
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
 

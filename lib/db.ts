@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import mysql from 'mysql2/promise';
 
-const pool = mysql.createPool({
+const poolConnectionConfig = {
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
@@ -10,7 +10,17 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-});
+};
+
+const globalForPool = globalThis as unknown as {
+  pool: mysql.Pool | undefined;
+};
+
+const pool = globalForPool.pool ?? mysql.createPool(poolConnectionConfig);
+
+if (process.env.NODE_ENV !== 'production') {
+  globalForPool.pool = pool;
+}
 
 const tables = [
   `CREATE TABLE IF NOT EXISTS global_settings (
@@ -38,6 +48,14 @@ const tables = [
       avatar VARCHAR(255) NOT NULL,
       createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   )`,
+  `CREATE TABLE IF NOT EXISTS admins (
+      id VARCHAR(191) PRIMARY KEY,
+      username VARCHAR(255) UNIQUE NOT NULL,
+      password VARCHAR(255) NOT NULL,
+      createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )`,
+  `INSERT IGNORE INTO admins (id, username, password) VALUES 
+  ('default-admin-id', 'admin', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9')`,
   `CREATE TABLE IF NOT EXISTS enquiries (
       id VARCHAR(191) PRIMARY KEY,
       type VARCHAR(50) NOT NULL,
@@ -89,7 +107,8 @@ const tables = [
   ('/non-resident-home-loans', 'Non-Resident Home Loans in Australia | Mortgage Xperts', 'Home loans for temporary residents, visa holders, and non-residents buying property in Australia.', 'non resident home loan, temporary resident home loan, visa holder loan, foreigner property buy', 'Non-Resident Lending Experts', 'Home Loans for Visas & Non-Residents', 'Buying property on a temporary visa or from overseas? We specialize in securing competitive home loan approvals for non-residents and expats.', '/images/hero_slide_3_yellow.png', 'Assess My Visa', '#calculator', 'Get Expert Call', '#callback', '[]'),
   ('/refinancing-a-loan', 'Refinance Your Home Loan & Save Thousands | Mortgage Xperts', 'Compare and switch to a lower interest rate, consolidate your debts, or unlock equity to cash out.', 'refinance home loan, home loan refinance, lower interest rate, switch lenders Australia', 'Smart Refinance Strategies', 'Refinance and Save Thousands Annually', 'Switch to a lower rate, consolidate high-interest debts, or unlock equity for renovations with our streamlined mortgage refinance process.', '/images/hero_slide_4_purple.png', 'Calculate Savings', '#calculator', 'Book Free Consultation', '#callback', '[]'),
   ('/self-employed-home-loans', 'Self-Employed & Alt-Doc Home Loans | Mortgage Xperts', 'Flexible low-doc and alt-doc home loans for business owners, sole traders, and self-employed Australians.', 'self employed home loan, low doc home loan, sole trader mortgage, alt doc loan Australia', 'Self-Employed Loan Specialists', 'Flexible Home Loans for Business Owners', 'No up-to-date tax returns? We specialize in alt-doc and low-doc lending solutions to secure the home loan you deserve using alternative proof of income.', '/images/hero_slide_5_rose.png', 'Compare Low-Doc', '#calculator', 'Talk to a Broker', '#callback', '[]'),
-  ('/investing-in-property', 'Property Investment Loan Strategies | Mortgage Xperts', 'Maximize your borrowing capacity and structure your investment loans for long-term wealth creation.', 'property investment loan, investment home loan, buy investment property, equity loan', 'Property Portfolio Architects', 'Build and Scale Your Property Portfolio', 'Maximize your borrowing power, optimize loan structures, and leverage equity to grow your long-term property investment wealth.', '/images/hero_slide_3_yellow.png', 'Calculate Investment', '#calculator', 'Strategy Consultation', '#callback', '[]')`
+  ('/investing-in-property', 'Property Investment Loan Strategies | Mortgage Xperts', 'Maximize your borrowing capacity and structure your investment loans for long-term wealth creation.', 'property investment loan, investment home loan, buy investment property, equity loan', 'Property Portfolio Architects', 'Build and Scale Your Property Portfolio', 'Maximize your borrowing power, optimize loan structures, and leverage equity to grow your long-term property investment wealth.', '/images/hero_slide_3_yellow.png', 'Calculate Investment', '#calculator', 'Strategy Consultation', '#callback', '[]'),
+  ('/investing-in-property-nepali-mortgage-broker', 'Property Investment Loan Strategies | Mortgage Xperts', 'Maximize your borrowing capacity and structure your investment loans for long-term wealth creation.', 'property investment loan, investment home loan, buy investment property, equity loan', 'Property Portfolio Architects', 'Build and Scale Your Property Portfolio', 'Maximize your borrowing power, optimize loan structures, and leverage equity to grow your long-term property investment wealth.', '/images/hero_slide_3_yellow.png', 'Calculate Investment', '#calculator', 'Strategy Consultation', '#callback', '[]')`
   ];
 
 export async function initializeTables() {
@@ -111,11 +130,17 @@ export async function executeQuery<T = any>(query: string, params: any[] = []): 
   } catch (error: any) {
     // If the database tables are not initialized or table is missing, try initializing
     if (error.code === 'ER_NO_SUCH_TABLE') {
-      await initializeTables();
-      const [results] = await pool.execute(query, params);
-      return results as T;
+      try {
+        await initializeTables();
+        const [results] = await pool.execute(query, params);
+        return results as T;
+      } catch (initErr) {
+        console.error('Failed to auto-initialize tables:', initErr);
+      }
     }
-    throw error;
+    console.error(`Database query failed: "${query}". Error:`, error.message || error);
+    // Return empty array to prevent front-end crashes
+    return [] as any as T;
   }
 }
 

@@ -1,22 +1,20 @@
 import type { Metadata } from "next";
 import { executeQuery } from "@/lib/db";
-import { SiteHeader } from "../components/SiteHeader";
-import { SiteFooter } from "../components/SiteFooter";
-import { SubPageHero } from "../components/SubPageHero";
+import { ClientPage } from "./ClientPage";
 
 const PAGE_PATH = "/home-loan-for-doctors";
-const PAGE_TITLE = "Home Loan for Doctors";
+const PAGE_TITLE = "Home Loans for Doctors";
 
 export async function generateMetadata(): Promise<Metadata> {
-  let titleVal = "Home Loans for Doctors & Medical Specialists | Mortgage Xperts";
-  let descVal = "Exclusive 95% LVR home loans with zero Lenders Mortgage Insurance (LMI) for doctors and medical specialists.";
+  let titleVal = "Home Loans for Doctors & Medical Professionals | Mortgage Xperts";
+  let descVal = "Special home loan benefits, high borrowing capacity, and LMI waivers for doctors and medical professionals in Australia.";
   let keywordsVal = [
     "home loans for doctors",
-    "doctor home loan",
+    "doctor mortgage",
     "LMI waiver doctors",
-    "medical professional loan"
+    "medical professional home loans"
   ];
-  let logoVal = "/images/hero_slide_2_green.png";
+  let logoVal = "/images/doctor_hero.png";
 
   try {
     const pageRows = await executeQuery("SELECT * FROM page_meta_hero WHERE page_path = ?", [PAGE_PATH]);
@@ -68,7 +66,7 @@ export default async function Page() {
     const rows = await executeQuery("SELECT `key`, `value` FROM global_settings");
     if (Array.isArray(rows)) {
       rows.forEach((row: { key: string; value: string }) => {
-        settings[row.key] = row.value;
+         settings[row.key] = row.value;
       });
     }
     const pageRows = await executeQuery("SELECT * FROM page_meta_hero WHERE page_path = ?", [PAGE_PATH]);
@@ -80,12 +78,6 @@ export default async function Page() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-white font-inter">
-      <SiteHeader settings={settings} />
-      <main className="flex-grow">
-        <SubPageHero pageTitle={PAGE_TITLE} pageHeroSettings={pageHeroSettings} />
-      </main>
-      <SiteFooter settings={settings} />
-    </div>
+    <ClientPage settings={settings} pageHeroSettings={pageHeroSettings} />
   );
 }

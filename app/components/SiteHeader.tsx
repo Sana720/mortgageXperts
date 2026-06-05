@@ -56,14 +56,14 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
   const homeLoanMenu = [
     { name: "Buying a First Home", href: "/nepali-mortgage-broker-in-australia" },
     { name: "Refinancing a Loan", href: "/refinancing-a-loan" },
-    { name: "Investing in Property", href: "/investing-in-property" },
+    { name: "Investing in Property", href: "/investing-in-property-nepali-mortgage-broker" },
     { name: "Home Guarantee Scheme", href: "/home-guarantee-scheme" },
     { name: "No Deposit Home Loans", href: "/no-deposit-home-loans" },
     { name: "Self-Employed Home Loans", href: "/self-employed-home-loans" },
     { name: "Home Loan for Nurses", href: "/home-loan-for-nurses" },
     { name: "Home Loan for Accountants", href: "/home-loan-for-accountants" },
     { name: "Home Loan for Doctors", href: "/home-loan-for-doctors" },
-    { name: "Non-Resident Home Loans", href: "/non-resident-home-loans" },
+    { name: "Visa & Non-Resident Home Loans", href: "/home-loan-with-visas" },
   ];
 
   return (

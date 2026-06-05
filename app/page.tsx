@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { SiteHeader } from "./components/SiteHeader";
 import { SiteFooter } from "./components/SiteFooter";
+import { TestimonialSection } from "./components/TestimonialSection";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -416,7 +417,100 @@ function SmartToolsSection({ settings = {} }: { settings?: Record<string, string
 }
 
 // ── SUCCESS STORIES / BLOG SECTION ───────────────────────────────────────────
+interface DBBlog {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  coverImage: string;
+  category: string;
+  published: number;
+}
+
 function SuccessStoriesSection() {
+  const [blogs, setBlogs] = useState<DBBlog[]>([]);
+
+  useEffect(() => {
+    async function fetchBlogs() {
+      try {
+        const res = await fetch("/api/admin/blogs");
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data)) {
+            setBlogs(data.filter((b: DBBlog) => b.published === 1));
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch blogs:", err);
+      }
+    }
+    fetchBlogs();
+  }, []);
+
+  const defaultFeatured = {
+    id: "default-f",
+    title: "From Renting To Their First Home In 11 Months",
+    slug: "from-renting-to-first-home",
+    excerpt: "From struggling with renting in Brisbane's competitive market to holding the keys to their first home — see how the right guidance and lending strategy made it possible within a single calendar year.",
+    coverImage: "/images/villa.png",
+    category: "Featured Story"
+  };
+
+  const defaultRefinance = {
+    id: "default-r",
+    title: "How Refinancing Saved $18,000 In Repayments",
+    slug: "how-refinancing-saved-18k",
+    excerpt: "A growing family was stuck on a higher rate. We restructured their loan, unlocked better pricing and put thousands back in their pocket — without the stress.",
+    coverImage: "/images/family_refinance.png",
+    category: "Refinance Story"
+  };
+
+  const defaultHealthcare = {
+    id: "default-h",
+    title: "Doctor Buys First Home With Zero LMI",
+    slug: "doctor-buys-first-home-zero-lmi",
+    excerpt: "A junior doctor with HECS debt thought LMI was unavoidable. We matched them to the right lender, waived LMI entirely and got them into their first home 6 months earlier than expected.",
+    coverImage: "/images/Healthcare Professionals.png",
+    category: "Healthcare Professional"
+  };
+
+  const featured = blogs.find(b => b.category === "Featured Story") || blogs[0] || defaultFeatured;
+  const remaining = blogs.filter(b => b.id !== featured.id);
+  const refinance = remaining.find(b => b.category === "Refinance Story") || remaining[0] || defaultRefinance;
+  const remaining2 = remaining.filter(b => b.id !== refinance.id);
+  const healthcare = remaining2.find(b => b.category === "Healthcare Professional") || remaining2[0] || defaultHealthcare;
+
+  const featuredMeta = featured.slug === "from-renting-to-first-home" ? [
+    { icon: <User className="w-4 h-4 text-[#2563EB]" />, bold: "Jess & Mark", sub: "First Home Buyers" },
+    { icon: <MapPin className="w-4 h-4 text-[#2563EB]" />, bold: "Brisbane, QLD", sub: "Location" },
+    { icon: <Calendar className="w-4 h-4 text-[#2563EB]" />, bold: "11 Months", sub: "To Settlement" }
+  ] : [
+    { icon: <User className="w-4 h-4 text-[#2563EB]" />, bold: "Verified Client", sub: "Client Type" },
+    { icon: <MapPin className="w-4 h-4 text-[#2563EB]" />, bold: "Australia", sub: "Location" },
+    { icon: <Calendar className="w-4 h-4 text-[#2563EB]" />, bold: "Success Story", sub: "Outcome" }
+  ];
+
+  const refinanceOverlay = refinance.slug === "how-refinancing-saved-18k" ? {
+    icon: <PiggyBank className="w-4 h-4" />,
+    bold: "Smarter Loan",
+    sub: "Better Savings"
+  } : {
+    icon: <PiggyBank className="w-4 h-4" />,
+    bold: "Refinanced",
+    sub: "Savings Secured"
+  };
+
+  const healthcareOverlay = healthcare.slug === "doctor-buys-first-home-zero-lmi" ? {
+    icon: <Shield className="w-4 h-4" />,
+    bold: "Approved Fast",
+    sub: "Junior Doctor"
+  } : {
+    icon: <Shield className="w-4 h-4" />,
+    bold: "LMI Waived",
+    sub: "Fast Approval"
+  };
+
   return (
     <section className="relative overflow-hidden bg-[#001a4d] py-16 md:py-20">
       {/* Diagonal light wash */}
@@ -483,37 +577,20 @@ function SuccessStoriesSection() {
             <div className="flex flex-col sm:flex-row min-h-[300px] sm:min-h-[320px]">
               <div className="flex-1 p-6 sm:p-7 flex flex-col justify-center sm:max-w-[58%]">
                 <span className="inline-flex w-fit rounded-full bg-[#E8F2FF] px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-[#1e40af] mb-3">
-                  Featured Story
+                  {featured.category}
                 </span>
                 <h3
                   className="text-[22px] sm:text-[24px] font-extrabold text-[#0B1F3A] leading-snug mb-3"
                   style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
                 >
-                  From Renting To Their First Home In{" "}
-                  <span className="text-[#2563EB]">11 Months</span>
+                  {featured.title}
                 </h3>
                 <p className="text-[13px] sm:text-[14px] text-slate-600 leading-relaxed mb-5">
-                  From struggling with renting in Brisbane&apos;s competitive market to holding the keys to their first home — see how the right guidance and lending strategy made it possible within a single calendar year.
+                  {featured.excerpt}
                 </p>
                 <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-5">
-                  {[
-                    {
-                      icon: <User className="w-4 h-4 text-[#2563EB]" />,
-                      bold: "Jess & Mark",
-                      sub: "First Home Buyers",
-                    },
-                    {
-                      icon: <MapPin className="w-4 h-4 text-[#2563EB]" />,
-                      bold: "Brisbane, QLD",
-                      sub: "Location",
-                    },
-                    {
-                      icon: <Calendar className="w-4 h-4 text-[#2563EB]" />,
-                      bold: "11 Months",
-                      sub: "To Settlement",
-                    },
-                  ].map((row) => (
-                    <div key={row.bold} className="flex flex-col items-center text-center gap-1.5">
+                  {featuredMeta.map((row, idx) => (
+                    <div key={idx} className="flex flex-col items-center text-center gap-1.5">
                       <div className="w-9 h-9 rounded-full bg-[#EAF3FF] flex items-center justify-center shrink-0">
                         {row.icon}
                       </div>
@@ -529,8 +606,8 @@ function SuccessStoriesSection() {
               </div>
               <div className="relative min-h-[220px] sm:min-h-0 sm:w-[42%] shrink-0">
                 <Image
-                  src="/images/villa.png"
-                  alt="Modern home"
+                  src={featured.coverImage}
+                  alt={featured.title}
                   fill
                   className="object-cover object-center"
                   sizes="(max-width: 640px) 100vw, 40vw"
@@ -557,16 +634,16 @@ function SuccessStoriesSection() {
           >
             <div className="flex-1 p-6 sm:p-7 flex flex-col justify-center sm:max-w-[56%]">
               <span className="inline-flex w-fit rounded-full bg-[#DCFCE7] px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-[#166534] mb-3">
-                Refinance Story
+                {refinance.category}
               </span>
               <h3
                 className="text-[19px] sm:text-[21px] font-extrabold text-[#0B1F3A] leading-snug mb-3"
                 style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
               >
-                How Refinancing Saved <span className="text-[#16A34A]">$18,000</span> In Repayments
+                {refinance.title}
               </h3>
               <p className="text-[13px] text-slate-600 leading-relaxed mb-4 flex-1">
-                A growing family was stuck on a higher rate. We restructured their loan, unlocked better pricing and put thousands back in their pocket — without the stress.
+                {refinance.excerpt}
               </p>
               <Link href="#" className="inline-flex items-center gap-1.5 text-[13px] font-bold text-[#16A34A] hover:underline w-fit">
                 Read their story
@@ -575,8 +652,8 @@ function SuccessStoriesSection() {
             </div>
             <div className="relative min-h-[200px] sm:min-h-0 sm:w-[44%] shrink-0">
               <Image
-                src="/images/family_refinance.png"
-                alt="Family refinancing success"
+                src={refinance.coverImage}
+                alt={refinance.title}
                 fill
                 className="object-cover object-[center_20%]"
                 sizes="(max-width: 768px) 100vw, 45vw"
@@ -590,11 +667,11 @@ function SuccessStoriesSection() {
               />
               <div className="absolute bottom-4 right-4 z-10 bg-white rounded-xl border border-slate-100 shadow-lg px-3 py-2.5 flex items-start gap-2.5 max-w-[160px]">
                 <div className="w-8 h-8 rounded-full bg-[#DCFCE7] flex items-center justify-center shrink-0 text-[#16A34A]">
-                  <PiggyBank className="w-4 h-4" />
+                  {refinanceOverlay.icon}
                 </div>
                 <div>
-                  <div className="text-[12px] font-extrabold text-[#0B1F3A] leading-tight">Smarter Loan</div>
-                  <div className="text-[10px] text-slate-500 font-medium mt-0.5">Better Savings</div>
+                  <div className="text-[12px] font-extrabold text-[#0B1F3A] leading-tight">{refinanceOverlay.bold}</div>
+                  <div className="text-[10px] text-slate-500 font-medium mt-0.5">{refinanceOverlay.sub}</div>
                 </div>
               </div>
             </div>
@@ -608,16 +685,16 @@ function SuccessStoriesSection() {
           >
             <div className="flex-1 p-6 sm:p-7 flex flex-col justify-center sm:max-w-[56%]">
               <span className="inline-flex w-fit rounded-full bg-[#CCFBF1] px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-[#0D9488] mb-3">
-                Healthcare Professional
+                {healthcare.category}
               </span>
               <h3
                 className="text-[19px] sm:text-[21px] font-extrabold text-[#0B1F3A] leading-snug mb-3"
                 style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
               >
-                Doctor Buys First Home With <span className="text-[#0D9488]">Zero LMI</span>
+                {healthcare.title}
               </h3>
               <p className="text-[13px] text-slate-600 leading-relaxed mb-4 flex-1">
-                A junior doctor with HECS debt thought LMI was unavoidable. We matched them to the right lender, waived LMI entirely and got them into their first home 6 months earlier than expected.
+                {healthcare.excerpt}
               </p>
               <Link href="#" className="inline-flex items-center gap-1.5 text-[13px] font-bold text-[#0D9488] hover:underline w-fit">
                 Read their story
@@ -626,8 +703,8 @@ function SuccessStoriesSection() {
             </div>
             <div className="relative min-h-[220px] sm:min-h-0 sm:w-[44%] shrink-0">
               <Image
-                src="/images/Healthcare Professionals.png"
-                alt="Doctor buys first home success"
+                src={healthcare.coverImage}
+                alt={healthcare.title}
                 fill
                 className="object-cover object-center"
                 sizes="(max-width: 768px) 100vw, 45vw"
@@ -641,11 +718,11 @@ function SuccessStoriesSection() {
               />
               <div className="absolute bottom-4 right-4 z-10 bg-white rounded-xl border border-slate-100 shadow-lg px-3 py-2.5 flex items-start gap-2.5 max-w-[160px]">
                 <div className="w-8 h-8 rounded-full bg-[#CCFBF1] flex items-center justify-center shrink-0 text-[#0D9488]">
-                  <Shield className="w-4 h-4" />
+                  {healthcareOverlay.icon}
                 </div>
                 <div>
-                  <div className="text-[12px] font-extrabold text-[#0B1F3A] leading-tight">Approved Fast</div>
-                  <div className="text-[10px] text-slate-500 font-medium mt-0.5">Junior Doctor</div>
+                  <div className="text-[12px] font-extrabold text-[#0B1F3A] leading-tight">{healthcareOverlay.bold}</div>
+                  <div className="text-[10px] text-slate-500 font-medium mt-0.5">{healthcareOverlay.sub}</div>
                 </div>
               </div>
             </div>
@@ -2620,107 +2697,4 @@ function FounderProfileSection() {
       </div>
     </section>
   );
-}
-
-function GoogleReviewCard({ name, date, text }: { name: string, date: string, text: string }) {
-  return (
-    <motion.div
-      whileHover={{ y: -3, boxShadow: motionCardShadow }}
-      transition={{ duration: 0.3, ease: EASE_OUT }}
-      className="w-[320px] sm:w-[380px] shrink-0 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm mx-3 flex flex-col gap-4"
-    >
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-[#2563EB] font-extrabold text-lg">
-            {name.charAt(0)}
-          </div>
-          <div>
-            <h4 className="text-[15px] font-bold text-[#0B1F3A] leading-tight">{name}</h4>
-            <span className="text-[12px] text-slate-500 font-medium">{date}</span>
-          </div>
-        </div>
-        <svg width="24" height="24" viewBox="0 0 48 48" className="shrink-0">
-          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
-          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
-          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
-          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
-        </svg>
-      </div>
-      <div className="flex items-center gap-1">
-        {[1, 2, 3, 4, 5].map(i => (
-          <svg key={i} className="w-4 h-4 text-[#FBBC05]" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-          </svg>
-        ))}
-      </div>
-      <p className="text-[14px] text-slate-600 leading-relaxed">
-        &quot;{text}&quot;
-      </p>
-    </motion.div>
-  )
-}
-
-function TestimonialSection() {
-  const reviews1 = [
-    { name: "John Smith", date: "2 weeks ago", text: "Mortgage Xperts made buying our first home an absolute breeze. Highly recommend their services to anyone looking for a loan!" },
-    { name: "Sarah Jenkins", date: "1 month ago", text: "Professional, fast, and reliable. They explained everything clearly and got us an amazing interest rate on our refinance." },
-    { name: "Raj Patel", date: "3 months ago", text: "As a self-employed business owner, getting a loan is tough. Kunal and the team sorted it out without any stress. 5 stars!" },
-    { name: "Emily Clark", date: "2 months ago", text: "The team at Mortgage Xperts is phenomenal. They went above and beyond to help us secure our dream home in Brisbane." }
-  ];
-
-  const reviews2 = [
-    { name: "David O'Connor", date: "4 weeks ago", text: "Great communication throughout the entire process. We always knew what was happening with our application." },
-    { name: "Anita Rai", date: "1 week ago", text: "Highly recommend! They are the best Nepali mortgage brokers in Australia. Very trustworthy and efficient." },
-    { name: "Michael Chen", date: "3 months ago", text: "Refinancing was so easy with Mortgage Xperts. We are saving thousands every year now. Thank you team!" },
-    { name: "Sophie Taylor", date: "2 months ago", text: "Extremely knowledgeable brokers who actually care about their clients. I felt supported every step of the way." }
-  ];
-
-  const row1 = [...reviews1, ...reviews1, ...reviews1];
-  const row2 = [...reviews2, ...reviews2, ...reviews2];
-
-  return (
-    <section className="py-20 lg:py-28 bg-slate-50 overflow-hidden border-y border-slate-100">
-      <Stagger className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 mb-12 text-center flex flex-col items-center">
-        <StaggerItem>
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 w-fit mb-4 mx-auto">
-            <span className="text-[#2563EB] text-[10px] font-extrabold tracking-widest uppercase">
-              Google Reviews
-            </span>
-          </div>
-        </StaggerItem>
-        <StaggerItem>
-          <h2 className="text-[#0B1F3A] text-[32px] sm:text-[40px] font-black leading-tight mb-4" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-            Loved By Hundreds of <span className="text-[#2563EB]">Happy Clients</span>
-          </h2>
-        </StaggerItem>
-        <StaggerItem>
-          <p className="text-slate-500 text-[15px] max-w-2xl mx-auto">
-            Don&apos;t just take our word for it. See what our clients have to say about their experience with Mortgage Xperts.
-          </p>
-        </StaggerItem>
-      </Stagger>
-
-      {/* Marquee Row 1 */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={VIEWPORT_LOOSE}
-        transition={{ duration: 0.7, ease: EASE_OUT }}
-        className="flex w-max animate-marquee hover:[animation-play-state:paused] mb-6"
-      >
-        {row1.map((rev, i) => <GoogleReviewCard key={`r1-${i}`} {...rev} />)}
-      </motion.div>
-
-      {/* Marquee Row 2 (Reverse) */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={VIEWPORT_LOOSE}
-        transition={{ duration: 0.7, delay: 0.12, ease: EASE_OUT }}
-        className="flex w-max animate-marquee-reverse hover:[animation-play-state:paused]"
-      >
-        {row2.map((rev, i) => <GoogleReviewCard key={`r2-${i}`} {...rev} />)}
-      </motion.div>
-    </section>
-  )
-}
+}

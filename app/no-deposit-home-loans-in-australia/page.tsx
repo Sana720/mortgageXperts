@@ -2,19 +2,21 @@ import type { Metadata } from "next";
 import { executeQuery } from "@/lib/db";
 import { ClientPage } from "./ClientPage";
 
-const PAGE_PATH = "/home-loan-for-nurses";
-const PAGE_TITLE = "Home Loans for Nurses";
+const PAGE_PATH = "/no-deposit-home-loans-in-australia";
+const PAGE_TITLE = "No Deposit Home Loans";
 
 export async function generateMetadata(): Promise<Metadata> {
-  let titleVal = "Home Loans for Nurses & Midwives in Australia | Mortgage Xperts";
-  let descVal = "Special home loan benefits and LMI waivers for nurses, midwives, and healthcare professionals in Australia.";
+  let titleVal = "No Deposit & Zero Deposit Home Loans in Australia | Mortgage Xperts";
+  let descVal =
+    "Discover how to buy a home in Australia with no deposit using family guarantor loans or government schemes. Expert guidance from Mortgage Xperts.";
   let keywordsVal = [
-    "home loans for nurses",
-    "nurse mortgage",
-    "LMI waiver nurses",
-    "healthcare home loans"
+    "no deposit home loans",
+    "zero deposit home loan",
+    "100% home loan",
+    "guarantor loan Australia",
+    "no deposit first home buyer",
   ];
-  let logoVal = "/images/hero_slide_2_green.png";
+  let logoVal = "/images/hero.png";
 
   try {
     const pageRows = await executeQuery("SELECT * FROM page_meta_hero WHERE page_path = ?", [PAGE_PATH]);
@@ -62,6 +64,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Page() {
   const settings: Record<string, string> = {};
   let pageHeroSettings = null;
+
   try {
     const rows = await executeQuery("SELECT `key`, `value` FROM global_settings");
     if (Array.isArray(rows)) {
@@ -69,15 +72,16 @@ export default async function Page() {
         settings[row.key] = row.value;
       });
     }
-    const pageRows = await executeQuery("SELECT * FROM page_meta_hero WHERE page_path = ?", [PAGE_PATH]);
+    const pageRows = await executeQuery(
+      "SELECT * FROM page_meta_hero WHERE page_path = ?",
+      [PAGE_PATH]
+    );
     if (Array.isArray(pageRows) && pageRows.length > 0) {
       pageHeroSettings = pageRows[0];
     }
   } catch (error) {
-    console.error(`Failed to load settings in Server Component for ${PAGE_PATH}:`, error);
+    console.error(`Failed to load settings for ${PAGE_PATH}:`, error);
   }
 
-  return (
-    <ClientPage settings={settings} pageHeroSettings={pageHeroSettings} />
-  );
+  return <ClientPage settings={settings} pageHeroSettings={pageHeroSettings} />;
 }

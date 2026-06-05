@@ -200,7 +200,7 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
                 <div className="flex flex-col gap-2.5">
                   <FooterNavLink href="/nepali-mortgage-broker-in-australia">Buying a First Home</FooterNavLink>
                   <FooterNavLink href="/refinancing-a-loan">Refinancing a Loan</FooterNavLink>
-                  <FooterNavLink href="/investing-in-property">Investing in Property</FooterNavLink>
+                  <FooterNavLink href="/investing-in-property-nepali-mortgage-broker">Investing in Property</FooterNavLink>
                   <FooterNavLink href="/home-guarantee-scheme">Home Guarantee Scheme</FooterNavLink>
                   <FooterNavLink href="/no-deposit-home-loans">No Deposit Home Loans</FooterNavLink>
                 </div>

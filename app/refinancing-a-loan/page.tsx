@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { executeQuery } from "@/lib/db";
-import { SiteHeader } from "../components/SiteHeader";
-import { SiteFooter } from "../components/SiteFooter";
-import { SubPageHero } from "../components/SubPageHero";
+import { ClientPage } from "./ClientPage";
 
 const PAGE_PATH = "/refinancing-a-loan";
 const PAGE_TITLE = "Refinancing a Loan";
@@ -16,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
     "lower interest rate",
     "switch lenders Australia"
   ];
-  let logoVal = "/images/hero_slide_4_purple.png";
+  let logoVal = "/images/refinance_family_clean.png";
 
   try {
     const pageRows = await executeQuery("SELECT * FROM page_meta_hero WHERE page_path = ?", [PAGE_PATH]);
@@ -79,13 +77,60 @@ export default async function Page() {
     console.error(`Failed to load settings in Server Component for ${PAGE_PATH}:`, error);
   }
 
+  const phoneVal = settings.header_phone || "0450 240 757";
+  const emailVal = settings.support_email || "mortgage@mortgagexperts.com.au";
+  const addressVal = settings.footer_address || "Level 20, 1 Market St, Sydney NSW 2000";
+
+  // ── STRUCTURED GOOGLE JSON-LD SCHEMA FOR RICH SNIPPETS ──
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Refinancing a Loan - Mortgage Xperts",
+    "description": settings.meta_description || "Compare and switch to a lower interest rate, consolidate your debts, or unlock equity to cash out.",
+    "publisher": {
+      "@type": "LocalBusiness",
+      "name": "Mortgage Xperts",
+      "image": "https://mortgagexperts.com.au/favicon.png",
+      "telephone": phoneVal,
+      "email": emailVal,
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "AU",
+        "streetAddress": addressVal
+      }
+    },
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://mortgagexperts.com.au"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Home Loans",
+          "item": "https://mortgagexperts.com.au"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Refinancing a Loan",
+          "item": `https://mortgagexperts.com.au${PAGE_PATH}`
+        }
+      ]
+    }
+  };
+
   return (
-    <div className="min-h-screen flex flex-col bg-white font-inter">
-      <SiteHeader settings={settings} />
-      <main className="flex-grow">
-        <SubPageHero pageTitle={PAGE_TITLE} pageHeroSettings={pageHeroSettings} />
-      </main>
-      <SiteFooter settings={settings} />
-    </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <ClientPage settings={settings} pageHeroSettings={pageHeroSettings} />
+    </>
   );
 }

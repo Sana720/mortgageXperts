@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { executeQuery } from "@/lib/db";
-import { SiteHeader } from "../components/SiteHeader";
-import { SiteFooter } from "../components/SiteFooter";
-import { SubPageHero } from "../components/SubPageHero";
+import { ClientPage } from "./ClientPage";
 
 const PAGE_PATH = "/home-guarantee-scheme";
 const PAGE_TITLE = "Home Guarantee Scheme";
@@ -80,12 +78,6 @@ export default async function Page() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-white font-inter">
-      <SiteHeader settings={settings} />
-      <main className="flex-grow">
-        <SubPageHero pageTitle={PAGE_TITLE} pageHeroSettings={pageHeroSettings} />
-      </main>
-      <SiteFooter settings={settings} />
-    </div>
+    <ClientPage settings={settings} pageHeroSettings={pageHeroSettings} />
   );
 }

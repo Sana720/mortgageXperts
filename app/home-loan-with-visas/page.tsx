@@ -2,19 +2,19 @@ import type { Metadata } from "next";
 import { executeQuery } from "@/lib/db";
 import { ClientPage } from "./ClientPage";
 
-const PAGE_PATH = "/home-loan-for-nurses";
-const PAGE_TITLE = "Home Loans for Nurses";
+const PAGE_PATH = "/home-loan-with-visas";
+const PAGE_TITLE = "Non-Resident Home Loans";
 
 export async function generateMetadata(): Promise<Metadata> {
-  let titleVal = "Home Loans for Nurses & Midwives in Australia | Mortgage Xperts";
-  let descVal = "Special home loan benefits and LMI waivers for nurses, midwives, and healthcare professionals in Australia.";
+  let titleVal = "Non-Resident Home Loans & Visa Home Loans Australia | Mortgage Xperts";
+  let descVal = "Secure an Australian home loan from abroad or on a temporary visa. Learn about FIRB rules, deposits, and expat policies.";
   let keywordsVal = [
-    "home loans for nurses",
-    "nurse mortgage",
-    "LMI waiver nurses",
-    "healthcare home loans"
+    "non-resident home loan",
+    "visa home loan australia",
+    "temporary resident mortgage",
+    "FIRB approval home loan"
   ];
-  let logoVal = "/images/hero_slide_2_green.png";
+  let logoVal = "/images/visa_hero.png";
 
   try {
     const pageRows = await executeQuery("SELECT * FROM page_meta_hero WHERE page_path = ?", [PAGE_PATH]);
@@ -66,7 +66,7 @@ export default async function Page() {
     const rows = await executeQuery("SELECT `key`, `value` FROM global_settings");
     if (Array.isArray(rows)) {
       rows.forEach((row: { key: string; value: string }) => {
-        settings[row.key] = row.value;
+         settings[row.key] = row.value;
       });
     }
     const pageRows = await executeQuery("SELECT * FROM page_meta_hero WHERE page_path = ?", [PAGE_PATH]);

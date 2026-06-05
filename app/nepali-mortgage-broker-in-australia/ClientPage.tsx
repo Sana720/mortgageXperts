@@ -44,6 +44,7 @@ import {
 } from "lucide-react";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
+import { BlogSection } from "../components/BlogSection";
 import {
   fadeInUp,
   staggerContainer,
@@ -534,14 +535,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
     ]
   };
 
-  const relatedGuides = [
-    { title: "First Home Buyer Survival Guide", cat: "GUIDES", desc: "A comprehensive checklist covering budgets, grants, and lender reviews for first-time buyers.", img: "/images/First Home Buyers.png" },
-    { title: "Waiving LMI: The Ultimate Strategy", cat: "FINANCE", desc: "Learn how to bypass expensive bank fees using federal schemes and medical waivers.", img: "/images/Refinancing.png" },
-    { title: "Understanding Stamp Duty Concessions", cat: "COMPLIANCE", desc: "State-by-state thresholds and eligibility checklists to maximize transaction savings.", img: "/images/Investment Loans.png" },
-    { title: "How HECS Affects Borrowing Power", cat: "STRATEGY", desc: "A technical breakdown on how student debts affect bank servicing buffers and how to fix it.", img: "/images/Healthcare Professionals.png" },
-    { title: "Refinancing Your First Mortgage", cat: "REFINANCE", desc: "How to safely switch out of your first home loan to unlock massive interest breaks.", img: "/images/Self-Employed Loans.png" },
-    { title: "Building a Brand New Home: Steps", cat: "CONSTRUCTION", desc: "A breakdown of construction progress payments, builder contracts, and grants.", img: "/images/Construction Loans.png" }
-  ];
+
 
   return (
     <div className="min-h-screen flex flex-col bg-white font-inter" style={{ overflowX: "clip" }}>
@@ -553,6 +547,30 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
         {/* Homepage inspired dot-matrix and light wash patterns */}
         <div className="absolute top-10 right-10 w-44 h-44 opacity-25 pointer-events-none" style={{ backgroundImage: "radial-gradient(#2563EB 1.5px, transparent 1.5px)", backgroundSize: "8px 8px" }} />
         <div className="absolute -left-10 -bottom-10 w-48 h-48 bg-[#EEF4FF] opacity-40 rounded-full blur-3xl pointer-events-none" />
+
+        {/* Slide Background (Desktop) - Edge-to-edge full height cover */}
+        <div className="absolute top-0 right-0 h-full z-[1] hidden lg:block" style={{ width: "52%" }}>
+          <div
+            className="absolute inset-0"
+            style={{
+              background: "radial-gradient(ellipse 85% 90% at 62% 52%, #EAF3FF 0%, #DBEAFE 42%, #F8FAFC 62%, transparent 82%)"
+            }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `url('${imageSrc}')`,
+              backgroundSize: "cover",
+              backgroundPosition: "center top",
+              backgroundRepeat: "no-repeat",
+              mixBlendMode: "multiply"
+            }}
+          />
+          <div
+            className="absolute inset-y-0 left-0 w-48"
+            style={{ background: "linear-gradient(to right, #ffffff 0%, rgba(255,255,255,0.7) 50%, transparent 100%)" }}
+          />
+        </div>
 
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10 w-full">
           
@@ -594,6 +612,13 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
               <motion.p variants={premiumFadeUp} className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed mb-5 max-w-xl font-inter">
                 {subtextText}
               </motion.p>
+
+              {/* Mobile Hero Image */}
+              <div className="relative lg:hidden -mx-6 md:-mx-10 my-2">
+                <div className="relative h-64 sm:h-72 w-full" style={{ background: "radial-gradient(ellipse 80% 85% at 55% 50%, #EAF3FF 0%, #DBEAFE 40%, #F8FAFC 65%, transparent 85%)" }}>
+                  <div className="absolute inset-0" style={{ backgroundImage: `url('${imageSrc}')`, backgroundSize: "cover", backgroundPosition: "center top", backgroundRepeat: "no-repeat", mixBlendMode: "multiply" }} />
+                </div>
+              </div>
 
               {/* CTAs */}
               <motion.div variants={premiumFadeUp} className="flex flex-wrap items-center gap-4">
@@ -649,47 +674,19 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
               </motion.div>
             </motion.div>
 
-            {/* Right Column: Premium Image with Floating badge & Glow Effects */}
-            <div
-              className="relative flex items-center justify-center lg:justify-end translate-y-4 lg:translate-y-8"
-            >
-              {/* Circular light-blue wash background shape with gradient & scale animation */}
+            {/* Right Column: Floating Badge ONLY (Image is in the background) */}
+            <div className="relative hidden lg:block h-full min-h-[440px]">
+              {/* Overlaid Premium Glassmorphic Floating Checklist Badge */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 0.9, scale: 1 }}
-                transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-                className="absolute w-[82%] aspect-square bg-gradient-to-br from-[#EAF3FF] to-[#F4F9FF] rounded-full blur-none -z-10 shadow-inner"
-              />
-
-              <motion.div
-                initial={{ opacity: 0, y: 20, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
-                className="relative w-full max-w-[540px]"
+                initial={{ opacity: 0, x: -15 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.45 }}
+                className="absolute left-8 lg:left-[15%] top-[25%] z-20"
               >
-                <Image
-                  src={imageSrc}
-                  alt="Happy First Home Buying Family"
-                  width={560}
-                  height={440}
-                  priority
-                  className="w-full h-auto block object-contain mix-blend-multiply scale-[1.04] relative z-10"
-                />
-                
-                {/* Overlaid Premium Glassmorphic Floating Checklist Badge with Continuous vertical drift */}
                 <motion.div
-                  initial={{ opacity: 0, x: -25 }}
-                  animate={{
-                    opacity: 1,
-                    x: 0,
-                    y: [0, -6, 0]
-                  }}
-                  transition={{
-                    opacity: { duration: 0.55, delay: 0.45 },
-                    x: { duration: 0.55, delay: 0.45, ease: [0.16, 1, 0.3, 1] },
-                    y: { duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1.1 }
-                  }}
-                  className="absolute left-[-16px] lg:left-[-48px] top-[15%] bg-white/95 border border-slate-200/80 rounded-3xl p-5 shadow-[0_20px_40px_rgba(11,31,58,0.1)] flex flex-col gap-3.5 z-20 w-[190px]"
+                  animate={{ y: [0, -6, 0] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                  className="bg-white/95 border border-slate-200/80 rounded-3xl p-5 shadow-[0_20px_40px_rgba(11,31,58,0.1)] flex flex-col gap-3.5 w-[190px]"
                 >
                   <div className="w-10 h-10 rounded-full bg-[#EAF3FF] flex items-center justify-center text-[#2563EB] shadow-sm">
                     <ShieldCheck className="w-5.5 h-5.5 text-[#2563EB]" />
@@ -2409,48 +2406,17 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
         </div>
       </section>
 
-      {/* ── SECTION 13: RELATED GUIDES (EDITORIAL RESOURCE GRID) ── */}
-      <section id="guides" className="py-14 md:py-20 bg-white border-b border-slate-100 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.025]" style={{ backgroundImage: "radial-gradient(#2563EB 1.5px, transparent 1.5px)", backgroundSize: "32px 32px" }} />
-        
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
-          <motion.div initial="hidden" whileInView="visible" viewport={VIEWPORT} variants={premiumStagger} className="text-center max-w-3xl mx-auto mb-16">
-            <motion.div variants={premiumFadeUp} className="inline-flex items-center gap-2 bg-white shadow-sm border border-[#2563EB]/15 rounded-full px-4 py-2 mb-6">
-              <FileText className="w-4 h-4 text-[#2563EB]" />
-              <span className={`${theme.textPrimary} text-[10px] font-bold tracking-widest uppercase`}>EDUCATIONAL PORTAL</span>
-            </motion.div>
-            <motion.h2 variants={premiumFadeUp} className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.1] mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-              Explore Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#8B5CF6]">Mortgage Resource Hub</span>
-            </motion.h2>
-            <motion.p variants={premiumFadeUp} className="text-slate-500 text-[14px] sm:text-[15px] max-w-2xl mx-auto leading-relaxed">
-              Learn exactly how to prepare your finance application and avoid major mortgage pitfalls.
-            </motion.p>
-          </motion.div>
-
-          {/* 6 Article Grid */}
-          <motion.div initial="hidden" whileInView="visible" viewport={VIEWPORT} variants={premiumStagger} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            {relatedGuides.map((guide, i) => (
-              <motion.article key={i} variants={premiumFadeUp} whileHover={{ y: -8, boxShadow: "0 24px 48px rgba(11,31,58,0.10)" }} className="group rounded-[24px] border border-slate-200 bg-white overflow-hidden shadow-sm transition-all duration-400 flex flex-col">
-                <div className="relative aspect-[16/10] bg-slate-100 w-full overflow-hidden">
-                  <Image src={guide.img} alt={guide.title} fill className="object-cover object-center group-hover:scale-108 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute top-4 left-4">
-                    <span className="inline-block text-[9.5px] font-black tracking-widest uppercase bg-white/90 backdrop-blur-sm text-[#2563EB] px-3 py-1.5 rounded-full shadow-sm border border-white/50">{guide.cat}</span>
-                  </div>
-                </div>
-                <div className="p-6 flex flex-col gap-3 flex-1">
-                  <h3 className="text-[#0B1F3A] text-[16px] font-bold leading-snug group-hover:text-[#2563EB] transition-colors duration-300" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>{guide.title}</h3>
-                  <p className="text-slate-500 text-[13.5px] leading-relaxed flex-1">{guide.desc}</p>
-                  <Link href="#contact" className="inline-flex items-center gap-2 text-[13px] font-extrabold text-[#2563EB] hover:gap-3 transition-all duration-300 group/link mt-2">
-                    Read Article <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
-                  </Link>
-                </div>
-              </motion.article>
-            ))}
-          </motion.div>
-
-        </div>
-      </section>
+      {/* ── SECTION 13: RESOURCE HUB GUIDES & DYNAMIC BLOGS (DYNAMIC) ── */}
+      <BlogSection
+        badgeText="Educational Portal"
+        titlePart1="Mortgage Insights"
+        titlePart2="& Success Stories"
+        subtitleText="Learn exactly how to prepare your finance application, understand borrowing capacity, and buy your home in Australia."
+        accentColor="#2563EB"
+        accentTextClass="text-[#2563EB]"
+        accentBgClass="bg-[#2563EB]"
+        darkTheme={true}
+      />
 
       {/* ── SECTION 14: STRATEGIC CONSULTATION CTA ── */}
       <section className="relative overflow-hidden py-14 md:py-20 text-white">
