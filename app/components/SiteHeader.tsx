@@ -44,6 +44,7 @@ const YoutubeIcon = () => (
 export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: boolean; settings?: Record<string, string> }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileHomeLoansOpen, setIsMobileHomeLoansOpen] = useState(false);
+  const [isMobileXpertsRangeOpen, setIsMobileXpertsRangeOpen] = useState(false);
 
   const phoneVal = settings.header_phone || "0450 240 757";
   const emailVal = settings.support_email || "mortgage@mortgagexperts.com.au";
@@ -64,6 +65,14 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
     { name: "Home Loan for Accountants", href: "/home-loan-for-accountants" },
     { name: "Home Loan for Doctors", href: "/home-loan-for-doctors" },
     { name: "Visa & Non-Resident Home Loans", href: "/home-loan-with-visas" },
+  ];
+
+  const xpertsRangeMenu = [
+    { name: "The Property Xperts", href: "#" },
+    { name: "The Xperts Academy", href: "#" },
+    { name: "The Xperts News", href: "#" },
+    { name: "The Xperts Hub", href: "#" },
+    { name: "The Xperts Podcast", href: "#" },
   ];
 
   return (
@@ -122,12 +131,31 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
           </Link>
 
           {/* Center Navigation */}
-          <nav className="hidden xl:flex items-center gap-7 text-[13.5px] font-semibold text-[#0B1F3A]">
-            <Link href="/" className="hover:text-[#2563EB] transition-colors pb-0.5">Home</Link>
+          <nav className="hidden xl:flex items-center gap-4 xl:gap-5 2xl:gap-7 text-[13px] 2xl:text-[13.5px] font-semibold text-[#0B1F3A] whitespace-nowrap shrink-0">
+            
+            {/* Home Dropdown */}
+            <div className="relative group py-2">
+              <Link href="/" className="flex items-center gap-1 hover:text-[#2563EB] transition-colors pb-0.5 focus:outline-none whitespace-nowrap">
+                Home <ChevronDown className="w-3.5 h-3.5 mt-0.5 transition-transform duration-200 group-hover:rotate-180" />
+              </Link>
+              <div className="absolute top-full left-0 pt-2.5 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div className="bg-white border border-slate-100 rounded-xl shadow-xl py-2 max-h-[400px] overflow-y-auto">
+                  {homeLoanMenu.map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold"
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
             
             {/* Calculators Dropdown */}
             <div className="relative group py-2">
-              <button className="flex items-center gap-1 hover:text-[#2563EB] transition-colors focus:outline-none">
+              <button className="flex items-center gap-1 hover:text-[#2563EB] transition-colors focus:outline-none whitespace-nowrap">
                 Calculators <ChevronDown className="w-3.5 h-3.5 mt-0.5 transition-transform duration-200 group-hover:rotate-180" />
               </button>
               <div className="absolute top-full left-0 pt-2.5 w-60 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
@@ -144,7 +172,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
 
             {/* Resources Dropdown */}
             <div className="relative group py-2">
-              <button className="flex items-center gap-1 hover:text-[#2563EB] transition-colors focus:outline-none">
+              <button className="flex items-center gap-1 hover:text-[#2563EB] transition-colors focus:outline-none whitespace-nowrap">
                 Resources <ChevronDown className="w-3.5 h-3.5 mt-0.5 transition-transform duration-200 group-hover:rotate-180" />
               </button>
               <div className="absolute top-full left-0 pt-2.5 w-60 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
@@ -160,22 +188,22 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
             </div>
 
             {/* Mortgage Mate (Direct Link) */}
-            <Link href="/mortgage-mate" className="hover:text-[#2563EB] transition-colors pb-0.5">Mortgage Mate</Link>
+            <Link href="/mortgage-mate" className="hover:text-[#2563EB] transition-colors pb-0.5 whitespace-nowrap">Mortgage Mate</Link>
 
             {/* About Us (Direct Link) */}
-            <Link href="/#about" className="hover:text-[#2563EB] transition-colors pb-0.5">About Us</Link>
+            <Link href="/#about" className="hover:text-[#2563EB] transition-colors pb-0.5 whitespace-nowrap">About Us</Link>
 
             {/* Contact (Direct Link) */}
-            <Link href="/#contact" className="hover:text-[#2563EB] transition-colors pb-0.5">Contact</Link>
+            <Link href="/#contact" className="hover:text-[#2563EB] transition-colors pb-0.5 whitespace-nowrap">Contact</Link>
 
             {/* Xpert's Range Dropdown */}
             <div className="relative group py-2">
-              <button className="flex items-center gap-1 text-[#2563EB] hover:text-[#1d4ed8] transition-colors focus:outline-none font-bold">
+              <button className="flex items-center gap-1 text-[#2563EB] hover:text-[#1d4ed8] transition-colors focus:outline-none font-bold whitespace-nowrap">
                 Xpert&apos;s Range <ChevronDown className="w-3.5 h-3.5 mt-0.5 transition-transform duration-200 group-hover:rotate-180" />
               </button>
               <div className="absolute top-full right-0 pt-2.5 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 <div className="bg-white border border-slate-100 rounded-xl shadow-xl py-2 max-h-[400px] overflow-y-auto">
-                  {homeLoanMenu.map((item) => (
+                  {xpertsRangeMenu.map((item) => (
                     <Link
                       key={item.name}
                       href={item.href}
@@ -276,9 +304,35 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
 
               {/* Navigation Links */}
               <div className="flex-1 flex flex-col gap-4 font-semibold text-[#0B1F3A] text-[15px]">
-                <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors pb-2 border-b border-slate-50">
-                  Home
-                </Link>
+                {/* Home Dropdown/Block */}
+                <div className="border-b border-slate-50 pb-2 flex flex-col gap-1.5">
+                  <div className="flex items-center justify-between w-full">
+                    <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">
+                      Home
+                    </Link>
+                    <button
+                      onClick={() => setIsMobileHomeLoansOpen(!isMobileHomeLoansOpen)}
+                      className="p-1 focus:outline-none"
+                      aria-label="Toggle Home Submenu"
+                    >
+                      <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${isMobileHomeLoansOpen ? "rotate-180" : ""}`} />
+                    </button>
+                  </div>
+                  {isMobileHomeLoansOpen && (
+                    <div className="pl-3 flex flex-col gap-2.5 text-[13.5px] font-medium text-slate-600 mt-1 max-h-[200px] overflow-y-auto animate-fadeIn">
+                      {homeLoanMenu.map((item) => (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="hover:text-[#2563EB] transition-colors"
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
 
                 {/* Calculators Dropdown/Block */}
                 <div className="border-b border-slate-50 pb-2 flex flex-col gap-1.5">
@@ -322,15 +376,15 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                 {/* Xpert's Range Dropdown/Block */}
                 <div className="border-b border-slate-50 pb-2 flex flex-col gap-1.5">
                   <button
-                    onClick={() => setIsMobileHomeLoansOpen(!isMobileHomeLoansOpen)}
+                    onClick={() => setIsMobileXpertsRangeOpen(!isMobileXpertsRangeOpen)}
                     className="flex items-center justify-between w-full text-left focus:outline-none"
                   >
                     <span className="text-[10px] text-[#2563EB] font-bold uppercase tracking-wider block">Xpert&apos;s Range</span>
-                    <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${isMobileHomeLoansOpen ? "rotate-180" : ""}`} />
+                    <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${isMobileXpertsRangeOpen ? "rotate-180" : ""}`} />
                   </button>
-                  {isMobileHomeLoansOpen && (
+                  {isMobileXpertsRangeOpen && (
                     <div className="pl-2 flex flex-col gap-2.5 text-[13.5px] font-medium text-slate-600 mt-1 max-h-[200px] overflow-y-auto">
-                      {homeLoanMenu.map((item) => (
+                      {xpertsRangeMenu.map((item) => (
                         <Link
                           key={item.name}
                           href={item.href}
