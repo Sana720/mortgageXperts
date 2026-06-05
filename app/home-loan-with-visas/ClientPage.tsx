@@ -910,7 +910,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                     <label className="text-[10px] font-black uppercase tracking-wider text-slate-400">Visa / Residency Status</label>
                     <select
                       value={residencyStatus}
-                      onChange={(e) => setResidencyStatus(e.target.value as any)}
+                      onChange={(e) => setResidencyStatus(e.target.value as "expat" | "temporary-visa" | "foreign-citizen")}
                       className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-bold focus:outline-none focus:border-amber-500"
                     >
                       <option value="expat">Australian Expat (Living Abroad)</option>
@@ -924,7 +924,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                     <label className="text-[10px] font-black uppercase tracking-wider text-slate-400">Primary Income Source</label>
                     <select
                       value={incomeSource}
-                      onChange={(e) => setIncomeSource(e.target.value as any)}
+                      onChange={(e) => setIncomeSource(e.target.value as "aud" | "foreign")}
                       className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-bold focus:outline-none focus:border-amber-500"
                     >
                       <option value="aud">Australian Dollars (AUD)</option>

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import {
   ArrowLeft,
   ArrowRight,
@@ -35,7 +35,7 @@ import {
   motionCardShadow 
 } from "@/lib/motion";
 
-const premiumFadeUp = {
+const premiumFadeUp: Variants = {
   hidden: { opacity: 0, y: 16 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE_OUT } }
 };
