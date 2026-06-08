@@ -1,5 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import mysql from 'mysql2/promise';
+import crypto from 'crypto';
+
+// Compute admin password hash from environment variable at startup.
+// NEVER commit a real password here — set ADMIN_PASSWORD in your .env or hosting config.
+const adminPasswordHash = crypto
+  .createHash('sha256')
+  .update(process.env.ADMIN_PASSWORD || 'admin123')
+  .digest('hex');
 
 const poolConnectionConfig = {
   host: process.env.DB_HOST || 'localhost',
@@ -54,8 +62,10 @@ const tables = [
       password VARCHAR(255) NOT NULL,
       createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   )`,
+  // Password hash is computed from the ADMIN_PASSWORD env var (never hardcoded).
+  // In production, set ADMIN_PASSWORD to a strong secret in your hosting environment.
   `INSERT IGNORE INTO admins (id, username, password) VALUES 
-  ('default-admin-id', 'admin', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9')`,
+  ('default-admin-id', 'admin', '${adminPasswordHash}')`,
   `CREATE TABLE IF NOT EXISTS enquiries (
       id VARCHAR(191) PRIMARY KEY,
       type VARCHAR(50) NOT NULL,

@@ -28,11 +28,11 @@ export async function POST(request: Request) {
 
     if (rows.length > 0) {
       const admin = rows[0];
-      if (admin.password === hash || admin.password === password) {
+      if (admin.password === hash) {
         const response = NextResponse.json({ success: true });
         response.cookies.set('admin_session', 'authenticated_admin', {
           httpOnly: true,
-          secure: false, // Localhost is not HTTPS, so false is correct
+          secure: process.env.NODE_ENV === 'production',
           sameSite: 'lax',
           maxAge: 60 * 60 * 24, // 1 day
           path: '/',

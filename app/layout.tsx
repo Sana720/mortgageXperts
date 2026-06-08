@@ -14,11 +14,11 @@ const montserrat = Montserrat({
   display: "swap",
 });
 
-import { executeQuery } from "@/lib/db";
+import { loadPageData } from "@/lib/pageLoader";
 
 export async function generateMetadata(): Promise<Metadata> {
   let titleVal = "Mortgage Xperts - Australia | Leading Nepali Mortgage Brokerage Firm";
-  let descVal = "Australia’s top-rated Nepali mortgage experts, helping clients secure better home loans, refinance smarter, and invest with confidence - backed by 5-star reviews and trusted by hundreds of satisfied clients, led by Aakash, The Mortgage Mate.";
+  let descVal = "Australia's top-rated Nepali mortgage experts, helping clients secure better home loans, refinance smarter, and invest with confidence - backed by 5-star reviews and trusted by hundreds of satisfied clients, led by Aakash, The Mortgage Mate.";
   let keywordsVal: string[] = [
     "Nepali mortgage broker",
     "Nepali mortgage broker Australia",
@@ -40,25 +40,14 @@ export async function generateMetadata(): Promise<Metadata> {
   let logoVal = "/images/logo.png";
 
   try {
-    // Query homepage specific meta settings
-    const pageRows = await executeQuery("SELECT * FROM page_meta_hero WHERE page_path = '/'");
-    if (Array.isArray(pageRows) && pageRows.length > 0) {
-      const pageData = pageRows[0];
-      if (pageData.meta_title) titleVal = pageData.meta_title;
-      if (pageData.meta_description) descVal = pageData.meta_description;
-      if (pageData.meta_keywords) {
-        keywordsVal = pageData.meta_keywords.split(",").map((k: string) => k.trim());
-      }
+    const { settings, pageHeroSettings } = await loadPageData("/");
+    if (pageHeroSettings?.meta_title) titleVal = pageHeroSettings.meta_title;
+    if (pageHeroSettings?.meta_description) descVal = pageHeroSettings.meta_description;
+    if (pageHeroSettings?.meta_keywords) {
+      keywordsVal = pageHeroSettings.meta_keywords.split(",").map((k: string) => k.trim());
     }
-
-    // Query global settings for logo and favicon
-    const rows = await executeQuery("SELECT `key`, `value` FROM global_settings");
-    if (Array.isArray(rows)) {
-      rows.forEach((row: { key: string; value: string }) => {
-        if (row.key === "site_icon_url" && row.value) faviconVal = row.value;
-        if (row.key === "logo_url" && row.value) logoVal = row.value;
-      });
-    }
+    if (settings.site_icon_url) faviconVal = settings.site_icon_url;
+    if (settings.logo_url) logoVal = settings.logo_url;
   } catch (error) {
     console.error("Failed to load settings in generateMetadata:", error);
   }

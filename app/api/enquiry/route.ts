@@ -72,7 +72,7 @@ Savings: ${savings || 'N/A'}
 Income: ${income || 'N/A'}
 State: ${state || 'N/A'}
 ------------------------------------------
-Manage this enquiry in the admin dashboard: http://localhost:3000/admin`;
+Manage this enquiry in the admin dashboard: ${process.env.NEXT_PUBLIC_SITE_URL || 'https://mortgagexperts.com.au'}/admin`;
 
         await transporter.sendMail({
           from: senderLabel,          // Sent via imageoptimizer SMTP but labelled as Mortgage Xperts

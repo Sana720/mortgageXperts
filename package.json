@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:init": "node setup-db.js",
+    "setup": "node setup-db.js"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",

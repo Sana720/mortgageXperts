@@ -1,91 +1,58 @@
 import type { Metadata } from "next";
-import { executeQuery } from "@/lib/db";
+import { loadPageData, buildPageMetadata, buildJsonLd } from "@/lib/pageLoader";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { SubPageHero } from "../components/SubPageHero";
 
 const PAGE_PATH = "/non-resident-home-loans";
-const PAGE_TITLE = "Non-Resident Home Loans";
 
 export async function generateMetadata(): Promise<Metadata> {
-  let titleVal = "Non-Resident Home Loans in Australia | Mortgage Xperts";
-  let descVal = "Home loans for temporary residents, visa holders, and non-residents buying property in Australia.";
-  let keywordsVal = [
-    "non resident home loan",
-    "temporary resident home loan",
-    "visa holder loan",
-    "foreigner property buy"
-  ];
-  let logoVal = "/images/hero_slide_3_yellow.png";
-
-  try {
-    const pageRows = await executeQuery("SELECT * FROM page_meta_hero WHERE page_path = ?", [PAGE_PATH]);
-    if (Array.isArray(pageRows) && pageRows.length > 0) {
-      const pageData = pageRows[0];
-      if (pageData.meta_title) titleVal = pageData.meta_title;
-      if (pageData.meta_description) descVal = pageData.meta_description;
-      if (pageData.meta_keywords) {
-        keywordsVal = pageData.meta_keywords.split(",").map((k: string) => k.trim());
-      }
-    }
-    const settingsRows = await executeQuery("SELECT `key`, `value` FROM global_settings");
-    if (Array.isArray(settingsRows)) {
-      const logoSetting = settingsRows.find((r: { key: string; value: string }) => r.key === "logo_url");
-      if (logoSetting && logoSetting.value) logoVal = logoSetting.value;
-    }
-  } catch (error) {
-    console.error(`Failed to load settings in generateMetadata for ${PAGE_PATH}:`, error);
-  }
-
-  return {
-    title: titleVal,
-    description: descVal,
-    keywords: keywordsVal,
-    alternates: {
-      canonical: `https://mortgagexperts.com.au${PAGE_PATH}`,
-    },
-    openGraph: {
-      title: titleVal,
-      description: descVal,
-      url: `https://mortgagexperts.com.au${PAGE_PATH}`,
-      type: "website",
-      images: [
-        {
-          url: logoVal,
-          width: 1200,
-          height: 630,
-          alt: PAGE_TITLE,
-        }
-      ],
-    }
-  };
+  const { settings, pageHeroSettings } = await loadPageData(PAGE_PATH);
+  return buildPageMetadata(PAGE_PATH, pageHeroSettings, settings, {
+    title: "Non-Resident Home Loans in Australia | Mortgage Xperts",
+    description:
+      "Home loans for temporary residents, visa holders, and non-residents buying property in Australia.",
+    keywords: [
+      "non resident home loan",
+      "temporary resident home loan",
+      "visa holder loan",
+      "foreigner property buy",
+    ],
+    imageAlt: "Non-Resident Home Loans Australia",
+  });
 }
 
 export default async function Page() {
-  const settings: Record<string, string> = {};
-  let pageHeroSettings = null;
-  try {
-    const rows = await executeQuery("SELECT `key`, `value` FROM global_settings");
-    if (Array.isArray(rows)) {
-      rows.forEach((row: { key: string; value: string }) => {
-        settings[row.key] = row.value;
-      });
-    }
-    const pageRows = await executeQuery("SELECT * FROM page_meta_hero WHERE page_path = ?", [PAGE_PATH]);
-    if (Array.isArray(pageRows) && pageRows.length > 0) {
-      pageHeroSettings = pageRows[0];
-    }
-  } catch (error) {
-    console.error(`Failed to load settings in Server Component for ${PAGE_PATH}:`, error);
-  }
+  const { settings, pageHeroSettings } = await loadPageData(PAGE_PATH);
+
+  const jsonLd = buildJsonLd(
+    "Non-Resident Home Loans - Mortgage Xperts",
+    pageHeroSettings?.meta_description ||
+      "Home loans for temporary residents, visa holders, and non-residents buying property in Australia.",
+    PAGE_PATH,
+    settings,
+    [
+      { name: "Home Loans", item: "https://mortgagexperts.com.au" },
+      {
+        name: "Non-Resident Home Loans",
+        item: `https://mortgagexperts.com.au${PAGE_PATH}`,
+      },
+    ]
+  );
 
   return (
-    <div className="min-h-screen flex flex-col bg-white font-inter">
-      <SiteHeader settings={settings} />
-      <main className="flex-grow">
-        <SubPageHero pageTitle={PAGE_TITLE} pageHeroSettings={pageHeroSettings} />
-      </main>
-      <SiteFooter settings={settings} />
-    </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <div className="min-h-screen flex flex-col bg-white font-inter">
+        <SiteHeader settings={settings} />
+        <main className="flex-grow">
+          <SubPageHero pageTitle="Non-Resident Home Loans" pageHeroSettings={pageHeroSettings} />
+        </main>
+        <SiteFooter settings={settings} />
+      </div>
+    </>
   );
 }

@@ -2,21 +2,20 @@ import type { Metadata } from "next";
 import { ClientPage } from "./ClientPage";
 import { loadPageData, buildPageMetadata, buildJsonLd } from "@/lib/pageLoader";
 
-const PAGE_PATH = "/refinancing-a-loan";
+const PAGE_PATH = "/loan-repayment-calculator";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { settings, pageHeroSettings } = await loadPageData(PAGE_PATH);
   return buildPageMetadata(PAGE_PATH, pageHeroSettings, settings, {
-    title: "Refinance Your Home Loan & Save Thousands | Mortgage Xperts",
+    title: "Loan Repayment Calculator | Mortgage Xperts",
     description:
-      "Compare and switch to a lower interest rate, consolidate your debts, or unlock equity to cash out.",
+      "Calculate your weekly, fortnightly, or monthly home loan repayments, total interest payable, and see how extra repayments can save you thousands.",
     keywords: [
-      "refinance home loan",
-      "home loan refinance",
-      "lower interest rate",
-      "switch lenders Australia",
+      "loan repayment calculator",
+      "mortgage repayment calculator",
+      "extra repayment savings",
+      "home loan calculator Australia",
     ],
-    imageAlt: "Refinancing a Home Loan",
   });
 }
 
@@ -24,15 +23,15 @@ export default async function Page() {
   const { settings, pageHeroSettings } = await loadPageData(PAGE_PATH);
 
   const jsonLd = buildJsonLd(
-    "Refinancing a Loan - Mortgage Xperts",
+    "Loan Repayment Calculator - Mortgage Xperts",
     pageHeroSettings?.meta_description ||
-      "Compare and switch to a lower interest rate, consolidate your debts, or unlock equity to cash out.",
+      "Calculate your weekly, fortnightly, or monthly home loan repayments, total interest payable, and see how extra repayments can save you thousands.",
     PAGE_PATH,
     settings,
     [
-      { name: "Home Loans", item: "https://mortgagexperts.com.au" },
+      { name: "Calculators", item: "https://mortgagexperts.com.au" },
       {
-        name: "Refinancing a Loan",
+        name: "Loan Repayment Calculator",
         item: `https://mortgagexperts.com.au${PAGE_PATH}`,
       },
     ]

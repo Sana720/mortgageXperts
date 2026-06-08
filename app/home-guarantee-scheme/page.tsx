@@ -1,83 +1,50 @@
 import type { Metadata } from "next";
-import { executeQuery } from "@/lib/db";
 import { ClientPage } from "./ClientPage";
+import { loadPageData, buildPageMetadata, buildJsonLd } from "@/lib/pageLoader";
 
 const PAGE_PATH = "/home-guarantee-scheme";
-const PAGE_TITLE = "Home Guarantee Scheme";
 
 export async function generateMetadata(): Promise<Metadata> {
-  let titleVal = "First Home Guarantee Scheme | Mortgage Xperts";
-  let descVal = "Buy your first home with as little as a 5% deposit and pay zero Lenders Mortgage Insurance (LMI) under the Home Guarantee Scheme.";
-  let keywordsVal = [
-    "home guarantee scheme",
-    "first home guarantee",
-    "5% deposit home loan",
-    "zero LMI scheme"
-  ];
-  let logoVal = "/images/hero.png";
-
-  try {
-    const pageRows = await executeQuery("SELECT * FROM page_meta_hero WHERE page_path = ?", [PAGE_PATH]);
-    if (Array.isArray(pageRows) && pageRows.length > 0) {
-      const pageData = pageRows[0];
-      if (pageData.meta_title) titleVal = pageData.meta_title;
-      if (pageData.meta_description) descVal = pageData.meta_description;
-      if (pageData.meta_keywords) {
-        keywordsVal = pageData.meta_keywords.split(",").map((k: string) => k.trim());
-      }
-    }
-    const settingsRows = await executeQuery("SELECT `key`, `value` FROM global_settings");
-    if (Array.isArray(settingsRows)) {
-      const logoSetting = settingsRows.find((r: { key: string; value: string }) => r.key === "logo_url");
-      if (logoSetting && logoSetting.value) logoVal = logoSetting.value;
-    }
-  } catch (error) {
-    console.error(`Failed to load settings in generateMetadata for ${PAGE_PATH}:`, error);
-  }
-
-  return {
-    title: titleVal,
-    description: descVal,
-    keywords: keywordsVal,
-    alternates: {
-      canonical: `https://mortgagexperts.com.au${PAGE_PATH}`,
-    },
-    openGraph: {
-      title: titleVal,
-      description: descVal,
-      url: `https://mortgagexperts.com.au${PAGE_PATH}`,
-      type: "website",
-      images: [
-        {
-          url: logoVal,
-          width: 1200,
-          height: 630,
-          alt: PAGE_TITLE,
-        }
-      ],
-    }
-  };
+  const { settings, pageHeroSettings } = await loadPageData(PAGE_PATH);
+  return buildPageMetadata(PAGE_PATH, pageHeroSettings, settings, {
+    title: "First Home Guarantee Scheme | Mortgage Xperts",
+    description:
+      "Buy your first home with as little as a 5% deposit and pay zero Lenders Mortgage Insurance (LMI) under the Home Guarantee Scheme.",
+    keywords: [
+      "home guarantee scheme",
+      "first home guarantee",
+      "5% deposit home loan",
+      "zero LMI scheme",
+    ],
+    imageAlt: "First Home Guarantee Scheme Australia",
+  });
 }
 
 export default async function Page() {
-  const settings: Record<string, string> = {};
-  let pageHeroSettings = null;
-  try {
-    const rows = await executeQuery("SELECT `key`, `value` FROM global_settings");
-    if (Array.isArray(rows)) {
-      rows.forEach((row: { key: string; value: string }) => {
-        settings[row.key] = row.value;
-      });
-    }
-    const pageRows = await executeQuery("SELECT * FROM page_meta_hero WHERE page_path = ?", [PAGE_PATH]);
-    if (Array.isArray(pageRows) && pageRows.length > 0) {
-      pageHeroSettings = pageRows[0];
-    }
-  } catch (error) {
-    console.error(`Failed to load settings in Server Component for ${PAGE_PATH}:`, error);
-  }
+  const { settings, pageHeroSettings } = await loadPageData(PAGE_PATH);
+
+  const jsonLd = buildJsonLd(
+    "Home Guarantee Scheme - Mortgage Xperts",
+    pageHeroSettings?.meta_description ||
+      "Buy your first home with as little as a 5% deposit and zero LMI under the Home Guarantee Scheme.",
+    PAGE_PATH,
+    settings,
+    [
+      { name: "Home Loans", item: "https://mortgagexperts.com.au" },
+      {
+        name: "Home Guarantee Scheme",
+        item: `https://mortgagexperts.com.au${PAGE_PATH}`,
+      },
+    ]
+  );
 
   return (
-    <ClientPage settings={settings} pageHeroSettings={pageHeroSettings} />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <ClientPage settings={settings} pageHeroSettings={pageHeroSettings} />
+    </>
   );
 }

@@ -11,6 +11,7 @@ import {
   Phone,
   ArrowRight,
   ChevronDown,
+  ChevronRight,
   X
 } from "lucide-react";
 
@@ -45,6 +46,8 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileHomeLoansOpen, setIsMobileHomeLoansOpen] = useState(false);
   const [isMobileXpertsRangeOpen, setIsMobileXpertsRangeOpen] = useState(false);
+  const [isMobileCalculatorsOpen, setIsMobileCalculatorsOpen] = useState(false);
+  const [isMobileStampDutyOpen, setIsMobileStampDutyOpen] = useState(false);
 
   const phoneVal = settings.header_phone || "0450 240 757";
   const emailVal = settings.support_email || "mortgage@mortgagexperts.com.au";
@@ -73,6 +76,36 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
     { name: "The Xperts News", href: "#" },
     { name: "The Xperts Hub", href: "#" },
     { name: "The Xperts Podcast", href: "#" },
+  ];
+
+  const stampDutyStates = [
+    { name: "Stamp Duty in ACT", href: "#" },
+    { name: "Stamp Duty in NSW", href: "#" },
+    { name: "Stamp Duty in NT", href: "#" },
+    { name: "Stamp Duty in QLD", href: "#" },
+    { name: "Stamp Duty in SA", href: "#" },
+    { name: "Stamp Duty in TAS", href: "#" },
+    { name: "Stamp Duty in VIC", href: "#" },
+    { name: "Stamp Duty in WA", href: "#" },
+  ];
+
+  const calculatorsMenu = [
+    { name: "Loan Repayment Calculator", href: "#" },
+    { name: "Borrowing Power Calculator", href: "#" },
+    { 
+      name: "Stamp Duty Calculator", 
+      href: "#", 
+      submenu: stampDutyStates 
+    },
+    { name: "Refinancing Feasibility", href: "#" },
+    { name: "Extra Repayment Calculator", href: "#" },
+    { name: "Year-To-Date Calculator", href: "#" },
+    { name: "Deposit Calculator", href: "#" },
+    { name: "LMI Calculator", href: "#" },
+    { name: "Loan Comparison Calculator", href: "#" },
+    { name: "Rent yield calculators", href: "#" },
+    { name: "Equity Calculator", href: "#" },
+    { name: "Cash Rate Change Calculator", href: "#" },
   ];
 
   return (
@@ -158,14 +191,42 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
               <button className="flex items-center gap-1 hover:text-[#2563EB] transition-colors focus:outline-none whitespace-nowrap">
                 Calculators <ChevronDown className="w-3.5 h-3.5 mt-0.5 transition-transform duration-200 group-hover:rotate-180" />
               </button>
-              <div className="absolute top-full left-0 pt-2.5 w-60 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div className="absolute top-full left-0 pt-2.5 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 <div className="bg-white border border-slate-100 rounded-xl shadow-xl py-2">
-                  <Link href="/#borrowing" className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold">
-                    Borrowing Capacity
-                  </Link>
-                  <Link href="/#calculator" className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold">
-                    Mortgage Repayments
-                  </Link>
+                  {calculatorsMenu.map((item) => {
+                    if (item.submenu) {
+                      return (
+                        <div key={item.name} className="relative group/sub">
+                          <button className="w-full flex items-center justify-between px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold text-left">
+                            <span>{item.name}</span>
+                            <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover/sub:text-[#2563EB]" />
+                          </button>
+                          <div className="absolute left-full top-0 pl-1 w-64 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200 z-50">
+                            <div className="bg-white border border-slate-100 rounded-xl shadow-xl py-2">
+                              {item.submenu.map((subItem) => (
+                                <Link
+                                  key={subItem.name}
+                                  href={subItem.href}
+                                  className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold"
+                                >
+                                  {subItem.name}
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    }
+                    return (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold"
+                      >
+                        {item.name}
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -336,15 +397,72 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
 
                 {/* Calculators Dropdown/Block */}
                 <div className="border-b border-slate-50 pb-2 flex flex-col gap-1.5">
-                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Calculators</span>
-                  <div className="pl-2 flex flex-col gap-2.5 text-[13.5px] font-medium text-slate-600">
-                    <Link href="/#borrowing" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">
-                      Borrowing Capacity
-                    </Link>
-                    <Link href="/#calculator" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">
-                      Mortgage Repayment Calculator
-                    </Link>
+                  <div className="flex items-center justify-between w-full">
+                    <button
+                      onClick={() => setIsMobileCalculatorsOpen(!isMobileCalculatorsOpen)}
+                      className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block focus:outline-none"
+                    >
+                      Calculators
+                    </button>
+                    <button
+                      onClick={() => setIsMobileCalculatorsOpen(!isMobileCalculatorsOpen)}
+                      className="p-1 focus:outline-none"
+                      aria-label="Toggle Calculators Submenu"
+                    >
+                      <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${isMobileCalculatorsOpen ? "rotate-180" : ""}`} />
+                    </button>
                   </div>
+                  {isMobileCalculatorsOpen && (
+                    <div className="pl-2 flex flex-col gap-2.5 text-[13.5px] font-medium text-slate-600 mt-1 max-h-[300px] overflow-y-auto">
+                      {calculatorsMenu.map((item) => {
+                        if (item.submenu) {
+                          return (
+                            <div key={item.name} className="flex flex-col gap-1.5 pl-1">
+                              <div className="flex items-center justify-between w-full">
+                                <button
+                                  onClick={() => setIsMobileStampDutyOpen(!isMobileStampDutyOpen)}
+                                  className="hover:text-[#2563EB] transition-colors cursor-pointer text-left font-semibold text-[13.5px]"
+                                >
+                                  {item.name}
+                                </button>
+                                <button
+                                  onClick={() => setIsMobileStampDutyOpen(!isMobileStampDutyOpen)}
+                                  className="p-1 focus:outline-none"
+                                  aria-label="Toggle Stamp Duty Submenu"
+                                >
+                                  <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${isMobileStampDutyOpen ? "rotate-180" : ""}`} />
+                                </button>
+                              </div>
+                              {isMobileStampDutyOpen && (
+                                <div className="pl-3 flex flex-col gap-2 text-[12.5px] text-slate-500 mt-1 max-h-[200px] overflow-y-auto">
+                                  {item.submenu.map((subItem) => (
+                                    <Link
+                                      key={subItem.name}
+                                      href={subItem.href}
+                                      onClick={() => setIsMobileMenuOpen(false)}
+                                      className="hover:text-[#2563EB] transition-colors py-1 font-semibold"
+                                    >
+                                      {subItem.name}
+                                    </Link>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        }
+                        return (
+                          <Link
+                            key={item.name}
+                            href={item.href}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="hover:text-[#2563EB] transition-colors pl-1 font-semibold"
+                          >
+                            {item.name}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
 
                 {/* Resources Dropdown/Block */}
