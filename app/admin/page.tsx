@@ -1306,6 +1306,7 @@ export default function AdminPage() {
                     <option value="/self-employed-home-loans">Self-Employed Home Loans (/self-employed-home-loans)</option>
                     <option value="/investing-in-property">Investing in Property (/investing-in-property)</option>
                     <option value="/investing-in-property-nepali-mortgage-broker">Investing in Property (Nepali Broker Slug) (/investing-in-property-nepali-mortgage-broker)</option>
+                    <option value="/loan-repayment-calculator">Loan Repayment Calculator (/loan-repayment-calculator)</option>
                   </select>
                 </div>
                 <div className="text-right sm:block hidden">
