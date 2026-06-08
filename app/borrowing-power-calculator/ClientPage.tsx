@@ -857,7 +857,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                   </div>
                   <h4 className="text-[14.5px] font-black text-[#0B1F3A]">Guide Successfully Requested!</h4>
                   <p className="text-[12px] text-slate-500 max-w-xs mx-auto leading-relaxed">
-                    Check your email. We've sent a download link for "Unlocking Your Borrowing Power" straight to your inbox.
+                    Check your email. We&apos;ve sent a download link for &quot;Unlocking Your Borrowing Power&quot; straight to your inbox.
                   </p>
                 </div>
               )}

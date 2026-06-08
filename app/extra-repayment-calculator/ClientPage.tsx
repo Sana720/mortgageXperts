@@ -484,7 +484,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                         <select
                           id="frequency"
                           value={frequency}
-                          onChange={(e) => setFrequency(e.target.value as any)}
+                          onChange={(e) => setFrequency(e.target.value as "weekly" | "fortnightly" | "monthly")}
                           className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl px-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/5 transition-all appearance-none cursor-pointer"
                         >
                           <option value="weekly">Weekly</option>
@@ -854,7 +854,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                   </div>
                   <h4 className="text-[14.5px] font-black text-[#0B1F3A]">Guide Successfully Requested!</h4>
                   <p className="text-[12px] text-slate-500 max-w-xs mx-auto leading-relaxed">
-                    Check your email. We've sent a download link for "The Extra Repayments Manual" straight to your inbox.
+                    Check your email. We&apos;ve sent a download link for &quot;The Extra Repayments Manual&quot; straight to your inbox.
                   </p>
                 </div>
               )}
