@@ -33,6 +33,26 @@ import {
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { SubPageHero } from "../components/SubPageHero";
+import { PageHeroSettings } from "@/lib/pageLoader";
+
+interface RepaymentsPathResult {
+  monthlyRepayment?: number;
+  weeklyRepayment?: number;
+  fortnightlyRepayment?: number;
+  interestOnlyRepayment?: number;
+  totalInterest: number;
+  totalPayments: number;
+  years: number;
+  balanceHistory: number[];
+  interestSaved?: number;
+  yearsSaved?: number;
+  monthsSaved?: number;
+}
+
+interface CalculatorResults {
+  scheduled: RepaymentsPathResult;
+  extra: RepaymentsPathResult;
+}
 
 // Premium Framer Motion presets
 const premiumStagger = {
@@ -128,7 +148,7 @@ function GoogleReviewCard({ name, role, text }: { name: string; role: string; te
   );
 }
 
-export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Record<string, string>; pageHeroSettings?: any }) {
+export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings }) {
   // Step form state: 1 = Loan Details, 2 = Extras & Fees, 3 = Property Report Form, 4 = Results Dashboard
   const [currentStep, setCurrentStep] = useState<number>(1);
 
@@ -150,7 +170,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
   const [calcLeadSubmitting, setCalcLeadSubmitting] = useState(false);
 
   // Math simulation output
-  const [results, setResults] = useState<any>(null);
+  const [results, setResults] = useState<CalculatorResults | null>(null);
 
   // Guide request form
   const [guideName, setGuideName] = useState("");

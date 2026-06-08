@@ -1,7 +1,7 @@
 import { executeQuery } from '@/lib/db';
 import type { Metadata } from 'next';
 
-export interface GlobalSettings extends Record<string, string> {}
+export type GlobalSettings = Record<string, string>;
 
 export interface PageHeroSettings {
   page_path?: string;
@@ -21,7 +21,7 @@ export interface PageHeroSettings {
 
 export interface PageData {
   settings: GlobalSettings;
-  pageHeroSettings: PageHeroSettings | null;
+  pageHeroSettings: PageHeroSettings | undefined;
 }
 
 /**
@@ -34,7 +34,7 @@ export interface PageData {
  */
 export async function loadPageData(pagePath: string): Promise<PageData> {
   const settings: GlobalSettings = {};
-  let pageHeroSettings: PageHeroSettings | null = null;
+  let pageHeroSettings: PageHeroSettings | undefined = undefined;
 
   try {
     const [settingsRows, pageRows] = await Promise.all([
@@ -69,7 +69,7 @@ export async function loadPageData(pagePath: string): Promise<PageData> {
  */
 export function buildPageMetadata(
   pagePath: string,
-  pageHeroSettings: PageHeroSettings | null,
+  pageHeroSettings: PageHeroSettings | undefined,
   settings: GlobalSettings,
   defaults: {
     title: string;
