@@ -35,23 +35,30 @@ import { SiteFooter } from "../components/SiteFooter";
 import { SubPageHero } from "../components/SubPageHero";
 import { PageHeroSettings } from "@/lib/pageLoader";
 
-interface RepaymentsPathResult {
-  monthlyRepayment?: number;
-  weeklyRepayment?: number;
-  fortnightlyRepayment?: number;
-  interestOnlyRepayment?: number;
+interface ScheduledRepaymentsResult {
+  monthlyRepayment: number;
+  weeklyRepayment: number;
+  fortnightlyRepayment: number;
+  interestOnlyRepayment: number;
   totalInterest: number;
   totalPayments: number;
   years: number;
   balanceHistory: number[];
-  interestSaved?: number;
-  yearsSaved?: number;
-  monthsSaved?: number;
+}
+
+interface ExtraRepaymentsResult {
+  totalInterest: number;
+  totalPayments: number;
+  years: number;
+  balanceHistory: number[];
+  interestSaved: number;
+  yearsSaved: number;
+  monthsSaved: number;
 }
 
 interface CalculatorResults {
-  scheduled: RepaymentsPathResult;
-  extra: RepaymentsPathResult;
+  scheduled: ScheduledRepaymentsResult;
+  extra: ExtraRepaymentsResult;
 }
 
 // Premium Framer Motion presets
