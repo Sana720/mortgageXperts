@@ -33,6 +33,7 @@ import {
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { SubPageHero } from "../components/SubPageHero";
+import { TestimonialSection } from "../components/TestimonialSection";
 import { PageHeroSettings } from "@/lib/pageLoader";
 
 interface ScheduledRepaymentsResult {
@@ -148,7 +149,7 @@ function GoogleReviewCard({ name, role, text }: { name: string; role: string; te
           <Star key={i} className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
         ))}
       </div>
-      <p className="text-[12px] text-slate-655 leading-relaxed italic line-clamp-5">
+      <p className="text-[12px] text-slate-500 leading-relaxed italic line-clamp-5">
         &ldquo;{text}&rdquo;
       </p>
     </div>
@@ -208,6 +209,10 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
   const [reportAddress, setReportAddress] = useState("");
   const [reportSubmitting, setReportSubmitting] = useState(false);
   const [reportSubmitted, setReportSubmitted] = useState(false);
+
+  // Custom visual state
+  const [hoveredYear, setHoveredYear] = useState<number | null>(null);
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
   // Dynamic calculations
   const calculateRepayments = () => {
@@ -444,19 +449,105 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
     }
   };
 
+  // Chart Interaction Handlers
+  const handleMouseMove = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+    if (!results || !chartPaths.count) return;
+    const svg = e.currentTarget;
+    const rect = svg.getBoundingClientRect();
+    const clientX = e.clientX - rect.left;
+    const svgX = (clientX / rect.width) * chartPaths.width;
+    
+    const startX = chartPaths.padLeft;
+    const endX = chartPaths.width - chartPaths.padRight;
+    const chartWidth = endX - startX;
+    
+    let idx = Math.round(((svgX - startX) / chartWidth) * (chartPaths.count - 1));
+    if (idx < 0) idx = 0;
+    if (idx >= chartPaths.count) idx = chartPaths.count - 1;
+    
+    setHoveredYear(idx);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredYear(null);
+  };
+
+  // PDF Export Logic
+  const downloadReportPDF = async () => {
+    setIsGeneratingPdf(true);
+    try {
+      const html2canvas = (await import("html2canvas-pro")).default;
+      const { jsPDF } = await import("jspdf");
+      
+      const element = document.getElementById("printable-report-area");
+      if (!element) return;
+      
+      // Setup printable element offscreen for rendering
+      element.style.setProperty("display", "block", "important");
+      element.style.setProperty("position", "absolute", "important");
+      element.style.setProperty("left", "0px", "important");
+      element.style.setProperty("top", "-9999px", "important");
+      element.style.setProperty("width", "800px", "important");
+      element.style.setProperty("background-color", "#FFFFFF", "important");
+      
+      const canvas = await html2canvas(element, {
+        scale: 2, // Double resolution for crisp PDF
+        useCORS: true,
+        logging: false,
+        backgroundColor: "#FFFFFF"
+      });
+      
+      // Reset DOM element styles
+      element.style.removeProperty("display");
+      element.style.removeProperty("position");
+      element.style.removeProperty("left");
+      element.style.removeProperty("top");
+      element.style.removeProperty("width");
+      element.style.removeProperty("background-color");
+      
+      const imgData = canvas.toDataURL("image/jpeg", 0.95);
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "px",
+        format: "a4"
+      });
+      
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const margin = 20;
+      const width = pdfWidth - margin * 2;
+      const ratio = canvas.width > 0 ? canvas.height / canvas.width : 1.414;
+      const height = width * ratio;
+      
+      pdf.addImage(imgData, "JPEG", margin, margin, width, height);
+      pdf.save(`Mortgage_Repayments_Report_${new Date().toLocaleDateString("en-AU").replace(/\//g, "-")}.pdf`);
+    } catch (error) {
+      console.error("Failed to generate PDF:", error);
+    } finally {
+      setIsGeneratingPdf(false);
+    }
+  };
+
   // SVG Chart points calculation
   const chartPaths = useMemo(() => {
     const width = 600;
     const height = 280;
-    const pad = 40;
+    const padLeft = 55;
+    const padRight = 25;
+    const padTop = 25;
+    const padBottom = 35;
     
     if (!results) {
       return {
         schPath: "",
         extPath: "",
+        schAreaPath: "",
+        extAreaPath: "",
         width,
         height,
-        pad,
+        padLeft,
+        padRight,
+        padTop,
+        padBottom,
         getX: (_idx: number) => 0,
         getY: (_val: number) => 0,
         count: 0
@@ -468,8 +559,8 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
     const maxVal = loanAmount;
     const count = historySch.length;
 
-    const getX = (idx: number) => pad + (idx / (count - 1)) * (width - pad * 2);
-    const getY = (val: number) => height - pad - (val / maxVal) * (height - pad * 2);
+    const getX = (idx: number) => padLeft + (idx / (count - 1)) * (width - padLeft - padRight);
+    const getY = (val: number) => height - padBottom - (val / maxVal) * (height - padBottom - padTop);
 
     const schPoints = [];
     const extPoints = [];
@@ -478,12 +569,28 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
       extPoints.push(`${getX(i)},${getY(historyExt[i])}`);
     }
 
+    const schAreaPoints = [
+      `${getX(0)},${height - padBottom}`,
+      ...schPoints,
+      `${getX(count - 1)},${height - padBottom}`
+    ];
+    const extAreaPoints = [
+      `${getX(0)},${height - padBottom}`,
+      ...extPoints,
+      `${getX(count - 1)},${height - padBottom}`
+    ];
+
     return {
       schPath: `M ${schPoints.join(" L ")}`,
       extPath: `M ${extPoints.join(" L ")}`,
+      schAreaPath: `M ${schAreaPoints.join(" L ")} Z`,
+      extAreaPath: `M ${extAreaPoints.join(" L ")} Z`,
       width,
       height,
-      pad,
+      padLeft,
+      padRight,
+      padTop,
+      padBottom,
       getX,
       getY,
       count
@@ -553,7 +660,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
       `}} />
 
       {/* HEADER */}
-      <SiteHeader isSticky={false} settings={settings} />
+      <SiteHeader isSticky={true} settings={settings} />
 
       {/* HERO SECTION */}
       <SubPageHero pageTitle="Loan Repayment Calculator" pageHeroSettings={pageHeroSettings || defaultHeroSettings} />
@@ -570,14 +677,14 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
             
             {/* Left Column: Rich Mortgage Context / Content */}
             <div className="lg:col-span-6 space-y-6 no-print">
-              <span className="text-[10px] font-black uppercase tracking-widest text-blue-650 bg-blue-50 border border-blue-100/60 px-3.5 py-1.5 rounded-full w-fit block shadow-sm font-bold">
+              <span className="text-[10px] font-black uppercase tracking-widest text-blue-600 bg-blue-50 border border-blue-100/60 px-3.5 py-1.5 rounded-full w-fit block shadow-sm font-bold">
                 Calculations & Insights
               </span>
               <h2 className="text-[#0B1F3A] text-[28px] sm:text-[36px] lg:text-[42px] font-black leading-[1.1] font-montserrat">
                 Plan Your Repayments & <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500">Save Years in Interest</span>
               </h2>
-              <div className="w-12 h-[3px] bg-blue-650 rounded-full" />
-              <p className="text-slate-550 text-[14px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium">
+              <div className="w-12 h-[3px] bg-blue-600 rounded-full" />
+              <p className="text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium">
                 Determining your scheduled mortgage obligations and structuring extra contributions correctly is crucial to reducing interest expense. Our compact tool evaluates your variables in three distinct phases.
               </p>
  
@@ -631,15 +738,15 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
  
             {/* Right Column: Compact 4-Step Wizard Calculator (Results inside Step 4) */}
             <div className="lg:col-span-6 flex justify-end no-print">
-              <div className="w-full max-w-[500px] bg-white/95 backdrop-blur-md border border-slate-200/85 rounded-[28px] p-6 shadow-[0_20px_50px_rgba(11,31,58,0.08)] hover:shadow-[0_20px_50px_rgba(11,31,58,0.12)] flex flex-col justify-between min-h-[490px] transition-all duration-300 relative overflow-hidden">
+              <div className="w-full max-w-[500px] bg-gradient-to-b from-white via-white to-slate-50/50 border border-slate-200/60 rounded-[32px] p-8 shadow-[0_32px_64px_-16px_rgba(15,23,42,0.08)] hover:shadow-[0_32px_64px_-16px_rgba(15,23,42,0.12)] flex flex-col justify-between min-h-[510px] transition-all duration-300 relative overflow-hidden">
                 
                 {/* Top decorative gradient bar */}
-                <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-blue-600 via-indigo-500 to-blue-550" />
+                <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-blue-600 via-indigo-500 to-blue-500" />
  
                 {/* Progress bar container */}
                 <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden mt-1 mb-4">
                   <div 
-                    className="h-full bg-gradient-to-r from-blue-600 to-indigo-500 transition-all duration-505 ease-out" 
+                    className="h-full bg-gradient-to-r from-blue-600 to-indigo-500 transition-all duration-500 ease-out" 
                     style={{ width: `${(currentStep / 4) * 100}%` }}
                   />
                 </div>
@@ -667,49 +774,57 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   {currentStep === 1 && (
                     <div className="space-y-4 py-2">
                       {/* Loan Amount */}
-                      <div className="space-y-1.5">
+                      <div className="space-y-2">
                         <div className="flex justify-between items-center text-[11px] font-bold text-slate-700">
                           <label htmlFor="loan-amount">Loan Amount ($)</label>
-                          <span className="text-blue-650 font-black text-[13px]">${loanAmount.toLocaleString()}</span>
+                          <span className="text-blue-600 font-black text-[13.5px]">${loanAmount.toLocaleString()}</span>
                         </div>
-                        <input
-                          type="number"
-                          id="loan-amount"
-                          value={loanAmount}
-                          onChange={(e) => setLoanAmount(Math.max(0, Number(e.target.value)))}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] font-bold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
-                        />
+                        <div className="relative">
+                          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-extrabold text-sm select-none pointer-events-none">$</div>
+                          <input
+                            type="number"
+                            id="loan-amount"
+                            value={loanAmount}
+                            onChange={(e) => setLoanAmount(Math.max(0, Number(e.target.value)))}
+                            className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all"
+                          />
+                        </div>
                       </div>
  
                       {/* Interest Rate */}
-                      <div className="space-y-1.5">
+                      <div className="space-y-2">
                         <div className="flex justify-between items-center text-[11px] font-bold text-slate-700">
                           <label htmlFor="interest-rate">Interest Rate (% p.a.)</label>
-                          <span className="text-blue-650 font-black text-[13px]">{interestRate}%</span>
+                          <span className="text-blue-600 font-black text-[13.5px]">{interestRate}%</span>
                         </div>
-                        <input
-                          type="number"
-                          id="interest-rate"
-                          step="0.01"
-                          value={interestRate}
-                          onChange={(e) => setInterestRate(Math.max(0, Number(e.target.value)))}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] font-bold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
-                        />
+                        <div className="relative">
+                          <div className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-extrabold text-sm select-none pointer-events-none">%</div>
+                          <input
+                            type="number"
+                            id="interest-rate"
+                            step="0.01"
+                            value={interestRate}
+                            onChange={(e) => setInterestRate(Math.max(0, Number(e.target.value)))}
+                            className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl pl-4 pr-8 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all"
+                          />
+                        </div>
                       </div>
  
                       {/* Loan Term */}
-                      <div className="space-y-1.5">
+                      <div className="space-y-2">
                         <div className="flex justify-between items-center text-[11px] font-bold text-slate-700">
                           <label htmlFor="loan-term">Loan Term (Years)</label>
-                          <span className="text-blue-650 font-black text-[13px]">{loanTerm} Years</span>
+                          <span className="text-blue-600 font-black text-[13.5px]">{loanTerm} Years</span>
                         </div>
-                        <input
-                          type="number"
-                          id="loan-term"
-                          value={loanTerm}
-                          onChange={(e) => setLoanTerm(Math.max(1, Math.min(40, Number(e.target.value))))}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] font-bold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
-                        />
+                        <div className="relative">
+                          <input
+                            type="number"
+                            id="loan-term"
+                            value={loanTerm}
+                            onChange={(e) => setLoanTerm(Math.max(1, Math.min(40, Number(e.target.value))))}
+                            className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl px-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all"
+                          />
+                        </div>
                       </div>
                     </div>
                   )}
@@ -718,39 +833,45 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   {currentStep === 2 && (
                     <div className="space-y-3.5 py-2">
                       {/* Lump Sum */}
-                      <div className="space-y-1.5">
+                      <div className="space-y-2">
                         <div className="flex justify-between items-center text-[11px] font-bold text-slate-700">
                           <label htmlFor="lump-sum">Lump Sum Payment ($)</label>
-                          <span className="text-blue-650 font-black text-[13px]">${lumpSum.toLocaleString()}</span>
+                          <span className="text-blue-600 font-black text-[13.5px]">${lumpSum.toLocaleString()}</span>
                         </div>
-                        <input
-                          type="number"
-                          id="lump-sum"
-                          value={lumpSum}
-                          onChange={(e) => setLumpSum(Math.max(0, Number(e.target.value)))}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] font-bold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
-                        />
+                        <div className="relative">
+                          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-extrabold text-sm select-none pointer-events-none">$</div>
+                          <input
+                            type="number"
+                            id="lump-sum"
+                            value={lumpSum}
+                            onChange={(e) => setLumpSum(Math.max(0, Number(e.target.value)))}
+                            className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all"
+                          />
+                        </div>
                       </div>
  
                       {/* Extra Payments & Frequency */}
                       <div className="grid grid-cols-2 gap-3">
-                        <div className="space-y-1.5">
+                        <div className="space-y-2">
                           <label htmlFor="extra-payment" className="text-[11px] font-bold text-slate-700 block">Extra Payments ($)</label>
-                          <input
-                            type="number"
-                            id="extra-payment"
-                            value={extraPayment}
-                            onChange={(e) => setExtraPayment(Math.max(0, Number(e.target.value)))}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] font-bold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
-                          />
+                          <div className="relative">
+                            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-extrabold text-xs select-none pointer-events-none">$</div>
+                            <input
+                              type="number"
+                              id="extra-payment"
+                              value={extraPayment}
+                              onChange={(e) => setExtraPayment(Math.max(0, Number(e.target.value)))}
+                              className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all"
+                            />
+                          </div>
                         </div>
-                        <div className="space-y-1.5">
+                        <div className="space-y-2">
                           <label htmlFor="extra-frequency" className="text-[11px] font-bold text-slate-700 block">Frequency</label>
                           <select
                             id="extra-frequency"
                             value={extraFrequency}
                             onChange={(e) => setExtraFrequency(e.target.value)}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-[13px] font-bold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                            className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl px-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all appearance-none cursor-pointer"
                           >
                             <option value="Weekly">Weekly</option>
                             <option value="Fortnightly">Fortnightly</option>
@@ -761,25 +882,31 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
  
                       {/* Fees */}
                       <div className="grid grid-cols-2 gap-3">
-                        <div className="space-y-1.5">
+                        <div className="space-y-2">
                           <label htmlFor="annual-fee" className="text-[11px] font-bold text-slate-700">Annual Fees ($)</label>
-                          <input
-                            type="number"
-                            id="annual-fee"
-                            value={annualFee}
-                            onChange={(e) => setAnnualFee(Math.max(0, Number(e.target.value)))}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] font-bold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
-                          />
+                          <div className="relative">
+                            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-extrabold text-xs select-none pointer-events-none">$</div>
+                            <input
+                              type="number"
+                              id="annual-fee"
+                              value={annualFee}
+                              onChange={(e) => setAnnualFee(Math.max(0, Number(e.target.value)))}
+                              className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all"
+                            />
+                          </div>
                         </div>
-                        <div className="space-y-1.5">
+                        <div className="space-y-2">
                           <label htmlFor="monthly-fee" className="text-[11px] font-bold text-slate-700">Monthly Fees ($)</label>
-                          <input
-                            type="number"
-                            id="monthly-fee"
-                            value={monthlyFee}
-                            onChange={(e) => setMonthlyFee(Math.max(0, Number(e.target.value)))}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] font-bold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
-                          />
+                          <div className="relative">
+                            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-extrabold text-xs select-none pointer-events-none">$</div>
+                            <input
+                              type="number"
+                              id="monthly-fee"
+                              value={monthlyFee}
+                              onChange={(e) => setMonthlyFee(Math.max(0, Number(e.target.value)))}
+                              className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all"
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -802,7 +929,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
  
                       {/* Full Name */}
                       <div className="space-y-1">
-                        <label htmlFor="calc-lead-name" className="text-[10.5px] font-bold text-slate-650 block">Full Name *</label>
+                        <label htmlFor="calc-lead-name" className="text-[10.5px] font-bold text-slate-500 block">Full Name *</label>
                         <input
                           type="text"
                           id="calc-lead-name"
@@ -810,13 +937,13 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                           value={calcLeadName}
                           onChange={(e) => setCalcLeadName(e.target.value)}
                           placeholder="e.g. John Doe"
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-850 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                         />
                       </div>
  
                       {/* Email Address */}
                       <div className="space-y-1">
-                        <label htmlFor="calc-lead-email" className="text-[10.5px] font-bold text-slate-650 block">Email Address *</label>
+                        <label htmlFor="calc-lead-email" className="text-[10.5px] font-bold text-slate-500 block">Email Address *</label>
                         <input
                           type="email"
                           id="calc-lead-email"
@@ -824,13 +951,13 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                           value={calcLeadEmail}
                           onChange={(e) => setCalcLeadEmail(e.target.value)}
                           placeholder="e.g. john@example.com.au"
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-850 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                         />
                       </div>
  
                       {/* Phone Number */}
                       <div className="space-y-1">
-                        <label htmlFor="calc-lead-phone" className="text-[10.5px] font-bold text-slate-650 block">Phone Number *</label>
+                        <label htmlFor="calc-lead-phone" className="text-[10.5px] font-bold text-slate-500 block">Phone Number *</label>
                         <input
                           type="tel"
                           id="calc-lead-phone"
@@ -838,20 +965,20 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                           value={calcLeadPhone}
                           onChange={(e) => setCalcLeadPhone(e.target.value)}
                           placeholder="e.g. 0400 123 456"
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-850 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                         />
                       </div>
  
                       {/* Property Address */}
                       <div className="space-y-1">
-                        <label htmlFor="calc-lead-address" className="text-[10.5px] font-bold text-slate-650 block">Property Address (Optional)</label>
+                        <label htmlFor="calc-lead-address" className="text-[10.5px] font-bold text-slate-500 block">Property Address (Optional)</label>
                         <input
                           type="text"
                           id="calc-lead-address"
                           value={calcLeadAddress}
                           onChange={(e) => setCalcLeadAddress(e.target.value)}
                           placeholder="e.g. 123 Main St, Sydney NSW"
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-850 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                         />
                       </div>
  
@@ -934,9 +1061,8 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                           </p>
                         </div>
                       )}
- 
-                      {/* SVG Amortization Curves */}
-                      <div className="border border-slate-200/80 rounded-xl p-2.5 space-y-1 bg-slate-50/50">
+                       {/* SVG Amortization Curves */}
+                      <div className="border border-slate-200/80 rounded-xl p-3 space-y-1.5 bg-slate-50/50 relative">
                         <div className="flex justify-between items-center text-[9px] font-bold">
                           <span className="text-slate-700">Remaining Balance Curves</span>
                           <div className="flex gap-2">
@@ -944,39 +1070,158 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                             <span className="text-blue-600 font-extrabold">● With Extra</span>
                           </div>
                         </div>
-                        <div className="w-full">
-                          <svg viewBox={`0 0 ${chartPaths.width} ${chartPaths.height}`} className="w-full h-auto overflow-visible select-none">
-                            {[0, 0.5, 1].map((ratio) => {
-                              const y = chartPaths.pad + ratio * (chartPaths.height - chartPaths.pad * 2);
+                        <div className="w-full relative">
+                          <svg 
+                            width={chartPaths.width}
+                            height={chartPaths.height}
+                            viewBox={`0 0 ${chartPaths.width} ${chartPaths.height}`} 
+                            className="w-full h-auto overflow-visible select-none cursor-crosshair"
+                            onMouseMove={handleMouseMove}
+                            onMouseLeave={handleMouseLeave}
+                          >
+                            <defs>
+                              <linearGradient id="schGrad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="#94A3B8" stopOpacity="0.15" />
+                                <stop offset="100%" stopColor="#94A3B8" stopOpacity="0.0" />
+                              </linearGradient>
+                              <linearGradient id="extGrad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="#2563EB" stopOpacity="0.2" />
+                                <stop offset="100%" stopColor="#2563EB" stopOpacity="0.0" />
+                              </linearGradient>
+                            </defs>
+                            
+                            {/* Grid Y lines */}
+                            {[0, 0.25, 0.5, 0.75, 1].map((ratio) => {
+                              const y = chartPaths.padTop + ratio * (chartPaths.height - chartPaths.padTop - chartPaths.padBottom);
                               const val = (1 - ratio) * loanAmount;
                               return (
-                                <g key={ratio} className="opacity-15">
-                                  <line x1={chartPaths.pad} y1={y} x2={chartPaths.width - chartPaths.pad} y2={y} stroke="#000" strokeWidth="0.8" strokeDasharray="3,3" />
-                                  <text x={chartPaths.pad - 6} y={y + 3} textAnchor="end" className="fill-slate-500 font-bold text-[8px]">${Math.round(val / 1000)}k</text>
+                                <g key={ratio} className="opacity-20">
+                                  <line 
+                                    x1={chartPaths.padLeft} 
+                                    y1={y} 
+                                    x2={chartPaths.width - chartPaths.padRight} 
+                                    y2={y} 
+                                    stroke="#64748B" 
+                                    strokeWidth="0.5" 
+                                    strokeDasharray="3,3" 
+                                  />
+                                  <text 
+                                    x={chartPaths.padLeft - 8} 
+                                    y={y + 3} 
+                                    textAnchor="end" 
+                                    className="fill-slate-550 font-bold text-[8px]"
+                                  >
+                                    ${Math.round(val / 1000)}k
+                                  </text>
                                 </g>
                               );
                             })}
-                            {[0, 15, 30].map((yr) => {
+                            
+                            {/* X-axis labels */}
+                            {Array.from({ length: Math.ceil(loanTerm / 5) + 1 }).map((_, idx) => {
+                              const yr = idx * 5;
                               if (yr > loanTerm) return null;
-                              const idx = Math.round((yr / loanTerm) * (chartPaths.count - 1));
+                              const valIdx = Math.round((yr / loanTerm) * (chartPaths.count - 1));
                               return (
-                                <text key={yr} x={chartPaths.getX(idx)} y={chartPaths.height - 8} textAnchor="middle" className="fill-slate-400 font-bold text-[8px]">Year {yr}</text>
+                                <text 
+                                  key={yr} 
+                                  x={chartPaths.getX(valIdx)} 
+                                  y={chartPaths.height - 10} 
+                                  textAnchor="middle" 
+                                  className="fill-slate-400 font-bold text-[8px]"
+                                >
+                                  Yr {yr}
+                                </text>
                               );
                             })}
+                            
+                            {/* Gradients */}
+                            <path d={chartPaths.schAreaPath} fill="url(#schGrad)" />
+                            <path d={chartPaths.extAreaPath} fill="url(#extGrad)" />
+                            
+                            {/* Line paths */}
                             <path d={chartPaths.schPath} fill="none" stroke="#CBD5E1" strokeWidth="2" strokeLinecap="round" />
                             <path d={chartPaths.extPath} fill="none" stroke="#2563EB" strokeWidth="2.5" strokeLinecap="round" />
+                            
+                            {/* Hover highlights */}
+                            {hoveredYear !== null && results && (
+                              <g>
+                                <line 
+                                  x1={chartPaths.getX(hoveredYear)} 
+                                  y1={chartPaths.padTop} 
+                                  x2={chartPaths.getX(hoveredYear)} 
+                                  y2={chartPaths.height - chartPaths.padBottom} 
+                                  stroke="#64748B" 
+                                  strokeWidth="1" 
+                                  strokeDasharray="4,4" 
+                                />
+                                <circle 
+                                  cx={chartPaths.getX(hoveredYear)} 
+                                  cy={chartPaths.getY(results.scheduled.balanceHistory[hoveredYear])} 
+                                  r="5" 
+                                  fill="#94A3B8" 
+                                  stroke="#FFF" 
+                                  strokeWidth="1.5" 
+                                />
+                                <circle 
+                                  cx={chartPaths.getX(hoveredYear)} 
+                                  cy={chartPaths.getY(results.extra.balanceHistory[hoveredYear])} 
+                                  r="6" 
+                                  fill="#2563EB" 
+                                  stroke="#FFF" 
+                                  strokeWidth="2" 
+                                />
+                              </g>
+                            )}
                           </svg>
+                          
+                          {/* Hover Tooltip Div */}
+                          {hoveredYear !== null && results && (
+                            <div 
+                              className="absolute bg-slate-900/95 backdrop-blur-sm text-white p-2.5 rounded-xl border border-slate-700/50 shadow-xl text-left pointer-events-none transition-all duration-75 z-10 space-y-1 w-[160px]"
+                              style={{
+                                left: `${Math.min(
+                                  Math.max(
+                                    10,
+                                    (chartPaths.getX(hoveredYear) / chartPaths.width) * 100
+                                  ),
+                                  90
+                                )}%`,
+                                top: "15px",
+                                transform: "translateX(-50%)",
+                              }}
+                            >
+                              <div className="text-[9px] font-black text-slate-400 uppercase tracking-wider">Year {hoveredYear} Balance</div>
+                              <div className="text-[10px] font-bold flex justify-between">
+                                <span className="text-slate-300">Scheduled:</span>
+                                <span className="font-extrabold text-slate-100">${Math.round(results.scheduled.balanceHistory[hoveredYear]).toLocaleString()}</span>
+                              </div>
+                              {(lumpSum > 0 || extraPayment > 0) && (
+                                <div className="text-[10px] font-bold flex justify-between">
+                                  <span className="text-blue-300">With Extra:</span>
+                                  <span className="font-extrabold text-blue-400">${Math.round(results.extra.balanceHistory[hoveredYear]).toLocaleString()}</span>
+                                </div>
+                              )}
+                              {(lumpSum > 0 || extraPayment > 0) && results.scheduled.balanceHistory[hoveredYear] > results.extra.balanceHistory[hoveredYear] && (
+                                <div className="text-[9px] font-bold text-emerald-400 border-t border-slate-800 pt-1 mt-1 flex justify-between">
+                                  <span>Saved:</span>
+                                  <span>${Math.round(results.scheduled.balanceHistory[hoveredYear] - results.extra.balanceHistory[hoveredYear]).toLocaleString()}</span>
+                                </div>
+                              )}
+                            </div>
+                          )}
                         </div>
                       </div>
- 
+
                       {/* Actions */}
                       <div className="flex items-center justify-between gap-3 pt-2.5 border-t border-slate-100">
                         <button
                           type="button"
-                          onClick={() => window.print()}
-                          className="inline-flex items-center gap-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[11px] py-2 px-3 rounded-lg cursor-pointer"
+                          disabled={isGeneratingPdf}
+                          onClick={downloadReportPDF}
+                          className="inline-flex items-center gap-1.5 bg-blue-50 hover:bg-blue-100 text-blue-600 font-bold text-[11px] py-2 px-3.5 rounded-lg cursor-pointer transition-colors disabled:opacity-50"
                         >
-                          <Download className="w-3.5 h-3.5" /> PDF
+                          <Download className="w-3.5 h-3.5" /> {isGeneratingPdf ? "Generating..." : "PDF Report"}
                         </button>
                         <button
                           type="button"
@@ -987,7 +1232,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                         </button>
                         <Link
                           href="#enquiry-form"
-                          className="bg-blue-650 hover:bg-blue-700 text-white font-bold text-[11px] py-2 px-4.5 rounded-lg text-center"
+                          className="bg-blue-650 hover:bg-blue-700 text-white font-bold text-[11px] py-2 px-4.5 rounded-lg text-center font-montserrat"
                         >
                           Talk Broker
                         </Link>
@@ -1043,107 +1288,165 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
             </div>
 
           </div>
-        </div>
-      </section>
-
-      {/* ── PRINT-ONLY RESULTS VIEW (Isolates calculator data specifically for print) ── */}
+          {/* ── PRINT-ONLY RESULTS VIEW (Isolates calculator data specifically for print) ── */}
       {results && (
-        <div id="printable-report-area" className="p-10 font-inter text-slate-800">
-          <div className="flex justify-between items-center border-b border-slate-350 pb-5 mb-8">
+        <div id="printable-report-area" className="p-8 font-inter text-slate-850 bg-white" style={{ width: "800px" }}>
+          {/* Header */}
+          <div className="flex justify-between items-center border-b-2 border-blue-600 pb-4 mb-6">
             <div>
-              <h1 className="text-3xl font-black text-[#0B1F3A] font-montserrat">Mortgage Xperts</h1>
-              <p className="text-xs text-slate-500 uppercase tracking-widest mt-1">Accredited Mortgage Brokerage Australia</p>
+              <h1 className="text-2xl font-black text-[#0B1F3A] tracking-tight font-montserrat">MORTGAGE XPERTS</h1>
+              <p className="text-[9px] text-slate-550 uppercase tracking-widest font-black">Nepali Mortgage Broker in Australia | Home Loan Specialists</p>
             </div>
             <div className="text-right">
-              <h2 className="text-[16px] font-bold text-slate-700 uppercase">Loan Repayment Report</h2>
-              <p className="text-xs text-slate-400 mt-1">Generated: {new Date().toLocaleDateString("en-AU")}</p>
+              <span className="inline-block bg-blue-600 text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-md mb-1">
+                Repayment Report
+              </span>
+              <p className="text-[10px] text-slate-400 font-bold">Generated: {new Date().toLocaleDateString("en-AU")}</p>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-8 mb-8">
-            {/* Input Details */}
-            <div className="border border-slate-200 rounded-2xl p-5 bg-slate-50/30">
-              <h3 className="text-sm font-extrabold text-[#0B1F3A] border-b border-slate-200 pb-2 mb-3">Input Parameters</h3>
-              <table className="w-full text-xs font-semibold text-slate-650">
+          {/* Key Metrics Dashboard */}
+          <div className="grid grid-cols-4 gap-4 mb-6">
+            <div className="border border-slate-200 rounded-xl p-3 bg-slate-50/50 text-center">
+              <span className="text-[9px] font-black uppercase text-slate-400 tracking-wider">Loan Amount</span>
+              <div className="text-sm font-black text-[#0B1F3A] mt-0.5">${loanAmount.toLocaleString()}</div>
+            </div>
+            <div className="border border-slate-200 rounded-xl p-3 bg-slate-50/50 text-center">
+              <span className="text-[9px] font-black uppercase text-slate-400 tracking-wider">Interest Rate</span>
+              <div className="text-sm font-black text-[#0B1F3A] mt-0.5">{interestRate}% p.a.</div>
+            </div>
+            <div className="border border-slate-200 rounded-xl p-3 bg-slate-50/50 text-center">
+              <span className="text-[9px] font-black uppercase text-slate-400 tracking-wider">Monthly Repayment</span>
+              <div className="text-sm font-black text-blue-600 mt-0.5">${Math.round(results.scheduled.monthlyRepayment).toLocaleString()}</div>
+            </div>
+            <div className="border border-slate-200 rounded-xl p-3 bg-emerald-50 border-emerald-100 text-center">
+              <span className="text-[9px] font-black uppercase text-emerald-600 tracking-wider">Interest Saved</span>
+              <div className="text-sm font-black text-emerald-700 mt-0.5">
+                ${(lumpSum > 0 || extraPayment > 0) ? Math.round(results.extra.interestSaved).toLocaleString() : "0"}
+              </div>
+            </div>
+          </div>
+
+          {/* Two-Column Grid: Details vs Graph */}
+          <div className="grid grid-cols-12 gap-6 mb-6 items-start">
+            {/* Input & Output Parameters Table */}
+            <div className="col-span-6 border border-slate-200 rounded-xl p-4 bg-slate-50/25">
+              <h3 className="text-xs font-black text-[#0B1F3A] border-b border-slate-200 pb-1.5 mb-3 font-montserrat uppercase tracking-wider">Scenario Parameters</h3>
+              <table className="w-full text-[11px] font-bold text-slate-650">
                 <tbody className="divide-y divide-slate-100">
-                  <tr>
-                    <td className="py-2">Loan Amount:</td>
-                    <td className="py-2 text-right text-slate-800 font-extrabold">${loanAmount.toLocaleString()}</td>
+                  <tr className="py-2 flex justify-between">
+                    <td>Loan Term:</td>
+                    <td className="text-[#0B1F3A] font-black">{loanTerm} Years</td>
                   </tr>
-                  <tr>
-                    <td className="py-2">Interest Rate:</td>
-                    <td className="py-2 text-right text-slate-800 font-extrabold">{interestRate}% p.a.</td>
+                  <tr className="py-2 flex justify-between">
+                    <td>Payment Frequency:</td>
+                    <td className="text-[#0B1F3A] font-black">Monthly</td>
                   </tr>
-                  <tr>
-                    <td className="py-2">Loan Term:</td>
-                    <td className="py-2 text-right text-slate-800 font-extrabold">{loanTerm} Years</td>
+                  <tr className="py-2 flex justify-between">
+                    <td>Lump Sum Payment:</td>
+                    <td className="text-[#0B1F3A] font-black">${lumpSum.toLocaleString()}</td>
                   </tr>
-                  <tr>
-                    <td className="py-2">Lump Sum Payment:</td>
-                    <td className="py-2 text-right text-slate-800 font-extrabold">${lumpSum.toLocaleString()}</td>
+                  <tr className="py-2 flex justify-between">
+                    <td>Extra Payments:</td>
+                    <td className="text-[#0B1F3A] font-black">${extraPayment.toLocaleString()} ({extraFrequency})</td>
                   </tr>
-                  <tr>
-                    <td className="py-2">Extra Payments:</td>
-                    <td className="py-2 text-right text-slate-800 font-extrabold">${extraPayment.toLocaleString()} ({extraFrequency})</td>
+                  <tr className="py-2 flex justify-between">
+                    <td>Weekly Repayment:</td>
+                    <td className="text-[#0B1F3A] font-black">${Math.round(results.scheduled.weeklyRepayment).toLocaleString()}</td>
                   </tr>
-                  <tr>
-                    <td className="py-2">Fees (Annual / Monthly):</td>
-                    <td className="py-2 text-right text-slate-800 font-extrabold">${annualFee} / ${monthlyFee}</td>
+                  <tr className="py-2 flex justify-between">
+                    <td>Fortnightly Repayment:</td>
+                    <td className="text-[#0B1F3A] font-black">${Math.round(results.scheduled.fortnightlyRepayment).toLocaleString()}</td>
+                  </tr>
+                  <tr className="py-2 flex justify-between">
+                    <td>Interest Only Repayment:</td>
+                    <td className="text-[#0B1F3A] font-black">${Math.round(results.scheduled.interestOnlyRepayment).toLocaleString()}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
 
-            {/* Repayment Outputs */}
-            <div className="border border-slate-200 rounded-2xl p-5 bg-slate-50/30">
-              <h3 className="text-sm font-extrabold text-[#0B1F3A] border-b border-slate-200 pb-2 mb-3">Repayment Summary</h3>
-              <table className="w-full text-xs font-semibold text-slate-650">
-                <tbody className="divide-y divide-slate-100">
-                  <tr>
-                    <td className="py-2">Estimated Weekly Repayment:</td>
-                    <td className="py-2 text-right text-slate-800 font-extrabold">${Math.round(results.scheduled.weeklyRepayment).toLocaleString()}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-2">Estimated Fortnightly Repayment:</td>
-                    <td className="py-2 text-right text-slate-800 font-extrabold">${Math.round(results.scheduled.fortnightlyRepayment).toLocaleString()}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-2">Estimated Monthly Repayment:</td>
-                    <td className="py-2 text-right text-blue-600 font-extrabold">${Math.round(results.scheduled.monthlyRepayment).toLocaleString()}</td>
-                  </tr>
-                  <tr>
-                    <td className="py-2">Interest Only Repayment:</td>
-                    <td className="py-2 text-right text-slate-800 font-extrabold">${Math.round(results.scheduled.interestOnlyRepayment).toLocaleString()}</td>
-                  </tr>
-                </tbody>
-              </table>
+            {/* Static PDF Graph */}
+            <div className="col-span-6 border border-slate-200 rounded-xl p-4 bg-slate-50/25 text-center">
+              <h3 className="text-xs font-black text-[#0B1F3A] border-b border-slate-200 pb-1.5 mb-2.5 font-montserrat uppercase tracking-wider">Amortization Projection</h3>
+              <div className="w-full flex justify-center">
+                <svg 
+                  width="330" 
+                  height="160" 
+                  viewBox={`0 0 ${chartPaths.width} ${chartPaths.height}`} 
+                  className="overflow-visible select-none"
+                >
+                  <defs>
+                    <linearGradient id="pdfSchGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#94A3B8" stopOpacity="0.15" />
+                      <stop offset="100%" stopColor="#94A3B8" stopOpacity="0.0" />
+                    </linearGradient>
+                    <linearGradient id="pdfExtGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#2563EB" stopOpacity="0.2" />
+                      <stop offset="100%" stopColor="#2563EB" stopOpacity="0.0" />
+                    </linearGradient>
+                  </defs>
+                  
+                  {/* Grid lines */}
+                  {[0, 0.5, 1].map((ratio) => {
+                    const y = chartPaths.padTop + ratio * (chartPaths.height - chartPaths.padTop - chartPaths.padBottom);
+                    const val = (1 - ratio) * loanAmount;
+                    return (
+                      <g key={ratio} className="opacity-25">
+                        <line x1={chartPaths.padLeft} y1={y} x2={chartPaths.width - chartPaths.padRight} y2={y} stroke="#64748B" strokeWidth="0.8" strokeDasharray="3,3" />
+                        <text x={chartPaths.padLeft - 8} y={y + 3} textAnchor="end" className="fill-slate-550 font-bold text-[10px]">${Math.round(val / 1000)}k</text>
+                      </g>
+                    );
+                  })}
+                  {/* X labels */}
+                  {[0, 15, 30].map((yr) => {
+                    if (yr > loanTerm) return null;
+                    const valIdx = Math.round((yr / loanTerm) * (chartPaths.count - 1));
+                    return (
+                      <text key={yr} x={chartPaths.getX(valIdx)} y={chartPaths.height - 8} textAnchor="middle" className="fill-slate-400 font-bold text-[9px]">Yr {yr}</text>
+                    );
+                  })}
+                  
+                  {/* Gradients */}
+                  <path d={chartPaths.schAreaPath} fill="url(#pdfSchGrad)" />
+                  <path d={chartPaths.extAreaPath} fill="url(#pdfExtGrad)" />
+                  
+                  {/* Line paths */}
+                  <path d={chartPaths.schPath} fill="none" stroke="#CBD5E1" strokeWidth="2.5" />
+                  <path d={chartPaths.extPath} fill="none" stroke="#2563EB" strokeWidth="3" />
+                </svg>
+              </div>
+              <div className="flex justify-center gap-4 text-[9px] font-black text-slate-500 mt-2">
+                <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 bg-slate-350 rounded-full inline-block"></span> Scheduled Repayments</span>
+                <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 bg-blue-600 rounded-full inline-block"></span> With Extra Repayments</span>
+              </div>
             </div>
           </div>
 
           {/* Comparison Table */}
-          <div className="border border-slate-200 rounded-2xl overflow-hidden mb-8">
-            <table className="w-full border-collapse text-left text-xs">
+          <div className="border border-slate-200 rounded-xl overflow-hidden mb-6">
+            <table className="w-full border-collapse text-left text-[11px]">
               <thead>
-                <tr className="bg-slate-100 border-b border-slate-200 text-[#0B1F3A] font-bold">
-                  <th className="p-3">Scenario</th>
-                  <th className="p-3 text-right">Total Interest Payable</th>
+                <tr className="bg-slate-100 border-b border-slate-200 text-[#0B1F3A] font-bold font-montserrat uppercase tracking-wider">
+                  <th className="p-3">Calculation Scenario</th>
                   <th className="p-3 text-right">Total Payments</th>
+                  <th className="p-3 text-right">Total Interest Paid</th>
                   <th className="p-3 text-right">Actual Term</th>
-                  <th className="p-3 text-right">Savings</th>
+                  <th className="p-3 text-right text-emerald-700">Total Savings</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 text-slate-600 font-semibold">
+              <tbody className="divide-y divide-slate-200 text-slate-650 font-semibold">
                 <tr>
-                  <td className="p-3 font-extrabold text-[#0B1F3A]">Scheduled Repayment</td>
-                  <td className="p-3 text-right">${Math.round(results.scheduled.totalInterest).toLocaleString()}</td>
+                  <td className="p-3 font-extrabold text-[#0B1F3A]">Standard Scheduled Repayments</td>
                   <td className="p-3 text-right">${Math.round(results.scheduled.totalPayments).toLocaleString()}</td>
+                  <td className="p-3 text-right">${Math.round(results.scheduled.totalInterest).toLocaleString()}</td>
                   <td className="p-3 text-right">{results.scheduled.years} Years</td>
                   <td className="p-3 text-right text-slate-400">-</td>
                 </tr>
                 <tr className="bg-blue-50/10">
-                  <td className="p-3 font-extrabold text-[#2563EB]">With Extra Repayments</td>
-                  <td className="p-3 text-right">${Math.round(results.extra.totalInterest).toLocaleString()}</td>
+                  <td className="p-3 font-extrabold text-blue-600">With Extra & Lump Sums</td>
                   <td className="p-3 text-right">${Math.round(results.extra.totalPayments).toLocaleString()}</td>
+                  <td className="p-3 text-right">${Math.round(results.extra.totalInterest).toLocaleString()}</td>
                   <td className="p-3 text-right">{(results.extra.years).toFixed(1)} Years</td>
                   <td className="p-3 text-right text-emerald-600 font-extrabold">
                     ${Math.round(results.extra.interestSaved).toLocaleString()}
@@ -1153,22 +1456,39 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
             </table>
           </div>
 
-          {/* Savings statement */}
+          {/* Strategy Summary Statement */}
           {(lumpSum > 0 || extraPayment > 0) && (
-            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-8">
-              <p className="text-xs text-emerald-900 leading-relaxed font-bold">
-                * Note: Under the custom Extra Repayments schedule, you will pay off your loan{" "}
-                <span className="text-emerald-950 underline font-black">{results.extra.yearsSaved} years {results.extra.monthsSaved > 0 && `and ${results.extra.monthsSaved} months`} sooner</span>{" "}
-                and save a total of <span className="text-emerald-950 underline font-black">${Math.round(results.extra.interestSaved).toLocaleString()}</span> in interest charges.
+            <div className="bg-emerald-50 border border-emerald-250 rounded-xl p-3.5 mb-6">
+              <h4 className="text-[11px] font-black text-emerald-800 uppercase tracking-wider mb-0.5">Strategy Outcome</h4>
+              <p className="text-[11px] text-emerald-900 leading-normal font-bold">
+                By making a lump sum of <span className="font-extrabold">${lumpSum.toLocaleString()}</span> and ongoing extra contributions of <span className="font-extrabold">${extraPayment.toLocaleString()} per {extraFrequency.toLowerCase().replace("ly", "")}</span>, you will pay off your mortgage <span className="text-emerald-950 underline font-black">{results.extra.yearsSaved} years {results.extra.monthsSaved > 0 && `and ${results.extra.monthsSaved} months`} sooner</span> and save <span className="text-emerald-950 underline font-black">${Math.round(results.extra.interestSaved).toLocaleString()}</span> in total interest expense.
               </p>
             </div>
           )}
 
-          <div className="border-t border-slate-200 pt-5 text-center text-[10px] text-slate-450 font-medium">
-            Disclaimer: This report is a general illustration only. Final lending parameters depend on individual assessment. Mortgage Xperts suggests consulting with our qualified mortgage brokers.
+          {/* Contact Details & Signature Banner */}
+          <div className="border border-slate-200 rounded-xl p-4 bg-slate-50/10 grid grid-cols-2 gap-4 items-center mb-6">
+            <div>
+              <h4 className="text-[11px] font-black text-[#0B1F3A] uppercase tracking-wider">Ready to review your home loan options?</h4>
+              <p className="text-[9.5px] text-slate-550 leading-relaxed mt-0.5 font-bold">
+                Our mortgage brokerage offers 100% free and zero-obligation consultations to compare interest rates across 30+ lenders in Australia.
+              </p>
+            </div>
+            <div className="text-[10px] text-slate-700 font-bold border-l border-slate-200 pl-4 space-y-1">
+              <div><strong className="text-[#0B1F3A]">Mortgage Xperts Team</strong></div>
+              <div>Web: <span className="text-blue-600">www.mortgagexperts.com.au</span></div>
+              <div>Nepal-Australia Home Loan Specialists</div>
+            </div>
+          </div>
+
+          {/* Disclaimer */}
+          <div className="border-t border-slate-200 pt-4 text-center text-[8.5px] text-slate-400 leading-normal font-medium font-bold">
+            Disclaimer: This report is a general illustration based on standard compound interest calculations and input variables. Actual repayment amounts, fees, and parameters will vary depending on your specific loan product, interest rate changes, and individual financial eligibility. Mortgage Xperts suggests consulting with our qualified brokers before acting on this information.
           </div>
         </div>
       )}
+        </div>
+      </section>
 
       {/* ROADMAP / GUIDE DOWNLOAD SECTION (py-5 lg:py-10 viewport-fitting logic) */}
       <section className="py-5 lg:py-10 bg-white border-b border-slate-100 relative">
@@ -1272,7 +1592,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                 FAQ Helpdesk
               </span>
               <h2 className="text-[#0B1F3A] text-[24px] sm:text-[30px] font-black leading-tight mt-3 mb-2 font-montserrat">
-                Frequently Asked Questions
+                Frequently Asked <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500">Questions</span>
               </h2>
               <p className="text-slate-500 text-[13px] leading-relaxed">
                 Here are the answers to the most common queries regarding deposit guidelines, Lenders Mortgage Insurance, and co-borrowing in Australia.
@@ -1335,7 +1655,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                 Get In Touch
               </span>
               <h2 className="text-[#0B1F3A] text-[24px] sm:text-[30px] font-black leading-tight font-montserrat">
-                Ready to take the <span className="text-blue-600">next step?</span>
+                Ready to take the <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500">next step?</span>
               </h2>
               <p className="text-slate-550 text-[13px] sm:text-[13.5px] leading-relaxed">
                 Connect with our expert team today to explore your borrowing power, look at personalized interest rates, and secure formal loan approvals.
@@ -1456,32 +1776,11 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
         </div>
       </section>
 
-      {/* TESTIMONIALS SLIDER SECTION */}
-      <section className="py-8 lg:py-12 bg-slate-50 overflow-hidden border-y border-slate-100">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 mb-8 text-center flex flex-col items-center">
-          <span className="text-[10px] font-black uppercase tracking-widest text-blue-650 bg-blue-50 border border-blue-100 px-3.5 py-1 rounded-full mb-3">
-            Recognised for Excellence
-          </span>
-          <h2 className="text-[#0B1F3A] text-[24px] sm:text-[30px] font-black leading-tight mb-2 font-montserrat">
-            Chosen by Homeowners Like You
-          </h2>
-          <p className="text-slate-500 text-[13px] sm:text-[13.5px] max-w-2xl mx-auto leading-relaxed">
-            See what our clients across Australia say about their mortgage experience with Aakash and the Mortgage Xperts team.
-          </p>
-        </div>
-
-        {/* Marquee Row 1 */}
-        <div
-          className="flex overflow-hidden relative"
-          style={{ WebkitMaskImage: "linear-gradient(to right, transparent, black 12%, black 88%, transparent)" }}
-        >
-          <div className="flex w-max animate-marquee hover:pause">
-            {[...testimonials, ...testimonials].map((rev, i) => (
-              <GoogleReviewCard key={`r1-${i}`} {...rev} />
-            ))}
-          </div>
-        </div>
-      </section>
+      <TestimonialSection
+        badgeText="Google Reviews"
+        titleText={<>Loved By Hundreds of <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500">Happy Clients</span></>}
+        backgroundClass="bg-slate-50 border-y border-slate-100"
+      />
 
       {/* GET YOUR FREE PROPERTY REPORT CTA SECTION */}
       <section className="py-8 lg:py-12 bg-gradient-to-br from-slate-900 to-[#071324] text-white relative overflow-hidden">

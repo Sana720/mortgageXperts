@@ -213,13 +213,14 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
                   <h4 className="text-[13px] font-extrabold text-white">Calculators &amp; Tools</h4>
                 </div>
                 <div className="flex flex-col gap-2.5">
-                  <FooterNavLink href="#">Borrowing Power</FooterNavLink>
-                  <FooterNavLink href="#">Repayment</FooterNavLink>
-                  <FooterNavLink href="#">Stamp Duty</FooterNavLink>
-                  <FooterNavLink href="#">Loan Comparison</FooterNavLink>
-                  <FooterNavLink href="#">Refinance</FooterNavLink>
+                  <FooterNavLink href="/borrowing-power-calculator">Borrowing Power</FooterNavLink>
+                  <FooterNavLink href="/loan-repayment-calculator">Repayment</FooterNavLink>
+                  <FooterNavLink href="/deposit-calculator">Deposit Calculator</FooterNavLink>
+                  <FooterNavLink href="/refinancing-feasibility">Refinancing Feasibility</FooterNavLink>
+                  <FooterNavLink href="/lmi-calculator">LMI Calculator</FooterNavLink>
+                  <FooterNavLink href="/loan-comparison-calculator">Loan Comparison</FooterNavLink>
                 </div>
-                <FooterColumnCta href="#">View all tools</FooterColumnCta>
+                <FooterColumnCta href="/loan-repayment-calculator">View all tools</FooterColumnCta>
               </div>
 
               <div>

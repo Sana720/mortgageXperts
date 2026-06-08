@@ -378,7 +378,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                 </a>
                 <a
                   href={btn2Link}
-                  className="inline-flex items-center justify-center gap-2 border-2 border-rose-650 text-rose-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-rose-650 hover:text-white text-center w-full sm:w-auto whitespace-nowrap"
+                  className="inline-flex items-center justify-center gap-2 border-2 border-rose-600 text-rose-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-rose-600 hover:text-white text-center w-full sm:w-auto whitespace-nowrap"
                 >
                   {btn2Text}
                 </a>
@@ -536,7 +536,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
               <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.1]" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
                 Getting a Home Loan When <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-pink-600">You’re Self-Employed</span>
               </h2>
-              <p className="text-slate-550 text-[14px] sm:text-[15px] leading-relaxed">
+              <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed">
                 Getting a home loan can be a bit different if you’re self-employed, but with the right preparation, it’s definitely possible to secure the finance you need. Understanding what lenders require and how they assess your income will help you approach the process confidently.
               </p>
               <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed">
@@ -601,7 +601,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <div className="inline-flex items-center gap-2 bg-rose-50 border border-rose-100 rounded-full px-4 py-2 mb-4">
-              <Sparkle className="w-3.5 h-3.5 text-rose-650" />
+              <Sparkle className="w-3.5 h-3.5 text-rose-600" />
               <span className="text-[10px] font-bold tracking-widest uppercase text-rose-700">Income Assessment</span>
             </div>
             <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-tight mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
@@ -635,7 +635,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   <step.icon className="w-5 h-5" />
                 </div>
                 <h3 className="text-[#0B1F3A] text-[16px] font-bold">{step.title}</h3>
-                <p className="text-slate-550 text-[13.5px] leading-relaxed">{step.desc}</p>
+                <p className="text-slate-500 text-[13.5px] leading-relaxed">{step.desc}</p>
               </div>
             ))}
           </div>
@@ -664,7 +664,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
               <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 space-y-3">
                 <div className="flex justify-between text-xs font-bold uppercase tracking-wider text-slate-500">
                   <span>Document Readiness</span>
-                  <span className={`font-black ${checklistProgress === 100 ? "text-rose-600 animate-pulse" : "text-slate-750"}`}>
+                  <span className={`font-black ${checklistProgress === 100 ? "text-rose-600 animate-pulse" : "text-slate-700"}`}>
                     {checklistProgress}% Complete
                   </span>
                 </div>
@@ -685,7 +685,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                     className={`flex items-center justify-between p-3.5 rounded-xl border text-left transition-all ${
                       item.checked
                         ? "bg-rose-50/50 border-[#E11D48]/30 text-slate-700 shadow-sm"
-                        : "bg-white border-slate-200 hover:border-slate-300 text-slate-655"
+                        : "bg-white border-slate-200 hover:border-slate-300 text-slate-500"
                     }`}
                   >
                     <span className="text-[13px] font-semibold pr-4 leading-tight">{item.label}</span>
@@ -715,7 +715,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                 </div>
                 <div>
                   <h4 className="text-[13.5px] font-bold text-[#0B1F3A]">Verification Confidence</h4>
-                  <p className="text-slate-550 text-[12px] leading-relaxed mt-1">
+                  <p className="text-slate-600 text-[12px] leading-relaxed mt-1">
                     Having your business accounts fully organized speeds up pre-approvals and ensures underwriters apply regular prime rates.
                   </p>
                 </div>
@@ -737,7 +737,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
             <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-tight mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
               Low-Doc vs Full-Doc Loans Explained
             </h2>
-            <p className="text-slate-550 text-[14.5px] sm:text-[15.5px] leading-relaxed">
+            <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed">
               We can help you decide which option is best for your situation.
             </p>
           </div>
@@ -1161,7 +1161,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   <span className={`inline-block text-[9.5px] font-black uppercase tracking-wider px-3 py-1 rounded-full mb-6 ${
                     tip.highlight
                       ? "bg-white/20 text-white backdrop-blur-sm border border-white/20"
-                      : "bg-slate-100 text-slate-655 border border-slate-200"
+                      : "bg-slate-100 text-slate-500 border border-slate-200"
                   }`}>
                     {tip.pill}
                   </span>
@@ -1190,7 +1190,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                 <span className="text-[10px] font-bold tracking-widest uppercase text-rose-700">FAQ Helpdesk</span>
               </div>
               <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.1] mb-4" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                Got Questions? <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-pink-650">We Have Answers</span>
+                Got Questions? <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-pink-600">We Have Answers</span>
               </h2>
               <p className="text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-sm">
                 Everything you need to know about the self-employed home loan process.
@@ -1271,7 +1271,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                     </div>
                   </button>
                   <div className={`transition-all duration-350 overflow-hidden ${openFaqIndex === idx ? "max-h-[300px] border-t border-slate-100" : "max-h-0"}`}>
-                    <p className="p-5 text-slate-550 text-[12.5px] sm:text-[13px] leading-relaxed bg-slate-50/30">
+                    <p className="p-5 text-slate-500 text-[12.5px] sm:text-[13px] leading-relaxed bg-slate-50/30">
                       {faq.a}
                     </p>
                   </div>
@@ -1334,7 +1334,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-slate-655" htmlFor="firstName">Name</label>
+                      <label className="text-xs font-bold text-slate-500" htmlFor="firstName">Name</label>
                       <input
                         type="text"
                         id="firstName"
@@ -1347,7 +1347,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-slate-655" htmlFor="lastName">Surname</label>
+                      <label className="text-xs font-bold text-slate-500" htmlFor="lastName">Surname</label>
                       <input
                         type="text"
                         id="lastName"
@@ -1363,7 +1363,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-slate-655" htmlFor="email">Email</label>
+                      <label className="text-xs font-bold text-slate-500" htmlFor="email">Email</label>
                       <input
                         type="email"
                         id="email"
@@ -1376,7 +1376,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-slate-655" htmlFor="phone">Phone</label>
+                      <label className="text-xs font-bold text-slate-500" htmlFor="phone">Phone</label>
                       <input
                         type="tel"
                         id="phone"
@@ -1424,7 +1424,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   <h3 className="text-[#0B1F3A] text-[20px] font-black" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
                     Enquiry Submitted Successfully!
                   </h3>
-                  <p className="text-slate-550 text-[13.5px] leading-relaxed max-w-sm mx-auto">
+                  <p className="text-slate-500 text-[13.5px] leading-relaxed max-w-sm mx-auto">
                     Thank you for contacting Mortgage Xperts. One of our specialist brokers will review your self-employed details and reach out within 24 hours.
                   </p>
                 </div>

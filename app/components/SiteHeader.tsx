@@ -90,19 +90,19 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
   ];
 
   const calculatorsMenu = [
-    { name: "Loan Repayment Calculator", href: "#" },
-    { name: "Borrowing Power Calculator", href: "#" },
+    { name: "Loan Repayment Calculator", href: "/loan-repayment-calculator" },
+    { name: "Borrowing Power Calculator", href: "/borrowing-power-calculator" },
     { 
       name: "Stamp Duty Calculator", 
       href: "#", 
       submenu: stampDutyStates 
     },
-    { name: "Refinancing Feasibility", href: "#" },
-    { name: "Extra Repayment Calculator", href: "#" },
-    { name: "Year-To-Date Calculator", href: "#" },
-    { name: "Deposit Calculator", href: "#" },
-    { name: "LMI Calculator", href: "#" },
-    { name: "Loan Comparison Calculator", href: "#" },
+    { name: "Refinancing Feasibility", href: "/refinancing-feasibility" },
+    { name: "Extra Repayment Calculator", href: "/extra-repayment-calculator" },
+    { name: "Year-To-Date Calculator", href: "/ytd-calculator" },
+    { name: "Deposit Calculator", href: "/deposit-calculator" },
+    { name: "LMI Calculator", href: "/lmi-calculator" },
+    { name: "Loan Comparison Calculator", href: "/loan-comparison-calculator" },
     { name: "Rent yield calculators", href: "#" },
     { name: "Equity Calculator", href: "#" },
     { name: "Cash Rate Change Calculator", href: "#" },
