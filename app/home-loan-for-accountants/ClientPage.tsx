@@ -336,7 +336,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
 
               <motion.div variants={premiumFadeUp} className="w-14 h-[3px] bg-violet-600 mb-5 rounded-full" />
 
-              <motion.p variants={premiumFadeUp} className="text-slate-555 text-[14.5px] sm:text-[15.5px] leading-relaxed mb-5 max-w-xl">
+              <motion.p variants={premiumFadeUp} className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed mb-5 max-w-xl">
                 {subtextText}
               </motion.p>
 
@@ -396,7 +396,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
                   className="bg-white/95 border border-slate-200/80 rounded-3xl p-5 shadow-[0_20px_40px_rgba(11,31,58,0.1)] flex flex-col gap-3.5 w-[200px]"
                 >
-                  <div className="w-10 h-10 rounded-full bg-violet-50 flex items-center justify-center text-violet-750 shadow-sm">
+                  <div className="w-10 h-10 rounded-full bg-violet-50 flex items-center justify-center text-violet-700 shadow-sm">
                     <ShieldCheck className="w-5.5 h-5.5 text-violet-600" />
                   </div>
                   <div className="flex flex-col gap-3">
@@ -505,7 +505,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                 <span className="text-violet-700 text-[10px] font-bold tracking-widest uppercase">Start Owning Sooner</span>
               </div>
               <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.1]" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                Home Loans for <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-650">Accountants &amp; Finance Experts</span>
+                Home Loans for <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-600">Accountants &amp; Finance Experts</span>
               </h2>
               <p className="text-slate-550 text-[14px] sm:text-[15px] leading-relaxed">
                 Accountants often have access to special home loan offers because lenders recognise their stable income, financial knowledge, and responsible money management. These benefits can include waived Lenders Mortgage Insurance (LMI), special interest rates, and flexible lending policies.
@@ -560,7 +560,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
           <div className="text-center max-w-3xl mx-auto mb-16">
             <div className="inline-flex items-center gap-2 bg-violet-50 border border-violet-100 rounded-full px-4 py-2 mb-4">
               <Sparkles className="w-3.5 h-3.5 text-violet-600" />
-              <span className="text-[10px] font-bold tracking-widest uppercase text-violet-750">Special Benefits</span>
+              <span className="text-[10px] font-bold tracking-widest uppercase text-violet-700">Special Benefits</span>
             </div>
             <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-tight mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
               Benefits of Home Loans <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-500">for Accountants</span>
@@ -627,8 +627,8 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <div className="inline-flex items-center gap-2 bg-white shadow-sm border border-violet-100 rounded-full px-4 py-2">
-                <Star className="w-3.5 h-3.5 text-violet-650 fill-violet-650" />
-                <span className="text-[10px] font-bold tracking-widest uppercase text-violet-755">Waiver Schemes</span>
+                <Star className="w-3.5 h-3.5 text-violet-600 fill-violet-600" />
+                <span className="text-[10px] font-bold tracking-widest uppercase text-violet-700">Waiver Schemes</span>
               </div>
               <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-tight mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
                 LMI Waivers &amp; Discounts <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-500">for Accountants</span>
@@ -692,7 +692,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                 </p>
                 <ul className="space-y-3 pt-2">
                   {["Fast digital file reviews", "Immediate 10% deposit matching", "Reduced compliance paperwork"].map((feat, idx) => (
-                    <li key={idx} className="flex gap-2.5 items-start text-[12.5px] text-slate-655">
+                    <li key={idx} className="flex gap-2.5 items-start text-[12.5px] text-slate-600">
                       <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                       <span>{feat}</span>
                     </li>
@@ -709,7 +709,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                     <h3 className="text-[#0B1F3A] text-[18px] sm:text-[20px] font-black" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
                       Self-Employed Accountants
                     </h3>
-                    <span className="inline-flex text-[10px] font-bold tracking-wide uppercase px-2 py-0.5 bg-violet-50 text-violet-750 border border-violet-100 rounded">
+                    <span className="inline-flex text-[10px] font-bold tracking-wide uppercase px-2 py-0.5 bg-violet-50 text-violet-700 border border-violet-100 rounded">
                       Partners &amp; Practice Owners
                     </span>
                   </div>
@@ -722,7 +722,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                 </p>
                 <ul className="space-y-3 pt-2">
                   {["1-Year financials accepted", "Flexible depreciation add-backs", "Business offset products"].map((feat, idx) => (
-                    <li key={idx} className="flex gap-2.5 items-start text-[12.5px] text-slate-655">
+                    <li key={idx} className="flex gap-2.5 items-start text-[12.5px] text-slate-600">
                       <CheckCircle2 className="w-4 h-4 text-violet-500 shrink-0 mt-0.5" />
                       <span>{feat}</span>
                     </li>
@@ -884,7 +884,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
             </div>
             <a
               href="#contact"
-              className="rounded-xl bg-violet-600 hover:bg-violet-750 text-white text-[13px] font-extrabold px-6 py-3 transition-colors shrink-0 whitespace-nowrap"
+              className="rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-[13px] font-extrabold px-6 py-3 transition-colors shrink-0 whitespace-nowrap"
             >
               Get Started
             </a>
@@ -901,7 +901,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
             <div>
               <div className="inline-flex items-center gap-2 bg-violet-50 border border-violet-100 rounded-full px-4 py-2 mb-6">
                 <Calculator className="w-3.5 h-3.5 text-violet-600" />
-                <span className="text-violet-750 text-[10px] font-bold tracking-widest uppercase">Specialist Modeler</span>
+                <span className="text-violet-700 text-[10px] font-bold tracking-widest uppercase">Specialist Modeler</span>
               </div>
               <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.1] mb-4" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
                 Accountants LMI &amp; Rate <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-500">Savings Estimator</span>
@@ -917,7 +917,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   </div>
                   <div>
                     <h4 className="text-[#0B1F3A] text-[14px] font-semibold leading-tight mb-1">CPA Professional LMI Waiver</h4>
-                    <p className="text-slate-555 text-[12.5px] leading-relaxed">Avoid paying expensive LMI up to 90% LVR if you meet registration criteria.</p>
+                    <p className="text-slate-500 text-[12.5px] leading-relaxed">Avoid paying expensive LMI up to 90% LVR if you meet registration criteria.</p>
                   </div>
                 </div>
 
@@ -929,7 +929,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   </div>
                   <div>
                     <h4 className="text-[#0B1F3A] text-[14px] font-semibold leading-tight mb-1">Exclusive Interest Rate Cuts</h4>
-                    <p className="text-slate-555 text-[12.5px] leading-relaxed">Save on rate discounts from lenders prioritizing low-risk financial workers.</p>
+                    <p className="text-slate-500 text-[12.5px] leading-relaxed">Save on rate discounts from lenders prioritizing low-risk financial workers.</p>
                   </div>
                 </div>
               </div>
@@ -1121,7 +1121,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                         <button
                           type="submit"
                           disabled={calcSubmitting}
-                          className="w-full inline-flex items-center justify-center gap-1 rounded-lg bg-gradient-to-r from-violet-600 to-indigo-500 hover:from-violet-700 hover:to-indigo-650 text-white font-bold text-[12px] py-2.5 transition-all cursor-pointer shadow-lg shadow-violet-500/10"
+                          className="w-full inline-flex items-center justify-center gap-1 rounded-lg bg-gradient-to-r from-violet-600 to-indigo-500 hover:from-violet-700 hover:to-indigo-600 text-white font-bold text-[12px] py-2.5 transition-all cursor-pointer shadow-lg shadow-violet-500/10"
                         >
                           {calcSubmitting ? "Submitting..." : "Get Detailed Lenders Report"}
                           <ArrowRight className="w-3.5 h-3.5" />
@@ -1194,7 +1194,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                 <div className="pt-2">
                   <a
                     href="#contact"
-                    className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-500 hover:from-violet-700 hover:to-indigo-650 text-white text-[13px] font-bold px-6 py-3 shadow-lg shadow-violet-500/10 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                    className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-500 hover:from-violet-700 hover:to-indigo-600 text-white text-[13px] font-bold px-6 py-3 shadow-lg shadow-violet-500/10 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
                   >
                     Consult a Specialist
                     <ArrowRight className="w-4 h-4" />
@@ -1262,8 +1262,8 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
             {/* Context */}
             <div className="space-y-6">
               <div className="inline-flex items-center gap-2 bg-white shadow-sm border border-violet-100 rounded-full px-4 py-2">
-                <Users className="w-3.5 h-3.5 text-violet-650" />
-                <span className="text-[10px] font-bold tracking-widest uppercase text-violet-755">Get in Touch</span>
+                <Users className="w-3.5 h-3.5 text-violet-600" />
+                <span className="text-[10px] font-bold tracking-widest uppercase text-violet-700">Get in Touch</span>
               </div>
               <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.1]" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
                 Enquire About <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-500">Accountant Home Loans</span>
@@ -1365,7 +1365,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   <button
                     type="submit"
                     disabled={submittingEnquiry}
-                    className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-500 hover:from-violet-700 hover:to-indigo-650 text-white font-extrabold text-[13.5px] py-3.5 transition-all shadow-lg shadow-violet-500/10 cursor-pointer"
+                    className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-500 hover:from-violet-700 hover:to-indigo-600 text-white font-extrabold text-[13.5px] py-3.5 transition-all shadow-lg shadow-violet-500/10 cursor-pointer"
                   >
                     {submittingEnquiry ? "Submitting..." : "Submit Enquiry"}
                     <ArrowRight className="w-4 h-4" />
@@ -1377,7 +1377,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
                   <h3 className="text-[#0B1F3A] text-[20px] font-black">Enquiry Submitted!</h3>
-                  <p className="text-slate-555 text-[13.5px] leading-relaxed max-w-sm mx-auto">
+                  <p className="text-slate-500 text-[13.5px] leading-relaxed max-w-sm mx-auto">
                     Thank you. We have received your query and a specialist broker will contact you shortly.
                   </p>
                 </div>
@@ -1421,7 +1421,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
             ].map((topic, idx) => (
               <div key={idx} className="bg-slate-50 hover:bg-slate-100/50 p-6 rounded-2xl border border-slate-200 transition-colors flex flex-col justify-between">
                 <div>
-                  <span className="text-[10px] text-violet-650 font-extrabold uppercase tracking-widest block mb-2">Home Loans For Accountant</span>
+                  <span className="text-[10px] text-violet-600 font-extrabold uppercase tracking-widest block mb-2">Home Loans For Accountant</span>
                   <h4 className="text-[#0B1F3A] font-bold text-[14px] leading-snug mb-2">{topic.title}</h4>
                   <p className="text-slate-500 text-xs leading-relaxed">{topic.desc}</p>
                 </div>

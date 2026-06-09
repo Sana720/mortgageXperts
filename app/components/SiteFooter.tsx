@@ -219,6 +219,10 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
                   <FooterNavLink href="/refinancing-feasibility">Refinancing Feasibility</FooterNavLink>
                   <FooterNavLink href="/lmi-calculator">LMI Calculator</FooterNavLink>
                   <FooterNavLink href="/loan-comparison-calculator">Loan Comparison</FooterNavLink>
+                  <FooterNavLink href="/rent-yield-calculators">Rent Yield Calculator</FooterNavLink>
+                  <FooterNavLink href="/equity-calculator">Equity Calculator</FooterNavLink>
+                  <FooterNavLink href="/stamp-duty-calculator">Stamp Duty Calculator</FooterNavLink>
+                  <FooterNavLink href="/cash-rate-change-calculator">Cash Rate Change</FooterNavLink>
                 </div>
                 <FooterColumnCta href="/loan-repayment-calculator">View all tools</FooterColumnCta>
               </div>

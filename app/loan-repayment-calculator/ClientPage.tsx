@@ -1030,7 +1030,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                         </div>
                         <div className="bg-slate-50/50 hover:bg-slate-50 border border-slate-100 hover:border-indigo-200 rounded-xl p-2.5 text-center transition-all duration-300">
                           <span className="text-[8.5px] font-black uppercase text-slate-400 tracking-wider">Interest Only</span>
-                          <div className="text-[14.5px] font-black text-indigo-650 mt-0.5">
+                          <div className="text-[14.5px] font-black text-indigo-600 mt-0.5">
                             ${Math.round(results.scheduled.interestOnlyRepayment).toLocaleString()}
                           </div>
                         </div>
@@ -1232,7 +1232,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                         </button>
                         <Link
                           href="#enquiry-form"
-                          className="bg-blue-650 hover:bg-blue-700 text-white font-bold text-[11px] py-2 px-4.5 rounded-lg text-center font-montserrat"
+                          className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] py-2 px-4.5 rounded-lg text-center font-montserrat"
                         >
                           Talk Broker
                         </Link>
@@ -1269,7 +1269,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                           onClick={() => {
                             setCurrentStep(3);
                           }}
-                          className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-blue-700 hover:to-indigo-650 text-white font-extrabold text-[13px] py-3 rounded-full flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-blue-500/10 transition-colors"
+                          className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-blue-700 hover:to-indigo-600 text-white font-extrabold text-[13px] py-3 rounded-full flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-blue-500/10 transition-colors"
                         >
                           Next: Suburb Report <ArrowRight className="w-4 h-4" />
                         </button>
@@ -1290,7 +1290,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
           </div>
           {/* ── PRINT-ONLY RESULTS VIEW (Isolates calculator data specifically for print) ── */}
       {results && (
-        <div id="printable-report-area" className="p-8 font-inter text-slate-850 bg-white" style={{ width: "800px" }}>
+        <div id="printable-report-area" className="p-8 font-inter text-slate-800 bg-white" style={{ width: "800px" }}>
           {/* Header */}
           <div className="flex justify-between items-center border-b-2 border-blue-600 pb-4 mb-6">
             <div>
@@ -1332,7 +1332,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
             {/* Input & Output Parameters Table */}
             <div className="col-span-6 border border-slate-200 rounded-xl p-4 bg-slate-50/25">
               <h3 className="text-xs font-black text-[#0B1F3A] border-b border-slate-200 pb-1.5 mb-3 font-montserrat uppercase tracking-wider">Scenario Parameters</h3>
-              <table className="w-full text-[11px] font-bold text-slate-650">
+              <table className="w-full text-[11px] font-bold text-slate-600">
                 <tbody className="divide-y divide-slate-100">
                   <tr className="py-2 flex justify-between">
                     <td>Loan Term:</td>
@@ -1435,7 +1435,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   <th className="p-3 text-right text-emerald-700">Total Savings</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200 text-slate-650 font-semibold">
+              <tbody className="divide-y divide-slate-200 text-slate-600 font-semibold">
                 <tr>
                   <td className="p-3 font-extrabold text-[#0B1F3A]">Standard Scheduled Repayments</td>
                   <td className="p-3 text-right">${Math.round(results.scheduled.totalPayments).toLocaleString()}</td>
@@ -1496,7 +1496,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             
             <div className="space-y-4">
-              <span className="text-[10px] font-black uppercase tracking-widest text-blue-650 bg-blue-50 border border-blue-100 px-3 py-1 rounded-full w-fit block">
+              <span className="text-[10px] font-black uppercase tracking-widest text-blue-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded-full w-fit block">
                 Guide Download
               </span>
               <h2 className="text-[#0B1F3A] text-[24px] sm:text-[30px] font-black leading-tight font-montserrat">
@@ -1572,7 +1572,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                     <CheckCircle2 className="w-6 h-6" />
                   </div>
                   <h3 className="text-[#0B1F3A] text-[18px] font-black">Thank you!</h3>
-                  <p className="text-slate-555 text-[12.5px] leading-relaxed max-w-sm mx-auto">
+                  <p className="text-slate-500 text-[12.5px] leading-relaxed max-w-sm mx-auto">
                     Your Loan Repayment Guide request was successful. Check your inbox shortly.
                   </p>
                 </div>
@@ -1588,7 +1588,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
           <div className="grid grid-cols-1 lg:grid-cols-[40%_60%] gap-8 items-start">
             <div>
-              <span className="text-[10px] font-black uppercase tracking-widest text-blue-650 bg-blue-50 border border-blue-100 px-3 py-1 rounded-full w-fit block">
+              <span className="text-[10px] font-black uppercase tracking-widest text-blue-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded-full w-fit block">
                 FAQ Helpdesk
               </span>
               <h2 className="text-[#0B1F3A] text-[24px] sm:text-[30px] font-black leading-tight mt-3 mb-2 font-montserrat">
@@ -1651,7 +1651,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             
             <div className="lg:col-span-5 space-y-4">
-              <span className="text-[10px] font-black uppercase tracking-widest text-blue-650 bg-blue-50 border border-blue-100 px-3 py-1 rounded-full w-fit block">
+              <span className="text-[10px] font-black uppercase tracking-widest text-blue-600 bg-blue-50 border border-blue-100 px-3 py-1 rounded-full w-fit block">
                 Get In Touch
               </span>
               <h2 className="text-[#0B1F3A] text-[24px] sm:text-[30px] font-black leading-tight font-montserrat">
@@ -1686,7 +1686,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                         value={formData.name}
                         onChange={handleInputChange}
                         placeholder="John"
-                        className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-455 focus:outline-none focus:border-blue-500 transition-all font-bold"
+                        className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all font-bold"
                       />
                     </div>
                     <div className="space-y-1">
@@ -1699,7 +1699,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                         value={formData.surname}
                         onChange={handleInputChange}
                         placeholder="Doe"
-                        className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-455 focus:outline-none focus:border-blue-500 transition-all font-bold"
+                        className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all font-bold"
                       />
                     </div>
                   </div>
@@ -1715,7 +1715,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                         value={formData.email}
                         onChange={handleInputChange}
                         placeholder="john.doe@example.com"
-                        className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-455 focus:outline-none focus:border-blue-500 transition-all font-bold"
+                        className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all font-bold"
                       />
                     </div>
                     <div className="space-y-1">
@@ -1728,7 +1728,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                         value={formData.phone}
                         onChange={handleInputChange}
                         placeholder="+61"
-                        className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-455 focus:outline-none focus:border-blue-500 transition-all font-bold"
+                        className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all font-bold"
                       />
                     </div>
                   </div>
@@ -1742,7 +1742,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                       value={formData.message}
                       onChange={handleInputChange}
                       placeholder="Type your query or question here..."
-                      className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-455 focus:outline-none focus:border-blue-500 transition-all resize-none font-bold"
+                      className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all resize-none font-bold"
                     />
                   </div>
 
@@ -1753,7 +1753,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   <button
                     type="submit"
                     disabled={submittingEnquiry}
-                    className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-blue-700 hover:to-indigo-650 text-white font-extrabold text-[13.5px] py-3 transition-all shadow-md shadow-blue-500/10 cursor-pointer"
+                    className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-blue-700 hover:to-indigo-600 text-white font-extrabold text-[13.5px] py-3 transition-all shadow-md shadow-blue-500/10 cursor-pointer"
                   >
                     {submittingEnquiry ? "Submitting..." : "Submit Enquiry"}
                     <ArrowRight className="w-4.5 h-4.5" />
@@ -1765,7 +1765,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                     <CheckCircle2 className="w-6 h-6" />
                   </div>
                   <h3 className="text-[#0B1F3A] text-[18px] font-black">Enquiry Submitted!</h3>
-                  <p className="text-slate-555 text-[12.5px] leading-relaxed max-w-sm mx-auto">
+                  <p className="text-slate-500 text-[12.5px] leading-relaxed max-w-sm mx-auto">
                     Thank you. We have received your query and a specialist broker will contact you shortly.
                   </p>
                 </div>
@@ -1914,7 +1914,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                     <CheckCircle2 className="w-7 h-7" />
                   </div>
                   <h3 className="text-[#0B1F3A] text-[18px] font-black">Request Received!</h3>
-                  <p className="text-slate-555 text-[12.5px] leading-relaxed max-w-sm mx-auto">
+                  <p className="text-slate-500 text-[12.5px] leading-relaxed max-w-sm mx-auto">
                     Thank you. We have received your property report request. A broker will compile the report and email it to you shortly.
                   </p>
                 </div>

@@ -523,7 +523,7 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
 
       <SiteHeader isSticky={true} settings={settings} />
 
-      <SubPageHero pageTitle="Loan Comparison Calculator" pageHeroSettings={pageHeroSettings || defaultHeroSettings} />
+      <SubPageHero pageTitle="Loan Comparison Calculator" themeColor="rose" pageHeroSettings={pageHeroSettings || defaultHeroSettings} />
 
       {/* CALCULATOR TOOL SECTION */}
       <section id="calculator-tool" className="py-8 lg:py-16 bg-gradient-to-br from-slate-50 via-white to-slate-50/50 relative border-b border-slate-100 min-h-[calc(100vh-80px)] flex flex-col justify-center overflow-hidden">

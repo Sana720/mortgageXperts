@@ -402,7 +402,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                 {/* Progress bar container */}
                 <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden mt-1 mb-4">
                   <div 
-                    className="h-full bg-gradient-to-r from-emerald-600 to-teal-555 transition-all duration-500 ease-out" 
+                    className="h-full bg-gradient-to-r from-emerald-600 to-teal-500 transition-all duration-500 ease-out" 
                     style={{ width: `${(currentStep / 4) * 100}%` }}
                   />
                 </div>
@@ -618,7 +618,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                             placeholder="Enter your name"
                             value={calcLeadName}
                             onChange={(e) => setCalcLeadName(e.target.value)}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-850 focus:outline-none focus:border-emerald-500"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-800 focus:outline-none focus:border-emerald-500"
                           />
                         </div>
 
@@ -632,7 +632,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                               placeholder="Enter email"
                               value={calcLeadEmail}
                               onChange={(e) => setCalcLeadEmail(e.target.value)}
-                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-850 focus:outline-none focus:border-emerald-500"
+                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-800 focus:outline-none focus:border-emerald-500"
                             />
                           </div>
 
@@ -645,7 +645,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                               placeholder="Phone"
                               value={calcLeadPhone}
                               onChange={(e) => setCalcLeadPhone(e.target.value)}
-                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-850 focus:outline-none focus:border-emerald-500"
+                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-800 focus:outline-none focus:border-emerald-500"
                             />
                           </div>
                         </div>
@@ -675,16 +675,16 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                       </div>
 
                       <div className="space-y-2.5">
-                        <div className="flex justify-between items-center text-[12px] py-1 border-b border-slate-50 font-bold text-slate-650">
+                        <div className="flex justify-between items-center text-[12px] py-1 border-b border-slate-50 font-bold text-slate-600">
                           <span>Total Monthly Income:</span>
-                          <span className="text-slate-850 font-black">${Math.round(results.totalMonthlyIncome).toLocaleString()}</span>
+                          <span className="text-slate-800 font-black">${Math.round(results.totalMonthlyIncome).toLocaleString()}</span>
                         </div>
-                        <div className="flex justify-between items-center text-[12px] py-1 border-b border-slate-50 font-bold text-slate-650">
+                        <div className="flex justify-between items-center text-[12px] py-1 border-b border-slate-50 font-bold text-slate-600">
                           <span>Adjusted Expenses & CC Commitments:</span>
-                          <span className="text-slate-850 font-black">${Math.round(results.totalMonthlyExpenses).toLocaleString()}</span>
+                          <span className="text-slate-800 font-black">${Math.round(results.totalMonthlyExpenses).toLocaleString()}</span>
                         </div>
-                        <div className="flex justify-between items-center text-[12px] py-1 font-bold text-slate-650">
-                          <span className="text-emerald-850 font-black">Assessable Monthly Surplus:</span>
+                        <div className="flex justify-between items-center text-[12px] py-1 font-bold text-slate-600">
+                          <span className="text-emerald-800 font-black">Assessable Monthly Surplus:</span>
                           <span className="text-emerald-700 font-extrabold">${Math.round(Math.max(0, results.netMonthly)).toLocaleString()}</span>
                         </div>
                       </div>
@@ -845,7 +845,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                   <button
                     type="submit"
                     disabled={guideSubmitting}
-                    className="w-full bg-emerald-600 hover:bg-emerald-750 text-white font-extrabold text-xs py-3 px-4 rounded-xl shadow-md transition-all active:scale-[0.98] cursor-pointer mt-2"
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs py-3 px-4 rounded-xl shadow-md transition-all active:scale-[0.98] cursor-pointer mt-2"
                   >
                     {guideSubmitting ? "Submitting..." : "Get the Guide"}
                   </button>
@@ -1029,7 +1029,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
       <SiteFooter settings={settings} />
 
       {/* PRINT-ONLY AREA */}
-      <div id="printable-report-area" className="p-8 font-inter text-slate-850 bg-white hidden" style={{ width: "800px" }}>
+      <div id="printable-report-area" className="p-8 font-inter text-slate-800 bg-white hidden" style={{ width: "800px" }}>
         {/* Header */}
         <div className="flex justify-between items-center border-b-2 border-emerald-600 pb-4 mb-6">
           <div>
@@ -1078,7 +1078,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
         <div className="grid grid-cols-12 gap-6 mb-6">
           <div className="col-span-12 border border-slate-200 rounded-xl p-4 bg-slate-50/25">
             <h3 className="text-xs font-black text-[#0B1F3A] border-b border-slate-200 pb-1.5 mb-3 font-montserrat uppercase tracking-wider">Assessment Parameters</h3>
-            <table className="w-full text-[11.5px] font-bold text-slate-650">
+            <table className="w-full text-[11.5px] font-bold text-slate-600">
               <tbody className="divide-y divide-slate-100">
                 <tr className="py-2.5 flex justify-between">
                   <td>Household Composition:</td>
@@ -1126,7 +1126,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                   <td className="text-[#0B1F3A] font-black">${Math.round(results.totalMonthlyExpenses).toLocaleString()}</td>
                 </tr>
                 <tr className="py-2.5 flex justify-between bg-emerald-50/20 px-1">
-                  <td className="text-emerald-850 font-black">Net Monthly Surplus (Capacity baseline):</td>
+                  <td className="text-emerald-800 font-black">Net Monthly Surplus (Capacity baseline):</td>
                   <td className="text-emerald-700 font-black">${Math.round(Math.max(0, results.netMonthly)).toLocaleString()}</td>
                 </tr>
               </tbody>

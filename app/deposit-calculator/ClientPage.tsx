@@ -343,7 +343,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                   transition={{ duration: 0.2 }}
                   className="flex gap-4 items-start p-4 bg-gradient-to-br from-emerald-50/50 to-teal-50/10 hover:from-emerald-50 hover:to-teal-50/30 border border-emerald-100/40 rounded-2xl shadow-sm transition-all"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-emerald-100/70 text-emerald-650 flex items-center justify-center shrink-0 border border-emerald-200/40 shadow-sm">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-100/70 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-200/40 shadow-sm">
                     <Coins className="w-5 h-5" />
                   </div>
                   <div>
@@ -373,7 +373,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                   transition={{ duration: 0.2 }}
                   className="flex gap-4 items-start p-4 bg-gradient-to-br from-[#FAF5FF] to-purple-50/10 hover:from-[#F3E8FF] hover:to-purple-50/30 border border-purple-100/40 rounded-2xl shadow-sm transition-all"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-purple-100/70 text-purple-650 flex items-center justify-center shrink-0 border border-purple-200/40 shadow-sm">
+                  <div className="w-10 h-10 rounded-xl bg-purple-100/70 text-purple-600 flex items-center justify-center shrink-0 border border-purple-200/40 shadow-sm">
                     <Landmark className="w-5 h-5" />
                   </div>
                   <div>
@@ -403,7 +403,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                 {currentStep === 1 && (
                   <div className="space-y-4 py-2">
                     <div className="space-y-2">
-                      <div className="flex justify-between items-center text-[11.5px] font-bold text-slate-755">
+                      <div className="flex justify-between items-center text-[11.5px] font-bold text-slate-700">
                         <label htmlFor="initial-deposit">Initial Deposit Amount ($)</label>
                         <span className="text-emerald-700 font-black text-[13.5px]">${initialDeposit.toLocaleString()}</span>
                       </div>
@@ -420,7 +420,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                     </div>
 
                     <div className="space-y-2">
-                      <div className="flex justify-between items-center text-[11.5px] font-bold text-slate-755">
+                      <div className="flex justify-between items-center text-[11.5px] font-bold text-slate-700">
                         <label htmlFor="regular-contribution">Regular Savings Amount ($)</label>
                         <span className="text-emerald-700 font-black text-[13.5px]">${regularContribution.toLocaleString()}</span>
                       </div>
@@ -437,7 +437,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                     </div>
 
                     <div className="space-y-2">
-                      <label htmlFor="frequency" className="text-[11.5px] font-bold text-slate-755">Savings Frequency</label>
+                      <label htmlFor="frequency" className="text-[11.5px] font-bold text-slate-700">Savings Frequency</label>
                       <select
                         id="frequency"
                         value={contributionFrequency}
@@ -457,7 +457,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                 {currentStep === 2 && (
                   <div className="space-y-4 py-2">
                     <div className="space-y-2">
-                      <div className="flex justify-between items-center text-[11.5px] font-bold text-slate-755">
+                      <div className="flex justify-between items-center text-[11.5px] font-bold text-slate-700">
                         <label htmlFor="interest-rate">Annual Interest Rate (%)</label>
                         <span className="text-emerald-700 font-black text-[13.5px]">{interestRate.toFixed(2)}%</span>
                       </div>
@@ -475,7 +475,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                     </div>
 
                     <div className="space-y-2">
-                      <div className="flex justify-between items-center text-[11.5px] font-bold text-slate-755">
+                      <div className="flex justify-between items-center text-[11.5px] font-bold text-slate-700">
                         <label htmlFor="savings-term">Savings Term (Years)</label>
                         <span className="text-emerald-700 font-black text-[13.5px]">{savingsTerm} Years</span>
                       </div>
@@ -573,7 +573,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                         </div>
                         <div className="flex justify-between py-1 text-xs font-semibold text-slate-600">
                           <span>Total Interest Earned:</span>
-                          <span className="text-[#0B1F3A] font-black text-emerald-650">${Math.round(results.totalInterest).toLocaleString()}</span>
+                          <span className="text-[#0B1F3A] font-black text-emerald-600">${Math.round(results.totalInterest).toLocaleString()}</span>
                         </div>
                       </div>
                     </div>
@@ -613,7 +613,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                           setCalcLeadEmail("");
                           setCalcLeadPhone("");
                         }}
-                        className="border border-emerald-600 text-emerald-750 bg-white hover:bg-emerald-50 font-bold text-xs py-3 px-4 rounded-xl transition-all cursor-pointer"
+                        className="border border-emerald-600 text-emerald-700 bg-white hover:bg-emerald-50 font-bold text-xs py-3 px-4 rounded-xl transition-all cursor-pointer"
                       >
                         Start Over
                       </button>
@@ -941,7 +941,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
         <div className="grid grid-cols-12 gap-6 mb-6">
           <div className="col-span-6 border border-slate-200 rounded-xl p-4 bg-slate-50/25">
             <h3 className="text-xs font-black text-[#0B1F3A] border-b border-slate-200 pb-1.5 mb-3 font-montserrat uppercase tracking-wider">Savings Parameters</h3>
-            <table className="w-full text-[11.5px] font-bold text-slate-650">
+            <table className="w-full text-[11.5px] font-bold text-slate-600">
               <tbody className="divide-y divide-slate-100">
                 <tr className="py-2 flex justify-between">
                   <td>Initial Deposit:</td>
@@ -965,7 +965,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
 
           <div className="col-span-6 border border-slate-200 rounded-xl p-4 bg-slate-50/25">
             <h3 className="text-xs font-black text-[#0B1F3A] border-b border-slate-200 pb-1.5 mb-3 font-montserrat uppercase tracking-wider">Growth Breakdown</h3>
-            <table className="w-full text-[11.5px] font-bold text-slate-650">
+            <table className="w-full text-[11.5px] font-bold text-slate-600">
               <tbody className="divide-y divide-slate-100">
                 <tr className="py-2 flex justify-between">
                   <td>Total Cash Contributions:</td>
@@ -973,7 +973,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                 </tr>
                 <tr className="py-2 flex justify-between">
                   <td>Total Interest Earned:</td>
-                  <td className="text-[#0B1F3A] text-emerald-650">${Math.round(results.totalInterest).toLocaleString()}</td>
+                  <td className="text-[#0B1F3A] text-emerald-600">${Math.round(results.totalInterest).toLocaleString()}</td>
                 </tr>
                 <tr className="py-2 flex justify-between">
                   <td>Ending Value:</td>

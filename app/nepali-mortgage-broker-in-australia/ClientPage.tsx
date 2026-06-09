@@ -2852,7 +2852,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                     {/* Deposit Recommendations */}
                     <div className="space-y-1.5">
                       <span className="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider block">Deposit Requirements</span>
-                      <div className="grid grid-cols-2 gap-3 text-[11px] bg-slate-50 border border-slate-200/60 rounded-xl p-3 text-slate-605 font-medium">
+                      <div className="grid grid-cols-2 gap-3 text-[11px] bg-slate-50 border border-slate-200/60 rounded-xl p-3 text-slate-600 font-medium">
                         <div>
                           <div className="text-[9px] font-semibold text-slate-400 uppercase">5% Scheme Deposit</div>
                           <strong className="text-slate-800 text-[12px] font-bold">${Math.round(borrowingCapacity * 0.05).toLocaleString()}</strong>

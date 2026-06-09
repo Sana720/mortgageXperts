@@ -79,14 +79,14 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
   ];
 
   const stampDutyStates = [
-    { name: "Stamp Duty in ACT", href: "#" },
-    { name: "Stamp Duty in NSW", href: "#" },
-    { name: "Stamp Duty in NT", href: "#" },
-    { name: "Stamp Duty in QLD", href: "#" },
-    { name: "Stamp Duty in SA", href: "#" },
-    { name: "Stamp Duty in TAS", href: "#" },
-    { name: "Stamp Duty in VIC", href: "#" },
-    { name: "Stamp Duty in WA", href: "#" },
+    { name: "Stamp Duty in ACT", href: "/stamp-duty-calculator" },
+    { name: "Stamp Duty in NSW", href: "/stamp-duty-calculator/stamp-duty-in-nsw" },
+    { name: "Stamp Duty in VIC", href: "/stamp-duty-calculator/stamp-duty-in-vic" },
+    { name: "Stamp Duty in QLD", href: "/stamp-duty-calculator/stamp-duty-in-qld" },
+    { name: "Stamp Duty in WA", href: "/stamp-duty-calculator/stamp-duty-in-wa" },
+    { name: "Stamp Duty in SA", href: "/stamp-duty-calculator/stamp-duty-in-sa" },
+    { name: "Stamp Duty in TAS", href: "/stamp-duty-calculator/stamp-duty-in-tas" },
+    { name: "Stamp Duty in NT", href: "/stamp-duty-calculator/stamp-duty-in-nt" },
   ];
 
   const calculatorsMenu = [
@@ -94,7 +94,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
     { name: "Borrowing Power Calculator", href: "/borrowing-power-calculator" },
     { 
       name: "Stamp Duty Calculator", 
-      href: "#", 
+      href: "/stamp-duty-calculator", 
       submenu: stampDutyStates 
     },
     { name: "Refinancing Feasibility", href: "/refinancing-feasibility" },
@@ -103,9 +103,9 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
     { name: "Deposit Calculator", href: "/deposit-calculator" },
     { name: "LMI Calculator", href: "/lmi-calculator" },
     { name: "Loan Comparison Calculator", href: "/loan-comparison-calculator" },
-    { name: "Rent yield calculators", href: "#" },
-    { name: "Equity Calculator", href: "#" },
-    { name: "Cash Rate Change Calculator", href: "#" },
+    { name: "Rent Yield Calculator", href: "/rent-yield-calculators" },
+    { name: "Equity Calculator", href: "/equity-calculator" },
+    { name: "Cash Rate Change Calculator", href: "/cash-rate-change-calculator" },
   ];
 
   return (

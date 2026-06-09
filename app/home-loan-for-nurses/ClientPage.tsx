@@ -357,7 +357,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
 
               <motion.div variants={premiumFadeUp} className="w-14 h-[3px] bg-emerald-600 mb-5 rounded-full" />
 
-              <motion.p variants={premiumFadeUp} className="text-slate-555 text-[14.5px] sm:text-[15.5px] leading-relaxed mb-5 max-w-xl">
+              <motion.p variants={premiumFadeUp} className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed mb-5 max-w-xl">
                 {subtextText}
               </motion.p>
 
@@ -609,7 +609,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
             <div className="bg-white border border-slate-200 rounded-3xl p-8 hover:shadow-lg transition-all duration-300 relative overflow-hidden group">
               <div className="absolute top-0 left-0 w-full h-1.5 bg-teal-500" />
               <h3 className="text-[#0B1F3A] text-[18px] font-black mb-4">Public Hospital Interest Rate Cuts</h3>
-              <p className="text-slate-555 text-[13.5px] leading-relaxed">
+              <p className="text-slate-500 text-[13.5px] leading-relaxed">
                 Interest rate cuts or special medical staff packages apply if you are employed in a public hospital, health service provider, or registered nursing clinic.
               </p>
             </div>
@@ -761,7 +761,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   </div>
                   <div>
                     <h4 className="text-[#0B1F3A] text-[14px] font-semibold leading-tight mb-1">Nurse LMI Waiver</h4>
-                    <p className="text-slate-555 text-[12.5px] leading-relaxed">Save up to $25,000 in Lenders Mortgage Insurance with a deposit as low as 10%.</p>
+                    <p className="text-slate-500 text-[12.5px] leading-relaxed">Save up to $25,000 in Lenders Mortgage Insurance with a deposit as low as 10%.</p>
                   </div>
                 </div>
 
@@ -773,7 +773,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   </div>
                   <div>
                     <h4 className="text-[#0B1F3A] text-[14px] font-semibold leading-tight mb-1">Specialist Rate Cuts</h4>
-                    <p className="text-slate-555 text-[12.5px] leading-relaxed">Many lenders offer exclusive discount margins for healthcare professionals.</p>
+                    <p className="text-slate-500 text-[12.5px] leading-relaxed">Many lenders offer exclusive discount margins for healthcare professionals.</p>
                   </div>
                 </div>
               </div>
@@ -947,7 +947,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                         <button
                           type="submit"
                           disabled={calcSubmitting}
-                          className="w-full inline-flex items-center justify-center gap-1 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-650 text-white font-bold text-[12px] py-2.5 transition-all cursor-pointer shadow-lg shadow-emerald-500/10"
+                          className="w-full inline-flex items-center justify-center gap-1 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-600 text-white font-bold text-[12px] py-2.5 transition-all cursor-pointer shadow-lg shadow-emerald-500/10"
                         >
                           {calcSubmitting ? "Submitting..." : "Get Detailed Lenders Report"}
                           <ArrowRight className="w-3.5 h-3.5" />
@@ -1002,7 +1002,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   </div>
                   <div>
                     <div className="text-[15px] font-extrabold text-[#0B1F3A]">Documents Ready</div>
-                    <div className="text-[12.5px] text-slate-555 mt-1">{checklist.filter(i => i.checked).length} of {checklist.length} audit steps checked</div>
+                    <div className="text-[12.5px] text-slate-500 mt-1">{checklist.filter(i => i.checked).length} of {checklist.length} audit steps checked</div>
                   </div>
                 </div>
               </div>
@@ -1087,7 +1087,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                 <div className="pt-2">
                   <a
                     href="#contact"
-                    className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-650 text-white text-[13px] font-bold px-6 py-3 shadow-lg shadow-emerald-500/10 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                    className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-600 text-white text-[13px] font-bold px-6 py-3 shadow-lg shadow-emerald-500/10 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
                   >
                     Consult a Specialist
                     <ArrowRight className="w-4 h-4" />
@@ -1258,7 +1258,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   <button
                     type="submit"
                     disabled={submittingEnquiry}
-                    className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-650 text-white font-extrabold text-[13.5px] py-3.5 transition-all shadow-lg shadow-emerald-500/10 cursor-pointer"
+                    className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-600 text-white font-extrabold text-[13.5px] py-3.5 transition-all shadow-lg shadow-emerald-500/10 cursor-pointer"
                   >
                     {submittingEnquiry ? "Submitting..." : "Submit Enquiry"}
                     <ArrowRight className="w-4 h-4" />
@@ -1270,7 +1270,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
                   <h3 className="text-[#0B1F3A] text-[20px] font-black">Enquiry Submitted!</h3>
-                  <p className="text-slate-555 text-[13.5px] leading-relaxed max-w-sm mx-auto">
+                  <p className="text-slate-500 text-[13.5px] leading-relaxed max-w-sm mx-auto">
                     Thank you. We have received your query and a healthcare specialist broker will contact you shortly.
                   </p>
                 </div>

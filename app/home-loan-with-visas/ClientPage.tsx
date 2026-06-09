@@ -312,7 +312,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
             <span className="text-slate-350 font-normal">&gt;</span>
             <span className="text-slate-400">Home Loans</span>
             <span className="text-slate-350 font-normal">&gt;</span>
-            <span className="text-amber-650 font-bold">Non-Resident Home Loans</span>
+            <span className="text-amber-600 font-bold">Non-Resident Home Loans</span>
           </nav>
 
           <div className="grid grid-cols-1 lg:grid-cols-[48%_52%] gap-8 lg:gap-12 items-center">
@@ -333,7 +333,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
 
               <motion.div variants={premiumFadeUp} className="w-14 h-[3px] bg-amber-500 mb-5 rounded-full" />
 
-              <motion.p variants={premiumFadeUp} className="text-slate-555 text-[14.5px] sm:text-[15.5px] leading-relaxed mb-5 max-w-xl">
+              <motion.p variants={premiumFadeUp} className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed mb-5 max-w-xl">
                 {subtextText}
               </motion.p>
 
@@ -354,7 +354,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                 </a>
                 <a
                   href={btn2Link}
-                  className="inline-flex items-center justify-center gap-2 border-2 border-amber-650 text-amber-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-amber-600 hover:text-white text-center w-full sm:w-auto whitespace-nowrap"
+                  className="inline-flex items-center justify-center gap-2 border-2 border-amber-600 text-amber-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-amber-600 hover:text-white text-center w-full sm:w-auto whitespace-nowrap"
                 >
                   {btn2Text}
                 </a>
@@ -393,7 +393,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
                   className="bg-white/95 border border-slate-200/80 rounded-3xl p-5 shadow-[0_20px_40px_rgba(11,31,58,0.1)] flex flex-col gap-3.5 w-[200px]"
                 >
-                  <div className="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center text-amber-750 shadow-sm">
+                  <div className="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center text-amber-700 shadow-sm">
                     <ShieldCheck className="w-5.5 h-5.5 text-amber-600" />
                   </div>
                   <div className="flex flex-col gap-3">
@@ -502,7 +502,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                 <span className="text-amber-700 text-[10px] font-bold tracking-widest uppercase">Global Access</span>
               </div>
               <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.1]" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                What Exactly Is a <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-650 to-yellow-500">Non-Resident Home Loan?</span>
+                What Exactly Is a <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-yellow-500">Non-Resident Home Loan?</span>
               </h2>
               <p className="text-slate-550 text-[14.5px] sm:text-[15.5px] leading-relaxed">
                 A non-resident home loan is designed for people living overseas or those who don’t hold Australian citizenship or permanent residency. This includes foreign nationals, temporary visa holders, and Australians living abroad. Since lenders view non-residents as higher-risk borrowers, they apply stricter criteria, including more documentation and often larger deposits than regular home loans.
@@ -559,8 +559,8 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <div className="inline-flex items-center gap-2 bg-white border border-amber-100 shadow-sm rounded-full px-4 py-2 mb-4">
-              <Sparkles className="w-3.5 h-3.5 text-amber-555" />
-              <span className="text-[10px] font-bold tracking-widest uppercase text-amber-750">Weighing Options</span>
+              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+              <span className="text-[10px] font-bold tracking-widest uppercase text-amber-700">Weighing Options</span>
             </div>
             <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-tight mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
               Benefits and Considerations
@@ -587,7 +587,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   "Specialised loans that accept foreign income and offer interest-only options",
                   "Opportunity to invest in Australia’s stable property market and benefit from long-term growth"
                 ].map((feat, idx) => (
-                  <li key={idx} className="flex gap-2.5 items-start text-[13px] text-slate-655">
+                  <li key={idx} className="flex gap-2.5 items-start text-[13px] text-slate-600">
                     <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500 shrink-0 mt-0.5" />
                     <span>{feat}</span>
                   </li>
@@ -612,7 +612,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   "Documenting foreign income and assets can be complicated",
                   "Deposit requirements are typically higher than for residents"
                 ].map((feat, idx) => (
-                  <li key={idx} className="flex gap-2.5 items-start text-[13px] text-slate-655">
+                  <li key={idx} className="flex gap-2.5 items-start text-[13px] text-slate-600">
                     <AlertCircle className="w-4.5 h-4.5 text-amber-500 shrink-0 mt-0.5" />
                     <span>{feat}</span>
                   </li>
@@ -698,7 +698,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   <Ban className="w-6 h-6" />
                 </div>
                 <div>
-                  <span className="text-[10px] font-black uppercase tracking-wider text-amber-750 block">Government Regulation</span>
+                  <span className="text-[10px] font-black uppercase tracking-wider text-amber-700 block">Government Regulation</span>
                   <h3 className="text-[#0B1F3A] text-[18px] sm:text-[22px] font-extrabold leading-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
                     Critical Notice: Temporary Foreign Buyer Ban (April 2025 – March 2027)
                   </h3>
@@ -715,7 +715,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   <h4 className="text-[14px] font-extrabold text-[#0B1F3A]">Allowed purchases during this period:</h4>
                   <ul className="space-y-3.5">
                     {["Newly built properties (never sold or occupied)", "Vacant land for new builds (with approval)"].map((feat, idx) => (
-                      <li key={idx} className="flex gap-2.5 items-start text-xs leading-relaxed text-slate-555">
+                      <li key={idx} className="flex gap-2.5 items-start text-xs leading-relaxed text-slate-500">
                         <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                         <span>{feat}</span>
                       </li>
@@ -733,7 +733,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                       "Investments that demonstrably increase housing supply",
                       "Note: Temporary residents still require FIRB approval"
                     ].map((feat, idx) => (
-                      <li key={idx} className="flex gap-2.5 items-start text-xs leading-relaxed text-slate-555">
+                      <li key={idx} className="flex gap-2.5 items-start text-xs leading-relaxed text-slate-500">
                         <CheckCircle2 className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                         <span>{feat}</span>
                       </li>
@@ -812,7 +812,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                 <span className="text-[10px] font-bold tracking-widest uppercase text-amber-700">Mortgage Xperts Guidance</span>
               </div>
               <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.1]" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                Ready to Buy Property <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-650 to-yellow-500">in Australia?</span>
+                Ready to Buy Property <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-yellow-500">in Australia?</span>
               </h2>
               <p className="text-slate-500 text-[14.5px] leading-relaxed">
                 Whether you’re planning to move to Australia or invest in property from overseas, Mortgage Xperts ensures your home-buying journey is simple, clear, and stress-free.
@@ -825,7 +825,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   "Help maximise your borrowing power while minimising costs",
                   "Assist with all documentation and loan applications"
                 ].map((feat, idx) => (
-                  <li key={idx} className="flex gap-2.5 items-start text-[13px] text-slate-655 font-semibold">
+                  <li key={idx} className="flex gap-2.5 items-start text-[13px] text-slate-600 font-semibold">
                     <CheckCircle2 className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                     <span>{feat}</span>
                   </li>
@@ -863,7 +863,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                 <span className="text-amber-705 text-[10px] font-bold tracking-widest uppercase">Lending Modeler</span>
               </div>
               <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.1] mb-4" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                Expat &amp; Visa Loan <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-650 to-yellow-500">Deposit Modeler</span>
+                Expat &amp; Visa Loan <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-yellow-500">Deposit Modeler</span>
               </h2>
               <p className="text-slate-550 text-[14.5px] sm:text-[15.5px] leading-relaxed mb-6">
                 Calculate your required LVR deposit threshold and estimate potential FIRB fees based on visa residency status.
@@ -876,7 +876,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   </div>
                   <div>
                     <h4 className="text-[#0B1F3A] text-[14px] font-semibold leading-tight mb-1">Foreign Income Conversions</h4>
-                    <p className="text-slate-555 text-[12.5px] leading-relaxed">Banks typically apply a 20% haircut to foreign incomes for security margin.</p>
+                    <p className="text-slate-500 text-[12.5px] leading-relaxed">Banks typically apply a 20% haircut to foreign incomes for security margin.</p>
                   </div>
                 </div>
 
@@ -888,7 +888,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   </div>
                   <div>
                     <h4 className="text-[#0B1F3A] text-[14px] font-semibold leading-tight mb-1">FIRB Submission Tracking</h4>
-                    <p className="text-slate-555 text-[12.5px] leading-relaxed">We coordinate directly with legal counsel to manage FIRB documentation.</p>
+                    <p className="text-slate-500 text-[12.5px] leading-relaxed">We coordinate directly with legal counsel to manage FIRB documentation.</p>
                   </div>
                 </div>
               </div>
@@ -1082,11 +1082,11 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
             {/* Left Column */}
             <div>
               <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-full px-4 py-2 mb-6">
-                <HelpCircle className="w-3.5 h-3.5 text-amber-655" />
+                <HelpCircle className="w-3.5 h-3.5 text-amber-600" />
                 <span className="text-[10px] font-bold tracking-widest uppercase text-amber-705">FAQ Helpdesk</span>
               </div>
               <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.1] mb-4" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                Got Questions? <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-650 to-yellow-500">We Have Answers</span>
+                Got Questions? <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-yellow-500">We Have Answers</span>
               </h2>
               <p className="text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-sm">
                 Everything you need to know about the home loan process for expats and foreign non-residents.
@@ -1096,7 +1096,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
               <div className="mt-8 bg-slate-50 border border-slate-200/60 rounded-3xl p-6 md:p-8 space-y-5 shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden group">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-550 to-yellow-500" />
                 <h4 className="text-[16px] font-extrabold text-[#0B1F3A]">Buying property from abroad?</h4>
-                <p className="text-slate-555 text-xs sm:text-[12.5px] leading-relaxed">
+                <p className="text-slate-500 text-xs sm:text-[12.5px] leading-relaxed">
                   We provide end-to-end support for digital ID verification, overseas contract notarisation, and coordinating with Australian legal conveyancers.
                 </p>
                 
@@ -1190,11 +1190,11 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
             {/* Context */}
             <div className="space-y-6">
               <div className="inline-flex items-center gap-2 bg-white shadow-sm border border-amber-100 rounded-full px-4 py-2">
-                <Users className="w-3.5 h-3.5 text-amber-655" />
-                <span className="text-[10px] font-bold tracking-widest uppercase text-amber-755">Get in Touch</span>
+                <Users className="w-3.5 h-3.5 text-amber-600" />
+                <span className="text-[10px] font-bold tracking-widest uppercase text-amber-700">Get in Touch</span>
               </div>
               <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.1]" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                Enquire About <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-650 to-yellow-500">Non-Resident Home Loans</span>
+                Enquire About <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-yellow-500">Non-Resident Home Loans</span>
               </h2>
               <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed">
                 Connect with our accredited multi-lingual mortgage brokers to check your non-resident and temporary resident visa options.
@@ -1207,7 +1207,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   "FIRB guidance and document preparation support"
                 ].map((item, idx) => (
                   <div key={idx} className="flex items-center gap-3">
-                    <div className="w-5 h-5 rounded-full bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-650 shrink-0">
+                    <div className="w-5 h-5 rounded-full bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shrink-0">
                       <Check className="w-3 h-3" strokeWidth={3} />
                     </div>
                     <span className="text-[13px] text-slate-700 font-semibold">{item}</span>
@@ -1305,7 +1305,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
                   <h3 className="text-[#0B1F3A] text-[20px] font-black">Enquiry Submitted!</h3>
-                  <p className="text-slate-555 text-[13.5px] leading-relaxed max-w-sm mx-auto">
+                  <p className="text-slate-500 text-[13.5px] leading-relaxed max-w-sm mx-auto">
                     Thank you. We have received your query and a specialist broker will contact you shortly.
                   </p>
                 </div>
@@ -1349,7 +1349,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
             ].map((topic, idx) => (
               <div key={idx} className="bg-slate-50 hover:bg-slate-100/50 p-6 rounded-2xl border border-slate-200 transition-colors flex flex-col justify-between">
                 <div>
-                  <span className="text-[10px] text-amber-655 font-extrabold uppercase tracking-widest block mb-2">Non Resident Home Loans</span>
+                  <span className="text-[10px] text-amber-600 font-extrabold uppercase tracking-widest block mb-2">Non Resident Home Loans</span>
                   <h4 className="text-[#0B1F3A] font-bold text-[14px] leading-snug mb-2">{topic.title}</h4>
                   <p className="text-slate-550 text-xs leading-relaxed">{topic.desc}</p>
                 </div>

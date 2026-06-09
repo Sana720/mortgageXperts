@@ -60,7 +60,7 @@ const premiumFadeUp = {
 
 interface SubPageHeroProps {
   pageTitle: string;
-  themeColor?: "blue" | "green" | "violet" | "teal" | "orange";
+  themeColor?: "blue" | "green" | "violet" | "teal" | "orange" | "rose";
   pageHeroSettings?: {
     hero_badge?: string;
     hero_title?: string;
@@ -87,32 +87,37 @@ export function SubPageHero({ pageTitle, themeColor = "blue", pageHeroSettings }
   const isViolet = themeColor === "violet";
   const isTeal = themeColor === "teal";
   const isOrange = themeColor === "orange";
+  const isRose = themeColor === "rose";
 
   // Theme variable selections
-  const dotColor = isGreen ? "#10B981" : isViolet ? "#8B5CF6" : isTeal ? "#0D9488" : isOrange ? "#EA580C" : "#2563EB";
-  const bgBlurClass = isGreen ? "bg-emerald-50" : isViolet ? "bg-violet-50" : isTeal ? "bg-teal-50" : isOrange ? "bg-orange-50" : "bg-[#EEF4FF]";
-  const navActiveColorClass = isGreen ? "text-emerald-700" : isViolet ? "text-violet-750" : isTeal ? "text-teal-750" : isOrange ? "text-orange-700" : "text-[#2563EB]";
-  const hoverLinkColorClass = isGreen ? "hover:text-emerald-650" : isViolet ? "hover:text-violet-650" : isTeal ? "hover:text-teal-650" : isOrange ? "hover:text-orange-655" : "hover:text-[#2563EB]";
+  const dotColor = isGreen ? "#10B981" : isViolet ? "#8B5CF6" : isTeal ? "#0D9488" : isOrange ? "#EA580C" : isRose ? "#F43F5E" : "#2563EB";
+  const bgBlurClass = isGreen ? "bg-emerald-50" : isViolet ? "bg-violet-50" : isTeal ? "bg-teal-50" : isOrange ? "bg-orange-50" : isRose ? "bg-rose-50" : "bg-[#EEF4FF]";
+  const navActiveColorClass = isGreen ? "text-emerald-700" : isViolet ? "text-violet-700" : isTeal ? "text-teal-700" : isOrange ? "text-orange-700" : isRose ? "text-rose-700" : "text-[#2563EB]";
+  const hoverLinkColorClass = isGreen ? "hover:text-emerald-600" : isViolet ? "hover:text-violet-600" : isTeal ? "hover:text-teal-600" : isOrange ? "hover:text-orange-600" : isRose ? "hover:text-rose-600" : "hover:text-[#2563EB]";
   const badgeClass = isGreen 
     ? "bg-emerald-50 border-emerald-500/15 text-emerald-700" 
     : isViolet 
-      ? "bg-violet-50 border-violet-500/15 text-violet-750" 
+      ? "bg-violet-50 border-violet-500/15 text-violet-700" 
       : isTeal 
-        ? "bg-teal-50 border-teal-500/15 text-teal-750"
+        ? "bg-teal-50 border-teal-500/15 text-teal-700"
         : isOrange
           ? "bg-orange-50 border-orange-500/15 text-orange-700"
-          : "bg-[#EAF3FF] border-[#2563EB]/15 text-[#2563EB]";
-  const badgeIconClass = isGreen ? "text-emerald-600" : isViolet ? "text-violet-600" : isTeal ? "text-teal-600" : isOrange ? "text-orange-600" : "text-[#2563EB]";
-  const lineClass = isGreen ? "bg-emerald-600" : isViolet ? "bg-violet-600" : isTeal ? "bg-teal-600" : isOrange ? "bg-orange-600" : "bg-[#2563EB]";
+          : isRose
+            ? "bg-rose-50 border-rose-500/15 text-rose-700"
+            : "bg-[#EAF3FF] border-[#2563EB]/15 text-[#2563EB]";
+  const badgeIconClass = isGreen ? "text-emerald-600" : isViolet ? "text-violet-600" : isTeal ? "text-teal-600" : isOrange ? "text-orange-600" : isRose ? "text-rose-600" : "text-[#2563EB]";
+  const lineClass = isGreen ? "bg-emerald-600" : isViolet ? "bg-violet-600" : isTeal ? "bg-teal-600" : isOrange ? "bg-orange-600" : isRose ? "bg-rose-600" : "bg-[#2563EB]";
   const btn1Class = isGreen
     ? "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-500/15"
     : isViolet
       ? "bg-violet-600 hover:bg-violet-700 shadow-violet-500/15"
       : isTeal
-        ? "bg-teal-600 hover:bg-teal-750 shadow-teal-500/15"
+        ? "bg-teal-600 hover:bg-teal-700 shadow-teal-500/15"
         : isOrange
           ? "bg-orange-600 hover:bg-orange-700 shadow-orange-500/15"
-          : "bg-[#2563EB] hover:bg-[#1d4ed8] shadow-blue-500/15";
+          : isRose
+            ? "bg-rose-600 hover:bg-rose-700 shadow-rose-500/15"
+            : "bg-[#2563EB] hover:bg-[#1d4ed8] shadow-blue-500/15";
   const btn2Class = isGreen
     ? "border-emerald-600 text-emerald-700 hover:bg-emerald-600"
     : isViolet
@@ -121,7 +126,9 @@ export function SubPageHero({ pageTitle, themeColor = "blue", pageHeroSettings }
         ? "border-teal-600 text-teal-700 hover:bg-teal-600"
         : isOrange
           ? "border-orange-600 text-orange-700 hover:bg-orange-600"
-          : "border-[#2563EB] text-[#2563EB] hover:bg-[#2563EB]";
+          : isRose
+            ? "border-rose-600 text-rose-700 hover:bg-rose-600"
+            : "border-[#2563EB] text-[#2563EB] hover:bg-[#2563EB]";
 
   const blurShapeGrad = isGreen 
     ? "from-emerald-50 to-teal-50/30" 
@@ -131,7 +138,9 @@ export function SubPageHero({ pageTitle, themeColor = "blue", pageHeroSettings }
         ? "from-teal-50 to-emerald-50/30"
         : isOrange
           ? "from-orange-50 to-amber-50/30"
-          : "from-[#EAF3FF] to-[#F4F9FF]";
+          : isRose
+            ? "from-rose-50 to-pink-50/30"
+            : "from-[#EAF3FF] to-[#F4F9FF]";
 
   return (
     <section id="overview" className="relative overflow-hidden bg-white pt-8 pb-12 lg:pt-14 lg:pb-16 text-slate-800 border-b border-slate-100 min-h-[calc(100vh-80px)] flex flex-col justify-start">

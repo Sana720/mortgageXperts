@@ -1091,7 +1091,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
               <span className="text-[10px] font-bold tracking-widest uppercase text-rose-700">Expert Tips</span>
             </div>
             <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-tight mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-              Tips to Improve Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-pink-650">Chances of Approval</span>
+              Tips to Improve Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-pink-600">Chances of Approval</span>
             </h2>
             <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed">
               Applying for a self-employed mortgage doesn’t have to be stressful. Follow these critical guidelines to maximize your approval success.
@@ -1391,7 +1391,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-655" htmlFor="message">Your Message</label>
+                    <label className="text-xs font-bold text-slate-600" htmlFor="message">Your Message</label>
                     <textarea
                       id="message"
                       name="message"

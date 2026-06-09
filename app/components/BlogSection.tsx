@@ -265,7 +265,7 @@ export function BlogSection({
               >
                 {refinance.title}
               </h3>
-              <p className="text-[13px] text-slate-650 leading-relaxed mb-4 flex-1">
+              <p className="text-[13px] text-slate-600 leading-relaxed mb-4 flex-1">
                 {refinance.excerpt}
               </p>
               <Link href="#contact" className="inline-flex items-center gap-1.5 text-[13px] font-bold text-emerald-600 hover:underline w-fit">
@@ -316,7 +316,7 @@ export function BlogSection({
               >
                 {healthcare.title}
               </h3>
-              <p className="text-[13px] text-slate-650 leading-relaxed mb-4 flex-1">
+              <p className="text-[13px] text-slate-600 leading-relaxed mb-4 flex-1">
                 {healthcare.excerpt}
               </p>
               <Link href="#contact" className="inline-flex items-center gap-1.5 text-[13px] font-bold text-teal-600 hover:underline w-fit">
@@ -342,7 +342,7 @@ export function BlogSection({
               />
               
               <div className="absolute bottom-4 right-4 z-10 bg-white/95 backdrop-blur-sm rounded-2xl border border-slate-100 shadow-md px-3.5 py-2.5 flex items-start gap-2.5 max-w-[160px]">
-                <div className="w-8 h-8 rounded-full bg-[#F0FDFA] flex items-center justify-center shrink-0 text-teal-650 border border-teal-100">
+                <div className="w-8 h-8 rounded-full bg-[#F0FDFA] flex items-center justify-center shrink-0 text-teal-600 border border-teal-100">
                   {healthcareOverlay.icon}
                 </div>
                 <div>

@@ -595,7 +595,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                             placeholder="Enter your name"
                             value={calcLeadName}
                             onChange={(e) => setCalcLeadName(e.target.value)}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-850 focus:outline-none focus:border-teal-500"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-800 focus:outline-none focus:border-teal-500"
                           />
                         </div>
 
@@ -609,7 +609,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                               placeholder="Enter email"
                               value={calcLeadEmail}
                               onChange={(e) => setCalcLeadEmail(e.target.value)}
-                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-850 focus:outline-none focus:border-teal-500"
+                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-800 focus:outline-none focus:border-teal-500"
                             />
                           </div>
 
@@ -622,7 +622,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                               placeholder="Phone"
                               value={calcLeadPhone}
                               onChange={(e) => setCalcLeadPhone(e.target.value)}
-                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-850 focus:outline-none focus:border-teal-500"
+                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-800 focus:outline-none focus:border-teal-500"
                             />
                           </div>
                         </div>
@@ -674,7 +674,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                             </div>
                             <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
                               <div 
-                                className="h-full bg-teal-650 rounded-full transition-all duration-500" 
+                                className="h-full bg-teal-600 rounded-full transition-all duration-500" 
                                 style={{ width: `${Math.min(100, (results.totalInterestPaidExtra / results.totalInterestPaidStd) * 100)}%` }}
                               />
                             </div>
@@ -1026,12 +1026,12 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
       <SiteFooter settings={settings} />
 
       {/* PRINT-ONLY AREA */}
-      <div id="printable-report-area" className="p-8 font-inter text-slate-850 bg-white hidden" style={{ width: "800px" }}>
+      <div id="printable-report-area" className="p-8 font-inter text-slate-800 bg-white hidden" style={{ width: "800px" }}>
         {/* Header */}
         <div className="flex justify-between items-center border-b-2 border-teal-600 pb-4 mb-6">
           <div>
             <h1 className="text-2xl font-black text-[#0B1F3A] tracking-tight font-montserrat">MORTGAGE XPERTS</h1>
-            <p className="text-[9px] text-slate-555 uppercase tracking-widest font-black">Nepali Mortgage Broker in Australia | Home Loan Specialists</p>
+            <p className="text-[9px] text-slate-500 uppercase tracking-widest font-black">Nepali Mortgage Broker in Australia | Home Loan Specialists</p>
           </div>
           <div className="text-right">
             <span className="inline-block bg-teal-600 text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-md mb-1">
@@ -1075,7 +1075,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
         <div className="grid grid-cols-12 gap-6 mb-6">
           <div className="col-span-12 border border-slate-200 rounded-xl p-4 bg-slate-50/25">
             <h3 className="text-xs font-black text-[#0B1F3A] border-b border-slate-200 pb-1.5 mb-3 font-montserrat uppercase tracking-wider">Repayments Analysis</h3>
-            <table className="w-full text-[11.5px] font-bold text-slate-650">
+            <table className="w-full text-[11.5px] font-bold text-slate-600">
               <tbody className="divide-y divide-slate-100">
                 <tr className="py-2.5 flex justify-between">
                   <td>Outstanding Loan Amount:</td>

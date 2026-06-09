@@ -1307,6 +1307,8 @@ export default function AdminPage() {
                     <option value="/investing-in-property">Investing in Property (/investing-in-property)</option>
                     <option value="/investing-in-property-nepali-mortgage-broker">Investing in Property (Nepali Broker Slug) (/investing-in-property-nepali-mortgage-broker)</option>
                     <option value="/loan-repayment-calculator">Loan Repayment Calculator (/loan-repayment-calculator)</option>
+                    <option value="/rent-yield-calculators">Rent Yield Calculator (/rent-yield-calculators)</option>
+                    <option value="/equity-calculator">Equity Calculator (/equity-calculator)</option>
                   </select>
                 </div>
                 <div className="text-right sm:block hidden">

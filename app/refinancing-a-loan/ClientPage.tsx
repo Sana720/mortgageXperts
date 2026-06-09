@@ -2253,7 +2253,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
 
                       <div className="space-y-1.5">
                         <span className="text-[8.5px] font-bold uppercase tracking-wider text-slate-400 block">About Aakash</span>
-                        <p className="text-slate-650 text-[11px] leading-relaxed italic">
+                        <p className="text-slate-600 text-[11px] leading-relaxed italic">
                           &ldquo;Aakash KC is the founder of Mortgage Xperts. He guides the Nepalese community in Australia to find tailored lending structures, negotiate lower interest rates, and skip LMI fees.&rdquo;
                         </p>
                       </div>
