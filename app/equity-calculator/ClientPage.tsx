@@ -314,7 +314,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                   </div>
                   <div>
                     <h4 className="text-[14.5px] font-black text-[#0B1F3A] font-montserrat">Calculate Usable Equity</h4>
-                    <p className="text-[12.5px] text-slate-500 mt-1 leading-relaxed">Instantly determine the equity you can borrow against without crossing the bank's LVR limits.</p>
+                    <p className="text-[12.5px] text-slate-500 mt-1 leading-relaxed">Instantly determine the equity you can borrow against without crossing the bank&apos;s LVR limits.</p>
                   </div>
                 </motion.div>
 
