@@ -634,7 +634,6 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                       <button
                         type="button"
                         onClick={() => {
-                          calculateDeposit();
                           setCurrentStep(3);
                         }}
                         className="flex-1 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-600 text-white font-extrabold text-[13px] py-3 rounded-full flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-emerald-500/10 transition-colors ml-auto"

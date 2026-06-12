@@ -37,6 +37,25 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
+const faqs = [
+  {
+    q: "How does the RBA cash rate affect my mortgage?",
+    a: "When the RBA changes the official cash rate, banks usually adjust their variable home loan interest rates in response. A rate hike increases your minimum monthly repayments, while a rate cut can reduce them."
+  },
+  {
+    q: "How quickly do lenders pass on rate changes?",
+    a: "Most lenders pass on rate increases within days, meaning your next repayment cycle may be affected. Rate cuts sometimes take slightly longer to be passed on to customers."
+  },
+  {
+    q: "Should I fix my interest rate to avoid hikes?",
+    a: "Fixing your rate provides certainty for your repayments over a set period (usually 1-5 years). However, if rates drop, you won't benefit from the lower rate. It's best to speak with a broker to assess your personal situation."
+  },
+  {
+    q: "How can a broker help me during rate changes?",
+    a: "A broker can review your current loan against hundreds of options to see if you can get a better rate elsewhere. We can negotiate with your current lender on your behalf or help you refinance to a more competitive loan."
+  }
+];
+
 export default function ClientPage({
   settings = {},
   pageHeroSettings

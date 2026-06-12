@@ -102,7 +102,7 @@ export default function NepaliMortgageBrokerAustraliaClient() {
       </section>
 
       {/* Testimonials */}
-      <TestimonialSection settings={{}} />
+      <TestimonialSection />
 
       {/* Lenders Marquee */}
       <section className="py-12 bg-white border-y border-slate-200 overflow-hidden">

@@ -96,7 +96,7 @@ export default function PropertyInvestmentGuideClient() {
         </div>
       </section>
 
-      <TestimonialSection settings={{}} />
+      <TestimonialSection />
 
       <SiteFooter />
     </div>

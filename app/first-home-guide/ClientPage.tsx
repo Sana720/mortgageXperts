@@ -97,7 +97,7 @@ export default function FirstHomeGuideClient() {
         </div>
       </section>
 
-      <TestimonialSection settings={{}} />
+      <TestimonialSection />
 
       <SiteFooter />
     </div>

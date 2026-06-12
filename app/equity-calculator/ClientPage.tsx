@@ -36,6 +36,25 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
+const faqs = [
+  {
+    q: "What is usable equity in my home?",
+    a: "Usable equity is the portion of your property's value that lenders allow you to borrow against. Most lenders allow you to borrow up to 80% of your property's value, minus any existing mortgage debt."
+  },
+  {
+    q: "How can I access my home equity?",
+    a: "You can access your home equity by refinancing your current mortgage to a larger amount, taking out a line of credit, or getting a second mortgage. A mortgage broker can help you find the best option for your situation."
+  },
+  {
+    q: "What can I use my home equity for?",
+    a: "Home equity is commonly used for renovations, buying an investment property, debt consolidation, or funding major purchases like a car or education."
+  },
+  {
+    q: "Does accessing equity increase my repayments?",
+    a: "Yes, because accessing equity involves borrowing more money, your loan balance will increase, which usually leads to higher monthly repayments."
+  }
+];
+
 export default function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings }) {
   // Wizard steps
   const [currentStep, setCurrentStep] = useState(1);

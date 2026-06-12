@@ -97,7 +97,7 @@ export default function RefinancingGuideClient() {
         </div>
       </section>
 
-      <TestimonialSection settings={{}} />
+      <TestimonialSection />
 
       <SiteFooter />
     </div>

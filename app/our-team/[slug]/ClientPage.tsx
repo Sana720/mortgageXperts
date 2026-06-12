@@ -124,7 +124,7 @@ export default function TeamMemberClient({ member }: { member: TeamMember }) {
         </div>
       </section>
 
-      <TestimonialSection settings={{}} />
+      <TestimonialSection />
 
       <SiteFooter />
     </div>
