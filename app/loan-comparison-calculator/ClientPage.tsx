@@ -9,6 +9,7 @@ import {
   ShieldCheck,
   ChevronRight,
   HelpCircle,
+  AlertCircle,
   TrendingUp,
   Percent,
   Calculator,
