@@ -16,10 +16,14 @@ export function ClientPage({ settings }: ClientPageProps) {
       <SiteHeader isSticky={false} settings={settings} />
       
       <SubPageHero
-        title="Contact Us"
-        subtitle="We work with 40+ lenders to deliver expert mortgage solutions nationwide. Reach out to us today to start your property journey."
-        imageSrc="/images/hero.png"
-        badgeText="Get In Touch"
+        pageTitle="Contact Us"
+        themeColor="blue"
+        pageHeroSettings={{
+          hero_badge: "Get In Touch",
+          hero_title: "Contact Us",
+          hero_subtext: "We work with 40+ lenders to deliver expert mortgage solutions nationwide. Reach out to us today to start your property journey.",
+          hero_image: "/images/hero.png",
+        }}
       />
 
       {/* Main Contact Section */}

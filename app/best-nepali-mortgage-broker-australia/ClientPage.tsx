@@ -17,10 +17,14 @@ export function ClientPage({ settings }: ClientPageProps) {
     <div className="bg-[#F0F4FA] min-h-screen font-sans flex flex-col">
       <SiteHeader isSticky={false} settings={settings} />
       <SubPageHero
-        title="Nepali Mortgage Broker Australia"
-        subtitle="Home Loans, Simplified. Personalised mortgage solutions for Nepali Australians Nationwide Perth | Sydney | Melbourne | Adelaide | Brisbane | Nationwide"
-        imageSrc="/images/hero.png"
-        badgeText="What We Do"
+        pageTitle="Nepali Mortgage Broker Australia"
+        themeColor="blue"
+        pageHeroSettings={{
+          hero_badge: "What We Do",
+          hero_title: "Nepali Mortgage Broker Australia",
+          hero_subtext: "Home Loans, Simplified. Personalised mortgage solutions for Nepali Australians Nationwide Perth | Sydney | Melbourne | Adelaide | Brisbane | Nationwide",
+          hero_image: "/images/hero.png",
+        }}
       />
 
       {/* SECTION 1: What We Do */}

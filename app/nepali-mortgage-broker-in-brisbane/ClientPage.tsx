@@ -17,10 +17,14 @@ export function ClientPage({ settings }: ClientPageProps) {
     <div className="bg-[#F0F4FA] min-h-screen font-sans flex flex-col">
       <SiteHeader isSticky={false} settings={settings} />
       <SubPageHero
-        title="Why Use Mortgage Xperts?"
-        subtitle="At Mortgage Xperts – Australia, we are committed to helping individuals and families secure the right home loan with confidence, clarity, and expert guidance."
-        imageSrc="/images/hero.png"
-        badgeText="Nepali Mortgage Broker in Brisbane"
+        pageTitle="Why Use Mortgage Xperts?"
+        themeColor="blue"
+        pageHeroSettings={{
+          hero_badge: "Nepali Mortgage Broker in Brisbane",
+          hero_title: "Why Use Mortgage Xperts?",
+          hero_subtext: "At Mortgage Xperts – Australia, we are committed to helping individuals and families secure the right home loan with confidence, clarity, and expert guidance.",
+          hero_image: "/images/hero.png",
+        }}
       />
 
       {/* SECTION 1: Who We Are */}

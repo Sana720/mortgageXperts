@@ -26,10 +26,14 @@ export function ClientPage({ settings, pageHeroSettings }: ClientPageProps) {
     <div className="bg-[#F0F4FA] min-h-screen font-sans flex flex-col">
       <SiteHeader isSticky={false} settings={settings} />
       <SubPageHero
-        title={h1Heading}
-        subtitle={subHeading}
-        imageSrc={heroImage}
-        badgeText="About Us"
+        pageTitle="About Us"
+        themeColor="blue"
+        pageHeroSettings={{
+          hero_badge: "About Us",
+          hero_title: h1Heading,
+          hero_subtext: subHeading,
+          hero_image: heroImage,
+        }}
       />
 
       {/* SECTION 1: Image Left, Text Right */}

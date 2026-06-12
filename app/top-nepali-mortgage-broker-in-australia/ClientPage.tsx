@@ -17,10 +17,14 @@ export function ClientPage({ settings }: ClientPageProps) {
     <div className="bg-[#F0F4FA] min-h-screen font-sans flex flex-col">
       <SiteHeader isSticky={false} settings={settings} />
       <SubPageHero
-        title="Who We Help"
-        subtitle="Australia’s Trusted Multilingual Mortgage Broker in Melbourne, Sydney, Perth, Brisbane & Nationwide"
-        imageSrc="/images/hero.png"
-        badgeText="Who We Help"
+        pageTitle="Who We Help"
+        themeColor="blue"
+        pageHeroSettings={{
+          hero_badge: "Who We Help",
+          hero_title: "Who We Help",
+          hero_subtext: "Australia’s Trusted Multilingual Mortgage Broker in Melbourne, Sydney, Perth, Brisbane & Nationwide",
+          hero_image: "/images/hero.png",
+        }}
       />
 
       {/* SECTION 1: Expert Home Loan Services */}
