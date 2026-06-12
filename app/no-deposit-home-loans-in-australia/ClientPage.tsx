@@ -1226,14 +1226,14 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
             </div>
 
             {/* Right Form Card Column */}
-            <div className="bg-white border border-slate-200/80 rounded-[32px] p-6 sm:p-10 shadow-xl shadow-slate-100 relative">
+            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-slate-100 relative text-[#0B1F3A]">
               <div className="absolute top-0 right-0 w-32 h-32 bg-teal-100 rounded-full blur-[60px] opacity-20 pointer-events-none" />
               
               {!enquirySubmitted ? (
-                <form onSubmit={handleEnquirySubmit} className="space-y-5 relative z-10 text-left">
+                <form onSubmit={handleEnquirySubmit} className="space-y-4 relative z-10 text-left">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">First Name</label>
+                      <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">First Name</label>
                       <input
                         type="text"
                         name="firstName"
@@ -1241,11 +1241,11 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                         placeholder="John"
                         value={formData.firstName}
                         onChange={handleInputChange}
-                        className="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-4 py-3 text-xs text-[#0B1F3A] focus:outline-none focus:border-teal-500 focus:bg-white transition-all shadow-inner"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-teal-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Last Name / Surname</label>
+                      <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">Last Name / Surname</label>
                       <input
                         type="text"
                         name="lastName"
@@ -1253,14 +1253,14 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                         placeholder="Doe"
                         value={formData.lastName}
                         onChange={handleInputChange}
-                        className="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-4 py-3 text-xs text-[#0B1F3A] focus:outline-none focus:border-teal-500 focus:bg-white transition-all shadow-inner"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-teal-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Email Address</label>
+                      <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">Email Address</label>
                       <input
                         type="email"
                         name="email"
@@ -1268,25 +1268,25 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                         placeholder="john.doe@example.com"
                         value={formData.email}
                         onChange={handleInputChange}
-                        className="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-4 py-3 text-xs text-[#0B1F3A] focus:outline-none focus:border-teal-500 focus:bg-white transition-all shadow-inner"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-teal-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Phone Number</label>
+                      <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">Phone Number</label>
                       <input
                         type="tel"
                         name="phone"
                         required
-                        placeholder="+61"
+                        placeholder="0400 000 000"
                         value={formData.phone}
                         onChange={handleInputChange}
-                        className="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-4 py-3 text-xs text-[#0B1F3A] focus:outline-none focus:border-teal-500 focus:bg-white transition-all shadow-inner"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-teal-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Your Message / Query</label>
+                    <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">Your Message / Query</label>
                     <textarea
                       name="message"
                       rows={4}
@@ -1294,7 +1294,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                       placeholder="Type your query or deposit scenario here..."
                       value={formData.message}
                       onChange={handleInputChange}
-                      className="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-4 py-3 text-xs text-[#0B1F3A] focus:outline-none focus:border-teal-500 focus:bg-white transition-all shadow-inner"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-teal-500 focus:bg-white transition-all shadow-inner"
                     />
                   </div>
 
@@ -1305,17 +1305,21 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   <button
                     type="submit"
                     disabled={submittingEnquiry}
-                    className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#0B1F3A] hover:bg-slate-800 text-white font-extrabold text-[13.5px] py-4 transition-all cursor-pointer shadow-md"
+                    className="w-full bg-teal-600 hover:bg-teal-700 text-white font-extrabold text-[13.5px] py-3.5 px-6 rounded-xl transition-all shadow-lg active:scale-[0.98] mt-2 cursor-pointer flex items-center justify-center gap-2"
                   >
                     {submittingEnquiry ? "Submitting..." : "Submit Enquiry"}
                     <ArrowRight className="w-4 h-4 text-white" />
                   </button>
                 </form>
               ) : (
-                <div className="bg-teal-50 border border-teal-100 rounded-3xl p-8 text-center space-y-4">
-                  <CheckCircle className="w-16 h-16 text-teal-600 mx-auto" />
-                  <h3 className="text-[#0B1F3A] text-[20px] font-extrabold">Enquiry Submitted!</h3>
-                  <p className="text-slate-500 text-[14px] leading-relaxed max-w-md mx-auto">
+                <div className="text-center py-12 space-y-4">
+                  <div className="w-14 h-14 bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto rounded-full border border-emerald-100">
+                    ✓
+                  </div>
+                  <h3 className="text-[#0B1F3A] text-[20px] font-black" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                    Enquiry Submitted!
+                  </h3>
+                  <p className="text-slate-500 text-[13.5px] leading-relaxed max-w-sm mx-auto">
                     Thank you for contacting Mortgage Xperts. One of our credit experts will review your deposit scenario details and get in touch shortly to assist you.
                   </p>
                 </div>

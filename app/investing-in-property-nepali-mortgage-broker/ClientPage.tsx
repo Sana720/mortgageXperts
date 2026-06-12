@@ -1478,7 +1478,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
             </div>
 
             {/* Form Box */}
-            <div className="bg-[#FFFDF6] border border-amber-100 rounded-[32px] p-6 sm:p-8 md:p-10 shadow-sm relative overflow-hidden">
+            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-slate-100 relative text-[#0B1F3A]">
               <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-amber-50 rounded-full blur-[80px] opacity-30 translate-x-1/3 -translate-y-1/3 pointer-events-none" />
 
               {!callbackSubmitted ? (
@@ -1516,22 +1516,22 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   >
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">First Name</label>
+                        <label className="block text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide mb-1.5">First Name</label>
                         <input
                           type="text"
                           name="name"
                           placeholder="John"
-                          className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 shadow-sm font-semibold"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:bg-white transition-all shadow-inner"
                           required
                         />
                       </div>
                       <div>
-                        <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Last Name</label>
+                        <label className="block text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide mb-1.5">Last Name</label>
                         <input
                           type="text"
                           name="surname"
                           placeholder="Doe"
-                          className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 shadow-sm font-semibold"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:bg-white transition-all shadow-inner"
                           required
                         />
                       </div>
@@ -1539,34 +1539,34 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Email Address</label>
+                        <label className="block text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide mb-1.5">Email Address</label>
                         <input
                           type="email"
                           name="email"
                           placeholder="johndoe@example.com"
-                          className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 shadow-sm font-semibold"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:bg-white transition-all shadow-inner"
                           required
                         />
                       </div>
                       <div>
-                        <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Phone Number</label>
+                        <label className="block text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide mb-1.5">Phone Number</label>
                         <input
                           type="tel"
                           name="phone"
                           placeholder="0400 000 000"
-                          className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 shadow-sm font-semibold"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:bg-white transition-all shadow-inner"
                           required
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Brief Message (Optional)</label>
+                      <label className="block text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide mb-1.5">Brief Message (Optional)</label>
                       <textarea
                         name="message"
                         rows={3}
                         placeholder="Tell us about your property goals (first home, multi-property portfolio, equity release, etc.)"
-                        className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 shadow-sm font-semibold leading-relaxed"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:bg-white transition-all shadow-inner leading-relaxed"
                       />
                     </div>
 
@@ -1576,7 +1576,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
 
                     <button
                       type="submit"
-                      className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-slate-950 font-extrabold text-[13.5px] px-6 py-4 border border-amber-400/40 shadow-lg shadow-amber-500/10 transition-all cursor-pointer"
+                      className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-slate-950 font-extrabold text-[13.5px] py-4 transition-all cursor-pointer shadow-lg shadow-amber-500/10"
                     >
                       Book Free Assessment Strategy Session
                       <ArrowRight className="w-4 h-4 text-slate-950" />
@@ -1585,13 +1585,11 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                 </>
               ) : (
                 <div className="text-center py-10 space-y-4 relative z-10">
-                  <div className="w-16 h-16 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center mx-auto text-emerald-600 shadow-sm">
-                    <Check className="w-8 h-8" strokeWidth={3} />
-                  </div>
-                  <h3 className="text-[#0B1F3A] text-[20px] font-extrabold" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                  <CheckCircle2 className="w-16 h-16 text-emerald-600 mx-auto" />
+                  <h3 className="text-[#0B1F3A] text-[22px] font-extrabold" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
                     Thank You! Session Requested.
                   </h3>
-                  <p className="text-slate-450 text-[13.5px] max-w-sm mx-auto leading-relaxed font-semibold">
+                  <p className="text-slate-500 text-[14px] max-w-sm mx-auto leading-relaxed font-medium">
                     We have received your callback request. An expert property broker will contact you within 2-4 business hours to evaluate your strategy.
                   </p>
                 </div>
@@ -1710,57 +1708,55 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                     className="space-y-4"
                   >
                     <div className="space-y-1">
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Your Full Name</label>
+                      <label className="block text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide mb-1.5">Your Full Name</label>
                       <input
                         type="text"
                         required
                         value={leadName}
                         onChange={(e) => setLeadName(e.target.value)}
                         placeholder="John Doe"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-[#0B1F3A] focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Email Address</label>
+                      <label className="block text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide mb-1.5">Email Address</label>
                       <input
                         type="email"
                         required
                         value={leadEmail}
                         onChange={(e) => setLeadEmail(e.target.value)}
                         placeholder="john.doe@example.com"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-[#0B1F3A] focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Phone Number</label>
+                      <label className="block text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide mb-1.5">Phone Number</label>
                       <input
                         type="tel"
                         required
                         value={leadPhone}
                         onChange={(e) => setLeadPhone(e.target.value)}
                         placeholder="0400 000 000"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-[#0B1F3A] focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
                     
-                    <p className="text-[10px] text-slate-450 leading-relaxed font-semibold">
+                    <p className="text-[10px] text-slate-500 leading-relaxed font-semibold">
                       Your information is protected. We will email you the calculated yield report and coordinate with a senior broker to review your lending scenarios.
                     </p>
 
                     <button
                       type="submit"
-                      className="w-full py-4 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-slate-950 text-xs font-black uppercase tracking-wider rounded-xl transition-all shadow-md shadow-amber-500/10"
+                      className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-slate-950 font-extrabold text-[13.5px] py-4 transition-all cursor-pointer shadow-lg shadow-amber-500/10"
                     >
                       Generate My Yield Report
                     </button>
                   </form>
                 ) : (
                   <div className="text-center py-6 space-y-4">
-                    <div className="w-12 h-12 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center mx-auto text-emerald-600 shadow-sm">
-                      <Check className="w-6 h-6" strokeWidth={3} />
-                    </div>
-                    <h4 className="text-[#0B1F3A] text-[16px] font-extrabold">Report Ready &amp; Sent!</h4>
-                    <p className="text-slate-450 text-[12.5px] leading-relaxed max-w-xs mx-auto font-semibold">
+                    <CheckCircle2 className="w-16 h-16 text-emerald-600 mx-auto" />
+                    <h4 className="text-[#0B1F3A] text-[18px] font-extrabold">Report Ready &amp; Sent!</h4>
+                    <p className="text-slate-500 text-[13.5px] leading-relaxed max-w-xs mx-auto font-medium">
                       Your detailed Property Yield Report has been emailed to you. A portfolio specialist will follow up to review your lending capacity shortly.
                     </p>
                     

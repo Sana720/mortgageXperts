@@ -35,7 +35,12 @@ const nextConfig: NextConfig = {
   // ── IMAGE OPTIMISATION ────────────────────────────────────────────
   images: {
     // Allow optimizing images served from the same origin
-    remotePatterns: [],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'ui-avatars.com',
+      },
+    ],
     // Prefer modern formats
     formats: ["image/avif", "image/webp"],
   },

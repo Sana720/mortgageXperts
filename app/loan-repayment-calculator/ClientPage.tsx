@@ -23,6 +23,7 @@ import {
   Wallet,
   Coins,
   Landmark,
+  Printer,
   Sparkles,
   Download,
   RotateCcw,
@@ -666,7 +667,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
       <SubPageHero pageTitle="Loan Repayment Calculator" pageHeroSettings={pageHeroSettings || defaultHeroSettings} />
 
       {/* CALCULATOR TOOL SECTION (Redesigned with Content on Left, Compact Form on Right) */}
-      <section id="calculator-tool" className="py-8 lg:py-16 bg-gradient-to-br from-slate-50 via-white to-slate-50/50 relative border-b border-slate-100 min-h-[calc(100vh-80px)] flex flex-col justify-center overflow-hidden">
+      <section id="calculator-tool" className="py-12 lg:py-20 bg-gradient-to-br from-slate-50 via-white to-slate-50/50 relative border-b border-slate-100 overflow-hidden">
         {/* Ambient background glows */}
         <div className="absolute right-[-10%] top-[10%] w-[450px] h-[450px] bg-blue-500/5 rounded-full blur-[100px] pointer-events-none" />
         <div className="absolute left-[-5%] bottom-[15%] w-[350px] h-[350px] bg-indigo-500/40 opacity-10 rounded-full blur-[80px] pointer-events-none" />
@@ -738,37 +739,35 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
  
             {/* Right Column: Compact 4-Step Wizard Calculator (Results inside Step 4) */}
             <div className="lg:col-span-6 flex justify-end no-print">
-              <div className="w-full max-w-[500px] bg-gradient-to-b from-white via-white to-slate-50/50 border border-slate-200/60 rounded-[32px] p-8 shadow-[0_32px_64px_-16px_rgba(15,23,42,0.08)] hover:shadow-[0_32px_64px_-16px_rgba(15,23,42,0.12)] flex flex-col justify-between min-h-[510px] transition-all duration-300 relative overflow-hidden">
-                
-                {/* Top decorative gradient bar */}
-                <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-blue-600 via-indigo-500 to-blue-500" />
+              <div className="w-full max-w-[500px] bg-white rounded-3xl p-8 md:p-10 border border-slate-200 shadow-xl relative overflow-hidden flex flex-col transition-all duration-300 relative overflow-hidden">
+                {/* Signature Benchmark Corner Decoration */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-bl-full opacity-50 pointer-events-none" />
  
                 {/* Progress bar container */}
                 <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden mt-1 mb-4">
                   <div 
                     className="h-full bg-gradient-to-r from-blue-600 to-indigo-500 transition-all duration-500 ease-out" 
-                    style={{ width: `${(currentStep / 4) * 100}%` }}
+                    style={{ width: `${(currentStep / 3) * 100}%` }}
                   />
                 </div>
  
                 {/* Header Step indicators */}
                 <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
                   <div className="flex items-center gap-2">
-                    <span className={`w-5.5 h-5.5 rounded-full flex items-center justify-center text-[10px] font-black text-white transition-all ${currentStep === 4 ? 'bg-emerald-600 shadow-[0_2px_8px_rgba(16,185,129,0.3)]' : 'bg-blue-600 shadow-[0_2px_8px_rgba(37,99,235,0.3)]'}`}>
-                      {currentStep === 4 ? "✓" : currentStep}
+                    <span className={`w-5.5 h-5.5 rounded-full flex items-center justify-center text-[10px] font-black text-white transition-all ${currentStep >= 3 ? 'bg-emerald-600 shadow-[0_2px_8px_rgba(16,185,129,0.3)]' : 'bg-blue-600 shadow-[0_2px_8px_rgba(37,99,235,0.3)]'}`}>
+                      {currentStep >= 3 ? "✓" : currentStep}
                     </span>
                     <h3 className="text-[13px] font-bold text-slate-700 font-montserrat">
                       {currentStep === 1 && "Step 1: Core Parameters"}
                       {currentStep === 2 && "Step 2: Extras & Fees"}
-                      {currentStep === 3 && "Step 3: Free Property Report"}
-                      {currentStep === 4 && "Step 4: Repayment Results"}
+                      {currentStep >= 3 && "Repayment Results"}
                     </h3>
                   </div>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Step {currentStep} of 4</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{currentStep < 3 ? `Step ${currentStep} of 2` : "Results"}</span>
                 </div>
  
                 {/* Wizard Body content */}
-                <div className="flex-1 flex flex-col justify-center">
+                <div className="flex-1 flex flex-col">
                   
                   {/* Step 1: Core Parameters */}
                   {currentStep === 1 && (
@@ -786,7 +785,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                             id="loan-amount"
                             value={loanAmount}
                             onChange={(e) => setLoanAmount(Math.max(0, Number(e.target.value)))}
-                            className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all"
+                            className="w-full bg-white border border-slate-200 shadow-sm rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all"
                           />
                         </div>
                       </div>
@@ -805,7 +804,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                             step="0.01"
                             value={interestRate}
                             onChange={(e) => setInterestRate(Math.max(0, Number(e.target.value)))}
-                            className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl pl-4 pr-8 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all"
+                            className="w-full bg-white border border-slate-200 shadow-sm rounded-2xl pl-4 pr-8 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all"
                           />
                         </div>
                       </div>
@@ -822,7 +821,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                             id="loan-term"
                             value={loanTerm}
                             onChange={(e) => setLoanTerm(Math.max(1, Math.min(40, Number(e.target.value))))}
-                            className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl px-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all"
+                            className="w-full bg-white border border-slate-200 shadow-sm rounded-2xl px-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all"
                           />
                         </div>
                       </div>
@@ -845,7 +844,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                             id="lump-sum"
                             value={lumpSum}
                             onChange={(e) => setLumpSum(Math.max(0, Number(e.target.value)))}
-                            className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all"
+                            className="w-full bg-white border border-slate-200 shadow-sm rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all"
                           />
                         </div>
                       </div>
@@ -861,7 +860,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                               id="extra-payment"
                               value={extraPayment}
                               onChange={(e) => setExtraPayment(Math.max(0, Number(e.target.value)))}
-                              className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all"
+                              className="w-full bg-white border border-slate-200 shadow-sm rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all"
                             />
                           </div>
                         </div>
@@ -871,7 +870,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                             id="extra-frequency"
                             value={extraFrequency}
                             onChange={(e) => setExtraFrequency(e.target.value)}
-                            className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl px-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all appearance-none cursor-pointer"
+                            className="w-full bg-white border border-slate-200 shadow-sm rounded-2xl px-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all appearance-none cursor-pointer"
                           >
                             <option value="Weekly">Weekly</option>
                             <option value="Fortnightly">Fortnightly</option>
@@ -891,7 +890,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                               id="annual-fee"
                               value={annualFee}
                               onChange={(e) => setAnnualFee(Math.max(0, Number(e.target.value)))}
-                              className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all"
+                              className="w-full bg-white border border-slate-200 shadow-sm rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all"
                             />
                           </div>
                         </div>
@@ -904,7 +903,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                               id="monthly-fee"
                               value={monthlyFee}
                               onChange={(e) => setMonthlyFee(Math.max(0, Number(e.target.value)))}
-                              className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all"
+                              className="w-full bg-white border border-slate-200 shadow-sm rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all"
                             />
                           </div>
                         </div>
@@ -912,101 +911,10 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                     </div>
                   )}
  
-                  {/* Step 3: Property Report Lead Form */}
-                  {currentStep === 3 && (
-                    <form onSubmit={handleCalcLeadSubmit} className="space-y-3 py-1">
-                      <div className="flex justify-center mb-1">
-                        <div className="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 shadow-sm">
-                          <ShieldCheck className="w-5.5 h-5.5" />
-                        </div>
-                      </div>
-                      <div className="text-center mb-2">
-                        <h4 className="text-[14px] font-black text-[#0B1F3A] font-montserrat">Unlock Detailed Analysis</h4>
-                        <p className="text-[11px] text-slate-400 mt-0.5">
-                          Get your final repayment calculation plus a free valuation suburb property report.
-                        </p>
-                      </div>
+                  {/* Note: Step 3 merged with Results */}
  
-                      {/* Full Name */}
-                      <div className="space-y-1">
-                        <label htmlFor="calc-lead-name" className="text-[10.5px] font-bold text-slate-500 block">Full Name *</label>
-                        <input
-                          type="text"
-                          id="calc-lead-name"
-                          required
-                          value={calcLeadName}
-                          onChange={(e) => setCalcLeadName(e.target.value)}
-                          placeholder="e.g. John Doe"
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
-                        />
-                      </div>
- 
-                      {/* Email Address */}
-                      <div className="space-y-1">
-                        <label htmlFor="calc-lead-email" className="text-[10.5px] font-bold text-slate-500 block">Email Address *</label>
-                        <input
-                          type="email"
-                          id="calc-lead-email"
-                          required
-                          value={calcLeadEmail}
-                          onChange={(e) => setCalcLeadEmail(e.target.value)}
-                          placeholder="e.g. john@example.com.au"
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
-                        />
-                      </div>
- 
-                      {/* Phone Number */}
-                      <div className="space-y-1">
-                        <label htmlFor="calc-lead-phone" className="text-[10.5px] font-bold text-slate-500 block">Phone Number *</label>
-                        <input
-                          type="tel"
-                          id="calc-lead-phone"
-                          required
-                          value={calcLeadPhone}
-                          onChange={(e) => setCalcLeadPhone(e.target.value)}
-                          placeholder="e.g. 0400 123 456"
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
-                        />
-                      </div>
- 
-                      {/* Property Address */}
-                      <div className="space-y-1">
-                        <label htmlFor="calc-lead-address" className="text-[10.5px] font-bold text-slate-500 block">Property Address (Optional)</label>
-                        <input
-                          type="text"
-                          id="calc-lead-address"
-                          value={calcLeadAddress}
-                          onChange={(e) => setCalcLeadAddress(e.target.value)}
-                          placeholder="e.g. 123 Main St, Sydney NSW"
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
-                        />
-                      </div>
- 
-                      <button
-                        type="submit"
-                        disabled={calcLeadSubmitting}
-                        className="w-full mt-2 bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-blue-700 hover:to-indigo-600 text-white font-extrabold text-[12.5px] py-2.5 rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-md shadow-blue-500/15"
-                      >
-                        {calcLeadSubmitting ? "Generating Report..." : "Get Free Report & View Results"} <Check className="w-4 h-4" />
-                      </button>
- 
-                      <div className="text-center mt-2">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            calculateRepayments();
-                            setCurrentStep(4);
-                          }}
-                          className="text-[11px] text-slate-400 hover:text-slate-600 font-bold underline transition-colors"
-                        >
-                          Skip and view results directly
-                        </button>
-                      </div>
-                    </form>
-                  )}
- 
-                  {/* Step 4: Calculation Results Dashboard */}
-                  {currentStep === 4 && results && (
+                  {/* Step 3: Calculation Results Dashboard */}
+                  {currentStep >= 3 && results && (
                     <div className="space-y-3.5 py-1">
                       {/* Repayment values list */}
                       <div className="grid grid-cols-2 gap-2.5">
@@ -1237,41 +1145,111 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                           Talk Broker
                         </Link>
                       </div>
+                      {/* Optional Lead Form for full report */}
+                      {currentStep === 3 && (
+                        <div className="bg-white border border-slate-200 shadow-sm rounded-xl p-3 mt-4">
+                          <p className="text-[10px] font-black uppercase tracking-wider text-slate-500 mb-2">📄 Get Full PDF Report — Enter Details</p>
+                          <form onSubmit={(e) => {
+                            handleCalcLeadSubmit(e);
+                          }} className="space-y-2">
+                            <input
+                              type="text"
+                              id="calc-lead-name"
+                              required
+                              placeholder="Full Name*"
+                              value={calcLeadName}
+                              onChange={(e) => setCalcLeadName(e.target.value)}
+                              className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-[12px] font-bold text-slate-800 focus:outline-none focus:border-blue-500"
+                            />
+                            <div className="grid grid-cols-2 gap-2">
+                              <input
+                                type="email"
+                                id="calc-lead-email"
+                                required
+                                placeholder="Email*"
+                                value={calcLeadEmail}
+                                onChange={(e) => setCalcLeadEmail(e.target.value)}
+                                className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-[12px] font-bold text-slate-800 focus:outline-none focus:border-blue-500"
+                              />
+                              <input
+                                type="tel"
+                                id="calc-lead-phone"
+                                required
+                                placeholder="Phone*"
+                                value={calcLeadPhone}
+                                onChange={(e) => setCalcLeadPhone(e.target.value)}
+                                className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-[12px] font-bold text-slate-800 focus:outline-none focus:border-blue-500"
+                              />
+                            </div>
+                            <button
+                              type="submit"
+                              disabled={calcLeadSubmitting}
+                              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-[12px] py-2.5 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-blue-500/10 transition-colors"
+                            >
+                              {calcLeadSubmitting ? "Generating..." : "Download Full Report"} <CheckCircle2 className="w-3.5 h-3.5" />
+                            </button>
+                          </form>
+                        </div>
+                      )}
+
+                      {/* After form submission options */}
+                      {currentStep === 4 && (
+                        <div className="grid grid-cols-2 gap-3 pt-2">
+                          <button
+                            type="button"
+                            onClick={() => window.print()}
+                            className="flex items-center justify-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-3 px-4 rounded-xl shadow-md transition-all active:scale-[0.97] cursor-pointer"
+                          >
+                            <Printer className="w-4 h-4 shrink-0" />
+                            <span>Print Report</span>
+                          </button>
+                          
+                          <button
+                            type="button"
+                            onClick={handleReset}
+                            className="border border-blue-600 text-blue-700 bg-white hover:bg-blue-50 font-bold text-xs py-3 px-4 rounded-xl transition-all cursor-pointer"
+                          >
+                            Start Over
+                          </button>
+                        </div>
+                      )}
                     </div>
                   )}
  
                 </div>
  
-                {/* Footer buttons for steps */}
+                {/* Footer buttons for steps navigation */}
                 {currentStep < 3 && (
-                  <div className="space-y-3 pt-4 border-t border-slate-100">
+                  <div className="space-y-3 pt-4 border-t border-slate-100 mt-4">
                     <div className="flex gap-3">
-                      {currentStep === 2 && (
+                      {currentStep > 1 && (
                         <button
                           type="button"
-                          onClick={() => setCurrentStep(1)}
+                          onClick={() => setCurrentStep(currentStep - 1)}
                           className="inline-flex items-center justify-center gap-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[13px] px-4 py-3 rounded-full transition-colors cursor-pointer"
                         >
                           <ArrowLeft className="w-4 h-4" /> Back
                         </button>
                       )}
-                      {currentStep === 1 ? (
+                      {currentStep === 1 && (
                         <button
                           type="button"
                           onClick={() => setCurrentStep(2)}
-                          className="flex-1 bg-[#2563EB] hover:bg-blue-700 text-white font-extrabold text-[13px] py-3 rounded-full flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
+                          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-[13px] py-3 rounded-full flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
                         >
                           Next: Extras & Fees <ArrowRight className="w-4 h-4" />
                         </button>
-                      ) : (
+                      )}
+                      {currentStep === 2 && (
                         <button
                           type="button"
                           onClick={() => {
+                            calculateRepayments();
                             setCurrentStep(3);
                           }}
-                          className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-blue-700 hover:to-indigo-600 text-white font-extrabold text-[13px] py-3 rounded-full flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-blue-500/10 transition-colors"
+                          className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-blue-700 hover:to-indigo-600 text-white font-extrabold text-[13px] py-3 rounded-full flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-blue-500/15 transition-colors"
                         >
-                          Next: Suburb Report <ArrowRight className="w-4 h-4" />
+                          Calculate Repayments <ArrowRight className="w-4 h-4" />
                         </button>
                       )}
                     </div>
@@ -1506,7 +1484,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                 Learn how to cut years off your mortgage and save thousands in interest with our simple repayment strategies. Our guide breaks down loan structures, payment frequency tricks, offset accounts, and redraw setups.
               </p>
 
-              <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex items-start gap-3.5 max-w-md">
+              <div className="bg-white border border-slate-200 shadow-sm rounded-xl p-4 flex items-start gap-3.5 max-w-md">
                 <FileText className="w-8 h-8 text-blue-600 shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-[13.5px] font-black text-[#0B1F3A]">Loan Repayment Guide</h4>
@@ -1518,11 +1496,11 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
             </div>
 
             {/* Guide Request Form */}
-            <div className="bg-slate-50 border border-slate-200 rounded-[20px] p-5 sm:p-6 shadow-sm">
+            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-slate-100 text-[#0B1F3A]">
               {!guideSubmitted ? (
-                <form onSubmit={handleGuideSubmit} className="space-y-3.5">
-                  <div className="space-y-1">
-                    <label className="text-[9px] font-black uppercase tracking-wider text-slate-400" htmlFor="guide-name">Full Name*</label>
+                <form onSubmit={handleGuideSubmit} className="space-y-4">
+                  <div className="space-y-1.5">
+                    <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5" htmlFor="guide-name">Full Name*</label>
                     <input
                       type="text"
                       id="guide-name"
@@ -1530,11 +1508,11 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                       value={guideName}
                       onChange={(e) => setGuideName(e.target.value)}
                       placeholder="Enter your name"
-                      className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-colors font-bold"
+                      className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white transition-all shadow-inner"
                     />
                   </div>
-                  <div className="space-y-1">
-                    <label className="text-[9px] font-black uppercase tracking-wider text-slate-400" htmlFor="guide-email">Email Address*</label>
+                  <div className="space-y-1.5">
+                    <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5" htmlFor="guide-email">Email Address*</label>
                     <input
                       type="email"
                       id="guide-email"
@@ -1542,11 +1520,11 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                       value={guideEmail}
                       onChange={(e) => setGuideEmail(e.target.value)}
                       placeholder="Enter your email"
-                      className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-colors font-bold"
+                      className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white transition-all shadow-inner"
                     />
                   </div>
-                  <div className="space-y-1">
-                    <label className="text-[9px] font-black uppercase tracking-wider text-slate-400" htmlFor="guide-phone">Phone Number*</label>
+                  <div className="space-y-1.5">
+                    <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5" htmlFor="guide-phone">Phone Number*</label>
                     <input
                       type="tel"
                       id="guide-phone"
@@ -1554,22 +1532,22 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                       value={guidePhone}
                       onChange={(e) => setGuidePhone(e.target.value)}
                       placeholder="e.g. 0400 123 456"
-                      className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-colors font-bold"
+                      className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white transition-all shadow-inner"
                     />
                   </div>
                   <button
                     type="submit"
                     disabled={guideSubmitting}
-                    className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl bg-[#2563EB] hover:bg-blue-700 text-white font-extrabold text-[13.5px] py-3 transition-colors shadow shadow-blue-500/10 cursor-pointer"
+                    className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-[13.5px] py-3.5 px-6 transition-all shadow-lg active:scale-[0.98] mt-2 cursor-pointer"
                   >
                     {guideSubmitting ? "Sending..." : "Get the Guide"}
                     <ArrowRight className="w-4.5 h-4.5" />
                   </button>
                 </form>
               ) : (
-                <div className="text-center py-6 space-y-3">
-                  <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center mx-auto">
-                    <CheckCircle2 className="w-6 h-6" />
+                <div className="text-center py-12 space-y-4">
+                  <div className="w-14 h-14 bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center mx-auto rounded-full">
+                    ✓
                   </div>
                   <h3 className="text-[#0B1F3A] text-[18px] font-black">Thank you!</h3>
                   <p className="text-slate-500 text-[12.5px] leading-relaxed max-w-sm mx-auto">
@@ -1672,12 +1650,12 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
             </div>
 
             {/* Main enquiry form card */}
-            <div className="lg:col-span-7 bg-slate-50 border border-slate-200 rounded-[20px] p-5 sm:p-6 shadow-sm">
+            <div className="lg:col-span-7 bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-slate-100 text-[#0B1F3A]">
               {!enquirySubmitted ? (
-                <form onSubmit={handleEnquirySubmit} className="space-y-3.5">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                    <div className="space-y-1">
-                      <label className="text-[9px] font-black uppercase tracking-wider text-slate-400" htmlFor="first-name">Name</label>
+                <form onSubmit={handleEnquirySubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5" htmlFor="first-name">Name</label>
                       <input
                         type="text"
                         name="name"
@@ -1686,11 +1664,11 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                         value={formData.name}
                         onChange={handleInputChange}
                         placeholder="John"
-                        className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all font-bold"
+                        className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
-                    <div className="space-y-1">
-                      <label className="text-[9px] font-black uppercase tracking-wider text-slate-400" htmlFor="last-name">Surname</label>
+                    <div className="space-y-1.5">
+                      <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5" htmlFor="last-name">Surname</label>
                       <input
                         type="text"
                         name="surname"
@@ -1699,14 +1677,14 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                         value={formData.surname}
                         onChange={handleInputChange}
                         placeholder="Doe"
-                        className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all font-bold"
+                        className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                    <div className="space-y-1">
-                      <label className="text-[9px] font-black uppercase tracking-wider text-slate-400" htmlFor="enquiry-email">Email</label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5" htmlFor="enquiry-email">Email</label>
                       <input
                         type="email"
                         name="email"
@@ -1715,11 +1693,11 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                         value={formData.email}
                         onChange={handleInputChange}
                         placeholder="john.doe@example.com"
-                        className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all font-bold"
+                        className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
-                    <div className="space-y-1">
-                      <label className="text-[9px] font-black uppercase tracking-wider text-slate-400" htmlFor="enquiry-phone">Phone</label>
+                    <div className="space-y-1.5">
+                      <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5" htmlFor="enquiry-phone">Phone</label>
                       <input
                         type="tel"
                         name="phone"
@@ -1727,14 +1705,14 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                         required
                         value={formData.phone}
                         onChange={handleInputChange}
-                        placeholder="+61"
-                        className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all font-bold"
+                        placeholder="0400 000 000"
+                        className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="text-[9px] font-black uppercase tracking-wider text-slate-400" htmlFor="enquiry-message">Your Message</label>
+                  <div className="space-y-1.5">
+                    <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5" htmlFor="enquiry-message">Your Message</label>
                     <textarea
                       name="message"
                       id="enquiry-message"
@@ -1742,30 +1720,30 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                       value={formData.message}
                       onChange={handleInputChange}
                       placeholder="Type your query or question here..."
-                      className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-all resize-none font-bold"
+                      className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white transition-all resize-none shadow-inner"
                     />
                   </div>
 
-                  <p className="text-[9px] text-slate-400 leading-relaxed">
+                  <p className="text-[10px] text-slate-400 leading-relaxed">
                     By clicking ‘Submit Enquiry’, you agree to our Privacy Collection Notice and consent to being contacted by one of Mortgage Xpert’s brokers.
                   </p>
 
                   <button
                     type="submit"
                     disabled={submittingEnquiry}
-                    className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-blue-700 hover:to-indigo-600 text-white font-extrabold text-[13.5px] py-3 transition-all shadow-md shadow-blue-500/10 cursor-pointer"
+                    className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-[13.5px] py-3.5 px-6 transition-all shadow-lg active:scale-[0.98] mt-2 cursor-pointer"
                   >
                     {submittingEnquiry ? "Submitting..." : "Submit Enquiry"}
                     <ArrowRight className="w-4.5 h-4.5" />
                   </button>
                 </form>
               ) : (
-                <div className="text-center py-6 space-y-3">
-                  <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center mx-auto">
-                    <CheckCircle2 className="w-6 h-6" />
+                <div className="text-center py-12 space-y-4">
+                  <div className="w-14 h-14 bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center mx-auto rounded-full">
+                    ✓
                   </div>
-                  <h3 className="text-[#0B1F3A] text-[18px] font-black">Enquiry Submitted!</h3>
-                  <p className="text-slate-500 text-[12.5px] leading-relaxed max-w-sm mx-auto">
+                  <h3 className="text-[#0B1F3A] text-[20px] font-black">Enquiry Submitted!</h3>
+                  <p className="text-slate-500 text-[13.5px] leading-relaxed max-w-sm mx-auto">
                     Thank you. We have received your query and a specialist broker will contact you shortly.
                   </p>
                 </div>
@@ -1846,8 +1824,8 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
 
               {!reportSubmitted ? (
                 <form onSubmit={handleReportSubmit} className="space-y-4">
-                  <div className="space-y-1">
-                    <label className="text-[9px] font-black uppercase tracking-wider text-slate-400" htmlFor="report-name">Full Name*</label>
+                  <div className="space-y-1.5">
+                    <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5" htmlFor="report-name">Full Name*</label>
                     <input
                       type="text"
                       id="report-name"
@@ -1855,11 +1833,11 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                       value={reportName}
                       onChange={(e) => setReportName(e.target.value)}
                       placeholder="Enter your name"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition-colors font-bold"
+                      className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white transition-all shadow-inner"
                     />
                   </div>
-                  <div className="space-y-1">
-                    <label className="text-[9px] font-black uppercase tracking-wider text-slate-400" htmlFor="report-email">Email Address*</label>
+                  <div className="space-y-1.5">
+                    <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5" htmlFor="report-email">Email Address*</label>
                     <input
                       type="email"
                       id="report-email"
@@ -1867,11 +1845,11 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                       value={reportEmail}
                       onChange={(e) => setReportEmail(e.target.value)}
                       placeholder="Enter your email"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition-colors font-bold"
+                      className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white transition-all shadow-inner"
                     />
                   </div>
-                  <div className="space-y-1">
-                    <label className="text-[9px] font-black uppercase tracking-wider text-slate-400" htmlFor="report-phone">Phone Number*</label>
+                  <div className="space-y-1.5">
+                    <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5" htmlFor="report-phone">Phone Number*</label>
                     <input
                       type="tel"
                       id="report-phone"
@@ -1879,11 +1857,11 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                       value={reportPhone}
                       onChange={(e) => setReportPhone(e.target.value)}
                       placeholder="e.g. 0400 123 456"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition-colors font-bold"
+                      className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white transition-all shadow-inner"
                     />
                   </div>
-                  <div className="space-y-1">
-                    <label className="text-[9px] font-black uppercase tracking-wider text-slate-400" htmlFor="report-address">Property Address*</label>
+                  <div className="space-y-1.5">
+                    <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5" htmlFor="report-address">Property Address*</label>
                     <input
                       type="text"
                       id="report-address"
@@ -1891,30 +1869,30 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                       value={reportAddress}
                       onChange={(e) => setReportAddress(e.target.value)}
                       placeholder="e.g. 123 Example St, Sydney NSW 2000"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition-colors font-bold"
+                      className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white transition-all shadow-inner"
                     />
                   </div>
 
-                  <p className="text-[9px] text-slate-400 leading-relaxed">
+                  <p className="text-[10px] text-slate-400 leading-relaxed">
                     By requesting this report, you consent to being contacted by one of our accredited brokers to confirm details and deliver the report files.
                   </p>
 
                   <button
                     type="submit"
                     disabled={reportSubmitting}
-                    className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl bg-[#2563EB] hover:bg-blue-700 text-white font-extrabold text-[13.5px] py-3.5 transition-colors shadow shadow-blue-500/10 cursor-pointer"
+                    className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-[13.5px] py-3.5 px-6 transition-all shadow-lg active:scale-[0.98] mt-2 cursor-pointer"
                   >
                     {reportSubmitting ? "Generating Report..." : "Submit Request"}
                     <ArrowRight className="w-4.5 h-4.5" />
                   </button>
                 </form>
               ) : (
-                <div className="text-center py-8 space-y-4">
-                  <div className="w-14 h-14 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center mx-auto">
-                    <CheckCircle2 className="w-7 h-7" />
+                <div className="text-center py-12 space-y-4">
+                  <div className="w-14 h-14 bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center mx-auto rounded-full">
+                    ✓
                   </div>
-                  <h3 className="text-[#0B1F3A] text-[18px] font-black">Request Received!</h3>
-                  <p className="text-slate-500 text-[12.5px] leading-relaxed max-w-sm mx-auto">
+                  <h3 className="text-[#0B1F3A] text-[20px] font-black">Request Received!</h3>
+                  <p className="text-slate-500 text-[13.5px] leading-relaxed max-w-sm mx-auto">
                     Thank you. We have received your property report request. A broker will compile the report and email it to you shortly.
                   </p>
                 </div>

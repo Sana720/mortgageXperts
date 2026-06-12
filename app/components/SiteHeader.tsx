@@ -48,6 +48,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
   const [isMobileXpertsRangeOpen, setIsMobileXpertsRangeOpen] = useState(false);
   const [isMobileCalculatorsOpen, setIsMobileCalculatorsOpen] = useState(false);
   const [isMobileStampDutyOpen, setIsMobileStampDutyOpen] = useState(false);
+  const [isMobileAboutUsOpen, setIsMobileAboutUsOpen] = useState(false);
 
   const phoneVal = settings.header_phone || "0450 240 757";
   const emailVal = settings.support_email || "mortgage@mortgagexperts.com.au";
@@ -70,12 +71,12 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
     { name: "Visa & Non-Resident Home Loans", href: "/home-loan-with-visas" },
   ];
 
-  const xpertsRangeMenu = [
-    { name: "The Property Xperts", href: "#" },
-    { name: "The Xperts Academy", href: "#" },
-    { name: "The Xperts News", href: "#" },
-    { name: "The Xperts Hub", href: "#" },
-    { name: "The Xperts Podcast", href: "#" },
+  const branchesMenu = [
+    { name: "Mortgage Xperts — Adelaide", href: "/branches/adelaide", state: "SA" },
+    { name: "Mortgage Xperts — Brisbane", href: "/branches/brisbane", state: "QLD" },
+    { name: "Mortgage Xperts — Melbourne", href: "/branches/melbourne", state: "VIC" },
+    { name: "Mortgage Xperts — Perth", href: "/branches/perth", state: "WA" },
+    { name: "Mortgage Xperts — Sydney", href: "/branches/sydney", state: "NSW" },
   ];
 
   const stampDutyStates = [
@@ -106,6 +107,31 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
     { name: "Rent Yield Calculator", href: "/rent-yield-calculators" },
     { name: "Equity Calculator", href: "/equity-calculator" },
     { name: "Cash Rate Change Calculator", href: "/cash-rate-change-calculator" },
+  ];
+
+  const aboutUsMenu = [
+    { name: "Why Use Mortgage Xperts ?", href: "/nepali-mortgage-broker-in-brisbane" },
+    { name: "What We Do", href: "/best-nepali-mortgage-broker-australia" },
+    { name: "Who We Help", href: "/top-nepali-mortgage-broker-in-australia" },
+    { name: "Our Team", href: "/nepali-mortgage-broker-australia" },
+  ];
+
+  const freeResourcesMenu = [
+    { name: "First Home Buyers Step by Step Guide", href: "/free-resources/first-home-buyers-step-by-step-guide" },
+    { name: "Step By Step Home Buying Process", href: "/free-resources/step-by-step-home-buying-process" },
+  ];
+
+  const resourcesMenu = [
+    { name: "The Xperts News & Insights", href: "/the-xperts-news-insights" },
+    { name: "Blog", href: "/blog" },
+    { name: "First Home Guide", href: "/first-home-guide" },
+    { name: "Refinancing Guide", href: "/refinancing-guide" },
+    { name: "Property Investment Guide", href: "/property-investment-guide" },
+    { 
+      name: "Free Resources", 
+      href: "#", 
+      submenu: freeResourcesMenu 
+    },
   ];
 
   return (
@@ -236,14 +262,42 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
               <button className="flex items-center gap-1 hover:text-[#2563EB] transition-colors focus:outline-none whitespace-nowrap">
                 Resources <ChevronDown className="w-3.5 h-3.5 mt-0.5 transition-transform duration-200 group-hover:rotate-180" />
               </button>
-              <div className="absolute top-full left-0 pt-2.5 w-60 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div className="absolute top-full left-0 pt-2.5 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 <div className="bg-white border border-slate-100 rounded-xl shadow-xl py-2">
-                  <Link href="/#guides" className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold">
-                    Mortgage Resource Hub
-                  </Link>
-                  <Link href="/home-guarantee-scheme" className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold">
-                    Home Guarantee Scheme
-                  </Link>
+                  {resourcesMenu.map((item) => {
+                    if (item.submenu) {
+                      return (
+                        <div key={item.name} className="relative group/sub">
+                          <button className="w-full flex items-center justify-between px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold text-left">
+                            <span>{item.name}</span>
+                            <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover/sub:text-[#2563EB]" />
+                          </button>
+                          <div className="absolute left-full top-0 pl-1 w-64 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200 z-50">
+                            <div className="bg-white border border-slate-100 rounded-xl shadow-xl py-2">
+                              {item.submenu.map((subItem) => (
+                                <Link
+                                  key={subItem.name}
+                                  href={subItem.href}
+                                  className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold"
+                                >
+                                  {subItem.name}
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    }
+                    return (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold"
+                      >
+                        {item.name}
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -251,26 +305,47 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
             {/* Mortgage Mate (Direct Link) */}
             <Link href="/mortgage-mate" className="hover:text-[#2563EB] transition-colors pb-0.5 whitespace-nowrap">Mortgage Mate</Link>
 
-            {/* About Us (Direct Link) */}
-            <Link href="/#about" className="hover:text-[#2563EB] transition-colors pb-0.5 whitespace-nowrap">About Us</Link>
-
-            {/* Contact (Direct Link) */}
-            <Link href="/#contact" className="hover:text-[#2563EB] transition-colors pb-0.5 whitespace-nowrap">Contact</Link>
-
-            {/* Xpert's Range Dropdown */}
+            {/* About Us Dropdown */}
             <div className="relative group py-2">
-              <button className="flex items-center gap-1 text-[#2563EB] hover:text-[#1d4ed8] transition-colors focus:outline-none font-bold whitespace-nowrap">
-                Xpert&apos;s Range <ChevronDown className="w-3.5 h-3.5 mt-0.5 transition-transform duration-200 group-hover:rotate-180" />
-              </button>
-              <div className="absolute top-full right-0 pt-2.5 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <Link href="/about-us-nepali-mortgage-broker-in-australia" className="flex items-center gap-1 hover:text-[#2563EB] transition-colors pb-0.5 focus:outline-none whitespace-nowrap">
+                About Us <ChevronDown className="w-3.5 h-3.5 mt-0.5 transition-transform duration-200 group-hover:rotate-180" />
+              </Link>
+              <div className="absolute top-full left-0 pt-2.5 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 <div className="bg-white border border-slate-100 rounded-xl shadow-xl py-2 max-h-[400px] overflow-y-auto">
-                  {xpertsRangeMenu.map((item) => (
+                  {aboutUsMenu.map((item) => (
                     <Link
                       key={item.name}
                       href={item.href}
                       className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold"
                     >
                       {item.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Contact (Direct Link) */}
+            <Link href="/best-nepali-investment-mortgage-broker-perth" className="hover:text-[#2563EB] transition-colors pb-0.5 whitespace-nowrap">Contact</Link>
+
+            {/* Our Branches Dropdown */}
+            <div className="relative group py-2">
+              <button className="flex items-center gap-1 text-[#2563EB] hover:text-[#1d4ed8] transition-colors focus:outline-none font-bold whitespace-nowrap">
+                Our Branches <ChevronDown className="w-3.5 h-3.5 mt-0.5 transition-transform duration-200 group-hover:rotate-180" />
+              </button>
+              <div className="absolute top-full right-0 pt-2.5 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div className="bg-white border border-slate-100 rounded-xl shadow-xl py-2 overflow-hidden">
+                  <div className="px-4 py-2 border-b border-slate-50 mb-1">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Locations Across Australia</span>
+                  </div>
+                  {branchesMenu.map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className="flex items-center justify-between px-4 py-2.5 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold group/item"
+                    >
+                      <span>{item.name}</span>
+                      <span className="text-[10px] font-black text-slate-400 group-hover/item:text-[#2563EB] transition-colors">{item.state}</span>
                     </Link>
                   ))}
                 </div>
@@ -483,26 +558,23 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                   Mortgage Mate
                 </Link>
 
-                <Link href="/#about" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors pb-2 border-b border-slate-50">
-                  About Us
-                </Link>
-
-                <Link href="/#contact" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors pb-2 border-b border-slate-50">
-                  Contact
-                </Link>
-
-                {/* Xpert's Range Dropdown/Block */}
+                {/* About Us Dropdown/Block */}
                 <div className="border-b border-slate-50 pb-2 flex flex-col gap-1.5">
-                  <button
-                    onClick={() => setIsMobileXpertsRangeOpen(!isMobileXpertsRangeOpen)}
-                    className="flex items-center justify-between w-full text-left focus:outline-none"
-                  >
-                    <span className="text-[10px] text-[#2563EB] font-bold uppercase tracking-wider block">Xpert&apos;s Range</span>
-                    <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${isMobileXpertsRangeOpen ? "rotate-180" : ""}`} />
-                  </button>
-                  {isMobileXpertsRangeOpen && (
-                    <div className="pl-2 flex flex-col gap-2.5 text-[13.5px] font-medium text-slate-600 mt-1 max-h-[200px] overflow-y-auto">
-                      {xpertsRangeMenu.map((item) => (
+                  <div className="flex items-center justify-between w-full">
+                    <Link href="/about-us-nepali-mortgage-broker-in-australia" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">
+                      About Us
+                    </Link>
+                    <button
+                      onClick={() => setIsMobileAboutUsOpen(!isMobileAboutUsOpen)}
+                      className="p-1 focus:outline-none"
+                      aria-label="Toggle About Us Submenu"
+                    >
+                      <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${isMobileAboutUsOpen ? "rotate-180" : ""}`} />
+                    </button>
+                  </div>
+                  {isMobileAboutUsOpen && (
+                    <div className="pl-3 flex flex-col gap-2.5 text-[13.5px] font-medium text-slate-600 mt-1 max-h-[200px] overflow-y-auto animate-fadeIn">
+                      {aboutUsMenu.map((item) => (
                         <Link
                           key={item.name}
                           href={item.href}
@@ -510,6 +582,36 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                           className="hover:text-[#2563EB] transition-colors"
                         >
                           {item.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <Link href="/best-nepali-investment-mortgage-broker-perth" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors pb-2 border-b border-slate-50">
+                  Contact
+                </Link>
+
+                {/* Our Branches Dropdown/Block */}
+                <div className="border-b border-slate-50 pb-2 flex flex-col gap-1.5">
+                  <button
+                    onClick={() => setIsMobileXpertsRangeOpen(!isMobileXpertsRangeOpen)}
+                    className="flex items-center justify-between w-full text-left focus:outline-none"
+                  >
+                    <span className="text-[10px] text-[#2563EB] font-bold uppercase tracking-wider block">Our Branches</span>
+                    <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${isMobileXpertsRangeOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  {isMobileXpertsRangeOpen && (
+                    <div className="pl-2 flex flex-col gap-2 text-[13.5px] font-medium text-slate-600 mt-1">
+                      {branchesMenu.map((item) => (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="flex items-center justify-between hover:text-[#2563EB] transition-colors py-0.5"
+                        >
+                          <span>{item.name}</span>
+                          <span className="text-[10px] font-bold text-slate-400 ml-2">{item.state}</span>
                         </Link>
                       ))}
                     </div>

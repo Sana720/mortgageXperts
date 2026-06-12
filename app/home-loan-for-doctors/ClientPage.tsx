@@ -266,7 +266,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
   const badgeText = pageHeroSettings?.hero_badge || "Doctors & Medical Specialists";
   const titleText = pageHeroSettings?.hero_title || "Specialist Home Loans for Doctors & Surgeons";
   const subtextText = pageHeroSettings?.hero_subtext || "Doctors and medical professionals, whether you’re a full-time salaried doctor, a casual medical practitioner, or self-employed running your own practice under an Australian Business Number (ABN), often have access to special home loan benefits.";
-  const imageSrc = "/images/doctor_hero.png";
+  const imageSrc = pageHeroSettings?.hero_image || "/images/doctor_hero.png";
   const btn1Text = pageHeroSettings?.hero_btn1_text || "Check Eligibility";
   const btn1Link = pageHeroSettings?.hero_btn1_link || "#calculator-section";
   const btn2Text = pageHeroSettings?.hero_btn2_text || "Book Free Consultation";
@@ -1275,12 +1275,12 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
             </div>
 
             {/* Form Box */}
-            <div className="bg-white border border-slate-200/80 rounded-[32px] p-6 sm:p-10 shadow-xl shadow-slate-100 relative">
+            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-slate-100 relative text-[#0B1F3A]">
               {!enquirySubmitted ? (
-                <form onSubmit={handleEnquirySubmit} className="space-y-5">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-black uppercase tracking-wider text-slate-400">First Name</label>
+                <form onSubmit={handleEnquirySubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">First Name</label>
                       <input
                         type="text"
                         name="firstName"
@@ -1288,11 +1288,11 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                         value={formData.firstName}
                         onChange={handleInputChange}
                         placeholder="John"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs sm:text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:bg-white transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-black uppercase tracking-wider text-slate-400">Last Name</label>
+                    <div className="space-y-1.5">
+                      <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">Last Name</label>
                       <input
                         type="text"
                         name="lastName"
@@ -1300,14 +1300,14 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                         value={formData.lastName}
                         onChange={handleInputChange}
                         placeholder="Doe"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs sm:text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:bg-white transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-black uppercase tracking-wider text-slate-400">Email Address</label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">Email Address</label>
                       <input
                         type="email"
                         name="email"
@@ -1315,32 +1315,32 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                         value={formData.email}
                         onChange={handleInputChange}
                         placeholder="john.doe@example.com"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs sm:text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:bg-white transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] font-black uppercase tracking-wider text-slate-400">Phone Number</label>
+                    <div className="space-y-1.5">
+                      <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">Phone Number</label>
                       <input
                         type="tel"
                         name="phone"
                         required
                         value={formData.phone}
                         onChange={handleInputChange}
-                        placeholder="+61 400 000 000"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs sm:text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:bg-white transition-all"
+                        placeholder="0400 000 000"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-slate-400">Your Message</label>
+                  <div className="space-y-1.5">
+                    <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">Your Message</label>
                     <textarea
                       name="message"
                       rows={4}
                       value={formData.message}
                       onChange={handleInputChange}
                       placeholder="Type your query or question here..."
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs sm:text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:bg-white transition-all resize-none"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:bg-white transition-all resize-none shadow-inner"
                     />
                   </div>
 
@@ -1351,16 +1351,16 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   <button
                     type="submit"
                     disabled={submittingEnquiry}
-                    className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-sky-600 to-teal-500 hover:from-sky-700 hover:to-teal-600 text-white font-extrabold text-[13.5px] py-3.5 transition-all shadow-lg shadow-sky-500/10 cursor-pointer"
+                    className="w-full bg-sky-600 hover:bg-sky-700 text-white font-extrabold text-[13.5px] py-3.5 px-6 rounded-xl transition-all shadow-lg active:scale-[0.98] mt-2 cursor-pointer flex items-center justify-center gap-1.5"
                   >
                     {submittingEnquiry ? "Submitting..." : "Submit Enquiry"}
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 </form>
               ) : (
-                <div className="text-center py-10 space-y-4">
-                  <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center mx-auto">
-                    <CheckCircle2 className="w-8 h-8" />
+                <div className="text-center py-12 space-y-4">
+                  <div className="w-14 h-14 bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center mx-auto rounded-full">
+                    ✓
                   </div>
                   <h3 className="text-[#0B1F3A] text-[20px] font-black">Enquiry Submitted!</h3>
                   <p className="text-slate-500 text-[13.5px] leading-relaxed max-w-sm mx-auto">

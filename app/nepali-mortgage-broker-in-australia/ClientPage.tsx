@@ -2491,12 +2491,12 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
 
             {/* Premium Enquiry Form (Homepage visual styled inputs) */}
             <div>
-              <div className="bg-[#F8FAFC] rounded-3xl border border-slate-200/80 p-6 sm:p-10 shadow-sm relative">
+              <div className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-slate-100 relative text-[#0B1F3A]">
                 <div className="absolute top-6 right-6 w-20 h-20 opacity-15" style={{ backgroundImage: "radial-gradient(#2563EB 1.5px, transparent 1.5px)", backgroundSize: "8px 8px" }} />
 
                 {!callbackSubmitted ? (
                   <>
-                    <h3 className="text-[#0B1F3A] text-[17px] font-extrabold mb-6 relative z-10" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                    <h3 className="text-[#0B1F3A] text-[17px] font-extrabold mb-6 relative z-10 text-left" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
                       Secure Your Strategic Callback
                     </h3>
                     <form 
@@ -2525,26 +2525,26 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
 
                         setCallbackSubmitted(true);
                       }} 
-                      className="space-y-5 relative z-10"
+                      className="space-y-5 relative z-10 text-left"
                     >
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Full Name</label>
+                          <label className="block text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide mb-1.5">Full Name</label>
                           <input
                             type="text"
                             name="name"
                             placeholder="John Doe"
-                            className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] shadow-sm"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition-all shadow-inner"
                             required
                           />
                         </div>
                         <div>
-                          <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Phone Number</label>
+                          <label className="block text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide mb-1.5">Phone Number</label>
                           <input
                             type="tel"
                             name="phone"
                             placeholder="0450 000 000"
-                            className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] shadow-sm"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition-all shadow-inner"
                             required
                           />
                         </div>
@@ -2552,18 +2552,18 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Email Address</label>
+                          <label className="block text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide mb-1.5">Email Address</label>
                           <input
                             type="email"
                             name="email"
                             placeholder="john@example.com.au"
-                            className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] shadow-sm"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition-all shadow-inner"
                             required
                           />
                         </div>
                         <div>
-                          <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">State</label>
-                          <select name="state" className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] font-semibold text-slate-700 shadow-sm">
+                          <label className="block text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide mb-1.5">State</label>
+                          <select name="state" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition-all shadow-inner">
                             <option value="NSW">New South Wales (NSW)</option>
                             <option value="VIC">Victoria (VIC)</option>
                             <option value="QLD">Queensland (QLD)</option>
@@ -2576,8 +2576,8 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">What is your current savings position?</label>
-                          <select name="savings" className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] font-semibold text-slate-700 shadow-sm">
+                          <label className="block text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide mb-1.5">What is your current savings position?</label>
+                          <select name="savings" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition-all shadow-inner">
                             <option value="Under $20,000">Under $20,000</option>
                             <option value="$20,000 - $50,000">$20,000 - $50,000</option>
                             <option value="$50,000 - $100,000">$50,000 - $100,000</option>
@@ -2585,8 +2585,8 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                           </select>
                         </div>
                         <div>
-                          <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">What is your gross annual income?</label>
-                          <select name="income" className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563EB] font-semibold text-slate-700 shadow-sm">
+                          <label className="block text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide mb-1.5">What is your gross annual income?</label>
+                          <select name="income" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white transition-all shadow-inner">
                             <option value="Under $80,000">Under $80,000</option>
                             <option value="$80,000 - $120,000">$80,000 - $120,000</option>
                             <option value="$120,000 - $180,000">$120,000 - $180,000</option>
@@ -2597,9 +2597,9 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
 
                       <button
                         type="submit"
-                        className={`w-full ${theme.bgPrimary} ${theme.bgHover} text-white font-bold py-4 rounded-xl text-[13.5px] transition-all flex items-center justify-center gap-1.5 shadow-md shadow-blue-100`}
+                        className={`w-full inline-flex items-center justify-center gap-2 rounded-xl ${theme.bgPrimary} ${theme.bgHover} text-white font-extrabold text-[13.5px] py-4 transition-all cursor-pointer shadow-md shadow-blue-100`}
                       >
-                        Secure Strategic Callback <ArrowRight className="w-4 h-4" />
+                        Secure Strategic Callback <ArrowRight className="w-4 h-4 text-white" />
                       </button>
 
                       <p className="text-[10px] text-slate-400 text-center mt-3">
@@ -2609,15 +2609,13 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                   </>
                 ) : (
                   <div className="py-6 text-center space-y-5 relative z-10">
-                    <div className="w-12 h-12 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-500 mx-auto shadow-sm">
-                      <Check className="w-6 h-6 stroke-[3px]" />
-                    </div>
+                    <CheckCircle2 className="w-16 h-16 text-emerald-600 mx-auto" />
                     
                     <div className="space-y-2">
-                      <h4 className="text-[#0B1F3A] text-lg font-black tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                      <h4 className="text-[#0B1F3A] text-[22px] font-extrabold tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
                         Thank You!
                       </h4>
-                      <p className="text-slate-600 text-xs sm:text-sm leading-relaxed max-w-md mx-auto">
+                      <p className="text-slate-600 text-xs sm:text-sm leading-relaxed max-w-md mx-auto font-medium">
                         You are expecting a call from Home Loan Expert <strong className="font-bold text-[#0B1F3A]">Aakash</strong> within 2 business hours.
                       </p>
                     </div>

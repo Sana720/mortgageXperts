@@ -16,7 +16,8 @@ import {
   HelpCircle,
   Home,
   DollarSign,
-  Info
+  Info,
+  Printer
 } from "lucide-react";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
@@ -50,6 +51,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
   const [calcLeadEmail, setCalcLeadEmail] = useState("");
   const [calcLeadPhone, setCalcLeadPhone] = useState("");
   const [calcLeadSubmitting, setCalcLeadSubmitting] = useState(false);
+  const [leadCaptured, setLeadCaptured] = useState(false);
 
   // Guide request
   const [guideName, setGuideName] = useState("");
@@ -121,11 +123,11 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
+      setLeadCaptured(true);
     } catch (error) {
       console.error("Failed to submit lead:", error);
     } finally {
       setCalcLeadSubmitting(false);
-      setCurrentStep(3);
     }
   };
 
@@ -185,59 +187,6 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
     }
   };
 
-  // PDF downloader
-  const downloadReportPDF = async () => {
-    setIsGeneratingPdf(true);
-    try {
-      const html2canvas = (await import("html2canvas-pro")).default;
-      const { jsPDF } = await import("jspdf");
-
-      const element = document.getElementById("printable-report-area");
-      if (!element) return;
-
-      element.style.setProperty("display", "block", "important");
-      element.style.setProperty("position", "absolute", "important");
-      element.style.setProperty("left", "0px", "important");
-      element.style.setProperty("top", "-9999px", "important");
-      element.style.setProperty("width", "800px", "important");
-      element.style.setProperty("background-color", "#FFFFFF", "important");
-
-      const canvas = await html2canvas(element, {
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        backgroundColor: "#FFFFFF"
-      });
-
-      element.style.removeProperty("display");
-      element.style.removeProperty("position");
-      element.style.removeProperty("left");
-      element.style.removeProperty("top");
-      element.style.removeProperty("width");
-      element.style.removeProperty("background-color");
-
-      const imgData = canvas.toDataURL("image/jpeg", 0.95);
-      const pdf = new jsPDF({
-        orientation: "portrait",
-        unit: "px",
-        format: "a4"
-      });
-
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const margin = 20;
-      const width = pdfWidth - margin * 2;
-      const ratio = canvas.width > 0 ? canvas.height / canvas.width : 1.414;
-      const height = width * ratio;
-
-      pdf.addImage(imgData, "JPEG", margin, margin, width, height);
-      pdf.save(`Mortgage_Xperts_Home_Equity_Report_${new Date().toLocaleDateString("en-AU").replace(/\//g, "-")}.pdf`);
-    } catch (error) {
-      console.error("Failed to generate PDF:", error);
-    } finally {
-      setIsGeneratingPdf(false);
-    }
-  };
-
   const defaultHeroSettings = {
     hero_badge: "Home Equity Specialist",
     hero_title: "Home Equity Calculator",
@@ -249,47 +198,20 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
     hero_btn2_link: "#enquiry-form"
   };
 
-  const faqs = [
-    {
-      q: "What is home equity?",
-      a: "Home equity is the difference between the current market value of your property and the remaining balance on your mortgage. For example, if your home is worth $800,000 and you owe $450,000 on your loan, your total home equity is $350,000."
-    },
-    {
-      q: "What is usable equity and how does it differ from total equity?",
-      a: "Total equity is your full ownership value, but lenders will not let you borrow against 100% of your property's value. Usable equity is the amount of equity you can actually access without selling. Lenders typically limit your total borrowing (existing loan + equity release) to 80% of the property value (or up to 90%-95% with Lenders Mortgage Insurance)."
-    },
-    {
-      q: "How can I access the usable equity in my property?",
-      a: "You can access your usable equity by requesting a cash out or top-up with your current lender, or by refinancing your mortgage to another bank. The lender will perform an upfront valuation of your property to confirm its current market value before approving the equity release."
-    },
-    {
-      q: "What are the most common ways to use home equity?",
-      a: "Property investors frequently use usable equity to fund deposits and acquisition costs for investment properties. Other common uses include financing home renovations, consolidating high-interest debts (like credit cards or car loans) into your lower-rate mortgage, or buying shares."
-    },
-    {
-      q: "Do I need cash to buy an investment property if I use equity?",
-      a: "No. If you have sufficient usable equity, you can borrow the entire 20% deposit and stamp duty costs against your current property, and the remaining 80% against the new investment property. This allows you to build your portfolio with zero cash out of pocket."
-    }
-  ];
-
   return (
     <div className="min-h-screen flex flex-col bg-white font-inter select-none" style={{ overflowX: "clip" }}>
-      {/* HEADER */}
       <SiteHeader isSticky={true} settings={settings} />
 
-      {/* HERO SECTION */}
       <SubPageHero
         pageTitle="Home Equity Calculator"
         themeColor="violet"
         pageHeroSettings={pageHeroSettings || defaultHeroSettings}
       />
 
-      {/* MAIN CALCULATOR SECTION */}
-      <section id="calculator-tool" className="py-12 lg:py-24 bg-white relative scroll-mt-20">
+      <section id="calculator-tool" className="py-12 lg:py-20 bg-gradient-to-br from-slate-50 via-white to-slate-50/50 relative border-b border-slate-100 overflow-hidden">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 w-full relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             
-            {/* Left Column: Context / Content */}
             <div className="lg:col-span-6 space-y-6 no-print">
               <span className="text-[10px] font-black uppercase tracking-widest text-violet-800 bg-violet-50 border border-violet-100/60 px-3.5 py-1.5 rounded-full w-fit block shadow-sm font-bold">
                 Calculations & Insights
@@ -301,73 +223,14 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
               <p className="text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium font-inter">
                 Your home is one of your greatest assets. Over time, principal repayments and market growth build equity. Use this calculator to figure out your usable equity to buy an investment property, renovate, or consolidate debts.
               </p>
-
-              <div className="space-y-4 pt-4">
-                {/* Point 1 */}
-                <motion.div
-                  whileHover={{ y: -4, scale: 1.01 }}
-                  transition={{ duration: 0.2 }}
-                  className="flex gap-4 items-start p-4 bg-gradient-to-br from-violet-50/50 to-fuchsia-50/10 hover:from-violet-50 hover:to-fuchsia-50/30 border border-violet-100/40 rounded-2xl shadow-sm transition-all"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-violet-100/70 text-violet-600 flex items-center justify-center shrink-0 border border-violet-200/40 shadow-sm">
-                    <Home className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-[14.5px] font-black text-[#0B1F3A] font-montserrat">Calculate Usable Equity</h4>
-                    <p className="text-[12.5px] text-slate-500 mt-1 leading-relaxed">Instantly determine the equity you can borrow against without crossing the bank&apos;s LVR limits.</p>
-                  </div>
-                </motion.div>
-
-                {/* Point 2 */}
-                <motion.div
-                  whileHover={{ y: -4, scale: 1.01 }}
-                  transition={{ duration: 0.2 }}
-                  className="flex gap-4 items-start p-4 bg-gradient-to-br from-blue-50/50 to-indigo-50/10 hover:from-blue-50 hover:to-indigo-50/30 border border-blue-100/40 rounded-2xl shadow-sm transition-all"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-blue-100/70 text-blue-600 flex items-center justify-center shrink-0 border border-blue-200/40 shadow-sm">
-                    <TrendingUp className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-[14.5px] font-black text-[#0B1F3A] font-montserrat">Leverage for Investment</h4>
-                    <p className="text-[12.5px] text-slate-500 mt-1 leading-relaxed">See the potential purchase price of an investment property using only your home equity as deposit.</p>
-                  </div>
-                </motion.div>
-
-                {/* Point 3 */}
-                <motion.div
-                  whileHover={{ y: -4, scale: 1.01 }}
-                  transition={{ duration: 0.2 }}
-                  className="flex gap-4 items-start p-4 bg-gradient-to-br from-[#EAF3FF]/50 to-slate-50 hover:from-[#EAF3FF] hover:to-slate-100/80 border border-blue-100/30 rounded-2xl shadow-sm transition-all"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-[#EAF3FF] text-[#2563EB] flex items-center justify-center shrink-0 border border-[#2563EB]/10 shadow-sm">
-                    <DollarSign className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-[14.5px] font-black text-[#0B1F3A] font-montserrat">Consolidation & Renovations</h4>
-                    <p className="text-[12.5px] text-slate-500 mt-1 leading-relaxed">Free up funds to renovate your home or bundle high-interest debt into your low-rate home loan.</p>
-                  </div>
-                </motion.div>
-              </div>
             </div>
 
-            {/* Right Column: Wizard Form */}
             <div className="lg:col-span-6 flex justify-end no-print">
-              <div className="w-full max-w-[520px] bg-gradient-to-b from-white via-white to-slate-50/50 border border-slate-200/60 rounded-[32px] p-8 shadow-[0_32px_64px_-16px_rgba(15,23,42,0.08)] hover:shadow-[0_32px_64px_-16px_rgba(15,23,42,0.12)] flex flex-col justify-between min-h-[530px] transition-all duration-300 relative overflow-hidden">
-                
-                {/* Top decorative gradient bar */}
-                <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-violet-600 via-fuchsia-500 to-violet-500" />
-
-                {/* Progress bar container */}
-                <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden mt-1 mb-4">
-                  <div 
-                    className="h-full bg-violet-600 transition-all duration-500" 
-                    style={{ width: `${(currentStep / 3) * 100}%` }}
-                  />
-                </div>
+              <div className="w-full max-w-[520px] bg-white rounded-3xl p-8 md:p-10 border border-slate-200 shadow-xl relative overflow-hidden flex flex-col transition-all duration-300">
+                <div className={`absolute top-0 right-0 w-32 h-32 bg-violet-50 rounded-bl-full opacity-50 pointer-events-none`} />
 
                 {/* STEP 1: Inputs */}
-                {currentStep === 1 && (
-                  <div className="space-y-4 py-2">
+                <div className="space-y-4 py-2">
                     <div className="space-y-2">
                       <div className="flex justify-between items-center text-[11px] font-bold text-slate-700">
                         <label htmlFor="property-value">Estimated Property Value ($)</label>
@@ -380,18 +243,9 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                           id="property-value"
                           value={propertyValue}
                           onChange={(e) => setPropertyValue(Math.max(0, parseFloat(e.target.value) || 0))}
-                          className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-violet-500 focus:ring-4 focus:ring-violet-500/5 transition-all"
+                          className="w-full bg-white border border-slate-200 shadow-sm rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-violet-500 focus:ring-4 focus:ring-violet-500/5 transition-all"
                         />
                       </div>
-                      <input
-                        type="range"
-                        min="100000"
-                        max="3000000"
-                        step="10000"
-                        value={propertyValue}
-                        onChange={(e) => setPropertyValue(parseInt(e.target.value))}
-                        className="w-full h-1 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-violet-600 mt-1"
-                      />
                     </div>
 
                     <div className="space-y-2">
@@ -406,18 +260,9 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                           id="mortgage-balance"
                           value={mortgageBalance}
                           onChange={(e) => setMortgageBalance(Math.max(0, parseFloat(e.target.value) || 0))}
-                          className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-violet-500 focus:ring-4 focus:ring-violet-500/5 transition-all"
+                          className="w-full bg-white border border-slate-200 shadow-sm rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-violet-500 focus:ring-4 focus:ring-violet-500/5 transition-all"
                         />
                       </div>
-                      <input
-                        type="range"
-                        min="0"
-                        max={Math.max(2000000, propertyValue)}
-                        step="10000"
-                        value={mortgageBalance}
-                        onChange={(e) => setMortgageBalance(parseInt(e.target.value))}
-                        className="w-full h-1 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-violet-600 mt-1"
-                      />
                     </div>
 
                     <div className="space-y-2">
@@ -426,105 +271,15 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                         <span className="text-violet-600 font-black text-[13px]">{lvrLimit}% LVR</span>
                       </div>
                       <div className="grid grid-cols-3 p-1 bg-slate-100 rounded-xl">
-                        <button
-                          type="button"
-                          onClick={() => setLvrLimit(80)}
-                          className={`py-1.5 text-xs font-bold rounded-lg transition-all ${lvrLimit === 80 ? 'bg-white text-violet-800 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
-                        >
-                          80% (Standard)
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setLvrLimit(90)}
-                          className={`py-1.5 text-xs font-bold rounded-lg transition-all ${lvrLimit === 90 ? 'bg-white text-violet-800 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
-                        >
-                          90% (With LMI)
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setLvrLimit(95)}
-                          className={`py-1.5 text-xs font-bold rounded-lg transition-all ${lvrLimit === 95 ? 'bg-white text-violet-800 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}
-                        >
-                          95% (Max)
-                        </button>
-                      </div>
-                      <div className="flex items-start gap-2 bg-violet-50/30 border border-violet-100/60 p-3 rounded-xl mt-1.5">
-                        <Info className="w-4 h-4 text-violet-600 shrink-0 mt-0.5" />
-                        <p className="text-[10.5px] text-slate-500 leading-relaxed font-semibold">
-                          {lvrLimit === 80 
-                            ? "80% LVR avoids Lenders Mortgage Insurance (LMI) and guarantees the best interest rates with all lenders." 
-                            : lvrLimit === 90 
-                              ? "90% LVR allows you to unlock more equity, but you may have to pay Lenders Mortgage Insurance (LMI)."
-                              : "95% LVR maximizes your borrowing capability. Only supported by select specialist lenders."}
-                        </p>
+                        <button type="button" onClick={() => setLvrLimit(80)} className={`py-1.5 text-xs font-bold rounded-lg transition-all ${lvrLimit === 80 ? 'bg-white text-violet-800 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>80%</button>
+                        <button type="button" onClick={() => setLvrLimit(90)} className={`py-1.5 text-xs font-bold rounded-lg transition-all ${lvrLimit === 90 ? 'bg-white text-violet-800 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>90%</button>
+                        <button type="button" onClick={() => setLvrLimit(95)} className={`py-1.5 text-xs font-bold rounded-lg transition-all ${lvrLimit === 95 ? 'bg-white text-violet-800 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>95%</button>
                       </div>
                     </div>
-                  </div>
-                )}
+                </div>
 
-                {/* STEP 2: Lead details */}
-                {currentStep === 2 && (
-                  <form onSubmit={handleLeadSubmit} className="space-y-4 py-2">
-                    <div className="bg-violet-50/50 border border-violet-100 rounded-2xl p-4 text-center">
-                      <h4 className="text-[#0B1F3A] font-extrabold text-[13px] font-montserrat">Unlock Usable Equity Report</h4>
-                      <p className="text-[11px] text-slate-500 mt-1">Enter your details to generate your comprehensive usability report and calculate investment purchasing power.</p>
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <label htmlFor="calc-name" className="text-[11px] font-bold text-slate-700">Full Name</label>
-                      <div className="relative">
-                        <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                        <input
-                          type="text"
-                          id="calc-name"
-                          required
-                          placeholder="Your Name"
-                          value={calcLeadName}
-                          onChange={(e) => setCalcLeadName(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs font-semibold focus:outline-none focus:border-violet-500"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <label htmlFor="calc-email" className="text-[11px] font-bold text-slate-700">Email Address</label>
-                      <div className="relative">
-                        <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                        <input
-                          type="email"
-                          id="calc-email"
-                          required
-                          placeholder="your.email@example.com"
-                          value={calcLeadEmail}
-                          onChange={(e) => setCalcLeadEmail(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs font-semibold focus:outline-none focus:border-violet-500"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <label htmlFor="calc-phone" className="text-[11px] font-bold text-slate-700">Mobile Number</label>
-                      <div className="relative">
-                        <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                        <input
-                          type="tel"
-                          id="calc-phone"
-                          required
-                          placeholder="04XX XXX XXX"
-                          value={calcLeadPhone}
-                          onChange={(e) => setCalcLeadPhone(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs font-semibold focus:outline-none focus:border-violet-500"
-                        />
-                      </div>
-                    </div>
-
-                    <button type="submit" className="hidden" id="wizard-lead-submit-btn" />
-                  </form>
-                )}
-
-                {/* STEP 3: Results Display */}
-                {currentStep === 3 && (
-                  <div className="space-y-4 py-2">
+                {/* STEP 2: Results Display */}
+                <div className="space-y-4 py-2 mt-4 border-t border-slate-100 pt-6">
                     <div className="grid grid-cols-2 gap-3">
                       <div className="bg-violet-50/50 border border-violet-100 rounded-2xl p-4 text-center">
                         <span className="text-[10px] font-black uppercase tracking-wider text-violet-800">Total Equity</span>
@@ -618,65 +373,89 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                       </div>
                     )}
 
-                    <div className="flex items-center gap-2 pt-2">
-                      <button
-                        type="button"
-                        onClick={downloadReportPDF}
-                        disabled={isGeneratingPdf}
-                        className="flex items-center justify-center gap-1.5 bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs py-3 px-4 rounded-xl shadow-md transition-all active:scale-[0.97] cursor-pointer"
-                      >
-                        <FileText className="w-4 h-4 shrink-0" />
-                        <span>{isGeneratingPdf ? "Generating..." : "Print Report"}</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setCurrentStep(1);
-                          setCalcLeadName("");
-                          setCalcLeadEmail("");
-                          setCalcLeadPhone("");
-                        }}
-                        className="border border-violet-600 text-violet-700 bg-white hover:bg-violet-50 font-bold text-xs py-3 px-4 rounded-xl transition-all cursor-pointer"
-                      >
-                        Start Over
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {/* BOTTOM BUTTON BAR FOR STEP 1 & 2 */}
-                {currentStep < 3 && (
-                  <div className="flex justify-between items-center gap-3 border-t border-slate-100 pt-4 mt-4">
-                    {currentStep > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => setCurrentStep(currentStep - 1)}
-                        className="flex items-center gap-1.5 text-slate-600 hover:text-slate-800 font-bold text-xs cursor-pointer py-2"
-                      >
-                        <ArrowLeft className="w-4 h-4" /> Back
-                      </button>
+                    {/* Optional Lead Form for full report */}
+                    {currentStep === 2 && (
+                      <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 mt-4">
+                        <p className="text-[10px] font-black uppercase tracking-wider text-slate-500 mb-2">📄 Get Full PDF Report — Enter Details</p>
+                        <form onSubmit={(e) => {
+                          e.preventDefault();
+                          handleLeadSubmit(e);
+                        }} className="space-y-2">
+                          <input
+                            type="text"
+                            required
+                            placeholder="Full Name"
+                            value={calcLeadName}
+                            onChange={(e) => setCalcLeadName(e.target.value)}
+                            className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-[12px] font-bold text-slate-800 focus:outline-none focus:border-violet-500"
+                          />
+                          <div className="grid grid-cols-2 gap-2">
+                            <input
+                              type="email"
+                              required
+                              placeholder="Email"
+                              value={calcLeadEmail}
+                              onChange={(e) => setCalcLeadEmail(e.target.value)}
+                              className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-[12px] font-bold text-slate-800 focus:outline-none focus:border-violet-500"
+                            />
+                            <input
+                              type="tel"
+                              required
+                              placeholder="Phone"
+                              value={calcLeadPhone}
+                              onChange={(e) => setCalcLeadPhone(e.target.value)}
+                              className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-[12px] font-bold text-slate-800 focus:outline-none focus:border-violet-500"
+                            />
+                          </div>
+                          <button
+                            type="submit"
+                            disabled={calcLeadSubmitting}
+                            className="w-full bg-violet-600 hover:bg-violet-700 text-white font-extrabold text-[12px] py-2.5 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-violet-500/10 transition-colors"
+                          >
+                            {calcLeadSubmitting ? "Generating..." : "Download Full Report"} <CheckCircle2 className="w-3.5 h-3.5" />
+                          </button>
+                        </form>
+                      </div>
                     )}
 
-                    {currentStep === 1 ? (
+                    {/* After form submission options */}
+                    {currentStep === 3 && (
+                      <div className="grid grid-cols-2 gap-3 pt-2">
+                        <button
+                          type="button"
+                          onClick={() => window.print()}
+                          className="flex items-center justify-center gap-1.5 bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs py-3 px-4 rounded-xl shadow-md transition-all active:scale-[0.97] cursor-pointer"
+                        >
+                          <Printer className="w-4 h-4 shrink-0" />
+                          <span>Print Report</span>
+                        </button>
+                        
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setCurrentStep(1);
+                            setCalcLeadName("");
+                            setCalcLeadEmail("");
+                            setCalcLeadPhone("");
+                          }}
+                          className="border border-violet-600 text-violet-700 bg-white hover:bg-violet-50 font-bold text-xs py-3 px-4 rounded-xl transition-all cursor-pointer"
+                        >
+                          Start Over
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                {/* BOTTOM BUTTON BAR FOR STEP 1 */}
+                {currentStep < 2 && (
+                  <div className="flex justify-between items-center gap-3 border-t border-slate-100 pt-4 mt-4">
+                    {currentStep === 1 && (
                       <button
                         type="button"
                         onClick={() => setCurrentStep(2)}
                         className="flex-1 bg-gradient-to-r from-violet-600 to-fuchsia-500 hover:from-violet-700 hover:to-fuchsia-600 text-white font-extrabold text-[13px] py-3 rounded-full flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-violet-500/10 transition-colors ml-auto animate-fade-in"
                       >
-                        Next: Calculate Usable Equity <ArrowRight className="w-4 h-4" />
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const btn = document.getElementById("wizard-lead-submit-btn");
-                          if (btn) btn.click();
-                        }}
-                        disabled={calcLeadSubmitting}
-                        className="flex-1 bg-gradient-to-r from-violet-600 to-fuchsia-500 hover:from-violet-700 hover:to-fuchsia-600 text-white font-extrabold text-[13px] py-3 rounded-full flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-violet-500/10 transition-colors ml-auto"
-                      >
-                        {calcLeadSubmitting ? "Generating Report..." : "Generate Annual Report"}
+                        Calculate Usable Equity <ArrowRight className="w-4 h-4" />
                       </button>
                     )}
                   </div>
@@ -720,14 +499,14 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
               </div>
             </div>
 
-            <div className="bg-white/5 backdrop-blur-md border border-white/10 p-6 rounded-2xl max-w-md lg:ml-auto w-full">
+            <div className="bg-white rounded-[28px] p-6.5 shadow-xl border border-slate-100 max-w-md lg:ml-auto w-full text-slate-800">
               {guideSubmitted ? (
                 <div className="text-center py-8 space-y-3">
-                  <div className="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto border border-emerald-500/25">
+                  <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center mx-auto border border-emerald-100">
                     <CheckCircle2 className="w-6 h-6" />
                   </div>
-                  <h3 className="text-md font-bold font-montserrat">Thank you!</h3>
-                  <p className="text-xs text-slate-300 leading-relaxed">Your guide has been sent to your email. One of our home equity lending specialists will contact you shortly.</p>
+                  <h3 className="text-md font-bold font-montserrat text-[#0B1F3A]">Thank you!</h3>
+                  <p className="text-xs text-slate-500 leading-relaxed">Your guide has been sent to your email. One of our home equity lending specialists will contact you shortly.</p>
                 </div>
               ) : (
                 <form onSubmit={handleGuideSubmit} className="space-y-3.5">
@@ -738,7 +517,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                       placeholder="Your Name"
                       value={guideName}
                       onChange={(e) => setGuideName(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-violet-400 focus:bg-white/10 text-white placeholder-slate-500 transition-all"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-violet-400 focus:bg-white text-slate-800 placeholder-slate-400 transition-all shadow-inner"
                     />
                     <input
                       type="email"
@@ -746,7 +525,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                       placeholder="Email Address"
                       value={guideEmail}
                       onChange={(e) => setGuideEmail(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-violet-400 focus:bg-white/10 text-white placeholder-slate-500 transition-all"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-violet-400 focus:bg-white text-slate-800 placeholder-slate-400 transition-all shadow-inner"
                     />
                     <input
                       type="tel"
@@ -754,7 +533,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                       placeholder="Phone Number"
                       value={guidePhone}
                       onChange={(e) => setGuidePhone(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-violet-400 focus:bg-white/10 text-white placeholder-slate-500 transition-all"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-violet-400 focus:bg-white text-slate-800 placeholder-slate-400 transition-all shadow-inner"
                     />
                   </div>
                   <p className="text-[9.5px] text-slate-400 leading-relaxed">
@@ -858,75 +637,75 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
               </div>
             </div>
 
-            <div className="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl w-full">
+            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-slate-100 text-slate-800">
               {enquirySubmitted ? (
                 <div className="text-center py-12 space-y-4">
-                  <div className="w-14 h-14 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto border border-emerald-500/25">
+                  <div className="w-14 h-14 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center mx-auto border border-emerald-100">
                     <CheckCircle2 className="w-7 h-7" />
                   </div>
-                  <h3 className="text-lg font-black font-montserrat">Callback Request Received</h3>
-                  <p className="text-xs text-slate-300 leading-relaxed max-w-xs mx-auto">
+                  <h3 className="text-lg font-black font-montserrat text-[#0B1F3A]">Callback Request Received</h3>
+                  <p className="text-xs text-slate-505 leading-relaxed max-w-xs mx-auto">
                     Thank you. We have received your home equity enquiry and will contact you within one business hour.
                   </p>
                 </div>
               ) : (
                 <form onSubmit={handleEnquirySubmit} className="space-y-4">
                   <div className="space-y-1.5">
-                    <label htmlFor="enq-name" className="text-[11px] font-bold text-slate-300">Your Full Name</label>
+                    <label htmlFor="enq-name" className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">Your Full Name*</label>
                     <input
                       type="text"
                       id="enq-name"
                       required
-                      placeholder="Enter name"
+                      placeholder="Jane Smith"
                       value={enquiryName}
                       onChange={(e) => setEnquiryName(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs font-semibold focus:outline-none focus:border-violet-400 focus:bg-white/10 text-white placeholder-slate-500 transition-all"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-violet-400 focus:bg-white transition-all shadow-inner"
                     />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label htmlFor="enq-email" className="text-[11px] font-bold text-slate-300">Email Address</label>
+                      <label htmlFor="enq-email" className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">Email Address*</label>
                       <input
                         type="email"
                         id="enq-email"
                         required
-                        placeholder="Enter email"
+                        placeholder="jane@example.com"
                         value={enquiryEmail}
                         onChange={(e) => setEnquiryEmail(e.target.value)}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs font-semibold focus:outline-none focus:border-violet-400 focus:bg-white/10 text-white placeholder-slate-500 transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-violet-400 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label htmlFor="enq-phone" className="text-[11px] font-bold text-slate-300">Mobile Number</label>
+                      <label htmlFor="enq-phone" className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">Mobile Number*</label>
                       <input
                         type="tel"
                         id="enq-phone"
                         required
-                        placeholder="Enter phone"
+                        placeholder="0400 000 000"
                         value={enquiryPhone}
                         onChange={(e) => setEnquiryPhone(e.target.value)}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs font-semibold focus:outline-none focus:border-violet-400 focus:bg-white/10 text-white placeholder-slate-500 transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-violet-400 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-1.5">
-                    <label htmlFor="enq-msg" className="text-[11px] font-bold text-slate-300">Message / Scenario Details</label>
+                    <label htmlFor="enq-msg" className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">Message / Scenario Details</label>
                     <textarea
                       id="enq-msg"
                       rows={3}
                       placeholder="Tell us about your home loan goals..."
                       value={enquiryMsg}
                       onChange={(e) => setEnquiryMsg(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs font-semibold focus:outline-none focus:border-violet-400 focus:bg-white/10 text-white placeholder-slate-500 transition-all resize-none"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-violet-400 focus:bg-white transition-all resize-none shadow-inner"
                     />
                   </div>
 
                   <button
                     type="submit"
                     disabled={enquirySubmitting}
-                    className="w-full bg-violet-600 hover:bg-violet-700 text-white font-extrabold text-[13px] py-3.5 px-6 rounded-xl transition-all shadow-lg shadow-violet-500/10 active:scale-[0.98] mt-2"
+                    className="w-full bg-violet-600 hover:bg-violet-700 text-white font-extrabold text-[13.5px] py-3.5 px-6 rounded-xl transition-all shadow-lg active:scale-[0.98] mt-2 cursor-pointer"
                   >
                     {enquirySubmitting ? "Submitting..." : "Submit Enquiry"}
                   </button>

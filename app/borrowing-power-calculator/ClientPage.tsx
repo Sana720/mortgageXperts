@@ -16,7 +16,7 @@ import {
   Phone,
   ShieldCheck,
   FileText,
-  CheckCircle2,
+  CheckCircle2, Download,
   Calculator,
   AlertCircle,
   HelpCircle,
@@ -323,7 +323,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
       <SubPageHero pageTitle="Borrowing Power Calculator" themeColor="green" pageHeroSettings={pageHeroSettings || defaultHeroSettings} />
 
       {/* CALCULATOR TOOL SECTION (Structured like Loan Repayment, Styled in Emerald) */}
-      <section id="calculator-tool" className="py-8 lg:py-16 bg-gradient-to-br from-slate-50 via-white to-slate-50/50 relative border-b border-slate-100 min-h-[calc(100vh-80px)] flex flex-col justify-center overflow-hidden">
+      <section id="calculator-tool" className="py-12 lg:py-20 bg-gradient-to-br from-slate-50 via-white to-slate-50/50 relative border-b border-slate-100 overflow-hidden">
         {/* Ambient background glows */}
         <div className="absolute right-[-10%] top-[10%] w-[450px] h-[450px] bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none" />
         <div className="absolute left-[-5%] bottom-[15%] w-[350px] h-[350px] bg-teal-500/10 rounded-full blur-[80px] pointer-events-none" />
@@ -394,37 +394,38 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
 
             {/* Right Column: Wizard Form (Exactly structured like Loan Repayment) */}
             <div className="lg:col-span-6 flex justify-end no-print">
-              <div className="w-full max-w-[500px] bg-gradient-to-b from-white via-white to-slate-50/50 border border-slate-200/60 rounded-[32px] p-8 shadow-[0_32px_64px_-16px_rgba(15,23,42,0.08)] hover:shadow-[0_32px_64px_-16px_rgba(15,23,42,0.12)] flex flex-col justify-between min-h-[510px] transition-all duration-300 relative overflow-hidden">
-                
-                {/* Top decorative gradient bar */}
-                <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-500" />
+              <div className="w-full max-w-[500px] bg-white rounded-3xl p-8 md:p-10 border border-slate-200 shadow-xl relative overflow-hidden flex flex-col transition-all duration-300 relative overflow-hidden">
+                {/* Signature Benchmark Corner Decoration */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-green-50 rounded-bl-full opacity-50 pointer-events-none" />
 
                 {/* Progress bar container */}
                 <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden mt-1 mb-4">
                   <div 
                     className="h-full bg-gradient-to-r from-emerald-600 to-teal-500 transition-all duration-500 ease-out" 
-                    style={{ width: `${(currentStep / 4) * 100}%` }}
+                    style={{ width: `${(Math.min(currentStep, 4) / 4) * 100}%` }}
                   />
                 </div>
 
                 {/* Header Step indicators */}
                 <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
                   <div className="flex items-center gap-2">
-                    <span className={`w-5.5 h-5.5 rounded-full flex items-center justify-center text-[10px] font-black text-white transition-all ${currentStep === 4 ? 'bg-emerald-600' : 'bg-emerald-600'}`}>
-                      {currentStep === 4 ? "✓" : currentStep}
+                    <span className="w-5.5 h-5.5 rounded-full flex items-center justify-center text-[10px] font-black text-white bg-emerald-600">
+                      {currentStep >= 4 ? "✓" : currentStep}
                     </span>
                     <h3 className="text-[13px] font-bold text-slate-700 font-montserrat">
                       {currentStep === 1 && "Step 1: Household & Income"}
                       {currentStep === 2 && "Step 2: Expenses Details"}
                       {currentStep === 3 && "Step 3: Loan Details"}
-                      {currentStep === 4 && "Step 4: Borrowing Range"}
+                      {currentStep >= 4 && "Your Borrowing Capacity"}
                     </h3>
                   </div>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Step {currentStep} of 4</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    {currentStep < 4 ? `Step ${currentStep} of 3` : "Results"}
+                  </span>
                 </div>
 
                 {/* Wizard Body content */}
-                <div className="flex-1 flex flex-col justify-center">
+                <div className="flex-1 flex flex-col">
                   
                   {/* Step 1: Household & Income Details */}
                   {currentStep === 1 && (
@@ -436,7 +437,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                           id="household-size"
                           value={householdSize}
                           onChange={(e) => setHouseholdSize(Number(e.target.value))}
-                          className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl px-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all appearance-none cursor-pointer"
+                          className="w-full bg-white border border-slate-200 shadow-sm rounded-2xl px-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all appearance-none cursor-pointer"
                         >
                           <option value={1}>Just Me</option>
                           <option value={2}>Me & a Partner</option>
@@ -458,7 +459,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                             id="monthly-salary"
                             value={monthlySalary}
                             onChange={(e) => setMonthlySalary(Math.max(0, Number(e.target.value)))}
-                            className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all"
+                            className="w-full bg-white border border-slate-200 shadow-sm rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all"
                           />
                         </div>
                       </div>
@@ -476,7 +477,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                             id="other-income"
                             value={otherIncome}
                             onChange={(e) => setOtherIncome(Math.max(0, Number(e.target.value)))}
-                            className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all"
+                            className="w-full bg-white border border-slate-200 shadow-sm rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all"
                           />
                         </div>
                       </div>
@@ -498,7 +499,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                             id="living-expenses"
                             value={livingExpenses}
                             onChange={(e) => setLivingExpenses(Math.max(0, Number(e.target.value)))}
-                            className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all"
+                            className="w-full bg-white border border-slate-200 shadow-sm rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all"
                           />
                         </div>
                       </div>
@@ -515,7 +516,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                             id="loan-payments"
                             value={loanRepayments}
                             onChange={(e) => setLoanRepayments(Math.max(0, Number(e.target.value)))}
-                            className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all"
+                            className="w-full bg-white border border-slate-200 shadow-sm rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all"
                           />
                         </div>
                       </div>
@@ -532,7 +533,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                               id="cc-limit"
                               value={creditCardLimit}
                               onChange={(e) => setCreditCardLimit(Math.max(0, Number(e.target.value)))}
-                              className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all"
+                              className="w-full bg-white border border-slate-200 shadow-sm rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all"
                             />
                           </div>
                         </div>
@@ -548,7 +549,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                               id="other-debts"
                               value={otherDebts}
                               onChange={(e) => setOtherDebts(Math.max(0, Number(e.target.value)))}
-                              className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all"
+                              className="w-full bg-white border border-slate-200 shadow-sm rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all"
                             />
                           </div>
                         </div>
@@ -570,7 +571,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                             id="loan-term"
                             value={loanTerm}
                             onChange={(e) => setLoanTerm(Math.max(1, Math.min(45, Number(e.target.value))))}
-                            className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl px-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all"
+                            className="w-full bg-white border border-slate-200 shadow-sm rounded-2xl px-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all"
                           />
                         </div>
                       </div>
@@ -588,131 +589,112 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                             step="0.01"
                             value={interestRate}
                             onChange={(e) => setInterestRate(Math.max(0, Number(e.target.value)))}
-                            className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl pl-4 pr-8 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all"
+                            className="w-full bg-white border border-slate-200 shadow-sm rounded-2xl pl-4 pr-8 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all"
                           />
                         </div>
                       </div>
                     </div>
                   )}
 
-                  {/* Step 4: Lead collection & Submission */}
-                  {currentStep === 4 && (
-                    <div className="space-y-4 py-2">
+                  {/* Step 4: Results displayed immediately — no lead gate */}
+                  {currentStep >= 4 && (
+                    <div className="space-y-3 py-2">
                       <div className="bg-emerald-50 border border-emerald-100 rounded-2xl p-5 text-center">
                         <span className="text-[10px] font-black uppercase tracking-wider text-emerald-800">Estimated Borrowing Capacity Range</span>
                         <div className="text-2.5xl sm:text-3xl font-black text-emerald-700 mt-1">
-                          ${results.lowerBound.toLocaleString()} - ${results.upperBound.toLocaleString()}
+                          ${results.lowerBound.toLocaleString()} – ${results.upperBound.toLocaleString()}
                         </div>
                         <p className="text-[10.5px] text-slate-500 mt-1.5 leading-relaxed">
-                          Enter your details below to unlock your custom report and verify calculation serviceability.
+                          Calculated over {loanTerm} years at {interestRate}% p.a.
                         </p>
                       </div>
 
-                      <form onSubmit={handleLeadSubmit} className="space-y-3">
-                        <div className="space-y-1">
-                          <label htmlFor="lead-name" className="text-[9px] font-black uppercase tracking-wider text-slate-400">Full Name*</label>
-                          <input
-                            type="text"
-                            id="lead-name"
-                            required
-                            placeholder="Enter your name"
-                            value={calcLeadName}
-                            onChange={(e) => setCalcLeadName(e.target.value)}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-800 focus:outline-none focus:border-emerald-500"
-                          />
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-3">
-                          <div className="space-y-1">
-                            <label htmlFor="lead-email" className="text-[9px] font-black uppercase tracking-wider text-slate-400">Email Address*</label>
-                            <input
-                              type="email"
-                              id="lead-email"
-                              required
-                              placeholder="Enter email"
-                              value={calcLeadEmail}
-                              onChange={(e) => setCalcLeadEmail(e.target.value)}
-                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-800 focus:outline-none focus:border-emerald-500"
-                            />
-                          </div>
-
-                          <div className="space-y-1">
-                            <label htmlFor="lead-phone" className="text-[9px] font-black uppercase tracking-wider text-slate-400">Phone Number*</label>
-                            <input
-                              type="tel"
-                              id="lead-phone"
-                              required
-                              placeholder="Phone"
-                              value={calcLeadPhone}
-                              onChange={(e) => setCalcLeadPhone(e.target.value)}
-                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-[12.5px] font-bold text-slate-800 focus:outline-none focus:border-emerald-500"
-                            />
-                          </div>
-                        </div>
-
-                        <button
-                          type="submit"
-                          disabled={calcLeadSubmitting}
-                          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-[13px] py-3 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-emerald-500/10 transition-colors mt-2"
-                        >
-                          {calcLeadSubmitting ? "Generating..." : "Download Full Capacity Report"} <CheckCircle2 className="w-3.5 h-3.5" />
-                        </button>
-                      </form>
-                    </div>
-                  )}
-
-                  {/* Step 5: Calculations Displayed (Only after Lead Captured) */}
-                  {currentStep === 5 && (
-                    <div className="space-y-4 py-2">
-                      <div className="bg-emerald-50 border border-emerald-100 rounded-2xl p-5 text-center">
-                        <span className="text-[10px] font-black uppercase tracking-wider text-emerald-800">Your Assessed Capacity</span>
-                        <div className="text-2.5xl sm:text-3xl font-black text-emerald-700 mt-1">
-                          ${results.lowerBound.toLocaleString()} - ${results.upperBound.toLocaleString()}
-                        </div>
-                        <p className="text-[10.5px] text-slate-500 mt-1.5 leading-relaxed">
-                          This estimate uses standard compound mortgage present value over {loanTerm} years.
-                        </p>
-                      </div>
-
-                      <div className="space-y-2.5">
+                      <div className="space-y-1.5">
                         <div className="flex justify-between items-center text-[12px] py-1 border-b border-slate-50 font-bold text-slate-600">
                           <span>Total Monthly Income:</span>
                           <span className="text-slate-800 font-black">${Math.round(results.totalMonthlyIncome).toLocaleString()}</span>
                         </div>
                         <div className="flex justify-between items-center text-[12px] py-1 border-b border-slate-50 font-bold text-slate-600">
-                          <span>Adjusted Expenses & CC Commitments:</span>
+                          <span>Adjusted Expenses & CC:</span>
                           <span className="text-slate-800 font-black">${Math.round(results.totalMonthlyExpenses).toLocaleString()}</span>
                         </div>
                         <div className="flex justify-between items-center text-[12px] py-1 font-bold text-slate-600">
-                          <span className="text-emerald-800 font-black">Assessable Monthly Surplus:</span>
+                          <span className="text-emerald-800 font-black">Monthly Surplus:</span>
                           <span className="text-emerald-700 font-extrabold">${Math.round(Math.max(0, results.netMonthly)).toLocaleString()}</span>
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-3 pt-2">
-                        <button
-                          type="button"
-                          onClick={downloadReportPDF}
-                          disabled={isGeneratingPdf}
-                          className="flex items-center justify-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 px-4 rounded-xl shadow-md transition-all active:scale-[0.97] cursor-pointer"
-                        >
-                          <FileText className="w-4 h-4 shrink-0" />
-                          <span>{isGeneratingPdf ? "Generating..." : "Print Report"}</span>
-                        </button>
-                        
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setCurrentStep(1);
-                            setCalcLeadName("");
-                            setCalcLeadEmail("");
-                            setCalcLeadPhone("");
-                          }}
-                          className="border border-emerald-600 text-emerald-700 bg-white hover:bg-emerald-50 font-bold text-xs py-3 px-4 rounded-xl transition-all cursor-pointer"
-                        >
-                          Start Over
-                        </button>
-                      </div>
+                      {/* Lead capture for full PDF report */}
+                      {currentStep === 4 && (
+                        <div className="bg-white border border-slate-200 shadow-sm rounded-xl p-3">
+                          <p className="text-[10px] font-black uppercase tracking-wider text-slate-500 mb-2">📄 Get Full PDF Report — Enter Details</p>
+                          <form onSubmit={handleLeadSubmit} className="space-y-2">
+                            <input
+                              type="text"
+                              id="lead-name"
+                              required
+                              placeholder="Full Name*"
+                              value={calcLeadName}
+                              onChange={(e) => setCalcLeadName(e.target.value)}
+                              className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-[12px] font-bold text-slate-800 focus:outline-none focus:border-emerald-500"
+                            />
+                            <div className="grid grid-cols-2 gap-2">
+                              <input
+                                type="email"
+                                id="lead-email"
+                                required
+                                placeholder="Email*"
+                                value={calcLeadEmail}
+                                onChange={(e) => setCalcLeadEmail(e.target.value)}
+                                className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-[12px] font-bold text-slate-800 focus:outline-none focus:border-emerald-500"
+                              />
+                              <input
+                                type="tel"
+                                id="lead-phone"
+                                required
+                                placeholder="Phone*"
+                                value={calcLeadPhone}
+                                onChange={(e) => setCalcLeadPhone(e.target.value)}
+                                className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-[12px] font-bold text-slate-800 focus:outline-none focus:border-emerald-500"
+                              />
+                            </div>
+                            <button
+                              type="submit"
+                              disabled={calcLeadSubmitting}
+                              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-[12px] py-2.5 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-emerald-500/10 transition-colors"
+                            >
+                              {calcLeadSubmitting ? "Sending..." : "Download Full Report"} <CheckCircle2 className="w-3.5 h-3.5" />
+                            </button>
+                          </form>
+                        </div>
+                      )}
+
+                      {/* After report submitted — show print + reset buttons */}
+                      {currentStep === 5 && (
+                        <div className="grid grid-cols-2 gap-3 pt-1">
+                          <button
+                            type="button"
+                            onClick={downloadReportPDF}
+                            disabled={isGeneratingPdf}
+                            className="flex items-center justify-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 px-4 rounded-xl shadow-md transition-all active:scale-[0.97] cursor-pointer"
+                          >
+                            <FileText className="w-4 h-4 shrink-0" />
+                            <span>{isGeneratingPdf ? "Generating..." : "Print Report"}</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setCurrentStep(1);
+                              setCalcLeadName("");
+                              setCalcLeadEmail("");
+                              setCalcLeadPhone("");
+                            }}
+                            className="border border-emerald-600 text-emerald-700 bg-white hover:bg-emerald-50 font-bold text-xs py-3 px-4 rounded-xl transition-all cursor-pointer"
+                          >
+                            Start Over
+                          </button>
+                        </div>
+                      )}
                     </div>
                   )}
 
@@ -755,14 +737,14 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                           onClick={() => setCurrentStep(4)}
                           className="flex-1 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-600 text-white font-extrabold text-[13px] py-3 rounded-full flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-emerald-500/10 transition-colors"
                         >
-                          Next: Calculate Range <ArrowRight className="w-4 h-4" />
+                          Calculate Borrowing Range <ArrowRight className="w-4 h-4" />
                         </button>
                       )}
                     </div>
                   </div>
                 )}
                 
-                {(currentStep === 4 || currentStep === 5) && (
+                {currentStep >= 4 && (
                   <p className="text-[9.5px] text-slate-400 leading-relaxed pt-2.5 border-t border-slate-100 mt-2">
                     Disclaimer: This is an estimate only. Capacity depends on compounding and lender approval parameters. Consult an expert for official pre-approvals.
                   </p>
@@ -775,98 +757,76 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
         </div>
       </section>
 
-      {/* ROADMAP / GUIDE DOWNLOAD SECTION (Emerald version) */}
-      <section className="py-5 lg:py-10 bg-white border-b border-slate-100 relative">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      {/* ROADMAP / GUIDE DOWNLOAD SECTION */}
+      <section className="py-16 md:py-24 max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          
+          <div className="space-y-6">
+            <h2 
+              className="text-[28px] sm:text-[36px] font-bold leading-tight text-[#0B1F3A]"
+              style={{ fontFamily: "var(--font-montserrat, sans-serif)" }}
+            >
+              Master the property market
+            </h2>
             
-            <div className="space-y-4">
-              <span className="text-[10px] font-black uppercase tracking-widest text-emerald-800 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full w-fit block font-bold">
-                Guide Download
-              </span>
-              <h2 className="text-[#0B1F3A] text-[24px] sm:text-[30px] font-black leading-tight font-montserrat">
-                Your roadmap to maximizing borrowing power
-              </h2>
-              <p className="text-slate-500 text-[13.5px] leading-relaxed">
-                Learn how to restructure debts, decrease credit cards, and optimize income variables to maximize what you can borrow from Australian banks.
-              </p>
+            <p className="text-[15px] sm:text-[16px] text-slate-600 leading-relaxed mb-8">
+              Whether you're buying your first home, refinancing, or building a portfolio, our comprehensive guides break down every step into simple, actionable advice.
+            </p>
 
-              <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex items-start gap-3.5 max-w-md">
-                <FileText className="w-8 h-8 text-emerald-600 shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="text-[13.5px] font-black text-[#0B1F3A]">Unlocking Borrowing Capacity</h4>
-                  <p className="text-slate-500 text-[11.5px] leading-relaxed mt-0.5">
-                    Our checklists list direct variables that banks examine. Use our guide to prepare your PAYG/Self-Employed profiles before submission.
-                  </p>
-                </div>
+            <div className="bg-white rounded-3xl p-8 md:p-10 border border-slate-200 shadow-xl relative overflow-hidden">
+              <div className={`absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full opacity-50 pointer-events-none`} />
+              
+              <h3 
+                className="text-[22px] font-bold text-[#0B1F3A] mb-6 relative z-10"
+                style={{ fontFamily: "var(--font-montserrat, sans-serif)" }}
+              >
+                What you'll learn:
+              </h3>
+              
+              <ul className="space-y-5 mb-8 relative z-10">
+                {[
+                  "How much deposit you actually need in 2024",
+                  "Understanding government grants and schemes",
+                  "The hidden costs of buying property",
+                  "How to get pre-approval fast",
+                  "Negotiation tips for first-timers"
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <CheckCircle2 className={`w-6 h-6 text-blue-600 shrink-0 mt-0.5`} />
+                    <span className="text-[15px] sm:text-[16px] text-slate-700 font-medium">{item}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <a 
+                href="/free-resources/first-home-buyers-step-by-step-guide" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`inline-flex items-center justify-center w-full bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full font-bold text-[15px] transition-all duration-300 shadow-lg shadow-blue-500/20 relative z-10`}
+              >
+                <Download className="w-5 h-5 mr-2" />
+                Download PDF Guide Now
+              </a>
+            </div>
+          </div>
+
+          <div className="relative rounded-3xl overflow-hidden shadow-2xl h-[400px] sm:h-[500px] lg:h-[650px]">
+            <img
+              src="/images/family_couch_laptop.png"
+              alt="Family reading guide"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/80 to-transparent flex flex-col justify-end p-10">
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 text-white">
+                <p className="text-[18px] font-bold mb-2">100% Free Resource</p>
+                <p className="text-white/80 text-[14px]">No email required. Instant access.</p>
               </div>
             </div>
-
-            {/* Guide Request Form */}
-            <div className="bg-slate-50 border border-slate-200 rounded-[20px] p-5 sm:p-6 shadow-sm">
-              {!guideSubmitted ? (
-                <form onSubmit={handleGuideSubmit} className="space-y-3.5">
-                  <div className="space-y-1">
-                    <label className="text-[9px] font-black uppercase tracking-wider text-slate-400" htmlFor="guide-name">Full Name*</label>
-                    <input
-                      type="text"
-                      id="guide-name"
-                      required
-                      value={guideName}
-                      onChange={(e) => setGuideName(e.target.value)}
-                      placeholder="Enter your name"
-                      className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500 transition-colors font-bold"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-[9px] font-black uppercase tracking-wider text-slate-400" htmlFor="guide-email">Email Address*</label>
-                    <input
-                      type="email"
-                      id="guide-email"
-                      required
-                      value={guideEmail}
-                      onChange={(e) => setGuideEmail(e.target.value)}
-                      placeholder="Enter your email"
-                      className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500 transition-colors font-bold"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-[9px] font-black uppercase tracking-wider text-slate-400" htmlFor="guide-phone">Phone Number*</label>
-                    <input
-                      type="tel"
-                      id="guide-phone"
-                      required
-                      value={guidePhone}
-                      onChange={(e) => setGuidePhone(e.target.value)}
-                      placeholder="e.g. 0400 123 456"
-                      className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500 transition-colors font-bold"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={guideSubmitting}
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs py-3 px-4 rounded-xl shadow-md transition-all active:scale-[0.98] cursor-pointer mt-2"
-                  >
-                    {guideSubmitting ? "Submitting..." : "Get the Guide"}
-                  </button>
-                </form>
-              ) : (
-                <div className="text-center py-12 space-y-4">
-                  <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-sm">
-                    <CheckCircle2 className="w-6 h-6" />
-                  </div>
-                  <h4 className="text-[14.5px] font-black text-[#0B1F3A]">Guide Successfully Requested!</h4>
-                  <p className="text-[12px] text-slate-500 max-w-xs mx-auto leading-relaxed">
-                    Check your email. We&apos;ve sent a download link for &quot;Unlocking Your Borrowing Power&quot; straight to your inbox.
-                  </p>
-                </div>
-              )}
-            </div>
-
           </div>
+
         </div>
       </section>
-
+      
       {/* FAQS / ACCORDION SECTION */}
       <section className="py-12 lg:py-20 bg-slate-50 border-b border-slate-100">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
@@ -940,21 +900,21 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
               </p>
             </div>
 
-            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-6 md:p-8">
+            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-slate-100 text-[#0B1F3A]">
               {enquirySubmitted ? (
                 <div className="text-center py-12 space-y-4">
-                  <div className="w-14 h-14 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto border border-emerald-500/30">
+                  <div className="w-14 h-14 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mx-auto border border-emerald-100">
                     ✓
                   </div>
-                  <h3 className="text-xl font-bold font-montserrat">Enquiry Submitted Successfully</h3>
-                  <p className="text-slate-400 text-xs max-w-sm mx-auto leading-relaxed">
+                  <h3 className="text-xl font-bold font-montserrat text-[#0B1F3A]">Enquiry Submitted Successfully</h3>
+                  <p className="text-slate-500 text-xs max-w-sm mx-auto leading-relaxed">
                     Thank you. An investment loan strategist from Mortgage Xperts will call you shortly to discuss your borrowing options.
                   </p>
                 </div>
               ) : (
                 <form onSubmit={handleEnquirySubmit} className="space-y-4">
-                  <div className="space-y-1">
-                    <label htmlFor="enq-name" className="text-[10.5px] font-bold text-slate-350 tracking-wide uppercase">Your Full Name</label>
+                  <div className="space-y-1.5">
+                    <label htmlFor="enq-name" className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block">Your Full Name*</label>
                     <input
                       type="text"
                       id="enq-name"
@@ -962,13 +922,13 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                       required
                       value={enquiryName}
                       onChange={(e) => setEnquiryName(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs font-semibold focus:outline-none focus:border-emerald-400 focus:bg-white/10 text-white placeholder-slate-500 transition-all"
+                      className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:bg-white transition-all shadow-inner"
                     />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label htmlFor="enq-email" className="text-[10.5px] font-bold text-slate-350 tracking-wide uppercase">Email Address</label>
+                    <div className="space-y-1.5">
+                      <label htmlFor="enq-email" className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block">Email Address*</label>
                       <input
                         type="email"
                         id="enq-email"
@@ -976,11 +936,11 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                         required
                         value={enquiryEmail}
                         onChange={(e) => setEnquiryEmail(e.target.value)}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs font-semibold focus:outline-none focus:border-emerald-400 focus:bg-white/10 text-white placeholder-slate-500 transition-all"
+                        className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
-                    <div className="space-y-1">
-                      <label htmlFor="enq-phone" className="text-[10.5px] font-bold text-slate-350 tracking-wide uppercase">Phone Number</label>
+                    <div className="space-y-1.5">
+                      <label htmlFor="enq-phone" className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block">Phone Number*</label>
                       <input
                         type="tel"
                         id="enq-phone"
@@ -988,27 +948,27 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                         required
                         value={enquiryPhone}
                         onChange={(e) => setEnquiryPhone(e.target.value)}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs font-semibold focus:outline-none focus:border-emerald-400 focus:bg-white/10 text-white placeholder-slate-500 transition-all"
+                        className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
                   </div>
 
-                  <div className="space-y-1">
-                    <label htmlFor="enq-msg" className="text-[10.5px] font-bold text-slate-350 tracking-wide uppercase">Your Message (Optional)</label>
+                  <div className="space-y-1.5">
+                    <label htmlFor="enq-msg" className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block">Your Message (Optional)</label>
                     <textarea
                       id="enq-msg"
                       rows={3}
                       placeholder="Tell us about your property goals..."
                       value={enquiryMsg}
                       onChange={(e) => setEnquiryMsg(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs font-semibold focus:outline-none focus:border-emerald-400 focus:bg-white/10 text-white placeholder-slate-500 transition-all resize-none"
+                      className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:bg-white transition-all resize-none shadow-inner"
                     />
                   </div>
 
                   <button
                     type="submit"
                     disabled={enquirySubmitting}
-                    className="w-full bg-emerald-500 hover:bg-emerald-600 text-[#0B1F3A] font-extrabold text-[13px] py-3.5 px-6 rounded-xl transition-all shadow-lg shadow-emerald-500/10 active:scale-[0.98] mt-2"
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-[13.5px] py-3.5 px-6 rounded-xl transition-all shadow-lg active:scale-[0.98] mt-2 cursor-pointer"
                   >
                     {enquirySubmitting ? "Submitting..." : "Submit Enquiry"}
                   </button>

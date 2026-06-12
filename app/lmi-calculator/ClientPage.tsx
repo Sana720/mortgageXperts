@@ -16,11 +16,12 @@ import {
   Phone,
   ShieldCheck,
   FileText,
-  CheckCircle2,
+  CheckCircle2, Download,
   Calculator,
   AlertCircle,
   HelpCircle,
-  Percent
+  Percent,
+  Printer
 } from "lucide-react";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
@@ -323,8 +324,8 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
       {/* HERO SECTION */}
       <SubPageHero pageTitle="Lenders Mortgage Insurance (LMI) Calculator" themeColor="violet" pageHeroSettings={pageHeroSettings || defaultHeroSettings} />
 
-      {/* CALCULATOR TOOL SECTION */}
-      <section id="calculator-tool" className="py-8 lg:py-16 bg-gradient-to-br from-slate-50 via-white to-slate-50/50 relative border-b border-slate-100 min-h-[calc(100vh-80px)] flex flex-col justify-center overflow-hidden">
+      {/* CALCULATOR TOOL SECTION (Redesigned with Content on Left, Compact Form on Right) */}
+      <section id="calculator-tool" className="py-12 lg:py-20 bg-gradient-to-br from-slate-50 via-white to-slate-50/50 relative border-b border-slate-100 overflow-hidden">
         {/* Ambient background glows */}
         <div className="absolute right-[-10%] top-[10%] w-[450px] h-[450px] bg-indigo-500/5 rounded-full blur-[100px] pointer-events-none" />
         <div className="absolute left-[-5%] bottom-[15%] w-[350px] h-[350px] bg-violet-500/40 opacity-10 rounded-full blur-[80px] pointer-events-none" />
@@ -396,36 +397,34 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
  
             {/* Right Column: Compact 3-Step Wizard Calculator */}
             <div className="lg:col-span-6 flex justify-end no-print">
-              <div className="w-full max-w-[500px] bg-gradient-to-b from-white via-white to-slate-50/50 border border-slate-200/60 rounded-[32px] p-8 shadow-[0_32px_64px_-16px_rgba(15,23,42,0.08)] hover:shadow-[0_32px_64px_-16px_rgba(15,23,42,0.12)] flex flex-col justify-between min-h-[510px] transition-all duration-300 relative overflow-hidden">
-                
-                {/* Top decorative gradient bar */}
-                <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-indigo-600 via-violet-500 to-indigo-500" />
+              <div className="w-full max-w-[500px] bg-white rounded-3xl p-8 md:p-10 border border-slate-200 shadow-xl relative overflow-hidden flex flex-col transition-all duration-300 relative overflow-hidden">
+                {/* Signature Benchmark Corner Decoration */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-violet-50 rounded-bl-full opacity-50 pointer-events-none" />
  
                 {/* Progress bar container */}
                 <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden mt-1 mb-4">
                   <div 
                     className="h-full bg-gradient-to-r from-indigo-600 to-violet-500 transition-all duration-500 ease-out" 
-                    style={{ width: `${(currentStep / 3) * 100}%` }}
+                    style={{ width: `${(currentStep / 2) * 100}%` }}
                   />
                 </div>
  
                 {/* Header Step indicators */}
                 <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
                   <div className="flex items-center gap-2">
-                    <span className={`w-5.5 h-5.5 rounded-full flex items-center justify-center text-[10px] font-black text-white transition-all ${currentStep === 3 ? 'bg-emerald-600 shadow-[0_2px_8px_rgba(16,185,129,0.3)]' : 'bg-indigo-600 shadow-[0_2px_8px_rgba(79,70,229,0.3)]'}`}>
-                      {currentStep === 3 ? "✓" : currentStep}
+                    <span className={`w-5.5 h-5.5 rounded-full flex items-center justify-center text-[10px] font-black text-white transition-all ${currentStep >= 2 ? 'bg-emerald-600 shadow-[0_2px_8px_rgba(16,185,129,0.3)]' : 'bg-indigo-600 shadow-[0_2px_8px_rgba(79,70,229,0.3)]'}`}>
+                      {currentStep >= 2 ? "✓" : currentStep}
                     </span>
                     <h3 className="text-[13px] font-bold text-slate-700 font-montserrat">
                       {currentStep === 1 && "Step 1: Core Parameters"}
-                      {currentStep === 2 && "Step 2: Free Property Report"}
-                      {currentStep === 3 && "Step 3: LMI Results"}
+                      {currentStep >= 2 && "LMI Results"}
                     </h3>
                   </div>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Step {currentStep} of 3</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{currentStep < 2 ? `Step ${currentStep} of 2` : "Results"}</span>
                 </div>
  
                 {/* Wizard Body content */}
-                <div className="flex-1 flex flex-col justify-center">
+                <div className="flex-1 flex flex-col">
                   
                   {/* Step 1: Core Parameters */}
                   {currentStep === 1 && (
@@ -443,7 +442,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                             id="property-value"
                             value={propertyValue}
                             onChange={(e) => setPropertyValue(Math.max(0, Number(e.target.value)))}
-                            className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 transition-all"
+                            className="w-full bg-white border border-slate-200 shadow-sm rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 transition-all"
                           />
                         </div>
                       </div>
@@ -461,7 +460,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                             id="loan-amount"
                             value={loanAmount}
                             onChange={(e) => setLoanAmount(Math.max(0, Number(e.target.value)))}
-                            className="w-full bg-slate-50/80 border border-slate-200/80 rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 transition-all"
+                            className="w-full bg-white border border-slate-200 shadow-sm rounded-2xl pl-8 pr-4 py-3 text-[13.5px] font-extrabold text-[#0B1F3A] focus:outline-none focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 transition-all"
                           />
                         </div>
                       </div>
@@ -478,64 +477,8 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                     </div>
                   )}
  
-                  {/* Step 2: Property Report Lead Form */}
-                  {currentStep === 2 && (
-                    <form onSubmit={handleLeadSubmit} className="space-y-3 py-1">
-                      <div className="flex justify-center mb-1">
-                        <div className="w-10 h-10 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100 shadow-sm">
-                          <ShieldCheck className="w-5.5 h-5.5" />
-                        </div>
-                      </div>
-                      <div className="text-center mb-2">
-                        <h4 className="text-[14px] font-black text-[#0B1F3A] font-montserrat">Unlock Detailed Analysis</h4>
-                        <p className="text-[11px] text-slate-400 mt-0.5">
-                          Get your final LMI calculation plus a free valuation suburb property report.
-                        </p>
-                      </div>
- 
-                      <div className="space-y-2.5">
-                        <div className="relative">
-                          <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                          <input
-                            type="text"
-                            required
-                            placeholder="Full Name"
-                            value={calcLeadName}
-                            onChange={(e) => setCalcLeadName(e.target.value)}
-                            className="w-full bg-slate-50 border border-slate-200/85 rounded-xl pl-9 pr-3 py-2 text-xs font-semibold focus:outline-none focus:border-indigo-500 focus:bg-white text-slate-800 placeholder-slate-400 transition-all"
-                          />
-                        </div>
- 
-                        <div className="relative">
-                          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                          <input
-                            type="email"
-                            required
-                            placeholder="Email Address"
-                            value={calcLeadEmail}
-                            onChange={(e) => setCalcLeadEmail(e.target.value)}
-                            className="w-full bg-slate-50 border border-slate-200/85 rounded-xl pl-9 pr-3 py-2 text-xs font-semibold focus:outline-none focus:border-indigo-500 focus:bg-white text-slate-800 placeholder-slate-400 transition-all"
-                          />
-                        </div>
- 
-                        <div className="relative">
-                          <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                          <input
-                            type="tel"
-                            required
-                            placeholder="Phone Number"
-                            value={calcLeadPhone}
-                            onChange={(e) => setCalcLeadPhone(e.target.value)}
-                            className="w-full bg-slate-50 border border-slate-200/85 rounded-xl pl-9 pr-3 py-2 text-xs font-semibold focus:outline-none focus:border-indigo-500 focus:bg-white text-slate-800 placeholder-slate-400 transition-all"
-                          />
-                        </div>
-                      </div>
-                      <button type="submit" id="wizard-lead-submit-btn" className="hidden" />
-                    </form>
-                  )}
- 
-                  {/* Step 3: LMI Results */}
-                  {currentStep === 3 && (
+                  {/* Step 2: LMI Results */}
+                  {currentStep >= 2 && (
                     <div className="space-y-4 py-1">
                       <div className="bg-indigo-50/40 border border-indigo-100/50 rounded-2xl p-4 text-center space-y-1 relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-full blur-xl pointer-events-none" />
@@ -568,18 +511,62 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                         </div>
                       </div>
  
-                      {/* PDF Report and Start Over buttons */}
+                      {/* Optional Lead Form for full report */}
+                      {currentStep === 2 && (
+                        <div className="bg-white border border-slate-200 shadow-sm rounded-xl p-3 mt-4">
+                          <p className="text-[10px] font-black uppercase tracking-wider text-slate-500 mb-2">📄 Get Full PDF Report — Enter Details</p>
+                          <form onSubmit={(e) => {
+                            e.preventDefault();
+                            handleLeadSubmit(e);
+                          }} className="space-y-2">
+                            <input
+                              type="text"
+                              required
+                              placeholder="Full Name"
+                              value={calcLeadName}
+                              onChange={(e) => setCalcLeadName(e.target.value)}
+                              className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-[12px] font-bold text-slate-800 focus:outline-none focus:border-indigo-500"
+                            />
+                            <div className="grid grid-cols-2 gap-2">
+                              <input
+                                type="email"
+                                required
+                                placeholder="Email"
+                                value={calcLeadEmail}
+                                onChange={(e) => setCalcLeadEmail(e.target.value)}
+                                className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-[12px] font-bold text-slate-800 focus:outline-none focus:border-indigo-500"
+                              />
+                              <input
+                                type="tel"
+                                required
+                                placeholder="Phone"
+                                value={calcLeadPhone}
+                                onChange={(e) => setCalcLeadPhone(e.target.value)}
+                                className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-[12px] font-bold text-slate-800 focus:outline-none focus:border-indigo-500"
+                              />
+                            </div>
+                            <button
+                              type="submit"
+                              disabled={calcLeadSubmitting}
+                              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-[12px] py-2.5 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-indigo-500/10 transition-colors"
+                            >
+                              {calcLeadSubmitting ? "Generating..." : "Download Full Report"} <CheckCircle2 className="w-3.5 h-3.5" />
+                            </button>
+                          </form>
+                        </div>
+                      )}
+
+                      {/* After form submission options */}
                       <div className="grid grid-cols-2 gap-3 pt-2">
                         <button
                           type="button"
-                          onClick={downloadReportPDF}
-                          disabled={isGeneratingPdf}
+                          onClick={() => window.print()}
                           className="flex items-center justify-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-3 px-4 rounded-xl shadow-md transition-all active:scale-[0.97] cursor-pointer"
                         >
-                          <FileText className="w-4 h-4 shrink-0" />
-                          <span>{isGeneratingPdf ? "Generating..." : "Print Report"}</span>
+                          <Printer className="w-4 h-4 shrink-0" />
+                          <span>Print Report</span>
                         </button>
- 
+                        
                         <button
                           type="button"
                           onClick={() => {
@@ -597,47 +584,27 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                   )}
  
                 </div>
- 
-                {/* BOTTOM BUTTON BAR */}
-                {currentStep < 3 && (
-                  <div className="flex justify-between items-center gap-3 border-t border-slate-100 pt-4 mt-4">
-                    {currentStep > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => setCurrentStep(currentStep - 1)}
-                        className="flex items-center gap-1.5 text-slate-600 hover:text-slate-800 font-bold text-xs cursor-pointer py-2"
-                      >
-                        <ArrowLeft className="w-4 h-4" /> Back
-                      </button>
-                    )}
- 
-                    {currentStep < 2 ? (
-                      <button
-                        type="button"
-                        disabled={loanAmount > propertyValue}
-                        onClick={() => setCurrentStep(currentStep + 1)}
-                        className="flex-1 bg-gradient-to-r from-indigo-600 to-violet-500 hover:from-indigo-700 hover:to-violet-600 text-white font-extrabold text-[13px] py-3 rounded-full flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-indigo-500/10 transition-colors ml-auto disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        Next Step <ArrowRight className="w-4 h-4" />
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const btn = document.getElementById("wizard-lead-submit-btn");
-                          if (btn) btn.click();
-                        }}
-                        disabled={calcLeadSubmitting}
-                        className="flex-1 bg-gradient-to-r from-indigo-600 to-violet-500 hover:from-indigo-700 hover:to-violet-600 text-white font-extrabold text-[13px] py-3 rounded-full flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-indigo-500/10 transition-colors ml-auto"
-                      >
-                        {calcLeadSubmitting ? "Generating Report..." : "Generate LMI Report"}
-                      </button>
-                    )}
+                {/* Footer buttons for steps navigation */}
+                {currentStep < 2 && (
+                  <div className="space-y-3 pt-4 border-t border-slate-100 mt-4">
+                    <div className="flex gap-3">
+                      {currentStep === 1 && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            calculateLMI();
+                            setCurrentStep(2);
+                          }}
+                          className="flex-1 bg-gradient-to-r from-indigo-600 to-violet-500 hover:from-indigo-700 hover:to-violet-600 text-white font-extrabold text-[13px] py-3 rounded-full flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-indigo-500/15 transition-colors"
+                        >
+                          Calculate LMI <ArrowRight className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
             </div>
- 
           </div>
         </div>
       </section>
@@ -740,93 +707,75 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
       </div>
 
       {/* ROADMAP / GUIDE DOWNLOAD SECTION */}
-      <section className="py-16 lg:py-24 bg-gradient-to-br from-[#0B1F3A] via-[#102A4F] to-[#0B1F3A] text-white relative overflow-hidden">
-        {/* Glows */}
-        <div className="absolute right-0 bottom-0 w-80 h-80 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute left-10 top-5 w-48 h-48 bg-violet-600/5 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      <section className="py-16 md:py-24 max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          
+          <div className="space-y-6">
+            <h2 
+              className="text-[28px] sm:text-[36px] font-bold leading-tight text-[#0B1F3A]"
+              style={{ fontFamily: "var(--font-montserrat, sans-serif)" }}
+            >
+              Master the property market
+            </h2>
             
-            <div className="space-y-4">
-              <span className="text-[10px] font-black uppercase tracking-widest text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3.5 py-1.5 rounded-full w-fit block font-bold">
-                Guide Download
-              </span>
-              <h2 className="text-white text-[24px] sm:text-[30px] font-black leading-tight font-montserrat">
-                Learn how to avoid or <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-violet-300">minimise LMI costs</span>
-              </h2>
-              <p className="text-slate-350 text-[13.5px] leading-relaxed">
-                Unlock proven strategies to accelerate your deposit savings plan, take advantage of first home buyer schemes, and structure your funds to qualify for bank approval.
-              </p>
+            <p className="text-[15px] sm:text-[16px] text-slate-600 leading-relaxed mb-8">
+              Whether you're buying your first home, refinancing, or building a portfolio, our comprehensive guides break down every step into simple, actionable advice.
+            </p>
 
-              <div className="space-y-2.5 pt-2">
-                <div className="flex gap-2.5 items-center text-xs font-semibold text-slate-300">
-                  <ShieldCheck className="w-4.5 h-4.5 text-indigo-400 shrink-0" />
-                  <span>FHSS (First Home Super Saver) scheme details</span>
-                </div>
-                <div className="flex gap-2.5 items-center text-xs font-semibold text-slate-300">
-                  <ShieldCheck className="w-4.5 h-4.5 text-indigo-400 shrink-0" />
-                  <span>How banks define and verify genuine savings</span>
-                </div>
-                <div className="flex gap-2.5 items-center text-xs font-semibold text-slate-300">
-                  <ShieldCheck className="w-4.5 h-4.5 text-indigo-400 shrink-0" />
-                  <span>Minimizing deposit requirements through Guarantors</span>
-                </div>
+            <div className="bg-white rounded-3xl p-8 md:p-10 border border-slate-200 shadow-xl relative overflow-hidden">
+              <div className={`absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full opacity-50 pointer-events-none`} />
+              
+              <h3 
+                className="text-[22px] font-bold text-[#0B1F3A] mb-6 relative z-10"
+                style={{ fontFamily: "var(--font-montserrat, sans-serif)" }}
+              >
+                What you'll learn:
+              </h3>
+              
+              <ul className="space-y-5 mb-8 relative z-10">
+                {[
+                  "How much deposit you actually need in 2024",
+                  "Understanding government grants and schemes",
+                  "The hidden costs of buying property",
+                  "How to get pre-approval fast",
+                  "Negotiation tips for first-timers"
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <CheckCircle2 className={`w-6 h-6 text-blue-600 shrink-0 mt-0.5`} />
+                    <span className="text-[15px] sm:text-[16px] text-slate-700 font-medium">{item}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <a 
+                href="/free-resources/first-home-buyers-step-by-step-guide" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`inline-flex items-center justify-center w-full bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full font-bold text-[15px] transition-all duration-300 shadow-lg shadow-blue-500/20 relative z-10`}
+              >
+                <Download className="w-5 h-5 mr-2" />
+                Download PDF Guide Now
+              </a>
+            </div>
+          </div>
+
+          <div className="relative rounded-3xl overflow-hidden shadow-2xl h-[400px] sm:h-[500px] lg:h-[650px]">
+            <img
+              src="/images/family_couch_laptop.png"
+              alt="Family reading guide"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/80 to-transparent flex flex-col justify-end p-10">
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 text-white">
+                <p className="text-[18px] font-bold mb-2">100% Free Resource</p>
+                <p className="text-white/80 text-[14px]">No email required. Instant access.</p>
               </div>
             </div>
-
-            <div className="bg-white/5 backdrop-blur-md border border-white/10 p-6 rounded-2xl max-w-md lg:ml-auto w-full">
-              {guideSubmitted ? (
-                <div className="text-center py-8 space-y-3">
-                  <div className="w-12 h-12 rounded-full bg-indigo-500/10 text-indigo-400 flex items-center justify-center mx-auto border border-indigo-500/25">
-                    <CheckCircle2 className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-md font-bold font-montserrat">Thank you!</h3>
-                  <p className="text-xs text-slate-350 leading-relaxed">Your guide has been sent to your email. One of our home loan specialists will follow up with you shortly.</p>
-                </div>
-              ) : (
-                <form onSubmit={handleGuideSubmit} className="space-y-3.5">
-                  <div className="grid grid-cols-1 gap-3">
-                    <input
-                      type="text"
-                      required
-                      placeholder="Your Name"
-                      value={guideName}
-                      onChange={(e) => setGuideName(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-indigo-400 focus:bg-white/10 text-white placeholder-slate-500 transition-all"
-                    />
-                    <input
-                      type="email"
-                      required
-                      placeholder="Your Email"
-                      value={guideEmail}
-                      onChange={(e) => setGuideEmail(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-indigo-400 focus:bg-white/10 text-white placeholder-slate-500 transition-all"
-                    />
-                    <input
-                      type="tel"
-                      required
-                      placeholder="Your Phone Number"
-                      value={guidePhone}
-                      onChange={(e) => setGuidePhone(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-indigo-400 focus:bg-white/10 text-white placeholder-slate-500 transition-all"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={guideSubmitting}
-                    className="w-full bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white font-extrabold text-xs py-3 rounded-xl cursor-pointer transition-all shadow-md shadow-indigo-500/10"
-                  >
-                    {guideSubmitting ? "Requesting..." : "Get the Guide"}
-                  </button>
-                </form>
-              )}
-            </div>
-
           </div>
+
         </div>
       </section>
-
+      
       {/* FAQS / ACCORDION SECTION */}
       <section className="py-12 lg:py-20 bg-slate-50 border-b border-slate-100">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
@@ -918,63 +867,63 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
             </div>
 
             {/* Enquiry Form Card */}
-            <div className="bg-gradient-to-b from-white via-white to-slate-50/50 border border-slate-200/60 rounded-[32px] p-6 sm:p-8 shadow-[0_24px_48px_-12px_rgba(15,23,42,0.06)]">
+            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-slate-100 text-slate-800">
               {!enquirySubmitted ? (
                 <form onSubmit={handleEnquirySubmit} className="space-y-4">
                   <h3 className="text-md font-black text-[#0B1F3A] font-montserrat">Request Callback Consultation</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-slate-500">First Name</label>
+                      <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">First Name</label>
                       <input
                         type="text"
                         required
                         value={enquiryName}
                         onChange={(e) => setEnquiryName(e.target.value)}
-                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-indigo-500 focus:bg-white text-slate-800 transition-all"
+                        className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-slate-500">Email Address</label>
+                      <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">Email Address</label>
                       <input
                         type="email"
                         required
                         value={enquiryEmail}
                         onChange={(e) => setEnquiryEmail(e.target.value)}
-                        className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-indigo-500 focus:bg-white text-slate-800 transition-all"
+                        className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-slate-500">Phone Number</label>
+                    <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">Phone Number</label>
                     <input
                       type="tel"
                       required
                       value={enquiryPhone}
                       onChange={(e) => setEnquiryPhone(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-indigo-500 focus:bg-white text-slate-800 transition-all"
+                      className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:bg-white transition-all shadow-inner"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-slate-500">Enquiry message (optional)</label>
+                    <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">Enquiry message (optional)</label>
                     <textarea
                       rows={3}
                       value={enquiryMsg}
                       onChange={(e) => setEnquiryMsg(e.target.value)}
                       placeholder="Tell us about your property goals..."
-                      className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-indigo-500 focus:bg-white text-slate-800 transition-all resize-none"
+                      className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:bg-white transition-all resize-none shadow-inner"
                     />
                   </div>
 
                   <p className="text-[10px] text-slate-400 font-medium leading-relaxed">
-                    By clicking &lsquo;Submit Enquiry&rsquo;, you agree to our Privacy Collection Notice and consent to being contacted by one of Mortgage Xpert&apos;s brokers.
+                    By clicking &lsquo;Submit Enquiry&rsquo;, you agree to our Privacy Collection Notice and consent to being contacted by one of Mortgage Xpert&rsquo;s brokers.
                   </p>
 
                   <button
                     type="submit"
                     disabled={enquirySubmitting}
-                    className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-500 hover:from-indigo-700 hover:to-violet-600 text-white font-extrabold text-[13.5px] py-3 transition-all shadow-md shadow-indigo-500/10 cursor-pointer"
+                    className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-500 hover:from-indigo-700 hover:to-violet-600 text-white font-extrabold text-[13.5px] py-3.5 transition-all shadow-lg active:scale-[0.98] mt-2 cursor-pointer"
                   >
                     {enquirySubmitting ? "Submitting..." : "Submit Enquiry"}
                     <ArrowRight className="w-4.5 h-4.5" />

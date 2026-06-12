@@ -1309,6 +1309,11 @@ export default function AdminPage() {
                     <option value="/loan-repayment-calculator">Loan Repayment Calculator (/loan-repayment-calculator)</option>
                     <option value="/rent-yield-calculators">Rent Yield Calculator (/rent-yield-calculators)</option>
                     <option value="/equity-calculator">Equity Calculator (/equity-calculator)</option>
+                    <option value="/branches/adelaide">Adelaide Branch (/branches/adelaide)</option>
+                    <option value="/branches/brisbane">Brisbane Branch (/branches/brisbane)</option>
+                    <option value="/branches/melbourne">Melbourne Branch (/branches/melbourne)</option>
+                    <option value="/branches/perth">Perth Branch (/branches/perth)</option>
+                    <option value="/branches/sydney">Sydney Branch (/branches/sydney)</option>
                   </select>
                 </div>
                 <div className="text-right sm:block hidden">

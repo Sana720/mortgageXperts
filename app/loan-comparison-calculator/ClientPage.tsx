@@ -14,11 +14,11 @@ import {
   Calculator,
   Calendar,
   CheckCircle2,
-  AlertCircle,
   FileText,
   Users,
   Clock,
   Star,
+  Printer,
   Check,
   Wallet,
   Coins,
@@ -276,7 +276,6 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
       console.error("Failed to submit comparison lead:", error);
     } finally {
       setCalcLeadSubmitting(false);
-      setCurrentStep(2);
     }
   };
 
@@ -568,7 +567,8 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
 
             {/* Right Interactive Tool Column */}
             <div className="lg:col-span-7">
-              <div className="bg-white border border-slate-200/60 rounded-[32px] p-6 md:p-8 shadow-xl relative overflow-hidden transition-all duration-500 hover:shadow-2xl">
+              <div className="w-full bg-white rounded-3xl p-8 md:p-10 border border-slate-200 shadow-xl relative overflow-hidden flex flex-col transition-all duration-300">
+                <div className={`absolute top-0 right-0 w-32 h-32 bg-rose-50 rounded-bl-full opacity-50 pointer-events-none`} />
                 
                 {currentStep === 1 && (
                   <form onSubmit={handleCalcLeadSubmit} className="space-y-6">
@@ -602,7 +602,7 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
                               required
                               value={loan1Amount}
                               onChange={(e) => setLoan1Amount(Math.max(0, parseFloat(e.target.value) || 0))}
-                              className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-7 pr-3.5 py-2.5 text-xs text-slate-700 font-bold focus:outline-none focus:border-indigo-500 transition-colors shadow-inner"
+                              className="w-full bg-white border border-slate-200 shadow-sm rounded-xl pl-7 pr-3.5 py-2.5 text-xs text-slate-700 font-bold focus:outline-none focus:border-indigo-500 transition-colors"
                             />
                           </div>
                         </div>
@@ -617,7 +617,7 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
                               required
                               value={loan1Rate}
                               onChange={(e) => setLoan1Rate(Math.max(0, parseFloat(e.target.value) || 0))}
-                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-700 font-bold focus:outline-none focus:border-indigo-500 transition-colors shadow-inner"
+                              className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-3.5 py-2.5 text-xs text-slate-700 font-bold focus:outline-none focus:border-indigo-500 transition-colors"
                             />
                           </div>
                         </div>
@@ -629,7 +629,7 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
                             required
                             value={loan1Term}
                             onChange={(e) => setLoan1Term(Math.max(1, Math.min(50, parseInt(e.target.value) || 0)))}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-700 font-bold focus:outline-none focus:border-indigo-500 transition-colors shadow-inner"
+                            className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-3.5 py-2.5 text-xs text-slate-700 font-bold focus:outline-none focus:border-indigo-500 transition-colors"
                           />
                         </div>
 
@@ -639,7 +639,7 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
                             <select
                               value={loan1Frequency}
                               onChange={(e) => setLoan1Frequency(e.target.value)}
-                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-700 font-bold focus:outline-none focus:border-indigo-500 transition-colors appearance-none cursor-pointer"
+                              className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-3.5 py-2.5 text-xs text-slate-700 font-bold focus:outline-none focus:border-indigo-500 transition-colors appearance-none cursor-pointer"
                             >
                               <option>Monthly</option>
                               <option>Fortnightly</option>
@@ -666,7 +666,7 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
                               required
                               value={loan2Amount}
                               onChange={(e) => setLoan2Amount(Math.max(0, parseFloat(e.target.value) || 0))}
-                              className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-7 pr-3.5 py-2.5 text-xs text-slate-700 font-bold focus:outline-none focus:border-orange-500 transition-colors shadow-inner"
+                              className="w-full bg-white border border-slate-200 shadow-sm rounded-xl pl-7 pr-3.5 py-2.5 text-xs text-slate-700 font-bold focus:outline-none focus:border-orange-500 transition-colors"
                             />
                           </div>
                         </div>
@@ -681,7 +681,7 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
                               required
                               value={loan2Rate}
                               onChange={(e) => setLoan2Rate(Math.max(0, parseFloat(e.target.value) || 0))}
-                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-700 font-bold focus:outline-none focus:border-orange-500 transition-colors shadow-inner"
+                              className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-3.5 py-2.5 text-xs text-slate-700 font-bold focus:outline-none focus:border-orange-500 transition-colors"
                             />
                           </div>
                         </div>
@@ -693,7 +693,7 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
                             required
                             value={loan2Term}
                             onChange={(e) => setLoan2Term(Math.max(1, Math.min(50, parseInt(e.target.value) || 0)))}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-700 font-bold focus:outline-none focus:border-orange-500 transition-colors shadow-inner"
+                            className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-3.5 py-2.5 text-xs text-slate-700 font-bold focus:outline-none focus:border-orange-500 transition-colors"
                           />
                         </div>
 
@@ -703,7 +703,7 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
                             <select
                               value={loan2Frequency}
                               onChange={(e) => setLoan2Frequency(e.target.value)}
-                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-700 font-bold focus:outline-none focus:border-orange-500 transition-colors appearance-none cursor-pointer"
+                              className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-3.5 py-2.5 text-xs text-slate-700 font-bold focus:outline-none focus:border-orange-500 transition-colors appearance-none cursor-pointer"
                             >
                               <option>Monthly</option>
                               <option>Fortnightly</option>
@@ -715,54 +715,19 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
                       </div>
                     </div>
 
-                    {/* Integrated Lead Form Section */}
-                    <div className="bg-slate-50 border border-slate-200/50 rounded-2xl p-5 space-y-4">
-                      <div className="flex items-start gap-3">
-                        <FileText className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
-                        <div>
-                          <h4 className="text-[13px] font-extrabold text-[#0B1F3A]">Get Your Custom Comparison PDF Report</h4>
-                          <p className="text-slate-500 text-[11px] leading-relaxed mt-0.5">
-                            Enter your details below to see the results dashboard, download the detailed comparison PDF, and receive our first-home buying guide.
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <input
-                          type="text"
-                          required
-                          placeholder="Your Name"
-                          value={calcLeadName}
-                          onChange={(e) => setCalcLeadName(e.target.value)}
-                          className="bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-700 font-bold focus:outline-none focus:border-[#E11D48]"
-                        />
-                        <input
-                          type="email"
-                          required
-                          placeholder="Your Email"
-                          value={calcLeadEmail}
-                          onChange={(e) => setCalcLeadEmail(e.target.value)}
-                          className="bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-700 font-bold focus:outline-none focus:border-[#E11D48]"
-                        />
-                        <input
-                          type="tel"
-                          required
-                          placeholder="Your Phone"
-                          value={calcLeadPhone}
-                          onChange={(e) => setCalcLeadPhone(e.target.value)}
-                          className="bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-700 font-bold focus:outline-none focus:border-[#E11D48]"
-                        />
-                      </div>
+                    {/* BOTTOM BUTTON BAR FOR STEP 1 */}
+                    <div className="flex justify-between items-center gap-3 border-t border-slate-100 pt-4 mt-6">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setCurrentStep(2);
+                        }}
+                        className="flex-1 bg-gradient-to-r from-rose-600 to-pink-500 hover:from-rose-700 hover:to-pink-600 text-white font-extrabold text-[13px] py-3 rounded-full flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-rose-500/10 transition-colors ml-auto"
+                      >
+                        Calculate & Compare <ArrowRight className="w-4 h-4" />
+                      </button>
                     </div>
-
-                    <button
-                      type="submit"
-                      disabled={calcLeadSubmitting}
-                      className="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs py-3.5 rounded-full transition-all flex items-center justify-center gap-2 shadow-md hover:scale-[1.01]"
-                    >
-                      {calcLeadSubmitting ? "Generating Dashboard..." : "Calculate & Compare"}
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
                   </form>
                 )}
 
@@ -779,16 +744,6 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
                         <h3 className="text-[#0B1F3A] text-[18px] sm:text-[20px] font-black font-montserrat">
                           Comparison Results
                         </h3>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={downloadReportPDF}
-                          disabled={isGeneratingPdf}
-                          className="flex items-center gap-1.5 text-xs text-rose-700 font-bold bg-rose-50 px-3.5 py-2 rounded-full border border-rose-100 hover:bg-rose-100 transition-colors"
-                        >
-                          <Download className="w-3.5 h-3.5" />
-                          {isGeneratingPdf ? "PDF Generating..." : "Download PDF"}
-                        </button>
                       </div>
                     </div>
 
@@ -1146,15 +1101,73 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
                       </div>
                     </div>
 
-                    {/* Reset Button */}
-                    <button
-                      type="button"
-                      onClick={handleReset}
-                      className="w-full bg-slate-100 hover:bg-slate-200 text-[#0B1F3A] font-bold text-xs py-3.5 rounded-full transition-all flex items-center justify-center gap-2"
-                    >
-                      <RotateCcw className="w-4 h-4" />
-                      Configure Different Inputs
-                    </button>
+                    {/* Optional Lead Form for full report */}
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 mt-4">
+                      <p className="text-[10px] font-black uppercase tracking-wider text-slate-500 mb-2">📄 Get Full PDF Report — Enter Details</p>
+                      <form onSubmit={(e) => {
+                        e.preventDefault();
+                        handleCalcLeadSubmit(e);
+                      }} className="space-y-2">
+                        <input
+                          type="text"
+                          required
+                          placeholder="Full Name"
+                          value={calcLeadName}
+                          onChange={(e) => setCalcLeadName(e.target.value)}
+                          className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-[12px] font-bold text-slate-800 focus:outline-none focus:border-rose-500"
+                        />
+                        <div className="grid grid-cols-2 gap-2">
+                          <input
+                            type="email"
+                            required
+                            placeholder="Email"
+                            value={calcLeadEmail}
+                            onChange={(e) => setCalcLeadEmail(e.target.value)}
+                            className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-[12px] font-bold text-slate-800 focus:outline-none focus:border-rose-500"
+                          />
+                          <input
+                            type="tel"
+                            required
+                            placeholder="Phone"
+                            value={calcLeadPhone}
+                            onChange={(e) => setCalcLeadPhone(e.target.value)}
+                            className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2 text-[12px] font-bold text-slate-800 focus:outline-none focus:border-rose-500"
+                          />
+                        </div>
+                        <button
+                          type="submit"
+                          disabled={calcLeadSubmitting}
+                          className="w-full bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-[12px] py-2.5 rounded-xl flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-rose-500/10 transition-colors"
+                        >
+                          {calcLeadSubmitting ? "Generating..." : "Download Full Report"} <CheckCircle2 className="w-3.5 h-3.5" />
+                        </button>
+                      </form>
+                    </div>
+
+                    <div className="flex items-center gap-2 pt-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const element = document.getElementById("printable-report-area");
+                          if (element) {
+                            window.print();
+                          }
+                        }}
+                        className="flex items-center justify-center gap-1.5 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs py-3 px-4 rounded-xl shadow-md transition-all active:scale-[0.97] cursor-pointer w-1/2"
+                      >
+                        <Printer className="w-4 h-4 shrink-0" />
+                        <span>Print Report</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={handleReset}
+                        className="border border-rose-600 text-rose-700 bg-white hover:bg-rose-50 font-bold text-xs py-3 px-4 rounded-xl transition-all cursor-pointer w-1/2 flex items-center justify-center gap-1.5"
+                      >
+                        <RotateCcw className="w-4 h-4 shrink-0" />
+                        <span>Start Over</span>
+                      </button>
+                    </div>
                   </div>
                 )}
 
@@ -1249,7 +1262,7 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
               </div>
             </div>
 
-            <div className="bg-slate-50 border border-slate-200/80 rounded-3xl p-6 md:p-8 relative">
+            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-slate-100 relative text-[#0B1F3A]">
               <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-rose-500 to-pink-500" />
               
               {!guideSubmitted ? (
@@ -1260,45 +1273,54 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
                   </p>
 
                   <div className="space-y-3">
-                    <input
-                      type="text"
-                      required
-                      placeholder="First Name"
-                      value={guideName}
-                      onChange={(e) => setGuideName(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-700 font-medium focus:outline-none focus:border-rose-500"
-                    />
-                    <input
-                      type="email"
-                      required
-                      placeholder="Email Address"
-                      value={guideEmail}
-                      onChange={(e) => setGuideEmail(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-700 font-medium focus:outline-none focus:border-rose-500"
-                    />
-                    <input
-                      type="tel"
-                      required
-                      placeholder="Phone Number"
-                      value={guidePhone}
-                      onChange={(e) => setGuidePhone(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-700 font-medium focus:outline-none focus:border-rose-500"
-                    />
+                    <div className="space-y-1">
+                      <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">First Name</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="John"
+                        value={guideName}
+                        onChange={(e) => setGuideName(e.target.value)}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-rose-500 focus:bg-white transition-all shadow-inner"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">Email Address</label>
+                      <input
+                        type="email"
+                        required
+                        placeholder="john.doe@example.com"
+                        value={guideEmail}
+                        onChange={(e) => setGuideEmail(e.target.value)}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-rose-500 focus:bg-white transition-all shadow-inner"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">Phone Number</label>
+                      <input
+                        type="tel"
+                        required
+                        placeholder="0400 000 000"
+                        value={guidePhone}
+                        onChange={(e) => setGuidePhone(e.target.value)}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-rose-500 focus:bg-white transition-all shadow-inner"
+                      />
+                    </div>
                   </div>
 
                   <button
                     type="submit"
                     disabled={guideSubmitting}
-                    className="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs py-3.5 rounded-full transition-colors flex items-center justify-center gap-1.5 shadow"
+                    className="w-full bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-[13.5px] py-3.5 px-6 rounded-xl transition-all shadow-lg active:scale-[0.98] mt-2 cursor-pointer flex items-center justify-center gap-1.5"
                   >
                     {guideSubmitting ? "Sending..." : "Download Guide"}
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 </form>
               ) : (
-                <div className="bg-white border border-slate-200 rounded-3xl p-8 text-center space-y-4 shadow-sm">
-                  <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto shadow-inner">
-                    <CheckCircle2 className="w-6.5 h-6.5" strokeWidth={2.5} />
+                <div className="text-center py-12 space-y-4">
+                  <div className="w-14 h-14 bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto rounded-full border border-emerald-100">
+                    ✓
                   </div>
                   <h3 className="text-[#0B1F3A] text-[20px] font-black font-montserrat">
                     Guide Requested Successfully!
@@ -1437,7 +1459,7 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
             </div>
 
             {/* Form Panel */}
-            <div className="bg-slate-50 border border-slate-200/80 rounded-3xl p-6 md:p-8 relative shadow-sm">
+            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-slate-100 relative text-[#0B1F3A]">
               {!enquirySubmitted ? (
                 <form onSubmit={handleEnquirySubmit} className="space-y-4">
                   <h3 className="text-[#0B1F3A] text-[18px] sm:text-[20px] font-black font-montserrat">
@@ -1446,7 +1468,7 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-slate-500" htmlFor="name">Name</label>
+                      <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5" htmlFor="name">Name</label>
                       <input
                         type="text"
                         id="name"
@@ -1455,11 +1477,11 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
                         placeholder="John"
                         value={formData.name}
                         onChange={handleInputChange}
-                        className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-700 focus:outline-none focus:border-[#E11D48] transition-colors shadow-inner font-medium"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-rose-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-slate-500" htmlFor="surname">Surname</label>
+                      <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5" htmlFor="surname">Surname</label>
                       <input
                         type="text"
                         id="surname"
@@ -1468,14 +1490,14 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
                         placeholder="Doe"
                         value={formData.surname}
                         onChange={handleInputChange}
-                        className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-700 focus:outline-none focus:border-[#E11D48] transition-colors shadow-inner font-medium"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-rose-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-slate-500" htmlFor="email">Email</label>
+                      <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5" htmlFor="email">Email</label>
                       <input
                         type="email"
                         id="email"
@@ -1484,26 +1506,26 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
                         placeholder="john.doe@example.com"
                         value={formData.email}
                         onChange={handleInputChange}
-                        className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-700 focus:outline-none focus:border-[#E11D48] transition-colors shadow-inner font-medium"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-rose-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-slate-500" htmlFor="phone">Phone</label>
+                      <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5" htmlFor="phone">Phone</label>
                       <input
                         type="tel"
                         id="phone"
                         name="phone"
                         required
-                        placeholder="+61 400 000 000"
+                        placeholder="0400 000 000"
                         value={formData.phone}
                         onChange={handleInputChange}
-                        className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-700 focus:outline-none focus:border-[#E11D48] transition-colors shadow-inner font-medium"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-rose-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-500" htmlFor="message">Your Message</label>
+                    <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5" htmlFor="message">Your Message</label>
                     <textarea
                       id="message"
                       name="message"
@@ -1512,7 +1534,7 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
                       placeholder="Type your query or question here..."
                       value={formData.message}
                       onChange={handleInputChange}
-                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-700 focus:outline-none focus:border-[#E11D48] transition-colors shadow-inner font-medium"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-rose-500 focus:bg-white transition-all resize-none shadow-inner"
                     />
                   </div>
 
@@ -1523,15 +1545,15 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
                   <button
                     type="submit"
                     disabled={submittingEnquiry}
-                    className="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs py-3.5 rounded-full transition-colors flex items-center justify-center gap-2 shadow-md hover:scale-[1.01]"
+                    className="w-full bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-[13.5px] py-3.5 px-6 rounded-xl transition-all shadow-lg active:scale-[0.98] mt-2 cursor-pointer flex items-center justify-center gap-2"
                   >
                     {submittingEnquiry ? "Submitting..." : "Submit Enquiry"} <ArrowRight className="w-4 h-4" />
                   </button>
                 </form>
               ) : (
-                <div className="bg-white border border-slate-200 rounded-3xl p-8 text-center space-y-4 shadow-sm">
-                  <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto shadow-inner">
-                    <CheckCircle2 className="w-6.5 h-6.5" strokeWidth={2.5} />
+                <div className="text-center py-12 space-y-4">
+                  <div className="w-14 h-14 bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto rounded-full border border-emerald-100">
+                    ✓
                   </div>
                   <h3 className="text-[#0B1F3A] text-[20px] font-black font-montserrat">
                     Enquiry Submitted Successfully!

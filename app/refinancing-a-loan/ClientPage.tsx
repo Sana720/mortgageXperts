@@ -1822,7 +1822,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
 
             {/* Right: Enquiry Form */}
             <div>
-              <div className="bg-[#F8FAFC] rounded-3xl border border-slate-200/80 p-6 sm:p-10 shadow-sm relative">
+              <div className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-slate-100 relative text-[#0B1F3A]">
                 <div className="absolute top-6 right-6 w-20 h-20 opacity-15" style={{ backgroundImage: "radial-gradient(#7C3AED 1.5px, transparent 1.5px)", backgroundSize: "8px 8px" }} />
 
                 {!callbackSubmitted ? (
@@ -1860,22 +1860,22 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                     >
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">First Name</label>
+                          <label className="block text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide mb-1.5">First Name</label>
                           <input
                             type="text"
                             name="name"
                             placeholder="John"
-                            className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-[#7C3AED] shadow-sm font-semibold"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-purple-500 focus:bg-white transition-all shadow-inner"
                             required
                           />
                         </div>
                         <div>
-                          <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Surname Name</label>
+                          <label className="block text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide mb-1.5">Surname Name</label>
                           <input
                             type="text"
                             name="surname"
                             placeholder="Doe"
-                            className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-[#7C3AED] shadow-sm font-semibold"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-purple-500 focus:bg-white transition-all shadow-inner"
                             required
                           />
                         </div>
@@ -1883,33 +1883,33 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Email Address</label>
+                          <label className="block text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide mb-1.5">Email Address</label>
                           <input
                             type="email"
                             name="email"
                             placeholder="john@example.com.au"
-                            className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-[#7C3AED] shadow-sm font-semibold"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-purple-500 focus:bg-white transition-all shadow-inner"
                             required
                           />
                         </div>
                         <div>
-                          <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Phone Number</label>
+                          <label className="block text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide mb-1.5">Phone Number</label>
                           <input
                             type="tel"
                             name="phone"
                             placeholder="0450 000 000"
-                            className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-[#7C3AED] shadow-sm font-semibold"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-purple-500 focus:bg-white transition-all shadow-inner"
                             required
                           />
                         </div>
                       </div>
 
                       <div>
-                        <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Your Message / Current Interest Rate</label>
+                        <label className="block text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide mb-1.5">Your Message / Current Interest Rate</label>
                         <textarea
                           name="message"
                           placeholder="e.g. Currently on 6.45% variable with CBA. Looking to consolidate my credit card and get a better rate."
-                          className="w-full rounded-xl border border-slate-200 bg-white py-3.5 px-4 text-[13px] focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-[#7C3AED] shadow-sm font-semibold h-24"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-purple-500 focus:bg-white transition-all shadow-inner h-24"
                         />
                       </div>
 
@@ -1921,30 +1921,28 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                           defaultChecked
                           className="mt-0.5 rounded border-slate-300 text-[#7C3AED] focus:ring-[#7C3AED]"
                         />
-                        <span className="text-[10px] leading-relaxed text-slate-550">
+                        <span className="text-[10px] leading-relaxed text-slate-500 font-medium">
                           By clicking &lsquo;Submit Enquiry&rsquo;, you agree to our Privacy Collection Notice and consent to being contacted by one of Mortgage Xpert&apos;s brokers.
                         </span>
                       </div>
 
                       <button
                         type="submit"
-                        className="w-full bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-bold py-4 rounded-xl text-[13.5px] transition-all flex items-center justify-center gap-1.5 shadow-md shadow-purple-100"
+                        className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-[13.5px] py-4 transition-all cursor-pointer shadow-md shadow-purple-100"
                       >
-                        Submit Enquiry <ArrowRight className="w-4 h-4" />
+                        Submit Enquiry <ArrowRight className="w-4 h-4 text-white" />
                       </button>
                     </form>
                   </>
                 ) : (
                   <div className="py-6 text-center space-y-5 relative z-10">
-                    <div className="w-12 h-12 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-500 mx-auto shadow-sm">
-                      <Check className="w-6 h-6 stroke-[3px]" />
-                    </div>
+                    <CheckCircle2 className="w-16 h-16 text-emerald-600 mx-auto" />
                     
                     <div className="space-y-2">
-                      <h4 className="text-[#0B1F3A] text-lg font-black tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                      <h4 className="text-[#0B1F3A] text-[22px] font-extrabold tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
                         Thank You!
                       </h4>
-                      <p className="text-slate-600 text-xs sm:text-sm leading-relaxed max-w-md mx-auto">
+                      <p className="text-slate-600 text-xs sm:text-sm leading-relaxed max-w-md mx-auto font-medium">
                         Your refinancing savings request has been submitted. Home Loan Expert <strong className="font-bold text-[#0B1F3A]">Aakash KC</strong> will call you back within 2 business hours.
                       </p>
                     </div>
@@ -2099,38 +2097,38 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                     className="space-y-4"
                   >
                     <div className="space-y-1">
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Your Full Name</label>
+                      <label className="block text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide mb-1.5">Your Full Name</label>
                       <input
                         type="text"
                         required
                         value={leadName}
                         onChange={(e) => setLeadName(e.target.value)}
                         placeholder="John Doe"
-                        className="w-full bg-slate-55 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-[#0B1F3A] focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-purple-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Email Address</label>
+                      <label className="block text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide mb-1.5">Email Address</label>
                       <input
                         type="email"
                         required
                         value={leadEmail}
                         onChange={(e) => setLeadEmail(e.target.value)}
                         placeholder="john@example.com.au"
-                        className="w-full bg-slate-55 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-[#0B1F3A] focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-purple-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Phone Number</label>
+                      <label className="block text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide mb-1.5">Phone Number</label>
                       <input
                         type="tel"
                         required
                         value={leadPhone}
                         onChange={(e) => setLeadPhone(e.target.value)}
                         placeholder="0450 000 000"
-                        className="w-full bg-slate-55 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-[#0B1F3A] focus:outline-none focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-purple-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
 
@@ -2142,17 +2140,17 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                         defaultChecked
                         className="mt-0.5 rounded border-slate-300 text-[#7C3AED] focus:ring-[#7C3AED]"
                       />
-                      <span className="text-[10px] leading-relaxed text-slate-500">
+                      <span className="text-[10px] leading-relaxed text-slate-500 font-medium">
                         I agree to receive my customized interest savings report. I understand this does not impact my credit score.
                       </span>
                     </div>
 
                     <button
                       type="submit"
-                      className="w-full bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-xs font-black uppercase py-4 rounded-xl text-center flex items-center justify-center gap-2 shadow-lg transition-all duration-300 hover:scale-[1.02] mt-4"
+                      className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-[13.5px] py-4 transition-all cursor-pointer shadow-md shadow-purple-100 mt-4"
                     >
                       <span>Unlock Audit Report</span>
-                      <ArrowRight className="w-4 h-4" />
+                      <ArrowRight className="w-4 h-4 text-white" />
                     </button>
                   </form>
                 ) : showFullReport ? (

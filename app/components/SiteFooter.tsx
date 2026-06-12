@@ -233,13 +233,12 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
                   <h4 className="text-[13px] font-extrabold text-white">Resources</h4>
                 </div>
                 <div className="flex flex-col gap-2.5">
-                  <FooterNavLink href="#">Home Loan Guides</FooterNavLink>
-                  <FooterNavLink href="#">FAQs</FooterNavLink>
-                  <FooterNavLink href="#">Knowledge Hub</FooterNavLink>
-                  <FooterNavLink href="#">Market Insights</FooterNavLink>
-                  <FooterNavLink href="#">Blog</FooterNavLink>
+                  <FooterNavLink href="/first-home-guide">First Home Guide</FooterNavLink>
+                  <FooterNavLink href="/refinancing-guide">Refinancing Guide</FooterNavLink>
+                  <FooterNavLink href="/the-xperts-news-insights">News & Insights</FooterNavLink>
+                  <FooterNavLink href="/blog">Blog</FooterNavLink>
                 </div>
-                <FooterColumnCta href="#">Explore resources</FooterColumnCta>
+                <FooterColumnCta href="/blog">Explore resources</FooterColumnCta>
               </div>
 
               <div>
@@ -248,13 +247,13 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
                   <h4 className="text-[13px] font-extrabold text-white">Locations</h4>
                 </div>
                 <div className="flex flex-col gap-2.5">
-                  <FooterNavLink href="#">NSW</FooterNavLink>
-                  <FooterNavLink href="#">Victoria</FooterNavLink>
-                  <FooterNavLink href="#">QLD</FooterNavLink>
-                  <FooterNavLink href="#">SA</FooterNavLink>
-                  <FooterNavLink href="#">WA</FooterNavLink>
+                  <FooterNavLink href="/branches/sydney">Sydney, NSW</FooterNavLink>
+                  <FooterNavLink href="/branches/melbourne">Melbourne, VIC</FooterNavLink>
+                  <FooterNavLink href="/branches/brisbane">Brisbane, QLD</FooterNavLink>
+                  <FooterNavLink href="/branches/adelaide">Adelaide, SA</FooterNavLink>
+                  <FooterNavLink href="/branches/perth">Perth, WA</FooterNavLink>
                 </div>
-                <FooterColumnCta href="#">View all locations</FooterColumnCta>
+                <FooterColumnCta href="/branches/sydney">View all locations</FooterColumnCta>
               </div>
 
               <div>
@@ -263,11 +262,11 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
                   <h4 className="text-[13px] font-extrabold text-white">About Us</h4>
                 </div>
                 <div className="flex flex-col gap-2.5">
-                  <FooterNavLink href="#">About Mortgage Xperts</FooterNavLink>
+                  <FooterNavLink href="/about-us-nepali-mortgage-broker-in-australia">About Mortgage Xperts</FooterNavLink>
                   <FooterNavLink href="#">Our Lenders</FooterNavLink>
                   <FooterNavLink href="/mortgage-mate">Reviews</FooterNavLink>
                   <FooterNavLink href="#">Careers</FooterNavLink>
-                  <FooterNavLink href="#">Contact Us</FooterNavLink>
+                  <FooterNavLink href="/best-nepali-investment-mortgage-broker-perth">Contact Us</FooterNavLink>
                 </div>
               </div>
             </StaggerItem>
