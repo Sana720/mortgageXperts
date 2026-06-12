@@ -149,7 +149,7 @@ export function ClientPage({ settings }: ClientPageProps) {
       </section>
 
       {/* Testimonials */}
-      <TestimonialSection settings={settings} />
+      <TestimonialSection />
 
       {/* Lenders Marquee */}
       <section className="py-12 bg-white border-y border-slate-100 overflow-hidden">

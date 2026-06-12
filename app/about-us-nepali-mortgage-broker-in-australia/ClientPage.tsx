@@ -154,7 +154,7 @@ export function ClientPage({ settings, pageHeroSettings }: ClientPageProps) {
         </div>
       </section>
 
-      <TestimonialSection settings={settings} />
+      <TestimonialSection />
 
       {/* Lenders Marquee */}
       <section className="py-12 bg-white border-y border-slate-100 overflow-hidden">
