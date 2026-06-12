@@ -592,7 +592,6 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                         <button
                           type="button"
                           onClick={() => {
-                            calculateLMI();
                             setCurrentStep(2);
                           }}
                           className="flex-1 bg-gradient-to-r from-indigo-600 to-violet-500 hover:from-indigo-700 hover:to-violet-600 text-white font-extrabold text-[13px] py-3 rounded-full flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-indigo-500/15 transition-colors"
