@@ -1167,7 +1167,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                       { src: "https://images.unsplash.com/photo-1594824813573-246434de83fb?auto=format&fit=crop&w=100&h=100&q=80", alt: "Doctor Specialist 3" }
                     ].map((avatar, idx) => (
                       <div key={idx} className="w-8 h-8 rounded-full border-2 border-white overflow-hidden shrink-0">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        
                         <img src={avatar.src} alt={avatar.alt} className="w-full h-full object-cover" />
                       </div>
                     ))}

@@ -21,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
-  const { settings, pageHeroSettings } = await loadPageData(PAGE_PATH);
+  const { settings, pageHeroSettings, pageContent } = await loadPageData(PAGE_PATH);
 
   const jsonLd = buildJsonLd(
     "Borrowing Power Calculator - Mortgage Xperts",

@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import dynamic from "next/dynamic";
 
 const CustomEditor = () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const editorRef = useRef<any>(null);
   const { CKEditor, ClassicEditor } = editorRef.current || {};
 
@@ -11,7 +12,9 @@ const CustomEditor = () => {
 
   useEffect(() => {
     editorRef.current = {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       CKEditor: require("@ckeditor/ckeditor5-react").CKEditor,
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       ClassicEditor: require("@ckeditor/ckeditor5-build-classic")
     };
     setLoaded(true);
@@ -35,6 +38,7 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
       <CKEditor
         editor={ClassicEditor}
         data={value}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onChange={(event: any, editor: any) => {
           const data = editor.getData();
           onChange(data);

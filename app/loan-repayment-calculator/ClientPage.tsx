@@ -334,6 +334,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
   // Run calculation on load
   useEffect(() => {
     calculateRepayments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleReset = () => {

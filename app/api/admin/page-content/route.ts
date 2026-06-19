@@ -17,7 +17,7 @@ export async function GET(request: Request) {
     } else {
       return NextResponse.json({ error: 'page_path is required' }, { status: 400 });
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Failed to fetch page content:', error);
     return NextResponse.json({ error: 'Database query failed' }, { status: 500 });
   }
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
     );
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Failed to save page content:', error);
     return NextResponse.json({ error: 'Database save failed' }, { status: 500 });
   }
