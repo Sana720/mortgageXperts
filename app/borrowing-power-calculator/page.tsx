@@ -5,7 +5,7 @@ import { loadPageData, buildPageMetadata, buildJsonLd } from "@/lib/pageLoader";
 const PAGE_PATH = "/borrowing-power-calculator";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { settings, pageHeroSettings } = await loadPageData(PAGE_PATH);
+  const { settings, pageHeroSettings, pageContent } = await loadPageData(PAGE_PATH);
   return buildPageMetadata(PAGE_PATH, pageHeroSettings, settings, {
     title: "Borrowing Power Calculator | How Much Can I Borrow? | Mortgage Xperts",
     description:
@@ -44,7 +44,7 @@ export default async function Page() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ClientPage settings={settings} pageHeroSettings={pageHeroSettings} />
+      <ClientPage settings={settings} pageHeroSettings={pageHeroSettings} pageContent={pageContent} />
     </>
   );
 }

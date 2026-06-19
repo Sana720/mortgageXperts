@@ -177,6 +177,7 @@ function ProcessStepCard({ step }: { step: ProcessStepItem }) {
 
 // ── SMART TOOLS + PROCESS SECTION ────────────────────────────────────────────
 function SmartToolsSection({ settings = {} }: { settings?: Record<string, string> }) {
+  const contentObj = settings.homepage_content ? JSON.parse(settings.homepage_content) : {};
   const [loanAmount, setLoanAmount] = useState(600000);
   const [interestRate, setInterestRate] = useState(5.49);
   const [loanTerm, setLoanTerm] = useState(30);
@@ -244,18 +245,17 @@ function SmartToolsSection({ settings = {} }: { settings?: Record<string, string
           >
             <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 bg-[#F0F5FF] text-[#2563EB] rounded-full px-3 py-1 w-fit">
               <TrendingUp className="w-3 h-3" />
-              <span className="text-[10px] font-bold tracking-widest uppercase">Smart Tools</span>
+              <span className="text-[10px] font-bold tracking-widest uppercase">{contentObj.tools_badge || "Smart Tools"}</span>
             </motion.div>
             <motion.h2 variants={fadeInUp} className="text-[34px] md:text-[46px] font-extrabold leading-[1.05] text-[#0B1F3A]" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-              Powerful Tools.<br />
-              <span className="text-[#2563EB]">Smarter</span> Decisions.
+              <span dangerouslySetInnerHTML={{ __html: contentObj.tools_title || "Powerful Tools.<br/><span class=\"text-[#2563EB]\">Smarter</span> Decisions." }} />
             </motion.h2>
             <motion.p variants={fadeInUp} className="text-slate-500 text-[14px] md:text-[15px] leading-relaxed max-w-[360px]">
-              Use our easy-to-use tools and calculators to explore your options, estimate costs and plan your next move with confidence.
+              {contentObj.tools_desc || "Use our easy-to-use tools and calculators to explore your options, estimate costs and plan your next move with confidence."}
             </motion.p>
             <motion.div variants={fadeInUp} className="pt-2">
               <Link href="#" className="bg-[#2563EB] text-white font-bold text-[13px] py-3.5 px-7 rounded-lg inline-flex items-center gap-2 hover:bg-[#1d4ed8] transition-all shadow-md hover:scale-[1.02]">
-                Explore All Tools <ArrowRight className="w-3.5 h-3.5" />
+                {contentObj.tools_btn_text || "Explore All Tools"} <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </motion.div>
           </motion.div>
@@ -393,10 +393,10 @@ function SmartToolsSection({ settings = {} }: { settings?: Record<string, string
               <div className="w-4 h-4 rounded-full bg-[#2563EB] flex items-center justify-center">
                 <span className="text-[9px] text-white font-bold">5</span>
               </div>
-              <span className="text-[11px] font-semibold text-[#2563EB] uppercase tracking-wide">Our Simple Process</span>
+              <span className="text-[11px] font-semibold text-[#2563EB] uppercase tracking-wide">{contentObj.process_badge || "Our Simple Process"}</span>
             </div>
             <h2 className="text-[26px] sm:text-[32px] md:text-[42px] font-extrabold text-[#0B1F3A] leading-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-              A Clear Process. Every Step of the Way.
+              {contentObj.process_title || "A Clear Process. Every Step of the Way."}
             </h2>
           </motion.div>
 
@@ -428,7 +428,8 @@ interface DBBlog {
   published: number;
 }
 
-function SuccessStoriesSection() {
+function SuccessStoriesSection({ settings = {} }: { settings?: Record<string, string> }) {
+  const contentObj = settings.homepage_content ? JSON.parse(settings.homepage_content) : {};
   const [blogs, setBlogs] = useState<DBBlog[]>([]);
 
   useEffect(() => {
@@ -538,7 +539,7 @@ function SuccessStoriesSection() {
             >
               <Heart className="w-3.5 h-3.5 text-white shrink-0" fill="currentColor" />
               <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.14em] text-white uppercase">
-                Real Stories. Real Impact.
+                {contentObj.stories_badge || "Real Stories. Real Impact."}
               </span>
             </motion.div>
             <motion.h2
@@ -546,12 +547,10 @@ function SuccessStoriesSection() {
               className="text-[34px] sm:text-[40px] lg:text-[44px] font-extrabold leading-[1.08] tracking-tight"
               style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
             >
-              <span className="text-white">Real Australians.</span>
-              <br />
-              <span className="text-[#38BDF8]">Real Outcomes.</span>
+              <span dangerouslySetInnerHTML={{ __html: contentObj.stories_title || "<span class=\"text-white\">Real Australians.</span><br /><span class=\"text-[#38BDF8]\">Real Outcomes.</span>" }} />
             </motion.h2>
             <motion.p variants={fadeInUp} className="text-[15px] text-white/85 leading-relaxed max-w-md">
-              Behind every home loan is a life goal. We&apos;re here to make the journey simpler, the decisions clearer and the outcomes stronger.
+              {contentObj.stories_desc || "Behind every home loan is a life goal. We're here to make the journey simpler, the decisions clearer and the outcomes stronger."}
             </motion.p>
             <motion.div variants={fadeInUp}>
               <Link
@@ -559,7 +558,7 @@ function SuccessStoriesSection() {
                 className="inline-flex items-center gap-2 rounded-xl border border-white/90 bg-transparent px-5 py-3 text-[13px] font-bold text-white hover:bg-white/10 transition-colors"
               >
                 <FileText className="w-4 h-4 shrink-0" />
-                View More Success Stories
+                {contentObj.stories_btn_text || "View More Success Stories"}
                 <ArrowRight className="w-4 h-4 shrink-0" />
               </Link>
             </motion.div>
@@ -746,11 +745,10 @@ function SuccessStoriesSection() {
                 className="text-[18px] sm:text-[20px] font-extrabold text-white leading-snug"
                 style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
               >
-                Your home goals are unique.{" "}
-                <span className="text-[#7DD3FC]">Your journey</span> should be too.
+                <span dangerouslySetInnerHTML={{ __html: contentObj.cta_title || "Your home goals are unique. <span class=\"text-[#7DD3FC]\">Your journey</span> should be too." }} />
               </p>
               <p className="text-[13px] text-white/75 mt-1.5 max-w-xl">
-                Whether you&apos;re buying, refinancing or investing, we&apos;re here to guide you every step of the way.
+                {contentObj.cta_desc || "Whether you're buying, refinancing or investing, we're here to guide you every step of the way."}
               </p>
             </div>
           </div>
@@ -758,7 +756,7 @@ function SuccessStoriesSection() {
             href="#"
             className="shrink-0 inline-flex items-center justify-center gap-2 rounded-xl bg-[#2563EB] px-6 py-3.5 text-[13px] font-bold text-white hover:bg-[#1d4ed8] transition-colors shadow-md whitespace-nowrap"
           >
-            Let&apos;s Talk About Your Goals
+            {contentObj.cta_btn_text || "Let's Talk About Your Goals"}
             <ArrowRight className="w-4 h-4" />
           </Link>
         </motion.div>
@@ -917,7 +915,8 @@ const FAQ_CONTENT: Record<
   ],
 };
 
-function FaqCtaSection() {
+function FaqCtaSection({ settings = {} }: { settings?: Record<string, string> }) {
+  const contentObj = settings.homepage_content ? JSON.parse(settings.homepage_content) : {};
   const [activeTab, setActiveTab] = useState<(typeof FAQ_TABS)[number]["id"]>("first-home");
   const [expandedIndex, setExpandedIndex] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
@@ -951,18 +950,17 @@ function FaqCtaSection() {
               className="inline-flex items-center gap-2 rounded-full bg-[#EAF3FF] border border-[#2563EB]/15 px-4 py-1.5 mb-4"
             >
               <HelpCircle className="w-3.5 h-3.5 text-[#2563EB]" />
-              <span className="text-[11px] font-bold tracking-widest text-[#2563EB] uppercase">FAQs</span>
+              <span className="text-[11px] font-bold tracking-widest text-[#2563EB] uppercase">{contentObj.faq_badge || "FAQs"}</span>
             </motion.div>
             <motion.h2
               variants={fadeInUp}
               className="text-[34px] sm:text-[40px] font-extrabold leading-[1.08] text-[#0B1F3A] mb-4"
               style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
             >
-              Questions,{" "}
-              <span className="text-[#2563EB]">Answered Clearly.</span>
+              <span dangerouslySetInnerHTML={{ __html: contentObj.faq_title || "Questions, <span class=\"text-[#2563EB]\">Answered Clearly.</span>" }} />
             </motion.h2>
             <motion.p variants={fadeInUp} className="text-[15px] text-slate-500 leading-relaxed mb-6 max-w-md">
-              Find quick answers to the most common questions about home loans, refinancing and property finance — all in one place.
+              {contentObj.faq_desc || "Find quick answers to the most common questions about home loans, refinancing and property finance — all in one place."}
             </motion.p>
             <motion.div variants={fadeInUp} className="relative mb-6">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
@@ -2213,10 +2211,10 @@ export default function Home() {
       <TestimonialSection />
 
       {/* ── SUCCESS STORIES / BLOG ── */}
-      <SuccessStoriesSection />
+      <SuccessStoriesSection settings={settings} />
 
       {/* ── FAQ + CTA ── */}
-      <FaqCtaSection />
+      <FaqCtaSection settings={settings} />
 
       {/* ── PRE-FOOTER + FOOTER ── */}
       <SiteFooter settings={settings} />

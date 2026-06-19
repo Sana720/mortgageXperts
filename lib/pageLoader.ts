@@ -20,6 +20,7 @@ export interface PageHeroSettings {
 }
 
 export interface PageData {
+  pageContent?: string;
   settings: GlobalSettings;
   pageHeroSettings: PageHeroSettings | undefined;
 }
@@ -35,14 +36,19 @@ export interface PageData {
 export async function loadPageData(pagePath: string): Promise<PageData> {
   const settings: GlobalSettings = {};
   let pageHeroSettings: PageHeroSettings | undefined = undefined;
+  let pageContent: string | undefined = undefined;
 
   try {
-    const [settingsRows, pageRows] = await Promise.all([
+        const [settingsRows, pageRows, contentRows] = await Promise.all([
       executeQuery<Array<{ key: string; value: string }>>(
         'SELECT `key`, `value` FROM global_settings'
       ),
       executeQuery<PageHeroSettings[]>(
         'SELECT * FROM page_meta_hero WHERE page_path = ?',
+        [pagePath]
+      ),
+      executeQuery<Array<{ content: string }>>(
+        'SELECT content FROM page_content WHERE page_path = ?',
         [pagePath]
       ),
     ]);
@@ -56,11 +62,15 @@ export async function loadPageData(pagePath: string): Promise<PageData> {
     if (Array.isArray(pageRows) && pageRows.length > 0) {
       pageHeroSettings = pageRows[0];
     }
+    
+    if (Array.isArray(contentRows) && contentRows.length > 0) {
+      pageContent = contentRows[0].content;
+    }
   } catch (error) {
     console.error(`[loadPageData] Failed to load data for "${pagePath}":`, error);
   }
 
-  return { settings, pageHeroSettings };
+  return { settings, pageHeroSettings, pageContent };
 }
 
 /**

@@ -18,6 +18,7 @@ interface ClientPageProps {
 }
 
 export function ClientPage({ settings, pageHeroSettings }: ClientPageProps) {
+  const contentObj = settings?.aboutus_content ? JSON.parse(settings.aboutus_content) : {};
   const heroImage = pageHeroSettings?.hero_image || "/images/hero.png";
   const h1Heading = pageHeroSettings?.h1_heading || "ABOUT OUR COMPANY";
   const subHeading = pageHeroSettings?.sub_heading || "Our Company Been Working Successfully For Your Dream Home";
@@ -51,10 +52,10 @@ export function ClientPage({ settings, pageHeroSettings }: ClientPageProps) {
               <div className="bg-white/95 backdrop-blur-md p-6 rounded-2xl shadow-lg border border-white/20">
                 <div className="flex items-center gap-4 mb-2">
                   <Shield className="w-8 h-8 text-[#2563EB]" />
-                  <h3 className="text-[18px] font-bold text-[#0B1F3A]">Trusted Advice</h3>
+                  <h3 className="text-[18px] font-bold text-[#0B1F3A]">{contentObj.sec1_badge || "Trusted Advice"}</h3>
                 </div>
                 <p className="text-[14px] text-slate-600">
-                  We are fully licensed and compliant, acting in your best interest always.
+                  {contentObj.sec1_badge_desc || "We are fully licensed and compliant, acting in your best interest always."}
                 </p>
               </div>
             </div>
@@ -63,22 +64,22 @@ export function ClientPage({ settings, pageHeroSettings }: ClientPageProps) {
           <div className="space-y-6 order-1 lg:order-2">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-100/50 border border-blue-200">
               <Users className="w-4 h-4 text-[#2563EB]" />
-              <span className="text-[12px] font-bold text-[#2563EB] uppercase tracking-wider">Our Approach</span>
+              <span className="text-[12px] font-bold text-[#2563EB] uppercase tracking-wider">{contentObj.sec1_approach_badge || "Our Approach"}</span>
             </div>
             
             <h2 
               className="text-[28px] sm:text-[36px] font-bold leading-tight text-[#0B1F3A]"
               style={{ fontFamily: "var(--font-montserrat, sans-serif)" }}
             >
-              Making your property journey straightforward.
+              {contentObj.sec1_title || "Making your property journey straightforward."}
             </h2>
             
             <div className="space-y-5 text-[15px] sm:text-[16px] text-slate-600 leading-relaxed">
               <p>
-                At Mortgage Xperts, we understand that entering the property market can feel overwhelming. Whether you're buying your first home or expanding your investment portfolio, we're here to guide you through every step with clear, honest advice and practical support.
+                {contentObj.sec1_p1 || "At Mortgage Xperts, we understand that entering the property market can feel overwhelming. Whether you're buying your first home or expanding your investment portfolio, we're here to guide you through every step with clear, honest advice and practical support."}
               </p>
               <p>
-                Our goal is to make the home loan process as straightforward as possible. We take the time to understand your unique situation, explain your options in plain language, and coordinate with lenders so you don't have to worry about the details.
+                {contentObj.sec1_p2 || "Our goal is to make the home loan process as straightforward as possible. We take the time to understand your unique situation, explain your options in plain language, and coordinate with lenders so you don't have to worry about the details."}
               </p>
               <p>
                 As a fully licensed and compliant mortgage broker, we are committed to acting in your best interest - always. We believe in building long-term relationships and providing advice that adapts as your circumstances change, helping you make confident decisions now and in the future.
@@ -98,19 +99,19 @@ export function ClientPage({ settings, pageHeroSettings }: ClientPageProps) {
             <div className="space-y-6">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200">
                 <Target className="w-4 h-4 text-amber-600" />
-                <span className="text-[12px] font-bold text-amber-700 uppercase tracking-wider">Your Lifelong Partner</span>
+                <span className="text-[12px] font-bold text-amber-700 uppercase tracking-wider">{contentObj.sec2_badge || "Your Lifelong Partner"}</span>
               </div>
               
               <h2 
                 className="text-[28px] sm:text-[36px] font-bold leading-tight text-[#0B1F3A]"
                 style={{ fontFamily: "var(--font-montserrat, sans-serif)" }}
               >
-                Tailored solutions for your unique situation.
+                {contentObj.sec2_title || "Tailored solutions for your unique situation."}
               </h2>
               
               <div className="space-y-5 text-[15px] sm:text-[16px] text-slate-600 leading-relaxed">
                 <p>
-                  Whether you're buying your first home, adding a third investment property, consolidating debt, refinancing for a better rate, or accessing the equity in your property for any purpose, we make the process straightforward and manageable. We know financial solutions aren't one-size-fits-all, so with our wide network of lenders and loan products, we can find the right fit for your unique situation — including for those who don't fit the usual lending criteria.
+                  {contentObj.sec2_p1 || "Whether you're buying your first home, adding a third investment property, consolidating debt, refinancing for a better rate, or accessing the equity in your property for any purpose, we make the process straightforward and manageable."} We know financial solutions aren't one-size-fits-all, so with our wide network of lenders and loan products, we can find the right fit for your unique situation — including for those who don't fit the usual lending criteria.
                 </p>
                 <p>
                   When you work with Mortgage Xperts, we handle all communication with lenders on your behalf, saving you the frustration that often comes with dealing directly with financial institutions. More importantly, we're here to fight for the best possible rate for you.

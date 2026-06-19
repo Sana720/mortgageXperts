@@ -31,6 +31,10 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const tables = [
+  `CREATE TABLE IF NOT EXISTS page_content (
+      page_path VARCHAR(191) PRIMARY KEY,
+      content LONGTEXT NOT NULL
+  )`,
   `CREATE TABLE IF NOT EXISTS global_settings (
       \`key\` VARCHAR(191) PRIMARY KEY,
       \`value\` TEXT NOT NULL

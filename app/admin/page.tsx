@@ -30,6 +30,7 @@ import {
   Eye,
   EyeOff
 } from "lucide-react";
+import RichTextEditor from "@/app/components/RichTextEditor";
 
 type Enquiry = {
   id: string;
@@ -73,12 +74,15 @@ export default function AdminPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState("");
-  const [activeTab, setActiveTab] = useState<"enquiries" | "settings" | "hero" | "blogs" | "testimonials">("enquiries");
+  const [activeTab, setActiveTab] = useState<"enquiries" | "settings" | "hero" | "blogs" | "testimonials" | "content_cms">("enquiries");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   
   // Data States
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
   const [settings, setSettings] = useState<SettingsMap>({});
+  const [cmsPage, setCmsPage] = useState<string>("homepage");
+  const [richTextContent, setRichTextContent] = useState<string>("");
+  const [richTextLoading, setRichTextLoading] = useState(false);
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   
@@ -331,6 +335,44 @@ export default function AdminPage() {
   };
 
   // Action: update settings / hero
+  
+  useEffect(() => {
+    if (cmsPage !== "homepage" && cmsPage !== "aboutus") {
+      setRichTextLoading(true);
+      fetch(`/api/admin/page-content?page_path=${cmsPage}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.content) {
+            setRichTextContent(data.content);
+          } else {
+            setRichTextContent("");
+          }
+        })
+        .finally(() => setRichTextLoading(false));
+    }
+  }, [cmsPage]);
+
+  const handleSaveRichText = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaveLoading(true);
+    try {
+      const res = await fetch("/api/admin/page-content", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ page_path: cmsPage, content: richTextContent })
+      });
+      if (res.ok) {
+        alert("Page content saved successfully!");
+      } else {
+        alert("Failed to save page content.");
+      }
+    } catch {
+      alert("Error saving page content.");
+    } finally {
+      setSaveLoading(false);
+    }
+  };
+
   const handleSaveSettings = async (e: React.FormEvent, keysToSave: string[]) => {
     e.preventDefault();
     setSaveLoading(true);
@@ -779,6 +821,20 @@ export default function AdminPage() {
           </button>
 
           <button
+            onClick={() => setActiveTab("content_cms")}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all ${
+              activeTab === "content_cms"
+                ? "bg-blue-600/10 text-blue-400 shadow-[inset_4px_0_0_0_#3b82f6] border border-blue-500/10"
+                : "text-slate-400 hover:bg-white/5 hover:text-slate-200 border border-transparent"
+            }`}
+            style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
+          >
+            <LayoutDashboard className="w-4 h-4" />
+            <span>Content CMS</span>
+          </button>
+
+
+          <button
             onClick={() => setActiveTab("blogs")}
             className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
               activeTab === "blogs"
@@ -834,7 +890,7 @@ export default function AdminPage() {
             </button>
             <div>
               <h1 className="text-slate-900 text-xl md:text-2xl font-bold tracking-tight capitalize animate-fade-in" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                {activeTab === "hero" ? "Hero Banner Settings" : `${activeTab} Management`}
+                {activeTab === "hero" ? "Hero Banner Settings" : activeTab === "content_cms" ? "Page Content CMS" : `${activeTab} Management`}
               </h1>
               <p className="text-slate-500 text-[11px] md:text-xs font-medium mt-0.5">Manage live records, tweak text displays, and monitor customer inputs.</p>
             </div>
@@ -1277,6 +1333,314 @@ export default function AdminPage() {
               </div>
             </form>
           )}
+
+          
+          {/* ── TAB: CONTENT CMS ── */}
+          {activeTab === "content_cms" && (
+            <div className="bg-white border border-slate-200/50 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-xl p-6 md:p-8 max-w-4xl">
+              <div className="mb-8 pb-6 border-b border-slate-100">
+                <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">Select Page Content to Edit</label>
+                <select
+                  value={cmsPage}
+                  onChange={e => setCmsPage(e.target.value)}
+                  className="w-full sm:w-1/2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                >
+                  <option value="homepage">Homepage (Static Form)</option>
+                  <option value="aboutus">About Us (Static Form)</option>
+                  <optgroup label="Rich Text Pages">
+                    <option value="/borrowing-power-calculator">Borrowing Power Calculator</option>
+                    <option value="/home-loan-for-doctors">Home Loan for Doctors</option>
+                    <option value="/refinancing-a-loan">Refinancing a Loan</option>
+                    <option value="/first-home-guide">First Home Guide</option>
+                    <option value="/investing-in-property">Investing in Property</option>
+                    <option value="/self-employed-home-loans">Self-Employed Home Loans</option>
+                    <option value="/branches/sydney">Sydney Branch</option>
+                    <option value="/branches/melbourne">Melbourne Branch</option>
+                  </optgroup>
+                </select>
+              </div>
+
+              {cmsPage === "homepage" && (
+                <form onSubmit={(e) => {
+                   e.preventDefault();
+                   handleSaveSettings(e, ["homepage_content"]);
+                }} className="space-y-8">
+                  <div className="space-y-4">
+                    <h3 className="text-slate-900 text-sm font-bold tracking-tight pb-2 border-b border-slate-100 flex items-center gap-2">
+                      <Globe className="w-4 h-4 text-blue-600" />
+                      <span>Smart Tools & Process Section</span>
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      {[
+                        { key: 'tools_badge', label: 'Tools Badge', default: 'Smart Tools' },
+                        { key: 'tools_title', label: 'Tools Title', default: 'Powerful Tools. Smarter Decisions.' },
+                        { key: 'tools_desc', label: 'Tools Description', default: 'Use our easy-to-use tools and calculators to explore your options, estimate costs and plan your next move with confidence.' },
+                        { key: 'tools_btn_text', label: 'Tools Button Text', default: 'Explore All Tools' },
+                        { key: 'process_badge', label: 'Process Badge', default: 'Our Simple Process' },
+                        { key: 'process_title', label: 'Process Title', default: 'A Clear Process. Every Step of the Way.' }
+                      ].map(f => {
+                        const contentObj = settings.homepage_content ? JSON.parse(settings.homepage_content) : {};
+                        return (
+                          <div key={f.key} className={f.key === 'tools_desc' ? "md:col-span-2" : ""}>
+                            <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">{f.label}</label>
+                            {f.key.includes('desc') ? (
+                              <textarea
+                                rows={3}
+                                value={contentObj[f.key] !== undefined ? contentObj[f.key] : f.default}
+                                onChange={e => {
+                                  const newObj = { ...contentObj, [f.key]: e.target.value };
+                                  setSettings(prev => ({ ...prev, homepage_content: JSON.stringify(newObj) }));
+                                }}
+                                className="w-full bg-slate-50/50 border border-slate-200/60 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] focus:bg-white rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 transition-all"
+                              />
+                            ) : (
+                              <input
+                                type="text"
+                                value={contentObj[f.key] !== undefined ? contentObj[f.key] : f.default}
+                                onChange={e => {
+                                  const newObj = { ...contentObj, [f.key]: e.target.value };
+                                  setSettings(prev => ({ ...prev, homepage_content: JSON.stringify(newObj) }));
+                                }}
+                                className="w-full bg-slate-50/50 border border-slate-200/60 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] focus:bg-white rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 transition-all"
+                              />
+                            )}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="space-y-4 pt-4 border-t border-slate-100">
+                    <h3 className="text-slate-900 text-sm font-bold tracking-tight pb-2 border-b border-slate-100 flex items-center gap-2">
+                      <Globe className="w-4 h-4 text-blue-600" />
+                      <span>Success Stories Section</span>
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      {[
+                        { key: 'stories_badge', label: 'Stories Badge', default: 'Real Stories. Real Impact.' },
+                        { key: 'stories_title', label: 'Stories Title', default: 'Real Australians. Real Outcomes.' },
+                        { key: 'stories_desc', label: 'Stories Description', default: 'Behind every home loan is a life goal. We\'re here to make the journey simpler, the decisions clearer and the outcomes stronger.' },
+                        { key: 'stories_btn_text', label: 'Stories Button Text', default: 'View More Success Stories' }
+                      ].map(f => {
+                        const contentObj = settings.homepage_content ? JSON.parse(settings.homepage_content) : {};
+                        return (
+                          <div key={f.key} className={f.key === 'stories_desc' ? "md:col-span-2" : ""}>
+                            <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">{f.label}</label>
+                            {f.key.includes('desc') ? (
+                              <textarea
+                                rows={3}
+                                value={contentObj[f.key] !== undefined ? contentObj[f.key] : f.default}
+                                onChange={e => {
+                                  const newObj = { ...contentObj, [f.key]: e.target.value };
+                                  setSettings(prev => ({ ...prev, homepage_content: JSON.stringify(newObj) }));
+                                }}
+                                className="w-full bg-slate-50/50 border border-slate-200/60 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] focus:bg-white rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 transition-all"
+                              />
+                            ) : (
+                              <input
+                                type="text"
+                                value={contentObj[f.key] !== undefined ? contentObj[f.key] : f.default}
+                                onChange={e => {
+                                  const newObj = { ...contentObj, [f.key]: e.target.value };
+                                  setSettings(prev => ({ ...prev, homepage_content: JSON.stringify(newObj) }));
+                                }}
+                                className="w-full bg-slate-50/50 border border-slate-200/60 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] focus:bg-white rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 transition-all"
+                              />
+                            )}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="space-y-4 pt-4 border-t border-slate-100">
+                    <h3 className="text-slate-900 text-sm font-bold tracking-tight pb-2 border-b border-slate-100 flex items-center gap-2">
+                      <Globe className="w-4 h-4 text-blue-600" />
+                      <span>FAQ & CTA Section</span>
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      {[
+                        { key: 'faq_badge', label: 'FAQ Badge', default: 'FAQs' },
+                        { key: 'faq_title', label: 'FAQ Title', default: 'Questions, Answered Clearly.' },
+                        { key: 'faq_desc', label: 'FAQ Description', default: 'Find quick answers to the most common questions about home loans, refinancing and property finance — all in one place.' },
+                        { key: 'cta_title', label: 'CTA Title', default: 'Your home goals are unique. Your journey should be too.' },
+                        { key: 'cta_desc', label: 'CTA Description', default: 'Whether you\'re buying, refinancing or investing, we\'re here to guide you every step of the way.' },
+                        { key: 'cta_btn_text', label: 'CTA Button Text', default: 'Let\'s Talk About Your Goals' }
+                      ].map(f => {
+                        const contentObj = settings.homepage_content ? JSON.parse(settings.homepage_content) : {};
+                        return (
+                          <div key={f.key} className={f.key.includes('desc') ? "md:col-span-2" : ""}>
+                            <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">{f.label}</label>
+                            {f.key.includes('desc') ? (
+                              <textarea
+                                rows={3}
+                                value={contentObj[f.key] !== undefined ? contentObj[f.key] : f.default}
+                                onChange={e => {
+                                  const newObj = { ...contentObj, [f.key]: e.target.value };
+                                  setSettings(prev => ({ ...prev, homepage_content: JSON.stringify(newObj) }));
+                                }}
+                                className="w-full bg-slate-50/50 border border-slate-200/60 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] focus:bg-white rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 transition-all"
+                              />
+                            ) : (
+                              <input
+                                type="text"
+                                value={contentObj[f.key] !== undefined ? contentObj[f.key] : f.default}
+                                onChange={e => {
+                                  const newObj = { ...contentObj, [f.key]: e.target.value };
+                                  setSettings(prev => ({ ...prev, homepage_content: JSON.stringify(newObj) }));
+                                }}
+                                className="w-full bg-slate-50/50 border border-slate-200/60 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] focus:bg-white rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 transition-all"
+                              />
+                            )}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="pt-4 border-t border-slate-100 flex justify-end">
+                    <button
+                      type="submit"
+                      disabled={saveLoading}
+                      className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-extrabold shadow-lg shadow-blue-500/20 px-6 py-3 rounded-xl transition-all disabled:opacity-50"
+                    >
+                      {saveLoading ? "Saving..." : "Save Homepage Content"}
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              {cmsPage === "aboutus" && (
+                <form onSubmit={(e) => {
+                   e.preventDefault();
+                   handleSaveSettings(e, ["aboutus_content"]);
+                }} className="space-y-8">
+                  <div className="space-y-4">
+                    <h3 className="text-slate-900 text-sm font-bold tracking-tight pb-2 border-b border-slate-100 flex items-center gap-2">
+                      <Globe className="w-4 h-4 text-blue-600" />
+                      <span>About Us - Section 1</span>
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      {[
+                        { key: 'sec1_badge', label: 'Image Overlay Title', default: 'Trusted Advice' },
+                        { key: 'sec1_badge_desc', label: 'Image Overlay Text', default: 'We are fully licensed and compliant, acting in your best interest always.' },
+                        { key: 'sec1_approach_badge', label: 'Subheading Badge', default: 'Our Approach' },
+                        { key: 'sec1_title', label: 'Main Title', default: 'Making your property journey straightforward.' },
+                        { key: 'sec1_p1', label: 'Paragraph 1', default: 'At Mortgage Xperts, we understand that entering the property market can feel overwhelming. Whether you\'re buying your first home or expanding your investment portfolio, we\'re here to guide you through every step with clear, honest advice and practical support.' },
+                        { key: 'sec1_p2', label: 'Paragraph 2', default: 'Our goal is to make the home loan process as straightforward as possible. We take the time to understand your unique situation, explain your options in plain language, and coordinate with lenders so you don\'t have to worry about the details.' }
+                      ].map(f => {
+                        const contentObj = settings.aboutus_content ? JSON.parse(settings.aboutus_content) : {};
+                        return (
+                          <div key={f.key} className={f.key.includes('p') || f.key.includes('desc') ? "md:col-span-2" : ""}>
+                            <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">{f.label}</label>
+                            {f.key.includes('p') || f.key.includes('desc') ? (
+                              <textarea
+                                rows={3}
+                                value={contentObj[f.key] !== undefined ? contentObj[f.key] : f.default}
+                                onChange={e => {
+                                  const newObj = { ...contentObj, [f.key]: e.target.value };
+                                  setSettings(prev => ({ ...prev, aboutus_content: JSON.stringify(newObj) }));
+                                }}
+                                className="w-full bg-slate-50/50 border border-slate-200/60 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] focus:bg-white rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 transition-all"
+                              />
+                            ) : (
+                              <input
+                                type="text"
+                                value={contentObj[f.key] !== undefined ? contentObj[f.key] : f.default}
+                                onChange={e => {
+                                  const newObj = { ...contentObj, [f.key]: e.target.value };
+                                  setSettings(prev => ({ ...prev, aboutus_content: JSON.stringify(newObj) }));
+                                }}
+                                className="w-full bg-slate-50/50 border border-slate-200/60 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] focus:bg-white rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 transition-all"
+                              />
+                            )}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="space-y-4 pt-4 border-t border-slate-100">
+                    <h3 className="text-slate-900 text-sm font-bold tracking-tight pb-2 border-b border-slate-100 flex items-center gap-2">
+                      <Globe className="w-4 h-4 text-blue-600" />
+                      <span>About Us - Section 2</span>
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      {[
+                        { key: 'sec2_badge', label: 'Subheading Badge', default: 'Your Lifelong Partner' },
+                        { key: 'sec2_title', label: 'Main Title', default: 'Tailored solutions for your unique situation.' },
+                        { key: 'sec2_p1', label: 'Paragraph 1', default: 'Whether you\'re buying your first home, adding a third investment property, consolidating debt, refinancing for a better rate, or accessing the equity in your property for any purpose, we make the process straightforward and manageable.' }
+                      ].map(f => {
+                        const contentObj = settings.aboutus_content ? JSON.parse(settings.aboutus_content) : {};
+                        return (
+                          <div key={f.key} className={f.key.includes('p') ? "md:col-span-2" : ""}>
+                            <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">{f.label}</label>
+                            {f.key.includes('p') ? (
+                              <textarea
+                                rows={3}
+                                value={contentObj[f.key] !== undefined ? contentObj[f.key] : f.default}
+                                onChange={e => {
+                                  const newObj = { ...contentObj, [f.key]: e.target.value };
+                                  setSettings(prev => ({ ...prev, aboutus_content: JSON.stringify(newObj) }));
+                                }}
+                                className="w-full bg-slate-50/50 border border-slate-200/60 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] focus:bg-white rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 transition-all"
+                              />
+                            ) : (
+                              <input
+                                type="text"
+                                value={contentObj[f.key] !== undefined ? contentObj[f.key] : f.default}
+                                onChange={e => {
+                                  const newObj = { ...contentObj, [f.key]: e.target.value };
+                                  setSettings(prev => ({ ...prev, aboutus_content: JSON.stringify(newObj) }));
+                                }}
+                                className="w-full bg-slate-50/50 border border-slate-200/60 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] focus:bg-white rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 transition-all"
+                              />
+                            )}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="pt-4 border-t border-slate-100 flex justify-end">
+                    <button
+                      type="submit"
+                      disabled={saveLoading}
+                      className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-extrabold shadow-lg shadow-blue-500/20 px-6 py-3 rounded-xl transition-all disabled:opacity-50"
+                    >
+                      {saveLoading ? "Saving..." : "Save About Us Content"}
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              {cmsPage !== "homepage" && cmsPage !== "aboutus" && (
+                <form onSubmit={handleSaveRichText} className="space-y-6">
+                  <div className="space-y-4">
+                    <h3 className="text-slate-900 text-sm font-bold tracking-tight pb-2 border-b border-slate-100 flex items-center gap-2">
+                      <Globe className="w-4 h-4 text-blue-600" />
+                      <span>Rich Text Editor - {cmsPage}</span>
+                    </h3>
+                    {richTextLoading ? (
+                      <div className="h-64 flex items-center justify-center bg-slate-50 border border-slate-200 rounded-xl text-slate-400">Loading Content...</div>
+                    ) : (
+                      <RichTextEditor value={richTextContent} onChange={setRichTextContent} />
+                    )}
+                  </div>
+                  <div className="pt-4 border-t border-slate-100 flex justify-end">
+                    <button
+                      type="submit"
+                      disabled={saveLoading || richTextLoading}
+                      className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-extrabold shadow-lg shadow-blue-500/20 px-6 py-3 rounded-xl transition-all disabled:opacity-50"
+                    >
+                      {saveLoading ? "Saving..." : "Save Page Content"}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          )}
+
 
           {/* ── TAB 3: CENTRALIZED PAGE SEO & HERO MANAGER ── */}
           {activeTab === "hero" && (
