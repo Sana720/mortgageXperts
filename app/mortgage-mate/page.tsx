@@ -20,7 +20,13 @@ import {
   Check,
   Award,
   ShieldCheck,
-  Bookmark
+  Bookmark,
+  PlayCircle,
+  Clock,
+  FileText,
+  Download,
+  HelpCircle,
+  CalendarCheck
 } from "lucide-react";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
@@ -45,6 +51,8 @@ const FlameIcon = () => (
     <path d="M12 2c0 0-4.5 4.5-4.5 8.5C7.5 13.5 9.5 15 12 15s4.5-1.5 4.5-4.5C16.5 6.5 12 2 12 2zm0 18c3.5 0 6-2.5 6-6 0-1.5-.5-3-1.5-4.5-1.5 2-3.5 3-4.5 4s-1.5 2-1.5 3c0 2 1.5 3.5 3 3.5z" />
   </svg>
 );
+
+const MIDDLE_FINANCE_REDIRECT_URL = "https://app.middle.finance/ref/6aa0e26a-6c61-46a6-abd9-dd3b1183d67b";
 
 
 
@@ -105,6 +113,9 @@ export default function MortgageMatePage() {
       });
       if (res.ok) {
         setFormSubmitted(true);
+        window.setTimeout(() => {
+          window.location.href = MIDDLE_FINANCE_REDIRECT_URL;
+        }, 1200);
       } else {
         alert("Submission failed. Please try again.");
       }
@@ -129,6 +140,88 @@ export default function MortgageMatePage() {
 
   const australianStates = ["NSW", "VIC", "QLD", "WA", "SA", "ACT/NT/TAS"];
 
+  const proofStats = [
+    { label: "Client Rating", value: "4.9/5" },
+    { label: "Client Families", value: "1,200+" },
+    { label: "Lender Panel", value: "40+" }
+  ];
+
+  const strategySteps = [
+    {
+      icon: FileText,
+      title: "1. Complete Assessment",
+      desc: "Answer the same key questions a broker needs before checking lender fit."
+    },
+    {
+      icon: CalendarCheck,
+      title: "2. Strategy Call",
+      desc: "Aakash reviews your goal, deposit, income and timing before giving next-step guidance."
+    },
+    {
+      icon: ShieldCheck,
+      title: "3. Middle Finance Fact Find",
+      desc: "After this lead form, you are redirected to securely complete the detailed application."
+    }
+  ];
+
+  const leadFaqs = [
+    {
+      q: "Is the Mortgage Mate assessment free?",
+      a: "Yes. The first assessment and strategy call are free. Mortgage Xperts is paid by the lender if your loan settles."
+    },
+    {
+      q: "Why do I need to give my details first?",
+      a: "Your contact details let the broker connect your answers with the secure fact-find and follow up with lender-specific guidance."
+    },
+    {
+      q: "What happens after I submit the form?",
+      a: "Your enquiry is saved for Mortgage Xperts, then you are redirected to Middle Finance to complete the detailed fact-find."
+    },
+    {
+      q: "Can first-home buyers, investors and refinancers all use this?",
+      a: "Yes. The questions adapt around your goal so Aakash can assess the most relevant lending strategy."
+    }
+  ];
+
+  const flyerCards = [
+    {
+      title: "First Home Buyers",
+      tag: "Start Here",
+      href: "/first-home-guide",
+      image: "/images/First Home Buyers.png",
+      accent: "from-blue-600 to-sky-500",
+      summary: "Deposit, grants, lender options and pre-approval guidance in one simple path.",
+      points: ["Low deposit options", "Grant checks", "Pre-approval plan"]
+    },
+    {
+      title: "Refinance Review",
+      tag: "Save Smarter",
+      href: "/refinancing-guide",
+      image: "/images/Refinancing.png",
+      accent: "from-emerald-600 to-teal-500",
+      summary: "Check whether your current loan is still competitive before rates move again.",
+      points: ["Rate comparison", "Cashflow review", "Switching costs"]
+    },
+    {
+      title: "Investment Loans",
+      tag: "Grow Wealth",
+      href: "/property-investment-guide",
+      image: "/images/Investment Loans.png",
+      accent: "from-violet-600 to-indigo-500",
+      summary: "Structure your next property purchase with borrowing power and strategy in mind.",
+      points: ["Equity strategy", "Rental income", "Portfolio planning"]
+    },
+    {
+      title: "Self-Employed Loans",
+      tag: "Alt Doc Ready",
+      href: "/self-employed-home-loans",
+      image: "/images/Self-Employed Loans.png",
+      accent: "from-amber-500 to-orange-500",
+      summary: "Turn business income into a lender-ready application without the guesswork.",
+      points: ["ABN scenarios", "Alt-doc options", "Income packaging"]
+    }
+  ];
+
 
 
   return (
@@ -136,7 +229,7 @@ export default function MortgageMatePage() {
       <SiteHeader isSticky={true} />
 
       {/* Main Profile & Multi-step Section */}
-      <main className="flex-1 max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-8 md:py-12 w-full">
+      <main id="lead-form" className="flex-1 max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-8 md:py-12 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
           
           {/* LEFT COLUMN: Bio Block */}
@@ -156,8 +249,42 @@ export default function MortgageMatePage() {
                 Aakash KC – The <span className="bg-gradient-to-r from-[#2563EB] to-indigo-600 bg-clip-text text-transparent">Mortgage Mate</span>
               </h1>
               <p className="text-slate-500 text-[13.5px] font-semibold leading-relaxed">
-                Licensed Broker (CRN 549925) powered by Mortgage Xperts. Providing bilingual, expert home loan guidance.
+                Start with a free strategy call and assessment, then complete the secure Middle Finance fact-find after your lead profile is saved.
               </p>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2">
+              {proofStats.map((stat) => (
+                <div key={stat.label} className="bg-white border border-slate-200 rounded-xl px-3 py-3 text-center shadow-sm">
+                  <div className="text-[#0B1F3A] text-[17px] font-extrabold leading-none">{stat.value}</div>
+                  <div className="text-slate-400 text-[9px] font-extrabold uppercase tracking-wide mt-1">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-[#0B1F3A] shadow-xl shadow-blue-950/10">
+              <div className="relative h-[250px]">
+                <Image src="/images/aakash_new.png" fill alt="Aakash KC mortgage strategy video" className="object-cover object-top opacity-80" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-[#0B1F3A]/35 to-transparent" />
+                <button
+                  type="button"
+                  className="absolute inset-0 flex items-center justify-center text-white"
+                  aria-label="Play Mortgage Mate introduction video"
+                >
+                  <span className="w-16 h-16 rounded-full bg-white/95 text-[#2563EB] flex items-center justify-center shadow-2xl shadow-blue-950/30 transition-transform hover:scale-105">
+                    <PlayCircle className="w-9 h-9" />
+                  </span>
+                </button>
+                <div className="absolute left-4 right-4 bottom-4">
+                  <div className="inline-flex items-center gap-1.5 bg-white/15 border border-white/15 rounded-full px-3 py-1 mb-2">
+                    <Clock className="w-3 h-3 text-sky-200" />
+                    <span className="text-[10px] text-sky-100 font-extrabold uppercase tracking-wider">2 min explainer</span>
+                  </div>
+                  <h2 className="text-white text-[20px] font-extrabold leading-tight">
+                    Watch how the free assessment works before you submit.
+                  </h2>
+                </div>
+              </div>
             </div>
 
             {/* Profile Card */}
@@ -223,25 +350,25 @@ export default function MortgageMatePage() {
                       Assessment Profile Created!
                     </h2>
                     <p className="text-slate-500 text-xs max-w-sm mx-auto leading-relaxed">
-                      Thanks, <strong className="text-slate-800 font-bold">{fullName}</strong>. Your 7-step mortgage profile has been loaded. Aakash will review your details and reach out shortly.
+                      Thanks, <strong className="text-slate-800 font-bold">{fullName}</strong>. Your lead has been saved. Redirecting you to the secure Middle Finance fact-find now.
                     </p>
                   </div>
                   <div className="pt-2">
-                    <Link
-                      href="/"
+                    <a
+                      href={MIDDLE_FINANCE_REDIRECT_URL}
                       className="inline-flex items-center gap-1.5 bg-[#0B1F3A] text-white hover:bg-slate-800 text-[11px] font-bold uppercase px-5 py-3 rounded-xl transition-all"
                     >
-                      Return to Homepage <ArrowRight className="w-4 h-4" />
-                    </Link>
+                      Continue to Middle Finance <ArrowRight className="w-4 h-4" />
+                    </a>
                   </div>
                 </motion.div>
               ) : (
                 <div>
                   <div className="flex items-center justify-between mb-3.5">
                     <div>
-                      <span className="text-[9px] text-[#2563EB] font-extrabold uppercase tracking-widest block">Qualification Checklist</span>
+                      <span className="text-[9px] text-[#2563EB] font-extrabold uppercase tracking-widest block">Strategy Call & Assessment</span>
                       <h2 className="text-[#0B1F3A] text-base font-extrabold tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                        Pre-Approval Qualification
+                        Start Your Mortgage Profile
                       </h2>
                     </div>
                     <div className="text-[11px] text-[#2563EB] font-bold bg-blue-50 border border-blue-100/30 px-2.5 py-0.5 rounded-md">
@@ -595,7 +722,186 @@ export default function MortgageMatePage() {
         </div>
       </main>
 
+      {/* Strategy Call & Assessment */}
+      <section className="bg-white py-12 md:py-16 border-y border-slate-100">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <div className="lg:col-span-4">
+              <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-full px-3 py-1 mb-4">
+                <CalendarCheck className="w-3.5 h-3.5 text-[#2563EB]" />
+                <span className="text-[10px] text-[#2563EB] font-extrabold uppercase tracking-widest">Proven Lead Flow</span>
+              </div>
+              <h2 className="text-[#0B1F3A] text-[26px] md:text-[34px] font-extrabold leading-tight">
+                Strategy call first. Full application after trust is built.
+              </h2>
+              <p className="text-slate-500 text-[14px] leading-relaxed mt-3 font-medium">
+                The page now asks for only the details needed to qualify the enquiry, then moves serious clients into the Middle Finance fact-find.
+              </p>
+            </div>
+
+            <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+              {strategySteps.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div key={item.title} className="bg-slate-50 border border-slate-200 rounded-2xl p-5 shadow-sm">
+                    <div className="w-10 h-10 rounded-xl bg-white border border-blue-100 text-[#2563EB] flex items-center justify-center mb-4">
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <h3 className="text-[#0B1F3A] text-[15px] font-extrabold leading-tight">{item.title}</h3>
+                    <p className="text-slate-500 text-[12.5px] leading-relaxed mt-2 font-medium">{item.desc}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Mortgage Mate Flyer Stack */}
+      <section className="bg-[#0B1F3A] py-14 md:py-18 overflow-hidden relative">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-300/40 to-transparent" />
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5 mb-8">
+            <div className="max-w-3xl">
+              <div className="inline-flex items-center gap-2 bg-white/10 border border-white/15 rounded-full px-3 py-1 mb-4">
+                <Sparkles className="w-3.5 h-3.5 text-sky-300" />
+                <span className="text-[10px] font-extrabold text-sky-100 uppercase tracking-widest">Choose Your Mortgage Mate Path</span>
+              </div>
+              <h2 className="text-white text-[28px] sm:text-[34px] md:text-[42px] font-extrabold leading-tight tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                Free loan guides built to turn visitors into qualified leads.
+              </h2>
+              <p className="text-blue-100/80 text-[14px] md:text-[15px] leading-relaxed mt-3 max-w-2xl font-medium">
+                Pick the situation that fits you best, then complete the quick Mortgage Mate assessment so Aakash can match the right lending strategy.
+              </p>
+            </div>
+
+            <a
+              href="#lead-form"
+              className="inline-flex items-center justify-center gap-2 bg-white text-[#0B1F3A] hover:bg-sky-50 px-5 py-3 rounded-xl text-[12px] font-extrabold uppercase tracking-wide shadow-lg shadow-blue-950/20 transition-all w-full sm:w-auto"
+            >
+              Start Free Assessment <ArrowRight className="w-4 h-4" />
+            </a>
+          </div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={VIEWPORT_LOOSE}
+            variants={staggerContainer}
+            className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-5"
+          >
+            {flyerCards.map((flyer, idx) => (
+              <motion.div
+                key={flyer.title}
+                variants={fadeInUp}
+                whileHover={{ y: -6 }}
+                className={`group relative min-h-[430px] rounded-2xl overflow-hidden bg-white shadow-2xl shadow-blue-950/25 border border-white/10 ${idx % 2 === 1 ? "xl:mt-8" : ""}`}
+              >
+                <Link href={flyer.href} className="absolute inset-0 z-20" aria-label={`Read ${flyer.title} guide`} />
+                <div className={`h-2 bg-gradient-to-r ${flyer.accent}`} />
+                <div className="relative h-48 bg-slate-100 overflow-hidden">
+                  <Image
+                    src={flyer.image}
+                    alt={flyer.title}
+                    fill
+                    className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 25vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/65 via-transparent to-transparent" />
+                  <div className="absolute left-4 bottom-4 inline-flex items-center gap-1.5 bg-white text-[#0B1F3A] rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider shadow-sm">
+                    <Star className="w-3 h-3 text-[#2563EB] fill-[#2563EB]" />
+                    {flyer.tag}
+                  </div>
+                </div>
+
+                <div className="p-5 flex flex-col gap-4">
+                  <div>
+                    <h3 className="text-[#0B1F3A] text-[19px] font-extrabold leading-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                      {flyer.title}
+                    </h3>
+                    <p className="text-slate-500 text-[12.5px] leading-relaxed font-medium mt-2">
+                      {flyer.summary}
+                    </p>
+                  </div>
+
+                  <div className="space-y-2">
+                    {flyer.points.map((point) => (
+                      <div key={point} className="flex items-center gap-2 text-[11.5px] text-slate-700 font-bold">
+                        <CheckCircle className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                        <span>{point}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-auto pt-2 flex items-center justify-between text-[#2563EB] text-[12px] font-extrabold uppercase tracking-wide">
+                    View flyer
+                    <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
       {/* ── LENDER PANEL MARQUEE SECTION ── */}
+      {/* Download Guide & FAQs */}
+      <section className="bg-slate-50 py-14 md:py-18 border-b border-slate-100">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="lg:col-span-5 bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xl shadow-slate-200/40">
+              <div className="relative h-64 bg-blue-50">
+                <Image src="/images/family_couch_laptop.png" fill alt="Free mortgage guide" className="object-cover object-center" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/75 via-[#0B1F3A]/10 to-transparent" />
+                <div className="absolute left-5 right-5 bottom-5">
+                  <div className="inline-flex items-center gap-1.5 bg-white text-[#2563EB] rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider mb-2">
+                    <Download className="w-3 h-3" />
+                    Free Download Guide
+                  </div>
+                  <h2 className="text-white text-[24px] font-extrabold leading-tight">
+                    Home loan readiness guide for buyers, refinancers and investors.
+                  </h2>
+                </div>
+              </div>
+              <div className="p-5">
+                <p className="text-slate-500 text-[13px] leading-relaxed font-medium">
+                  Use the guide to understand deposit, borrowing power, documents and lender-fit basics. For a personalised version, complete the assessment above.
+                </p>
+                <a
+                  href="#lead-form"
+                  className="mt-5 inline-flex items-center justify-center gap-2 w-full bg-[#2563EB] hover:bg-[#1d4ed8] text-white px-5 py-3 rounded-xl text-[12px] font-extrabold uppercase tracking-wide transition-all"
+                >
+                  Get My Personal Assessment <ArrowRight className="w-4 h-4" />
+                </a>
+              </div>
+            </div>
+
+            <div className="lg:col-span-7">
+              <div className="inline-flex items-center gap-2 bg-white border border-slate-200 rounded-full px-3 py-1 mb-4 shadow-sm">
+                <HelpCircle className="w-3.5 h-3.5 text-[#2563EB]" />
+                <span className="text-[10px] text-[#2563EB] font-extrabold uppercase tracking-widest">Mortgage Mate FAQs</span>
+              </div>
+              <h2 className="text-[#0B1F3A] text-[26px] md:text-[34px] font-extrabold leading-tight mb-5">
+                Questions people ask before giving their details.
+              </h2>
+              <div className="space-y-3">
+                {leadFaqs.map((faq) => (
+                  <details key={faq.q} className="group bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+                    <summary className="cursor-pointer list-none flex items-center justify-between gap-4 text-[#0B1F3A] text-[14px] font-extrabold">
+                      <span>{faq.q}</span>
+                      <span className="w-7 h-7 rounded-full bg-blue-50 text-[#2563EB] flex items-center justify-center text-base shrink-0 group-open:rotate-45 transition-transform">+</span>
+                    </summary>
+                    <p className="text-slate-500 text-[12.5px] leading-relaxed mt-3 font-medium">
+                      {faq.a}
+                    </p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="bg-white border-t border-b border-slate-100 py-6 overflow-hidden">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
