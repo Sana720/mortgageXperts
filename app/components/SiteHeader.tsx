@@ -14,6 +14,7 @@ import {
   ChevronRight,
   X
 } from "lucide-react";
+import { useOnboardingModal } from "@/app/components/OnboardingModalContext";
 
 // Social Icons SVGs
 const FacebookIcon = () => (
@@ -43,6 +44,7 @@ const YoutubeIcon = () => (
 );
 
 export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: boolean; settings?: Record<string, string> }) {
+  const { openModal } = useOnboardingModal();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileHomeLoansOpen, setIsMobileHomeLoansOpen] = useState(false);
   const [isMobileXpertsRangeOpen, setIsMobileXpertsRangeOpen] = useState(false);
@@ -364,12 +366,12 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
               <span className="font-bold text-[#0B1F3A]">{phoneVal}</span>
             </div>
             {/* Desktop Button */}
-            <Link
-              href="/#contact"
-              className="hidden xl:flex bg-[#2563EB] text-white text-[13px] font-bold py-2.5 px-5 rounded-full items-center gap-1.5 hover:bg-[#1d4ed8] transition-all duration-300 shadow-md shadow-blue-200 whitespace-nowrap"
+            <button
+              onClick={openModal}
+              className="hidden xl:flex bg-[#2563EB] text-white text-[13px] font-bold py-2.5 px-5 rounded-full items-center gap-1.5 hover:bg-[#1d4ed8] transition-all duration-300 shadow-md shadow-blue-200 whitespace-nowrap cursor-pointer"
             >
               Book Free Consultation <ArrowRight className="w-4 h-4" />
-            </Link>
+            </button>
             {/* Mobile Quick Action Buttons (Replacing single Let's Talk button with 2 Stunning Circular Icons) */}
             <div className="flex xl:hidden items-center gap-3">
               {/* Call Icon Button */}
@@ -652,14 +654,16 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                 </div>
 
                 {/* Consultation Button */}
-                <Link
+                <button
                   key="cta"
-                  href="/#contact"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="bg-[#2563EB] text-white text-[13.5px] font-bold py-3 px-5 rounded-full flex items-center justify-center gap-1.5 hover:bg-[#1d4ed8] transition-colors shadow-md shadow-blue-100 text-center"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    openModal();
+                  }}
+                  className="bg-[#2563EB] text-white text-[13.5px] font-bold py-3 px-5 rounded-full flex items-center justify-center gap-1.5 hover:bg-[#1d4ed8] transition-colors shadow-md shadow-blue-100 text-center cursor-pointer"
                 >
                   Book Free Consultation <ArrowRight className="w-4 h-4" />
-                </Link>
+                </button>
               </div>
             </motion.div>
           </>
