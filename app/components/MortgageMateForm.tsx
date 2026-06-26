@@ -78,13 +78,8 @@ export function MortgageMateForm({
         });
       }, 50);
 
-      const timeout = setTimeout(() => {
-        window.location.href = MIDDLE_FINANCE_REDIRECT_URL;
-      }, 5500);
-
       return () => {
         clearInterval(interval);
-        clearTimeout(timeout);
       };
     }
   }, [formSubmitted]);
@@ -94,6 +89,18 @@ export function MortgageMateForm({
       onSubmitted(true);
     }
   }, [formSubmitted, onSubmitted]);
+
+  const handlePhoneChange = (val: string) => {
+    const digitsOnly = val.replace(/\D/g, "");
+    const limited = digitsOnly.slice(0, 10);
+    setPhone(limited);
+  };
+
+  const handleCurrencyChange = (val: string, setter: (v: string) => void) => {
+    const digits = val.replace(/\D/g, "");
+    const formatted = digits ? Number(digits).toLocaleString("en-AU") : "";
+    setter(formatted);
+  };
 
   const handleNext = () => {
     if (step === 8) {
@@ -165,15 +172,26 @@ export function MortgageMateForm({
     if (step === 1) return fullName.trim().length > 0;
     if (step === 2) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return phone.trim().length >= 8 && emailRegex.test(email.trim());
+      const digitsOnly = phone.replace(/\D/g, "");
+      const isPhoneValid = digitsOnly.length === 10;
+      return isPhoneValid && emailRegex.test(email.trim());
     }
     if (step === 3) return contactMethod !== "";
     if (step === 4) return true; // Interstitial
     if (step === 5) return loanPurpose !== "";
-    if (step === 6) return propertyWorth.trim().length > 0;
-    if (step === 7) return loanAmount.trim().length > 0;
+    if (step === 6) {
+      const numericVal = Number(propertyWorth.replace(/\D/g, ""));
+      return !isNaN(numericVal) && numericVal > 0;
+    }
+    if (step === 7) {
+      const numericVal = Number(loanAmount.replace(/\D/g, ""));
+      return !isNaN(numericVal) && numericVal > 0;
+    }
     if (step === 8) return depositFunds !== "";
-    if (step === 9) return amountOfSavings.trim().length > 0;
+    if (step === 9) {
+      const numericVal = Number(amountOfSavings.replace(/\D/g, ""));
+      return !isNaN(numericVal) && numericVal > 0;
+    }
     if (step === 10) return creditHistory !== "";
     if (step === 11) return true; // comments are optional
     return true;
@@ -183,21 +201,27 @@ export function MortgageMateForm({
     return (
       <div className="w-full space-y-6 text-left p-2">
         {/* Top Progress bar & Header */}
-        <div className="bg-blue-50 border border-blue-100 rounded-2xl p-5 shadow-sm">
+        <div className={`border rounded-2xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.02)] transition-all duration-500 ${dashboardProgress >= 100 ? "bg-emerald-50/80 border-emerald-100" : "bg-blue-50/80 border-blue-100"}`}>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="w-3 h-3 rounded-full bg-blue-600 animate-ping" />
-              <span className="text-[14px] text-[#0B1F3A] font-bold">
-                Just a moment while we set up your dashboard...
+              {dashboardProgress >= 100 ? (
+                <CheckCircle className="w-5 h-5 text-emerald-600 animate-bounce" />
+              ) : (
+                <div className="w-3 h-3 rounded-full bg-[#2563EB] animate-ping" />
+              )}
+              <span className="text-[14.5px] text-[#0B1F3A] font-extrabold">
+                {dashboardProgress >= 100 
+                  ? "Your Mortgage Mate Dashboard is ready! Please proceed below."
+                  : "Just a moment while we set up your dashboard..."}
               </span>
             </div>
-            <span className="text-[12px] text-[#2563EB] font-extrabold uppercase tracking-wider">
-              {Math.min(100, Math.round(dashboardProgress))}% Completed
+            <span className={`text-[12px] font-extrabold uppercase tracking-wider ${dashboardProgress >= 100 ? "text-emerald-600" : "text-[#2563EB]"}`}>
+              {dashboardProgress >= 100 ? "100% Ready" : `${Math.min(99, Math.round(dashboardProgress))}% Completed`}
             </span>
           </div>
-          <div className="w-full bg-blue-100/60 h-2 rounded-full overflow-hidden mt-4">
+          <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden mt-4">
             <div 
-              className="bg-gradient-to-r from-blue-500 to-indigo-600 h-full rounded-full transition-all duration-75"
+              className={`h-full rounded-full transition-all duration-75 ${dashboardProgress >= 100 ? "bg-emerald-600" : "bg-gradient-to-r from-blue-500 to-indigo-600"}`}
               style={{ width: `${dashboardProgress}%` }}
             />
           </div>
@@ -207,20 +231,20 @@ export function MortgageMateForm({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           
           {/* COLUMN 1: Your Journey */}
-          <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm text-left">
+          <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.02)] text-left">
             <h3 className="text-[#0B1F3A] text-[17px] font-extrabold pb-3 border-b border-slate-100">
               Your Journey
             </h3>
             
-            <div className="mt-6 space-y-7 relative before:absolute before:left-3.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-105">
+            <div className="mt-6 space-y-7 relative before:absolute before:left-3.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-100">
               {/* Step 1 */}
               <div className="relative pl-9">
-                <div className="absolute left-0 top-0.5 w-7 h-7 rounded-full bg-emerald-50 border border-emerald-250 text-emerald-600 flex items-center justify-center shadow-sm">
+                <div className="absolute left-0 top-0.5 w-7 h-7 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center shadow-sm">
                   <Check className="w-4 h-4" strokeWidth={3} />
                 </div>
                 <div>
                   <h4 className="text-emerald-600 text-[14px] font-extrabold">Enquiry Submitted</h4>
-                  <p className="text-slate-505 text-[12px] leading-relaxed mt-1 font-medium">
+                  <p className="text-slate-500 text-[12px] leading-relaxed mt-1 font-medium">
                     We&apos;ve successfully received your enquiry. Our system is now processing your details.
                   </p>
                 </div>
@@ -260,7 +284,7 @@ export function MortgageMateForm({
           </div>
 
           {/* COLUMN 2: Your Enquiry Details */}
-          <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm flex flex-col justify-between min-h-[360px] text-left">
+          <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.02)] flex flex-col justify-between min-h-[360px] text-left">
             <div>
               <h3 className="text-[#0B1F3A] text-[17px] font-extrabold pb-3 border-b border-slate-100">
                 Your Enquiry Details
@@ -300,28 +324,47 @@ export function MortgageMateForm({
             </div>
 
             {/* FactFind Interstitial Card */}
-            <div className="bg-blue-50/60 border border-blue-100 rounded-xl p-4 mt-6">
-              <span className="text-[#0B1F3A] text-[13.5px] font-bold block">
-                Preparing your FactFind form...
-              </span>
-              <span className="text-slate-505 text-[11px] font-semibold mt-1 block">
-                You&apos;ll be able to continue in just a moment.
-              </span>
-              <a
-                href={MIDDLE_FINANCE_REDIRECT_URL}
-                className="w-full bg-[#EA580C] hover:bg-[#c2410c] text-white flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold uppercase tracking-wider mt-4 shadow-md transition-colors"
-              >
-                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                Almost There
-              </a>
+            <div className={`border rounded-xl p-5 mt-6 transition-all duration-500 ${dashboardProgress >= 100 ? "bg-emerald-50/60 border-emerald-100" : "bg-blue-50/60 border-blue-100"}`}>
+              {dashboardProgress >= 100 ? (
+                <>
+                  <span className="text-[#0B1F3A] text-[14px] font-extrabold block">
+                    Assessment Verified & Ready!
+                  </span>
+                  <p className="text-slate-500 text-[11px] font-medium mt-1 leading-relaxed">
+                    Click the button below to connect with our lending panel and sync details.
+                  </p>
+                  <a
+                    href={MIDDLE_FINANCE_REDIRECT_URL}
+                    className="w-full bg-[#EA580C] hover:bg-[#c2410c] text-white flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs font-bold uppercase tracking-wider mt-4 shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer text-center"
+                  >
+                    Continue to Secure Portal
+                  </a>
+                </>
+              ) : (
+                <>
+                  <span className="text-[#0B1F3A] text-[13.5px] font-bold block">
+                    Preparing your FactFind form...
+                  </span>
+                  <span className="text-slate-500 text-[11px] font-semibold mt-1 block">
+                    You&apos;ll be able to continue in just a moment.
+                  </span>
+                  <button
+                    disabled
+                    className="w-full bg-slate-100 text-slate-400 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold uppercase tracking-wider mt-4 cursor-not-allowed"
+                  >
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-slate-400 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Almost There
+                  </button>
+                </>
+              )}
             </div>
           </div>
 
           {/* COLUMN 3: Dedicated Broker */}
-          <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm flex flex-col justify-between min-h-[360px] text-left">
+          <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.02)] flex flex-col justify-between min-h-[360px] text-left">
             <div>
               <h3 className="text-[#0B1F3A] text-[17px] font-extrabold pb-3 border-b border-slate-100">
                 Your Dedicated Broker
@@ -337,26 +380,50 @@ export function MortgageMateForm({
                 </div>
               </div>
 
-              <div className="bg-blue-50/50 border border-blue-100 rounded-xl p-4 mt-5">
-                <div className="flex items-center justify-between text-[12px] font-bold text-[#2563EB]">
-                  <span>Updating details...</span>
-                  <span>{Math.min(95, Math.round(dashboardProgress * 0.95))}%</span>
+              {dashboardProgress >= 100 ? (
+                <div className="bg-emerald-50/50 border border-emerald-100 rounded-xl p-4 mt-5">
+                  <div className="flex items-center justify-between text-[12px] font-bold text-emerald-600">
+                    <span className="flex items-center gap-1.5">
+                      <Check className="w-4.5 h-4.5" strokeWidth={3} />
+                      Broker Notified!
+                    </span>
+                    <span>100%</span>
+                  </div>
                 </div>
-                <div className="w-full bg-blue-100 h-1.5 rounded-full overflow-hidden mt-2.5">
-                  <div 
-                    className="bg-[#2563EB] h-full rounded-full transition-all duration-75" 
-                    style={{ width: `${Math.min(95, dashboardProgress * 0.95)}%` }}
-                  />
+              ) : (
+                <div className="bg-blue-50/50 border border-blue-100 rounded-xl p-4 mt-5">
+                  <div className="flex items-center justify-between text-[12px] font-bold text-[#2563EB]">
+                    <span>Updating details...</span>
+                    <span>{Math.min(95, Math.round(dashboardProgress * 0.95))}%</span>
+                  </div>
+                  <div className="w-full bg-blue-100 h-1.5 rounded-full overflow-hidden mt-2.5">
+                    <div 
+                      className="bg-[#2563EB] h-full rounded-full transition-all duration-75" 
+                      style={{ width: `${Math.min(95, dashboardProgress * 0.95)}%` }}
+                    />
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
-            {/* Skeleton blocks */}
-            <div className="space-y-3 mt-6 pt-4 border-t border-slate-100">
-              <div className="h-3 bg-slate-100 rounded w-5/6 animate-pulse" />
-              <div className="h-3 bg-slate-100 rounded w-full animate-pulse" />
-              <div className="h-3 bg-slate-100 rounded w-2/3 animate-pulse" />
-            </div>
+            {/* Broker contact / message */}
+            {dashboardProgress >= 100 ? (
+              <div className="space-y-3 mt-6 pt-4 border-t border-slate-100 text-left text-xs font-semibold text-slate-650">
+                <p className="leading-relaxed">
+                  Aakash has been notified of your assessment details and will reach out to you within 1 business hour.
+                </p>
+                <div className="bg-slate-50 rounded-xl p-3 border border-slate-100 space-y-1.5 font-bold text-slate-800 text-[11px]">
+                  <div>📞 Mobile: <a href="tel:+61405174845" className="text-[#2563EB] hover:underline font-bold">+61 405 174 845</a></div>
+                  <div>✉️ Email: <a href="mailto:info@mortgagexperts.com.au" className="text-[#2563EB] hover:underline font-bold font-montserrat">info@mortgagexperts.com.au</a></div>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-3 mt-6 pt-4 border-t border-slate-100">
+                <div className="h-3 bg-slate-100 rounded w-5/6 animate-pulse" />
+                <div className="h-3 bg-slate-100 rounded w-full animate-pulse" />
+                <div className="h-3 bg-slate-100 rounded w-2/3 animate-pulse" />
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -612,14 +679,17 @@ export function MortgageMateForm({
                           <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                           <input
                             type="tel"
-                            placeholder="Phone number"
+                            placeholder="Phone number (e.g. 0400 000 000)"
                             value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
+                            onChange={(e) => handlePhoneChange(e.target.value)}
                             className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
                             required
                             autoFocus
                           />
                         </div>
+                        {phone.trim().length > 0 && phone.replace(/\D/g, "").length !== 10 && (
+                          <p className="text-rose-500 text-[10px] font-bold mt-1">Please enter a valid 10-digit phone number.</p>
+                        )}
                         <div className="relative">
                           <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                           <input
@@ -631,6 +701,9 @@ export function MortgageMateForm({
                             required
                           />
                         </div>
+                        {email.trim().length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()) && (
+                          <p className="text-rose-500 text-[10px] font-bold mt-1">Please enter a valid email address.</p>
+                        )}
                       </div>
                     </div>
                   )}
@@ -722,7 +795,7 @@ export function MortgageMateForm({
                           type="text"
                           placeholder="e.g. 750,000"
                           value={propertyWorth}
-                          onChange={(e) => setPropertyWorth(e.target.value)}
+                          onChange={(e) => handleCurrencyChange(e.target.value, setPropertyWorth)}
                           className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
                           required
                           autoFocus
@@ -741,7 +814,7 @@ export function MortgageMateForm({
                           type="text"
                           placeholder="e.g. 600,000"
                           value={loanAmount}
-                          onChange={(e) => setLoanAmount(e.target.value)}
+                          onChange={(e) => handleCurrencyChange(e.target.value, setLoanAmount)}
                           className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
                           required
                           autoFocus
@@ -795,7 +868,7 @@ export function MortgageMateForm({
                           type="text"
                           placeholder="e.g. 80,000"
                           value={amountOfSavings}
-                          onChange={(e) => setAmountOfSavings(e.target.value)}
+                          onChange={(e) => handleCurrencyChange(e.target.value, setAmountOfSavings)}
                           className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
                           required
                           autoFocus
