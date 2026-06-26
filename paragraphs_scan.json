@@ -1,0 +1,539 @@
+[
+  {
+    "file": "\\about-us-nepali-mortgage-broker-in-australia\\ClientPage.tsx",
+    "paragraphs": []
+  },
+  {
+    "file": "\\best-nepali-investment-mortgage-broker-perth\\ClientPage.tsx",
+    "paragraphs": []
+  },
+  {
+    "file": "\\best-nepali-mortgage-broker-australia\\ClientPage.tsx",
+    "paragraphs": []
+  },
+  {
+    "file": "\\blog\\ClientPage.tsx",
+    "paragraphs": []
+  },
+  {
+    "file": "\\blog\\[slug]\\ClientPage.tsx",
+    "paragraphs": []
+  },
+  {
+    "file": "\\borrowing-power-calculator\\ClientPage.tsx",
+    "paragraphs": [
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-xs max-w-sm mx-auto leading-relaxed\">\n                    Thank you. An investment loan strategist from Mortgage Xperts will call you shortly to discuss your borrowing options.\n                  </p>",
+        "text": "Thank you. An investment loan strategist from Mortgage Xperts will call you shortly to discuss your borrowing options."
+      }
+    ]
+  },
+  {
+    "file": "\\branches\\[city]\\ClientPage.tsx",
+    "paragraphs": []
+  },
+  {
+    "file": "\\cash-rate-change-calculator\\ClientPage.tsx",
+    "paragraphs": [
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium\">\n                Whenever the Reserve Bank of Australia (RBA) adjusts the official cash rate, lenders typically pass this change onto variable rate home loans. Use this calculator to model how much your repayment will rise or fall.\n              </p>",
+        "text": "Whenever the Reserve Bank of Australia (RBA) adjusts the official cash rate, lenders typically pass this change onto variable rate home loans. Use this calculator to model how much your repayment will rise or fall."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-350 text-[13.5px] leading-relaxed\">\n                Understand how RBA cash rate decisions impact your home loan, savings, and investment strategies, and learn how to prepare for future changes.\n              </p>",
+        "text": "Understand how RBA cash rate decisions impact your home loan, savings, and investment strategies, and learn how to prepare for future changes."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-350 text-[14px] leading-relaxed max-w-xl\">\n                Refinancing or renegotiating with your bank is the easiest way to combat RBA rate increases. Submit your scenario, and we will audit your loan against 30+ lenders to locate stamp duty concessions, cashback rewards, or lower rates.\n              </p>",
+        "text": "Refinancing or renegotiating with your bank is the easiest way to combat RBA rate increases. Submit your scenario, and we will audit your loan against 30+ lenders to locate stamp duty concessions, cashback rewards, or lower rates."
+      }
+    ]
+  },
+  {
+    "file": "\\deposit-calculator\\ClientPage.tsx",
+    "paragraphs": [
+      {
+        "fullMatch": "<p className=\"text-slate-550 text-[14.2px] leading-relaxed max-w-xl font-medium\">\n                Calculate how compound interest and regular savings grow your home deposit over time. Build a realistic plan to unlock home ownership and compare savings frequencies.\n              </p>",
+        "text": "Calculate how compound interest and regular savings grow your home deposit over time. Build a realistic plan to unlock home ownership and compare savings frequencies."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-300 text-[14.2px] leading-relaxed max-w-xl\">\n                Saving a deposit is only the first step. Let our expert mortgage brokers find government grants, first home schemes, and competitive interest rates tailored to your financial situation.\n              </p>",
+        "text": "Saving a deposit is only the first step. Let our expert mortgage brokers find government grants, first home schemes, and competitive interest rates tailored to your financial situation."
+      }
+    ]
+  },
+  {
+    "file": "\\equity-calculator\\ClientPage.tsx",
+    "paragraphs": [
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium font-inter\">\n                Your home is one of your greatest assets. Over time, principal repayments and market growth build equity. Use this calculator to figure out your usable equity to buy an investment property, renovate, or consolidate debts.\n              </p>",
+        "text": "Your home is one of your greatest assets. Over time, principal repayments and market growth build equity. Use this calculator to figure out your usable equity to buy an investment property, renovate, or consolidate debts."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-350 text-[13.5px] leading-relaxed\">\n                Unlock our comprehensive guide to unlocking usable equity, understand refinancing costs, and explore leveraging mechanisms to grow your asset wealth.\n              </p>",
+        "text": "Unlock our comprehensive guide to unlocking usable equity, understand refinancing costs, and explore leveraging mechanisms to grow your asset wealth."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[12.5px] font-medium mt-2\">\n              Everything you need to know about home equity, usable limits, and leveraging property.\n            </p>",
+        "text": "Everything you need to know about home equity, usable limits, and leveraging property."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-300 text-[14px] leading-relaxed max-w-xl\">\n                Unlocking equity requires careful valuation checks, loan restructuring, and choosing the right lender policy. Submit a callback request and one of our bilingual mortgage brokers will guide you through the cash-out or top-up process.\n              </p>",
+        "text": "Unlocking equity requires careful valuation checks, loan restructuring, and choosing the right lender policy. Submit a callback request and one of our bilingual mortgage brokers will guide you through the cash-out or top-up process."
+      }
+    ]
+  },
+  {
+    "file": "\\extra-repayment-calculator\\ClientPage.tsx",
+    "paragraphs": [
+      {
+        "fullMatch": "<p className=\"text-slate-550 text-[14px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium\">\n                Mortgage interest compounding can be tackled by paying extra amounts weekly, fortnightly, or monthly. Input your current terms and see how much interest and time you will save.\n              </p>",
+        "text": "Mortgage interest compounding can be tackled by paying extra amounts weekly, fortnightly, or monthly. Input your current terms and see how much interest and time you will save."
+      }
+    ]
+  },
+  {
+    "file": "\\first-home-guide\\ClientPage.tsx",
+    "paragraphs": []
+  },
+  {
+    "file": "\\free-resources\\first-home-buyers-step-by-step-guide\\ClientPage.tsx",
+    "paragraphs": []
+  },
+  {
+    "file": "\\free-resources\\step-by-step-home-buying-process\\ClientPage.tsx",
+    "paragraphs": []
+  },
+  {
+    "file": "\\home-guarantee-scheme\\ClientPage.tsx",
+    "paragraphs": [
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14px] sm:text-[15px] leading-relaxed\">\r\n                If saving for a 20% deposit has felt like a never-ending struggle, you’re not alone. That’s why the First Home Guarantee (FHBG), backed by the Australian Government and administered by Housing Australia, could be your breakthrough into the property market. Under the guarantee, the government steps in to guarantee the difference between your 5% deposit and the standard 20% deposit.\r\n              </p>",
+        "text": "If saving for a 20% deposit has felt like a never-ending struggle, you’re not alone. That’s why the First Home Guarantee (FHBG), backed by the Australian Government and administered by Housing Australia, could be your breakthrough into the property market. Under the guarantee, the government steps in to guarantee the difference between your 5% deposit and the standard 20% deposit."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed\">\r\n              Skip years of renting and saving. Leverage the government guarantee to purchase your home safely and cost-effectively today.\r\n            </p>",
+        "text": "Skip years of renting and saving. Leverage the government guarantee to purchase your home safely and cost-effectively today."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-600 text-[13px] mt-0.5 leading-relaxed\">\r\n                  Lenders Mortgage Insurance (LMI) can cost anywhere from $10,000 to $30,000+, depending on your loan size. With the First Home Guarantee, that money stays back in your pocket.\r\n                </p>",
+        "text": "Lenders Mortgage Insurance (LMI) can cost anywhere from $10,000 to $30,000+, depending on your loan size. With the First Home Guarantee, that money stays back in your pocket."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed\">\r\n              Calculate your required deposit and see how much Lenders Mortgage Insurance (LMI) you avoid paying under the scheme.\r\n            </p>",
+        "text": "Calculate your required deposit and see how much Lenders Mortgage Insurance (LMI) you avoid paying under the scheme."
+      }
+    ]
+  },
+  {
+    "file": "\\home-loan-for-accountants\\ClientPage.tsx",
+    "paragraphs": [
+      {
+        "fullMatch": "<p className=\"text-slate-550 text-[14px] sm:text-[15px] leading-relaxed\">\r\n                Accountants often have access to special home loan offers because lenders recognise their stable income, financial knowledge, and responsible money management. These benefits can include waived Lenders Mortgage Insurance (LMI), special interest rates, and flexible lending policies.\r\n              </p>",
+        "text": "Accountants often have access to special home loan offers because lenders recognise their stable income, financial knowledge, and responsible money management. These benefits can include waived Lenders Mortgage Insurance (LMI), special interest rates, and flexible lending policies."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-550 text-[11.5px] leading-relaxed mt-0.5\">\r\n                    Jane is a CPA-registered accountant earning $130,000 a year as a salaried employee. Because of her stable job and professional registration, her lender offers her a home loan with a discounted interest rate and waived LMI, even though her deposit is just 10%.\r\n                  </p>",
+        "text": "Jane is a CPA-registered accountant earning $130,000 a year as a salaried employee. Because of her stable job and professional registration, her lender offers her a home loan with a discounted interest rate and waived LMI, even though her deposit is just 10%."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14.5px] leading-relaxed\">\r\n                Normally, if your deposit is less than 20%, you pay Lenders Mortgage Insurance (LMI), which protects the lender if you can’t repay the loan. However, accountants registered with bodies like CPA Australia and earning over $120,000 can sometimes avoid LMI even with deposits as low as 10%.\r\n              </p>",
+        "text": "Normally, if your deposit is less than 20%, you pay Lenders Mortgage Insurance (LMI), which protects the lender if you can’t repay the loan. However, accountants registered with bodies like CPA Australia and earning over $120,000 can sometimes avoid LMI even with deposits as low as 10%."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-550 text-[13.5px] leading-relaxed mb-4\">\r\n                Mark is a self-employed accountant registered with CPA Australia. He wants to buy a $700,000 home. Normally, a 10% deposit ($70,000) would require LMI, but Mark qualifies for an LMI waiver because of his registration and income.\r\n              </p>",
+        "text": "Mark is a self-employed accountant registered with CPA Australia. He wants to buy a $700,000 home. Normally, a 10% deposit ($70,000) would require LMI, but Mark qualifies for an LMI waiver because of his registration and income."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[13px] sm:text-[13.5px] leading-relaxed\">\r\n                  Provide business tax returns and financials. Some lenders offer flexible low-doc loans based on accountant-declared figures.\r\n                </p>",
+        "text": "Provide business tax returns and financials. Some lenders offer flexible low-doc loans based on accountant-declared figures."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-600 text-[12.5px] leading-relaxed mt-0.5\">\r\n                    Emily, a CPA-registered accountant earning $125,000, wants to buy a $600,000 home. With a 10% deposit of $60,000 and strong financials, she qualifies to borrow the remaining $540,000 without paying LMI. Her stable income also helps her get a loan amount that comfortably fits her budget.\r\n                  </p>",
+        "text": "Emily, a CPA-registered accountant earning $125,000, wants to buy a $600,000 home. With a 10% deposit of $60,000 and strong financials, she qualifies to borrow the remaining $540,000 without paying LMI. Her stable income also helps her get a loan amount that comfortably fits her budget."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14.5px] leading-relaxed\">\r\n              Mortgage brokers understand lender offers for accountants and can help you secure the best package.\r\n            </p>",
+        "text": "Mortgage brokers understand lender offers for accountants and can help you secure the best package."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-600 text-[13px] mt-0.5 leading-relaxed\">\r\n                  Tom is a self-employed accountant who didn’t know about LMI waivers. A mortgage broker helped him find a lender offering this benefit, saving him thousands. The broker also helped Tom gather his documents, making the process smooth and successful.\r\n                </p>",
+        "text": "Tom is a self-employed accountant who didn’t know about LMI waivers. A mortgage broker helped him find a lender offering this benefit, saving him thousands. The broker also helped Tom gather his documents, making the process smooth and successful."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed mb-6\">\r\n                Calculate your potential interest rate cuts and check if you meet the professional LMI waiver thresholds.\r\n              </p>",
+        "text": "Calculate your potential interest rate cuts and check if you meet the professional LMI waiver thresholds."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[12.5px] leading-relaxed\">Avoid paying expensive LMI up to 90% LVR if you meet registration criteria.</p>",
+        "text": "Avoid paying expensive LMI up to 90% LVR if you meet registration criteria."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-sm\">\r\n                Everything you need to know about the home loan process for accountants and finance professionals.\r\n              </p>",
+        "text": "Everything you need to know about the home loan process for accountants and finance professionals."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-xs sm:text-[12.5px] leading-relaxed\">\r\n                  Different lenders assess partner distributions, trust income, and casual corporate contracts differently. Our specialists can review your structure to maximize assessed income.\r\n                </p>",
+        "text": "Different lenders assess partner distributions, trust income, and casual corporate contracts differently. Our specialists can review your structure to maximize assessed income."
+      }
+    ]
+  },
+  {
+    "file": "\\home-loan-for-doctors\\ClientPage.tsx",
+    "paragraphs": [
+      {
+        "fullMatch": "<p className=\"text-slate-550 text-[14.5px] sm:text-[15.5px] leading-relaxed\">\r\n                Doctors and medical professionals, whether you’re a full-time salaried doctor, a casual medical practitioner, or self-employed running your own practice under an Australian Business Number (ABN), often have access to special home loan benefits. Lenders recognise the stable income, high earning potential, and lower risk profile of medical careers and provide tailored home loan options to reflect this.\r\n              </p>",
+        "text": "Doctors and medical professionals, whether you’re a full-time salaried doctor, a casual medical practitioner, or self-employed running your own practice under an Australian Business Number (ABN), often have access to special home loan benefits. Lenders recognise the stable income, high earning potential, and lower risk profile of medical careers and provide tailored home loan options to reflect this."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed\">\r\n              Medical careers represent the lowest risk class for Australian banks. Enjoy these premium loan package enhancements:\r\n            </p>",
+        "text": "Medical careers represent the lowest risk class for Australian banks. Enjoy these premium loan package enhancements:"
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14.5px] leading-relaxed\">\r\n                Lenders Mortgage Insurance (LMI) is a one-off insurance premium required if your deposit is below 20% of the property price. Many lenders waive LMI for doctors who meet criteria like being registered with a recognised medical board, having a stable income, and earning over $120,000 per year.\r\n              </p>",
+        "text": "Lenders Mortgage Insurance (LMI) is a one-off insurance premium required if your deposit is below 20% of the property price. Many lenders waive LMI for doctors who meet criteria like being registered with a recognised medical board, having a stable income, and earning over $120,000 per year."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-550 text-[13.5px] leading-relaxed mb-4\">\r\n                If you&apos;re buying a $700,000 home with a 5% deposit ($35,000), an LMI waiver could save you between $10,000 and $15,000 or more in upfront fees.\r\n              </p>",
+        "text": "If you&apos;re buying a $700,000 home with a 5% deposit ($35,000), an LMI waiver could save you between $10,000 and $15,000 or more in upfront fees."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14.5px] leading-relaxed\">\r\n              While standard home loans generally require a 20% deposit, doctors may be able to buy with as little as 5–10% deposit thanks to LMI waivers.\r\n            </p>",
+        "text": "While standard home loans generally require a 20% deposit, doctors may be able to buy with as little as 5–10% deposit thanks to LMI waivers."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed mb-6\">\r\n                Calculate your borrowing capacity, waived Lenders Mortgage Insurance, and rate cuts with medical professional discounts.\r\n              </p>",
+        "text": "Calculate your borrowing capacity, waived Lenders Mortgage Insurance, and rate cuts with medical professional discounts."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed\">\r\n                Connect with our medical home loan brokers to verify your LMI waiver status and compare special discounted interest rates.\r\n              </p>",
+        "text": "Connect with our medical home loan brokers to verify your LMI waiver status and compare special discounted interest rates."
+      }
+    ]
+  },
+  {
+    "file": "\\home-loan-for-nurses\\ClientPage.tsx",
+    "paragraphs": [
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed\">\r\n              Lenders understand that nurses are essential workers, and some offer exclusive discounts or waive LMI fees altogether.\r\n            </p>",
+        "text": "Lenders understand that nurses are essential workers, and some offer exclusive discounts or waive LMI fees altogether."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-550 text-[13.5px] leading-relaxed\">\r\n                If you have a deposit of 10% (instead of the standard 20%), you might still avoid paying LMI altogether, saving you thousands in upfront bank fees.\r\n              </p>",
+        "text": "If you have a deposit of 10% (instead of the standard 20%), you might still avoid paying LMI altogether, saving you thousands in upfront bank fees."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-600 text-[12.5px] leading-relaxed mt-0.5\">\r\n                    Nurses may be eligible for LMI waivers through specialized medical lending packages, or through government-backed schemes.\r\n                  </p>",
+        "text": "Nurses may be eligible for LMI waivers through specialized medical lending packages, or through government-backed schemes."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed\">\r\n              In addition to lender benefits, you may be eligible for government grants and schemes designed to support first-home buyers and essential workers:\r\n            </p>",
+        "text": "In addition to lender benefits, you may be eligible for government grants and schemes designed to support first-home buyers and essential workers:"
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed mb-6\">\r\n                Calculate how much you can borrow as a nurse or midwife, including interest rate discounts and Lenders Mortgage Insurance waivers.\r\n              </p>",
+        "text": "Calculate how much you can borrow as a nurse or midwife, including interest rate discounts and Lenders Mortgage Insurance waivers."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-505 text-[14.5px] sm:text-[15.5px] leading-relaxed mb-8\">\r\n                To access exclusive rate cuts and LMI waivers, lenders will require proof of your qualifications and registration. Track your readiness using our checklist below.\r\n              </p>",
+        "text": "To access exclusive rate cuts and LMI waivers, lenders will require proof of your qualifications and registration. Track your readiness using our checklist below."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-xs sm:text-[12.5px] leading-relaxed\">\r\n                  Different lenders assess shift allowances, overtime, and casual contracts differently. Our specialists can review your payslips to maximize assessed income.\r\n                </p>",
+        "text": "Different lenders assess shift allowances, overtime, and casual contracts differently. Our specialists can review your payslips to maximize assessed income."
+      }
+    ]
+  },
+  {
+    "file": "\\home-loan-with-visas\\ClientPage.tsx",
+    "paragraphs": [
+      {
+        "fullMatch": "<p className=\"text-slate-550 text-[14.5px] sm:text-[15.5px] leading-relaxed\">\r\n                A non-resident home loan is designed for people living overseas or those who don’t hold Australian citizenship or permanent residency. This includes foreign nationals, temporary visa holders, and Australians living abroad. Since lenders view non-residents as higher-risk borrowers, they apply stricter criteria, including more documentation and often larger deposits than regular home loans.\r\n              </p>",
+        "text": "A non-resident home loan is designed for people living overseas or those who don’t hold Australian citizenship or permanent residency. This includes foreign nationals, temporary visa holders, and Australians living abroad. Since lenders view non-residents as higher-risk borrowers, they apply stricter criteria, including more documentation and often larger deposits than regular home loans."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-600 text-[13.5px] leading-relaxed mb-8\">\r\n                The Australian Government has introduced a two-year ban on foreign persons purchasing established (previously owned) residential properties. This ban applies from 1 April 2025 to 31 March 2027 and aims to improve housing affordability.\r\n              </p>",
+        "text": "The Australian Government has introduced a two-year ban on foreign persons purchasing established (previously owned) residential properties. This ban applies from 1 April 2025 to 31 March 2027 and aims to improve housing affordability."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14.5px] leading-relaxed\">\r\n              Buying property in Australia as a Nepali non-resident or temporary visa holder can be complex, but the process becomes much simpler with the right guidance.\r\n            </p>",
+        "text": "Buying property in Australia as a Nepali non-resident or temporary visa holder can be complex, but the process becomes much simpler with the right guidance."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-550 text-xs sm:text-[13px] leading-relaxed\">\r\n                Connect with our accredited multi-lingual brokers today. We verify your visa class policies, review overseas credit criteria, and ensure FIRB submissions are filed correctly.\r\n              </p>",
+        "text": "Connect with our accredited multi-lingual brokers today. We verify your visa class policies, review overseas credit criteria, and ensure FIRB submissions are filed correctly."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-550 text-[14.5px] sm:text-[15.5px] leading-relaxed mb-6\">\r\n                Calculate your required LVR deposit threshold and estimate potential FIRB fees based on visa residency status.\r\n              </p>",
+        "text": "Calculate your required LVR deposit threshold and estimate potential FIRB fees based on visa residency status."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-xs sm:text-[12.5px] leading-relaxed\">\r\n                  We provide end-to-end support for digital ID verification, overseas contract notarisation, and coordinating with Australian legal conveyancers.\r\n                </p>",
+        "text": "We provide end-to-end support for digital ID verification, overseas contract notarisation, and coordinating with Australian legal conveyancers."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed\">\r\n                Connect with our accredited multi-lingual mortgage brokers to check your non-resident and temporary resident visa options.\r\n              </p>",
+        "text": "Connect with our accredited multi-lingual mortgage brokers to check your non-resident and temporary resident visa options."
+      }
+    ]
+  },
+  {
+    "file": "\\investing-in-property-nepali-mortgage-broker\\ClientPage.tsx",
+    "paragraphs": [
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14px] sm:text-[15px] leading-relaxed\">\r\n                Investing in property is one of the most effective ways for Australians to grow their wealth over time. When structured properly, a property portfolio provides double-sided growth: long-term asset value appreciation alongside consistent rental cash flows.\r\n              </p>",
+        "text": "Investing in property is one of the most effective ways for Australians to grow their wealth over time. When structured properly, a property portfolio provides double-sided growth: long-term asset value appreciation alongside consistent rental cash flows."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed\">\r\n              Unlike volatile shares, real estate is a tangible asset class providing double-value security: value growth along with rental income.\r\n            </p>",
+        "text": "Unlike volatile shares, real estate is a tangible asset class providing double-value security: value growth along with rental income."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed\">\r\n              Not all investment assets perform similarly. Your choice depends directly on your borrowing capability and capital strategy.\r\n            </p>",
+        "text": "Not all investment assets perform similarly. Your choice depends directly on your borrowing capability and capital strategy."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed\">\r\n              Model your rental yields, deposits, interest repayments, and monthly cash flow to evaluate property feasibility.\r\n            </p>",
+        "text": "Model your rental yields, deposits, interest repayments, and monthly cash flow to evaluate property feasibility."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14px] sm:text-[15px] leading-relaxed mb-8 max-w-lg\">\r\n                Are you financially positioned to start building or expanding your property portfolio? Review the requirements below and assess your current investment readiness.\r\n              </p>",
+        "text": "Are you financially positioned to start building or expanding your property portfolio? Review the requirements below and assess your current investment readiness."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14px] sm:text-[15px] leading-relaxed\">\r\n                Connect with our brokers to review your borrowing potential, structure your loan, and set up your investment portfolio path.\r\n              </p>",
+        "text": "Connect with our brokers to review your borrowing potential, structure your loan, and set up your investment portfolio path."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-450 text-[13.5px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium\">\r\n              We look past generic rates to structure your loans for optimal tax outcomes, maximum equity leverage, and minimal deposit costs.\r\n            </p>",
+        "text": "We look past generic rates to structure your loans for optimal tax outcomes, maximum equity leverage, and minimal deposit costs."
+      }
+    ]
+  },
+  {
+    "file": "\\lmi-calculator\\ClientPage.tsx",
+    "paragraphs": [
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium\">\n                Borrowing more than 80% of a property&apos;s value generally triggers Lenders Mortgage Insurance (LMI). Use our calculator to evaluate your ratios and projected premiums.\n              </p>",
+        "text": "Borrowing more than 80% of a property&apos;s value generally triggers Lenders Mortgage Insurance (LMI). Use our calculator to evaluate your ratios and projected premiums."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-550\"><span className=\"font-bold\">Type:</span> Lenders Mortgage Insurance (LMI) Assessment</p>",
+        "text": "<span className=\"font-bold\">Type:</span> Lenders Mortgage Insurance (LMI) Assessment"
+      }
+    ]
+  },
+  {
+    "file": "\\loan-comparison-calculator\\ClientPage.tsx",
+    "paragraphs": [
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium\">\r\n                Evaluating different interest rates, loan terms, and repayment frequencies enables you to pick the best home loan product. Analyze Loan 1 and Loan 2 directly to review payment differences and total interest savings.\r\n              </p>",
+        "text": "Evaluating different interest rates, loan terms, and repayment frequencies enables you to pick the best home loan product. Analyze Loan 1 and Loan 2 directly to review payment differences and total interest savings."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-xs sm:text-[12.5px] leading-relaxed\">\r\n                  Different banks offer varying interest rates, offset structures, and fees. Our experienced mortgage brokers compare products across 30+ lenders to locate the best home loan for your financial setup.\r\n                </p>",
+        "text": "Different banks offer varying interest rates, offset structures, and fees. Our experienced mortgage brokers compare products across 30+ lenders to locate the best home loan for your financial setup."
+      }
+    ]
+  },
+  {
+    "file": "\\loan-repayment-calculator\\ClientPage.tsx",
+    "paragraphs": []
+  },
+  {
+    "file": "\\nepali-mortgage-broker-australia\\ClientPage.tsx",
+    "paragraphs": []
+  },
+  {
+    "file": "\\nepali-mortgage-broker-in-australia\\ClientPage.tsx",
+    "paragraphs": [
+      {
+        "fullMatch": "<motion.p variants={premiumFadeUp} className=\"text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed mb-6 font-inter font-normal\">\r\n                {pageContent || \"For many Australians, buying a first home is a dream that quickly becomes overwhelming. Once you start dealing with complex terms, restrictive lender buffers, and dense regulatory requirements, it is easy to get lost.\"}\r\n              </motion.p>",
+        "text": "{pageContent || \"For many Australians, buying a first home is a dream that quickly becomes overwhelming. Once you start dealing with complex terms, restrictive lender buffers, and dense regulatory requirements, it is easy to get lost.\"}"
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[13px] leading-relaxed\">We map your exact profiles across 30+ Australian lenders to unlock maximum capacity.</p>",
+        "text": "We map your exact profiles across 30+ Australian lenders to unlock maximum capacity."
+      },
+      {
+        "fullMatch": "<motion.p variants={premiumFadeUp} className=\"text-slate-500 text-[14px] sm:text-[15px] leading-relaxed mb-8 max-w-lg\">\r\n                Is it smarter to wait years to save 20% to avoid Lenders Mortgage Insurance, or buy immediately with a 5% deposit using government schemes? Let&apos;s evaluate the strategic trade-offs.\r\n              </motion.p>",
+        "text": "Is it smarter to wait years to save 20% to avoid Lenders Mortgage Insurance, or buy immediately with a 5% deposit using government schemes? Let&apos;s evaluate the strategic trade-offs."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14px] leading-relaxed max-w-md\">\r\n                        Leveraging government incentives allows you to purchase immediately, bypassing rising house price inflation while saving substantial LMI costs.\r\n                      </p>",
+        "text": "Leveraging government incentives allows you to purchase immediately, bypassing rising house price inflation while saving substantial LMI costs."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14px] leading-relaxed max-w-md\">\r\n                        Ideal for structured wealth positions, a larger deposit lowers overall monthly repayments and provides immediate equity buffer cushions.\r\n                      </p>",
+        "text": "Ideal for structured wealth positions, a larger deposit lowers overall monthly repayments and provides immediate equity buffer cushions."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-600 text-[11.5px] leading-relaxed italic\">\r\n                          &ldquo;Aakash founded Mortgage Xperts to provide the Nepalese community in Australia with transparent, client-first mortgage advice. Having arrived as an immigrant himself, he understands the dream of home ownership. He has helped over 500+ families secure low-deposit approvals and max borrowing capacity.&rdquo;\r\n                        </p>",
+        "text": "&ldquo;Aakash founded Mortgage Xperts to provide the Nepalese community in Australia with transparent, client-first mortgage advice. Having arrived as an immigrant himself, he understands the dream of home ownership. He has helped over 500+ families secure low-deposit approvals and max borrowing capacity.&rdquo;"
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-600 text-[11px] leading-relaxed italic\">\r\n                          &ldquo;Aakash founded Mortgage Xperts to provide the Nepalese community in Australia with transparent, client-first mortgage advice. Having arrived as an immigrant himself, he understands the dream of home ownership. He has helped over 500+ families secure low-deposit approvals.&rdquo;\r\n                        </p>",
+        "text": "&ldquo;Aakash founded Mortgage Xperts to provide the Nepalese community in Australia with transparent, client-first mortgage advice. Having arrived as an immigrant himself, he understands the dream of home ownership. He has helped over 500+ families secure low-deposit approvals.&rdquo;"
+      }
+    ]
+  },
+  {
+    "file": "\\nepali-mortgage-broker-in-brisbane\\ClientPage.tsx",
+    "paragraphs": []
+  },
+  {
+    "file": "\\no-deposit-home-loans-in-australia\\ClientPage.tsx",
+    "paragraphs": [
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14px] sm:text-[15px] leading-relaxed\">\r\n                Saving for a full 20% deposit in Australia&apos;s current market can take years, all while property values and rents continue to rise. Fortunately, you don&apos;t necessarily need a massive cash stockpile to purchase your home.\r\n              </p>",
+        "text": "Saving for a full 20% deposit in Australia&apos;s current market can take years, all while property values and rents continue to rise. Fortunately, you don&apos;t necessarily need a massive cash stockpile to purchase your home."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14px] sm:text-[15px] leading-relaxed\">\r\n                By utilizing family guarantor loans, First Home Buyer government schemes, and alternative assessment criteria, you can secure a mortgage with a deposit as low as 5%—or even 0% in cash out-of-pocket. Our specialists guide you through all routes to minimize up-front cash requirements and completely waive or reduce Lenders Mortgage Insurance (LMI).\r\n              </p>",
+        "text": "By utilizing family guarantor loans, First Home Buyer government schemes, and alternative assessment criteria, you can secure a mortgage with a deposit as low as 5%—or even 0% in cash out-of-pocket. Our specialists guide you through all routes to minimize up-front cash requirements and completely waive or reduce Lenders Mortgage Insurance (LMI)."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-600 text-[13px] mt-0.5 leading-relaxed\">\r\n                  Have a great history of paying rent? Some specialty lenders now accept a 12-month lease ledger as alternative proof of genuine savings for 5% deposit loans.\r\n                </p>",
+        "text": "Have a great history of paying rent? Some specialty lenders now accept a 12-month lease ledger as alternative proof of genuine savings for 5% deposit loans."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed mb-6 max-w-lg\">\r\n                Compare guarantor support, government schemes, and standard loans to calculate cash deposit and LMI savings.\r\n              </p>",
+        "text": "Compare guarantor support, government schemes, and standard loans to calculate cash deposit and LMI savings."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[13px] leading-relaxed\">Using parental guarantor support allows you to bypass deposit requirements entirely and avoid LMI fees.</p>",
+        "text": "Using parental guarantor support allows you to bypass deposit requirements entirely and avoid LMI fees."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[13px] leading-relaxed\">Pay only 5% deposit and get government backing to avoid Lenders Mortgage Insurance.</p>",
+        "text": "Pay only 5% deposit and get government backing to avoid Lenders Mortgage Insurance."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14px] sm:text-[15px] leading-relaxed\">\r\n                Here are quick answers to common questions about guarantor loans, government low-deposit schemes, and using alternative genuine savings.\r\n              </p>",
+        "text": "Here are quick answers to common questions about guarantor loans, government low-deposit schemes, and using alternative genuine savings."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-400 text-xs leading-relaxed\">\r\n                  Every borrower’s financial position and parental equity situation are unique. Our accredited mortgage specialists can sit down with you to design a custom lending structure.\r\n                </p>",
+        "text": "Every borrower’s financial position and parental equity situation are unique. Our accredited mortgage specialists can sit down with you to design a custom lending structure."
+      }
+    ]
+  },
+  {
+    "file": "\\our-team\\[slug]\\ClientPage.tsx",
+    "paragraphs": []
+  },
+  {
+    "file": "\\property-investment-guide\\ClientPage.tsx",
+    "paragraphs": []
+  },
+  {
+    "file": "\\refinancing-a-loan\\ClientPage.tsx",
+    "paragraphs": [
+      {
+        "fullMatch": "<motion.p variants={premiumFadeUp} className=\"text-slate-500 text-[14.5px] leading-relaxed mb-6\">\r\n                Refinancing your home loan is like upgrading your car or utility bill to a better rate without changing address. If your mortgage is more than two years old, or your financial position has changed, you could be paying a large interest premium to your bank. Here&apos;s how we help you switch lenders to save.\r\n              </motion.p>",
+        "text": "Refinancing your home loan is like upgrading your car or utility bill to a better rate without changing address. If your mortgage is more than two years old, or your financial position has changed, you could be paying a large interest premium to your bank. Here&apos;s how we help you switch lenders to save."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14.5px] leading-relaxed max-w-xl mx-auto\">\r\n              Refinancing can save you thousands over the life of your loan. We help you compare your current loan with better options from a range of lenders so you can make an informed choice.\r\n            </p>",
+        "text": "Refinancing can save you thousands over the life of your loan. We help you compare your current loan with better options from a range of lenders so you can make an informed choice."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14px] sm:text-[15px] max-w-2xl mx-auto leading-relaxed\">\r\n              Refinancing can come with some setup and settlement costs. We work with you to work out the total costs upfront and compare them against your repayments savings to make sure it is a profitable move.\r\n            </p>",
+        "text": "Refinancing can come with some setup and settlement costs. We work with you to work out the total costs upfront and compare them against your repayments savings to make sure it is a profitable move."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14.5px] leading-relaxed max-w-xl mx-auto\">\r\n              Refinancing can save you thousands – but only if you avoid these common traps. We help you look at the full picture, not just the advertised interest rate.\r\n            </p>",
+        "text": "Refinancing can save you thousands – but only if you avoid these common traps. We help you look at the full picture, not just the advertised interest rate."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14px] sm:text-[15px] leading-relaxed mb-8 max-w-lg\">\r\n                Are you financially ready to switch lenders and secure a better deal? Tap the checklist options below to assess your current refinancing readiness.\r\n              </p>",
+        "text": "Are you financially ready to switch lenders and secure a better deal? Tap the checklist options below to assess your current refinancing readiness."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed mb-6\">\r\n                Fill out your details below and a senior finance expert will contact you within 2 business hours. We&apos;ll look at your current rates, calculate genuine potential savings, and identify banks offering cash back deals.\r\n              </p>",
+        "text": "Fill out your details below and a senior finance expert will contact you within 2 business hours. We&apos;ll look at your current rates, calculate genuine potential savings, and identify banks offering cash back deals."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-600 text-[11.5px] leading-relaxed italic\">\r\n                          &ldquo;Aakash founded Mortgage Xperts to support the community in Australia with professional, transparent home loan advice. Having helped over 500+ families refinance and secure rates, he is dedicated to maximizing your financial freedom.&rdquo;\r\n                        </p>",
+        "text": "&ldquo;Aakash founded Mortgage Xperts to support the community in Australia with professional, transparent home loan advice. Having helped over 500+ families refinance and secure rates, he is dedicated to maximizing your financial freedom.&rdquo;"
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-600 text-[11px] leading-relaxed italic\">\r\n                          &ldquo;Aakash KC is the founder of Mortgage Xperts. He guides the Nepalese community in Australia to find tailored lending structures, negotiate lower interest rates, and skip LMI fees.&rdquo;\r\n                        </p>",
+        "text": "&ldquo;Aakash KC is the founder of Mortgage Xperts. He guides the Nepalese community in Australia to find tailored lending structures, negotiate lower interest rates, and skip LMI fees.&rdquo;"
+      }
+    ]
+  },
+  {
+    "file": "\\refinancing-feasibility\\ClientPage.tsx",
+    "paragraphs": [
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium\">\n                Refinancing should save you more than it costs. Our calculator compares your current mortgage repayments with a lower interest rate, subtracting upfront setup costs to define your break-even period.\n              </p>",
+        "text": "Refinancing should save you more than it costs. Our calculator compares your current mortgage repayments with a lower interest rate, subtracting upfront setup costs to define your break-even period."
+      }
+    ]
+  },
+  {
+    "file": "\\refinancing-guide\\ClientPage.tsx",
+    "paragraphs": []
+  },
+  {
+    "file": "\\rent-yield-calculators\\ClientPage.tsx",
+    "paragraphs": [
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium\">\n                Rental yield is a key metric used by smart property investors to evaluate the cash flow performance of real estate. Use this calculator to compare gross and net yields for any Australian property.\n              </p>",
+        "text": "Rental yield is a key metric used by smart property investors to evaluate the cash flow performance of real estate. Use this calculator to compare gross and net yields for any Australian property."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-350 text-[13.5px] leading-relaxed\">\n                Unlock our comprehensive guide to rental yield analysis, learn what expenses you can claim, and find proven strategies to increase your property portfolio returns.\n              </p>",
+        "text": "Unlock our comprehensive guide to rental yield analysis, learn what expenses you can claim, and find proven strategies to increase your property portfolio returns."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[12.5px] font-medium mt-2\">\n              Everything you need to know about calculating and understanding rental yields.\n            </p>",
+        "text": "Everything you need to know about calculating and understanding rental yields."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-300 text-[14px] leading-relaxed max-w-xl\">\n                Structuring an investment loan requires careful planning of borrowing limits, interest-only terms, and offset accounts. Submit a callback request and one of our bilingual mortgage experts will guide you to secure the best loan strategy.\n              </p>",
+        "text": "Structuring an investment loan requires careful planning of borrowing limits, interest-only terms, and offset accounts. Submit a callback request and one of our bilingual mortgage experts will guide you to secure the best loan strategy."
+      }
+    ]
+  },
+  {
+    "file": "\\self-employed-home-loans\\ClientPage.tsx",
+    "paragraphs": [
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14px] sm:text-[15px] leading-relaxed\">\r\n                Getting a home loan can be a bit different if you’re self-employed, but with the right preparation, it’s definitely possible to secure the finance you need. Understanding what lenders require and how they assess your income will help you approach the process confidently.\r\n              </p>",
+        "text": "Getting a home loan can be a bit different if you’re self-employed, but with the right preparation, it’s definitely possible to secure the finance you need. Understanding what lenders require and how they assess your income will help you approach the process confidently."
+      },
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-xs sm:text-[12.5px] leading-relaxed\">\r\n                  Self-employed lending policies vary dramatically between banks. Our specialists can review your trust, company, or sole trader structure and match you with the right lender.\r\n                </p>",
+        "text": "Self-employed lending policies vary dramatically between banks. Our specialists can review your trust, company, or sole trader structure and match you with the right lender."
+      }
+    ]
+  },
+  {
+    "file": "\\stamp-duty-calculator\\ClientPage.tsx",
+    "paragraphs": [
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium font-inter\">\n                Stamp duty (transfer duty tax) on {stateCode} properties is calculated on standard government brackets. Concessions exist to help first home buyers purchase homes with up to 100% discounts on transfer duty.\n              </p>",
+        "text": "Stamp duty (transfer duty tax) on {stateCode} properties is calculated on standard government brackets. Concessions exist to help first home buyers purchase homes with up to 100% discounts on transfer duty."
+      }
+    ]
+  },
+  {
+    "file": "\\the-xperts-news-insights\\ClientPage.tsx",
+    "paragraphs": []
+  },
+  {
+    "file": "\\top-nepali-mortgage-broker-in-australia\\ClientPage.tsx",
+    "paragraphs": []
+  },
+  {
+    "file": "\\ytd-calculator\\ClientPage.tsx",
+    "paragraphs": [
+      {
+        "fullMatch": "<p className=\"text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium\">\n                Annualising Year-to-Date (YTD) income is the standard method used by Australian banks to assess casual, part-time, and self-employed applicants. Use this tool to predict your lender-assessable income.\n              </p>",
+        "text": "Annualising Year-to-Date (YTD) income is the standard method used by Australian banks to assess casual, part-time, and self-employed applicants. Use this tool to predict your lender-assessable income."
+      }
+    ]
+  }
+]

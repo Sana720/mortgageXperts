@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft,
@@ -14,7 +15,10 @@ import {
   Phone,
   Check,
   Clock,
-  X
+  X,
+  Sparkles,
+  ShieldCheck,
+  Award
 } from "lucide-react";
 import Image from "next/image";
 
@@ -24,9 +28,20 @@ interface MortgageMateFormProps {
   onClose?: () => void;
   compact?: boolean;
   initialStep?: number;
+  onSubmitted?: (submitted: boolean) => void;
+  showCloseButton?: boolean;
+  transparent?: boolean;
 }
 
-export function MortgageMateForm({ onClose, compact = false, initialStep = 0 }: MortgageMateFormProps) {
+export function MortgageMateForm({ 
+  onClose, 
+  compact = false, 
+  initialStep = 0, 
+  onSubmitted,
+  showCloseButton = true,
+  transparent = false
+}: MortgageMateFormProps) {
+  const router = useRouter();
   const [step, setStep] = useState(initialStep); // Starts at initialStep (defaults to 0)
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -73,6 +88,12 @@ export function MortgageMateForm({ onClose, compact = false, initialStep = 0 }: 
       };
     }
   }, [formSubmitted]);
+
+  useEffect(() => {
+    if (formSubmitted && onSubmitted) {
+      onSubmitted(true);
+    }
+  }, [formSubmitted, onSubmitted]);
 
   const handleNext = () => {
     if (step === 8) {
@@ -343,11 +364,11 @@ export function MortgageMateForm({ onClose, compact = false, initialStep = 0 }: 
   }
 
   return (
-    <div className={`bg-white border-0 rounded-2xl ${compact ? "p-4 sm:p-5" : "p-5 sm:p-6"} flex flex-col justify-between h-full min-h-[440px] relative text-left`}>
-      {onClose && (
+    <div className={`w-full ${transparent ? "bg-transparent" : "bg-white border border-slate-100 rounded-3xl shadow-[0_25px_60px_-15px_rgba(11,31,58,0.06)]"} ${compact ? "p-4 sm:p-6" : "p-5 sm:p-8 md:p-10"} flex flex-col ${step === 0 ? "justify-center" : "justify-between"} h-full min-h-[440px] relative text-left`}>
+      {onClose && showCloseButton && (
         <button 
           onClick={onClose} 
-          className="absolute top-4 right-4 p-1.5 rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors cursor-pointer z-20"
+          className="absolute top-4 right-4 p-1.5 rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-650 transition-colors cursor-pointer z-20"
           aria-label="Close form popup"
         >
           <X className="w-5 h-5" />
@@ -355,115 +376,176 @@ export function MortgageMateForm({ onClose, compact = false, initialStep = 0 }: 
       )}
 
       {step === 0 ? (
-        <div className="flex flex-col justify-between h-full space-y-6">
-          <div className="space-y-4">
-            <h2 className="text-[#0B1F3A] text-xl sm:text-2xl font-extrabold tracking-tight leading-snug font-montserrat">
-              Complete the form and get a reply from us <span className="text-[#10A3EB]">within 24 hours</span>.
-            </h2>
-            <p className="text-slate-500 text-[12.5px] font-semibold leading-relaxed">
-              The information provided is for assessment purposes only. <span className="font-extrabold text-slate-800">No enquiry is made on your credit file.</span>
-            </p>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center w-full">
+          {/* LEFT COLUMN: Hero content (Title, sub-text, button, ratings) */}
+          <div className="md:col-span-7 flex flex-col justify-between space-y-5">
+            <div className="space-y-4">
+              {/* Premium Tag */}
+              <div className="inline-flex items-center gap-1.5 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 border border-blue-200/50 rounded-full px-3 py-1">
+                <Sparkles className="w-3 h-3 text-[#10A3EB]" />
+                <span className="text-[9px] font-extrabold text-[#10A3EB] uppercase tracking-widest">Strategy Call & Assessment</span>
+              </div>
 
-          <div className="space-y-4 my-4">
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
+              {/* Title & Paragraph */}
+              <h2 className="text-[#0B1F3A] text-xl sm:text-2xl font-extrabold tracking-tight leading-snug font-montserrat">
+                Complete the form and get a reply from us <span className="text-[#10A3EB]">within 24 hours</span>.
+              </h2>
+              <p className="text-slate-500 text-[12.5px] font-medium leading-relaxed">
+                The information provided is for assessment purposes only. <span className="font-bold text-slate-800">No enquiry is made on your credit file.</span>
+              </p>
+            </div>
+
+            {/* Mini advisor badge on mobile only */}
+            <div className="flex md:hidden items-center gap-2 bg-slate-50 border border-slate-200/50 rounded-2xl p-2.5 shadow-sm">
+              <div className="w-9 h-9 rounded-xl overflow-hidden relative border border-slate-200 shrink-0">
+                <Image src="/images/aakash_new.png" fill alt="Aakash KC" className="object-cover object-top" />
+              </div>
+              <div className="text-left">
+                <h4 className="text-[#0B1F3A] text-xs font-bold leading-none">Aakash KC</h4>
+                <p className="text-[#10A3EB] text-[9.5px] font-bold mt-0.5">Principal Advisor & MFAA Member</p>
+              </div>
+            </div>
+
+            {/* Let's Start & Completion badge */}
+            <div className="flex flex-wrap items-center gap-3">
               <button
                 type="button"
-                onClick={() => setStep(1)}
-                className="w-full sm:w-auto bg-[#10A3EB] hover:bg-[#0e92d3] text-white font-extrabold uppercase text-[13px] tracking-wider py-3.5 px-8 rounded-full flex items-center justify-center gap-2 shadow-md shadow-sky-500/10 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer shrink-0"
+                onClick={() => {
+                  if (onClose) onClose();
+                  router.push("/mortgage-mate/assessment");
+                }}
+                className="w-full sm:w-auto bg-[#10A3EB] hover:bg-[#0e92d3] text-white font-extrabold uppercase text-[12px] tracking-wider py-3.5 px-6 rounded-full flex items-center justify-center gap-2 shadow-md shadow-sky-500/10 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer shrink-0"
               >
-                LET&apos;S START <ArrowRight className="w-4 h-4" />
+                LET&apos;S START <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />
               </button>
 
-              <div className="bg-slate-50 border border-slate-100 text-slate-500 font-extrabold text-[9.5px] tracking-wide uppercase px-4 py-3 rounded-full inline-flex items-center gap-1.5 shrink-0 shadow-sm">
-                <Clock className="w-4 h-4 text-[#10A3EB]" />
-                <span>COMPLETION / 2 minutes</span>
+              <div className="flex items-center gap-2 bg-slate-50 border border-slate-200/50 px-3 py-2 rounded-xl shadow-sm whitespace-nowrap">
+                <Clock className="w-3.5 h-3.5 text-[#10A3EB]" />
+                <div className="flex flex-col text-left">
+                  <span className="text-[7.5px] text-slate-400 font-extrabold tracking-wider uppercase leading-none">COMPLETION</span>
+                  <span className="text-[11px] text-slate-700 font-extrabold mt-0.5">2 minutes</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Rating Badges Section */}
+            <div className="grid grid-cols-3 gap-2 pt-4 border-t border-slate-100">
+              {/* ProductReview */}
+              <div className="flex flex-col items-start gap-1 pr-2 border-r border-slate-100">
+                <div className="flex items-center gap-1">
+                  <div className="flex gap-0.5">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-2.5 h-2.5 text-[#FBBF24] fill-[#FBBF24]" />
+                    ))}
+                  </div>
+                </div>
+                <p className="text-[10px] text-slate-500 font-semibold leading-tight mt-0.5">
+                  <strong className="text-slate-800 font-bold">4.9</strong>/5 ProductReview
+                </p>
+              </div>
+
+              {/* Facebook */}
+              <div className="flex flex-col items-start gap-1 px-2 border-r border-slate-100">
+                <div className="flex items-center gap-1">
+                  <div className="flex gap-0.5">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-2.5 h-2.5 text-[#FBBF24] fill-[#FBBF24]" />
+                    ))}
+                  </div>
+                </div>
+                <p className="text-[10px] text-slate-500 font-semibold leading-tight mt-0.5">
+                  <strong className="text-slate-800 font-bold">4.8</strong>/5 Facebook
+                </p>
+              </div>
+
+              {/* Google */}
+              <div className="flex flex-col items-start gap-1 pl-2">
+                <div className="flex items-center gap-1">
+                  <div className="flex gap-0.5">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-2.5 h-2.5 text-[#FBBF24] fill-[#FBBF24]" />
+                    ))}
+                  </div>
+                </div>
+                <p className="text-[10px] text-slate-500 font-semibold leading-tight mt-0.5">
+                  <strong className="text-slate-800 font-bold">4.8</strong>/5 Google
+                </p>
               </div>
             </div>
           </div>
 
-          {/* Google, Facebook, ProductReview, Trustpilot ratings */}
-          <div className="grid grid-cols-4 gap-1.5 pt-4 border-t border-slate-100 mt-auto">
-            {/* ProductReview */}
-            <div className="text-center pr-0.5 border-r border-slate-100">
-              <div className="flex justify-center mb-1">
-                <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-[#34A853]">
-                  <path d="M12 2C6.477 2 2 6.477 2 12c0 2.223.725 4.28 1.956 5.945L3.02 21.02a.5.5 0 00.686.686l3.075-.936A9.954 9.954 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z" />
-                </svg>
-              </div>
-              <div className="flex justify-center gap-0.5">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-2 h-2 text-yellow-400 fill-yellow-400" />
-                ))}
-              </div>
-              <div className="text-[10px] font-bold text-slate-500 mt-1 leading-tight">
-                <span className="text-slate-800">4.9</span>/5
-              </div>
-              <div className="text-[7px] text-slate-400 font-black uppercase tracking-wide leading-none mt-0.5">
-                ProductReview
-              </div>
+          {/* RIGHT COLUMN: Akash KC Portrait & Bio Details Card (Overlapping) */}
+          <div className="hidden md:flex md:col-span-5 relative h-[360px] items-center justify-start select-none">
+            {/* Portrait of Aakash */}
+            <div className="absolute right-0 bottom-0 top-0 w-[210px] h-full z-0 overflow-hidden rounded-2xl transition-all duration-300">
+              <Image 
+                src="/images/aakash_new.png" 
+                fill
+                alt="Aakash KC - Principal Mortgage Advisor" 
+                className="object-cover object-top select-none pointer-events-none" 
+                priority
+              />
+              {/* Soft gradient masks to blend the portrait with the background */}
+              <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-white to-transparent pointer-events-none" />
+              <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white to-transparent pointer-events-none" />
             </div>
 
-            {/* Trustpilot */}
-            <div className="text-center pr-0.5 border-r border-slate-100">
-              <div className="flex justify-center mb-1">
-                <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-[#00B67A]">
-                  <path d="M12 2L14.78 8.08L21.36 8.87L16.48 13.33L17.9 19.82L12 16.48L6.1 19.82L7.52 13.33L2.64 8.87L9.22 8.08L12 2Z" />
-                </svg>
-              </div>
-              <div className="flex justify-center gap-0.5">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-2 h-2 text-yellow-400 fill-yellow-400" />
-                ))}
-              </div>
-              <div className="text-[10px] font-bold text-slate-500 mt-1 leading-tight">
-                <span className="text-slate-800">4.9</span>/5
-              </div>
-              <div className="text-[7px] text-slate-400 font-black uppercase tracking-wide leading-none mt-0.5">
-                Trustpilot
-              </div>
-            </div>
+            {/* Overlapping Info Card (Left-aligned) */}
+            <div className="absolute left-0 bottom-0 w-[220px] lg:w-[230px] bg-white border border-slate-200/80 rounded-2xl p-4 shadow-xl shadow-blue-950/10 z-10">
+              {/* Licensed Advisor & Rating Badges row */}
+              <div className="flex items-center justify-between gap-1 mb-2.5">
+                <div className="inline-flex items-center gap-1 bg-[#0B1F3A] border border-white/10 rounded-full px-1.5 py-0.5 shadow-sm">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-[6.5px] text-white font-extrabold uppercase tracking-wider">Licensed Advisor</span>
+                </div>
 
-            {/* Facebook */}
-            <div className="text-center pr-0.5 border-r border-slate-100">
-              <div className="flex justify-center mb-1">
-                <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-[#1877F2]">
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                </svg>
+                <div className="inline-flex items-center gap-0.5 bg-[#10A3EB] rounded-full px-1.5 py-0.5 shadow-sm">
+                  <Star className="w-2 h-2 text-yellow-300 fill-yellow-300" />
+                  <span className="text-[6.5px] text-white font-extrabold tracking-wider">4.9/5 Rated</span>
+                </div>
               </div>
-              <div className="flex justify-center gap-0.5">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-2 h-2 text-yellow-400 fill-yellow-400" />
-                ))}
-              </div>
-              <div className="text-[10px] font-bold text-slate-500 mt-1 leading-tight">
-                <span className="text-slate-800">4.8</span>/5
-              </div>
-              <div className="text-[7px] text-slate-400 font-black uppercase tracking-wide leading-none mt-0.5">
-                Facebook
-              </div>
-            </div>
 
-            {/* Google */}
-            <div className="text-center">
-              <div className="flex justify-center mb-1">
-                <svg viewBox="0 0 24 24" className="w-5 h-5">
-                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
-                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
-                  <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05" />
-                  <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335" />
-                </svg>
-              </div>
-              <div className="flex justify-center gap-0.5">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-2 h-2 text-yellow-400 fill-yellow-400" />
-                ))}
-              </div>
-              <div className="text-[10px] font-bold text-slate-500 mt-1 leading-tight">
-                <span className="text-slate-800">4.8</span>/5
-              </div>
-              <div className="text-[7px] text-slate-400 font-black uppercase tracking-wide leading-none mt-0.5">
-                Google
+              {/* Bio Details */}
+              <div className="space-y-2 text-left">
+                <div>
+                  <h3 className="text-[#0B1F3A] text-[13px] font-black leading-tight font-montserrat">
+                    Aakash KC
+                  </h3>
+                  <p className="text-[#10A3EB] text-[9px] font-bold">Principal Mortgage Advisor</p>
+                </div>
+
+                <p className="text-slate-500 text-[8.5px] leading-relaxed italic font-medium">
+                  &ldquo;I guide first home buyers and investors to find tailored structures and skip LMI fees.&rdquo;
+                </p>
+
+                {/* Stats Row */}
+                <div className="grid grid-cols-3 gap-1 py-1.5 border-y border-slate-100 text-center">
+                  <div>
+                    <div className="text-[#0B1F3A] text-[10.5px] font-black">4.9/5</div>
+                    <div className="text-slate-400 text-[6.5px] font-extrabold uppercase tracking-wider mt-0.5">Rating</div>
+                  </div>
+                  <div className="border-x border-slate-100">
+                    <div className="text-[#0B1F3A] text-[10.5px] font-black">1,200+</div>
+                    <div className="text-slate-400 text-[6.5px] font-extrabold uppercase tracking-wider mt-0.5">Families</div>
+                  </div>
+                  <div>
+                    <div className="text-[#0B1F3A] text-[10.5px] font-black">40+</div>
+                    <div className="text-slate-400 text-[6.5px] font-extrabold uppercase tracking-wider mt-0.5">Lenders</div>
+                  </div>
+                </div>
+
+                {/* Badges footer */}
+                <div className="flex items-center justify-between pt-0.5">
+                  <div className="flex items-center gap-1">
+                    <ShieldCheck className="w-2.5 h-2.5 text-[#10A3EB]" />
+                    <span className="text-[8px] text-slate-500 font-bold">MFAA Member</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-1">
+                    <Award className="w-2.5 h-2.5 text-[#10A3EB]" />
+                    <span className="text-[8px] text-slate-500 font-bold">Credit Licensee</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -500,7 +582,7 @@ export function MortgageMateForm({ onClose, compact = false, initialStep = 0 }: 
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.2 }}
-                  className="space-y-4"
+                  className="space-y-4 max-w-[680px] mx-auto w-full"
                 >
                   {/* STEP 1: Full Name */}
                   {step === 1 && (

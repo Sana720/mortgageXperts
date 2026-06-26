@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence, Variants } from "framer-motion";
@@ -58,6 +59,7 @@ const MIDDLE_FINANCE_REDIRECT_URL = "https://app.middle.finance/ref/6aa0e26a-6c6
 
 
 export default function MortgageMatePage() {
+  const router = useRouter();
   const [step, setStep] = useState(0);
 
   const proofStats = [
@@ -178,7 +180,7 @@ export default function MortgageMatePage() {
                 <div className="flex flex-row items-center gap-3 sm:gap-5 pt-2">
                   <button
                     type="button"
-                    onClick={() => setStep(1)}
+                    onClick={() => router.push("/mortgage-mate/assessment")}
                     className="bg-[#10A3EB] hover:bg-[#0e92d3] text-white font-extrabold uppercase text-[11px] sm:text-[13.5px] tracking-wider py-3 px-5 sm:py-4 sm:px-8 rounded-full flex items-center justify-center gap-2 shadow-md shadow-sky-500/10 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer whitespace-nowrap"
                   >
                     LET&apos;S START <ArrowRight className="w-3.5 h-3.5 sm:w-4.5 sm:h-4.5 stroke-[2.5]" />
