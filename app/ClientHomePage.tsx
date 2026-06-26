@@ -35,6 +35,12 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { PageHeroSettings } from "@/lib/pageLoader";
 import {
+  mergeHeroSlides,
+  isHeroModalLink,
+  type HeroSlide,
+} from "@/lib/heroSlides";
+import { useOnboardingModal } from "@/app/components/OnboardingModalContext";
+import {
   fadeInUp,
   fadeInLeft,
   fadeInRight,
@@ -129,6 +135,7 @@ type SmartToolItem = {
   icon: React.ReactNode;
   iconColorClass?: string;
   iconBgClass?: string;
+  link: string;
 };
 
 function SmartToolCard({ tool }: { tool: SmartToolItem }) {
@@ -136,21 +143,23 @@ function SmartToolCard({ tool }: { tool: SmartToolItem }) {
   const iconBg = tool.iconBgClass || 'border-[#E1EDFF] bg-[#F3F8FF]';
 
   return (
-    <motion.div
-      variants={staggerItem}
-      whileHover={{ x: 2 }}
-      transition={{ duration: 0.25, ease: EASE_OUT }}
-      className="group flex items-start gap-3.5 px-4 py-3.5 rounded-xl hover:bg-slate-50 transition-colors"
-    >
-      <div className={`w-10 h-10 rounded-xl border flex items-center justify-center shrink-0 ${iconColor} ${iconBg}`}>
-        {tool.icon}
-      </div>
-      <div className="min-w-0">
-        <div className="text-[14px] font-extrabold text-[#0B1F3A] leading-tight">{tool.title}</div>
-        <div className="text-[12px] text-slate-500 leading-snug mt-1">{tool.desc}</div>
-      </div>
-      <ArrowRight className={`w-4 h-4 ml-auto mt-1 shrink-0 group-hover:translate-x-0.5 transition-transform ${iconColor}`} />
-    </motion.div>
+    <Link href={tool.link}>
+      <motion.div
+        variants={staggerItem}
+        whileHover={{ x: 2 }}
+        transition={{ duration: 0.25, ease: EASE_OUT }}
+        className="group flex items-start gap-3.5 px-4 py-3.5 rounded-xl hover:bg-slate-50 transition-colors cursor-pointer"
+      >
+        <div className={`w-10 h-10 rounded-xl border flex items-center justify-center shrink-0 ${iconColor} ${iconBg}`}>
+          {tool.icon}
+        </div>
+        <div className="min-w-0">
+          <div className="text-[14px] font-extrabold text-[#0B1F3A] leading-tight">{tool.title}</div>
+          <div className="text-[12px] text-slate-500 leading-snug mt-1">{tool.desc}</div>
+        </div>
+        <ArrowRight className={`w-4 h-4 ml-auto mt-1 shrink-0 group-hover:translate-x-0.5 transition-transform ${iconColor}`} />
+      </motion.div>
+    </Link>
   );
 }
 
@@ -206,27 +215,32 @@ function SmartToolsSection({ settings = {} }: { settings?: Record<string, string
     {
       icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><rect x="4" y="4" width="16" height="16" rx="2" /><line x1="8" y1="9" x2="16" y2="9" /><line x1="8" y1="13" x2="14" y2="13" /><line x1="8" y1="17" x2="12" y2="17" /></svg>,
       title: "Repayment Calculator", desc: "Estimate your monthly repayments in seconds.",
-      iconColorClass: "text-[#2563EB]", iconBgClass: "bg-blue-50 border-blue-100"
+      iconColorClass: "text-[#2563EB]", iconBgClass: "bg-blue-50 border-blue-100",
+      link: "/loan-repayment-calculator"
     },
     {
       icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><circle cx="11" cy="11" r="7" /><path d="m16.5 16.5 3.5 3.5" /><path d="M11 8v3l2 2" /></svg>,
       title: "Borrowing Power Calculator", desc: "Find out how much you can borrow.",
-      iconColorClass: "text-[#8B5CF6]", iconBgClass: "bg-violet-50 border-violet-100"
+      iconColorClass: "text-[#8B5CF6]", iconBgClass: "bg-violet-50 border-violet-100",
+      link: "/borrowing-power-calculator"
     },
     {
       icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" /><path d="M12 6v6l4 2" /></svg>,
       title: "Stamp Duty Calculator", desc: "Estimate your stamp duty costs.",
-      iconColorClass: "text-[#059669]", iconBgClass: "bg-emerald-50 border-emerald-100"
+      iconColorClass: "text-[#059669]", iconBgClass: "bg-emerald-50 border-emerald-100",
+      link: "/stamp-duty-calculator"
     },
     {
       icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>,
       title: "Extra Repayment Calculator", desc: "See how extra payments could save you more.",
-      iconColorClass: "text-[#D97706]", iconBgClass: "bg-amber-50 border-amber-100"
+      iconColorClass: "text-[#D97706]", iconBgClass: "bg-amber-50 border-amber-100",
+      link: "/extra-repayment-calculator"
     },
     {
       icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-6 h-6"><rect x="3" y="3" width="8" height="18" rx="1" /><rect x="13" y="3" width="8" height="18" rx="1" /></svg>,
       title: "Compare Loans", desc: "Compare loan features, rates and fees side by side.",
-      iconColorClass: "text-[#db2777]", iconBgClass: "bg-pink-50 border-pink-100"
+      iconColorClass: "text-[#db2777]", iconBgClass: "bg-pink-50 border-pink-100",
+      link: "/loan-comparison-calculator"
     },
   ];
 
@@ -260,7 +274,7 @@ function SmartToolsSection({ settings = {} }: { settings?: Record<string, string
               {contentObj.tools_desc || "Use our easy-to-use tools and calculators to explore your options, estimate costs and plan your next move with confidence."}
             </motion.p>
             <motion.div variants={fadeInUp} className="pt-2">
-              <Link href="#" className="bg-[#2563EB] text-white font-bold text-[13px] py-3.5 px-7 rounded-lg inline-flex items-center gap-2 hover:bg-[#1d4ed8] transition-all shadow-md hover:scale-[1.02]">
+              <Link href="/borrowing-power-calculator" className="bg-[#2563EB] text-white font-bold text-[13px] py-3.5 px-7 rounded-lg inline-flex items-center gap-2 hover:bg-[#1d4ed8] transition-all shadow-md hover:scale-[1.02]">
                 {contentObj.tools_btn_text || "Explore All Tools"} <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </motion.div>
@@ -380,7 +394,7 @@ function SmartToolsSection({ settings = {} }: { settings?: Record<string, string
             ))}
           </Stagger>
           <div className="border-t border-slate-100 mt-2 pt-3 px-3 flex justify-end">
-            <Link href="#" className="text-[#2563EB] text-[12px] font-bold inline-flex items-center gap-1 hover:underline">
+            <Link href="/borrowing-power-calculator" className="text-[#2563EB] text-[12px] font-bold inline-flex items-center gap-1 hover:underline">
               View all tools <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
@@ -435,6 +449,7 @@ interface DBBlog {
 }
 
 function SuccessStoriesSection({ settings = {} }: { settings?: Record<string, string> }) {
+  const { openModal } = useOnboardingModal();
   const contentObj = settings.homepage_content ? JSON.parse(settings.homepage_content) : {};
   const [blogs, setBlogs] = useState<DBBlog[]>([]);
 
@@ -760,6 +775,10 @@ function SuccessStoriesSection({ settings = {} }: { settings?: Record<string, st
           </div>
           <Link
             href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              openModal();
+            }}
             className="shrink-0 inline-flex items-center justify-center gap-2 rounded-xl bg-[#2563EB] px-6 py-3.5 text-[13px] font-bold text-white hover:bg-[#1d4ed8] transition-colors shadow-md whitespace-nowrap"
           >
             {contentObj.cta_btn_text || "Let's Talk About Your Goals"}
@@ -922,6 +941,7 @@ const FAQ_CONTENT: Record<
 };
 
 function FaqCtaSection({ settings = {} }: { settings?: Record<string, string> }) {
+  const { openModal } = useOnboardingModal();
   const contentObj = settings.homepage_content ? JSON.parse(settings.homepage_content) : {};
   const [activeTab, setActiveTab] = useState<(typeof FAQ_TABS)[number]["id"]>("first-home");
   const [expandedIndex, setExpandedIndex] = useState(0);
@@ -988,6 +1008,10 @@ function FaqCtaSection({ settings = {} }: { settings?: Record<string, string> })
                   <div className="text-[13px] text-slate-500 mt-1">Our mortgage experts are ready to help.</div>
                   <Link
                     href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      openModal();
+                    }}
                     className="inline-flex items-center gap-1 mt-2.5 text-[13px] font-bold text-[#2563EB] hover:underline"
                   >
                     Contact us
@@ -1126,6 +1150,10 @@ function FaqCtaSection({ settings = {} }: { settings?: Record<string, string> })
 
             <Link
               href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                openModal();
+              }}
               className="inline-flex items-center justify-center gap-2 w-fit rounded-xl bg-gradient-to-r from-[#2563EB] to-[#1D4ED8] px-6 py-3.5 text-[14px] font-bold text-white hover:shadow-[0_8px_25px_rgba(37,99,235,0.4)] transition-all duration-300 hover:-translate-y-0.5 relative overflow-hidden group/btn"
             >
               <div className="absolute inset-0 bg-white/20 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300 ease-out" />
@@ -1192,106 +1220,9 @@ function FaqCtaSection({ settings = {} }: { settings?: Record<string, string> })
 
 
 // ── HERO SLIDER COMPONENT ──
-const SLIDER_DATA = [
-  {
-    id: 1,
-    service: "first-home",
-    badge: "First Home Buyer Specialists",
-    title: "Your Journey to Your First Home, Simplified",
-    subtext: "Secure your first home with expert guidance, government grants assistance, and access to low-deposit options from 40+ leading lenders.",
-    image: "/images/hero.png",
-    accentColor: "#2563EB", // Blue
-    badgeBg: "bg-[#EAF3FF] border-[#2563EB]/15 text-[#2563EB]",
-    btnClass: "bg-[#2563EB] hover:bg-[#1d4ed8] text-white shadow-blue-200",
-    borderBtnClass: "border-[#2563EB] text-[#2563EB] hover:bg-[#EAF3FF]",
-    blobGradient: "radial-gradient(ellipse 85% 90% at 62% 52%, #D4E9FF 0%, #E8F4FF 42%, #F4F9FF 62%, transparent 82%)",
-    statIconBg: "bg-[#2563EB]",
-    statPillBg: "bg-[#EAF3FF] border-[#D0E5FF] text-[#2563EB]",
-    cardTitle: "Tailored Solutions",
-    cardDesc: "Custom loan strategies designed around your goals.",
-    cardIcon: HomeIcon,
-  },
-  {
-    id: 2,
-    service: "healthcare",
-    badge: "Specialist Lenders for Medical & Health Professionals",
-    title: "Exclusive Mortgage Benefits for Health Professionals",
-    subtext: "Get up to 95% LVR with zero Lenders Mortgage Insurance (LMI) and discounted interest rates tailored for medical practitioners and healthcare staff.",
-    image: "/images/hero_slide_2_green.png",
-    accentColor: "#0D9488", // Teal/Green
-    badgeBg: "bg-[#E6FBF7] border-[#0D9488]/15 text-[#0D9488]",
-    btnClass: "bg-[#0D9488] hover:bg-[#0f766e] text-white shadow-teal-200",
-    borderBtnClass: "border-[#0D9488] text-[#0D9488] hover:bg-[#E6FBF7]",
-    blobGradient: "radial-gradient(ellipse 85% 90% at 62% 52%, #CCFBF1 0%, #E6FBF7 42%, #F2FDFB 62%, transparent 82%)",
-    statIconBg: "bg-[#0D9488]",
-    statPillBg: "bg-[#E6FBF7] border-[#99F6E4] text-[#0D9488]",
-    cardTitle: "Zero LMI Waiver",
-    cardDesc: "Exclusive medical policy benefits for doctor loans.",
-    cardIcon: Heart,
-  },
-  {
-    id: 3,
-    service: "investment",
-    badge: "Strategic Lending for Property Investors",
-    title: "Build and Scale Your Property Portfolio",
-    subtext: "Maximize your borrowing power, optimize loan structures, and leverage equity to grow your long-term property investment wealth.",
-    image: "/images/hero_slide_3_yellow.png",
-    accentColor: "#D97706", // Yellow/Amber
-    badgeBg: "bg-[#FEF3C7] border-[#D97706]/15 text-[#D97706]",
-    btnClass: "bg-[#D97706] hover:bg-[#b45309] text-white shadow-amber-200",
-    borderBtnClass: "border-[#D97706] text-[#D97706] hover:bg-[#FEF3C7]",
-    blobGradient: "radial-gradient(ellipse 85% 90% at 62% 52%, #FEF3C7 0%, #FFFBEB 42%, #FFFDF5 62%, transparent 82%)",
-    statIconBg: "bg-[#D97706]",
-    statPillBg: "bg-[#FEF3C7] border-[#FDE68A] text-[#D97706]",
-    cardTitle: "Portfolio Strategy",
-    cardDesc: "Multi-lender setups to optimize borrowing capacity.",
-    cardIcon: BarChart3,
-  },
-  {
-    id: 4,
-    service: "refinancing",
-    badge: "Smart Refinance Strategies",
-    title: "Refinance and Save Thousands Annually",
-    subtext: "Switch to a lower rate, consolidate high-interest debts, or unlock equity for renovations with our streamlined mortgage refinance process.",
-    image: "/images/hero_slide_4_purple.png",
-    accentColor: "#7C3AED", // Purple
-    badgeBg: "bg-[#F3E8FF] border-[#7C3AED]/15 text-[#7C3AED]",
-    btnClass: "bg-[#7C3AED] hover:bg-[#6d28d9] text-white shadow-purple-200",
-    borderBtnClass: "border-[#7C3AED] text-[#7C3AED] hover:bg-[#F3E8FF]",
-    blobGradient: "radial-gradient(ellipse 85% 90% at 62% 52%, #F3E8FF 0%, #FAF5FF 42%, #FDFBFF 62%, transparent 82%)",
-    statIconBg: "bg-[#7C3AED]",
-    statPillBg: "bg-[#F3E8FF] border-[#E9D5FF] text-[#7C3AED]",
-    cardTitle: "Lower Rate Search",
-    cardDesc: "Active rate negotiations to beat your current lender.",
-    cardIcon: Clock,
-  },
-  {
-    id: 5,
-    service: "self-employed",
-    badge: "Low-Doc & Self-Employed Mortgage Experts",
-    title: "Flexible Home Loans for Business Owners",
-    subtext: "No up-to-date tax returns? We specialize in alt-doc and low-doc lending solutions to secure the home loan you deserve using alternative proof of income.",
-    image: "/images/hero_slide_5_rose.png",
-    accentColor: "#E11D48", // Rose
-    badgeBg: "bg-[#FFE4E6] border-[#E11D48]/15 text-[#E11D48]",
-    btnClass: "bg-[#E11D48] hover:bg-[#be123c] text-white shadow-rose-200",
-    borderBtnClass: "border-[#E11D48] text-[#E11D48] hover:bg-[#FFE4E6]",
-    blobGradient: "radial-gradient(ellipse 85% 90% at 62% 52%, #FFE4E6 0%, #FFF5F5 42%, #FFFBFB 62%, transparent 82%)",
-    statIconBg: "bg-[#E11D48]",
-    statPillBg: "bg-[#FFE4E6] border-[#FECDD3] text-[#E11D48]",
-    cardTitle: "Alt-Doc Solutions",
-    cardDesc: "Custom cash flow assessment using BAS or bank statements.",
-    cardIcon: User,
-  },
-];
-
-function HeroSlider() {
-  const [slides, setSlides] = useState<Array<typeof SLIDER_DATA[0] & {
-    btnText1?: string;
-    btnLink1?: string;
-    btnText2?: string;
-    btnLink2?: string;
-  }>>(SLIDER_DATA);
+function HeroSlider({ slidesJson }: { slidesJson?: string | null }) {
+  const { openModal } = useOnboardingModal();
+  const slides = React.useMemo(() => mergeHeroSlides(slidesJson), [slidesJson]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoplay, setIsAutoplay] = useState(true);
   const autoplayTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -1304,12 +1235,11 @@ function HeroSlider() {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   }, [slides.length]);
 
-  // Start autoplay timer
   useEffect(() => {
     if (isAutoplay) {
       autoplayTimerRef.current = setInterval(() => {
         nextSlide();
-      }, 5000); // 5 seconds per slide
+      }, 5000);
     }
     return () => {
       if (autoplayTimerRef.current) {
@@ -1318,55 +1248,11 @@ function HeroSlider() {
     };
   }, [isAutoplay, nextSlide]);
 
-  // Load dynamic slides configuration from page-settings
-  useEffect(() => {
-    const fetchDynamicSlides = async () => {
-      try {
-        const res = await fetch("/api/admin/page-settings?page_path=/");
-        const data = await res.json();
-        if (data?.pageSettings?.slides) {
-          const parsed = JSON.parse(data.pageSettings.slides);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            const mapped = parsed.map((item: {
-              badge?: string;
-              title?: string;
-              subtext?: string;
-              image?: string;
-              btnText1?: string;
-              btnLink1?: string;
-              btnText2?: string;
-              btnLink2?: string;
-            }, idx: number) => {
-              const defaultItem = (SLIDER_DATA[idx] || SLIDER_DATA[0]) as (typeof SLIDER_DATA[0] & {
-                btnText1?: string;
-                btnLink1?: string;
-                btnText2?: string;
-                btnLink2?: string;
-              });
-              return {
-                ...defaultItem,
-                badge: item.badge || defaultItem.badge,
-                title: item.title || defaultItem.title,
-                subtext: item.subtext || defaultItem.subtext,
-                image: item.image || defaultItem.image,
-                btnText1: item.btnText1 || defaultItem.btnText1,
-                btnLink1: item.btnLink1 || defaultItem.btnLink1,
-                btnText2: item.btnText2 || defaultItem.btnText2,
-                btnLink2: item.btnLink2 || defaultItem.btnLink2,
-              };
-            });
-            setSlides(mapped);
-          }
-        }
-      } catch (err) {
-        console.error("Error fetching dynamic homepage slides:", err);
-      }
-    };
-    fetchDynamicSlides();
-  }, []);
-
-  const active = slides[currentSlide] || SLIDER_DATA[0];
+  const active: HeroSlide = slides[currentSlide] || slides[0];
   const CardIcon = active.cardIcon;
+
+  const primaryHref = isHeroModalLink(active.btnLink1) ? "#" : (active.btnLink1 || "#");
+  const secondaryHref = isHeroModalLink(active.btnLink2) ? "#" : (active.btnLink2 || "#");
 
   return (
     <section
@@ -1478,38 +1364,32 @@ function HeroSlider() {
                 </div>
               </div>
 
-              {/* CTA Buttons */}
+              {/* CTA Buttons — btnLink1 / btnLink2 come from page_meta_hero.slides (admin CMS) */}
               <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 pt-1">
-                {(active.btnText1 !== undefined || active.btnLink1 !== undefined) ? (
-                  <Link
-                    href={active.btnLink1 || "#"}
-                    className={`font-bold text-[13.5px] sm:text-[14px] py-3 sm:py-3.5 px-6 sm:px-7 rounded-full inline-flex items-center justify-center gap-2 transition-all duration-300 shadow-lg hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto ${active.btnClass}`}
-                  >
-                    {active.btnText1 || "Book Free Strategy Call"} <ArrowRight className="w-4 h-4" />
-                  </Link>
-                ) : (
-                  <Link
-                    href="#"
-                    className={`font-bold text-[13.5px] sm:text-[14px] py-3 sm:py-3.5 px-6 sm:px-7 rounded-full inline-flex items-center justify-center gap-2 transition-all duration-300 shadow-lg hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto ${active.btnClass}`}
-                  >
-                    Book Free Strategy Call <ArrowRight className="w-4 h-4" />
-                  </Link>
-                )}
-                {(active.btnText2 !== undefined || active.btnLink2 !== undefined) ? (
-                  <Link
-                    href={active.btnLink2 || "#"}
-                    className={`border-2 font-bold text-[13.5px] sm:text-[14px] py-3 sm:py-3.5 px-5 sm:px-6 rounded-full inline-flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto ${active.borderBtnClass}`}
-                  >
-                    <Calculator className="w-4 h-4" /> {active.btnText2 || "Calculate Borrowing Power"}
-                  </Link>
-                ) : (
-                  <Link
-                    href="#"
-                    className={`border-2 font-bold text-[13.5px] sm:text-[14px] py-3 sm:py-3.5 px-5 sm:px-6 rounded-full inline-flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto ${active.borderBtnClass}`}
-                  >
-                    <Calculator className="w-4 h-4" /> Calculate Borrowing Power
-                  </Link>
-                )}
+                <Link
+                  href={primaryHref}
+                  onClick={(e) => {
+                    if (isHeroModalLink(active.btnLink1)) {
+                      e.preventDefault();
+                      openModal();
+                    }
+                  }}
+                  className={`font-bold text-[13.5px] sm:text-[14px] py-3 sm:py-3.5 px-6 sm:px-7 rounded-full inline-flex items-center justify-center gap-2 transition-all duration-300 shadow-lg hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto ${active.btnClass}`}
+                >
+                  {active.btnText1} <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link
+                  href={secondaryHref}
+                  onClick={(e) => {
+                    if (isHeroModalLink(active.btnLink2)) {
+                      e.preventDefault();
+                      openModal();
+                    }
+                  }}
+                  className={`border-2 font-bold text-[13.5px] sm:text-[14px] py-3 sm:py-3.5 px-5 sm:px-6 rounded-full inline-flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto ${active.borderBtnClass}`}
+                >
+                  <Phone className="w-4 h-4" /> {active.btnText2}
+                </Link>
               </div>
 
               {/* Trust Bar — checkmark pills */}
@@ -1630,7 +1510,7 @@ function HeroSlider() {
 
       {/* ── Dots Navigation Indicator ── */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 hidden md:flex items-center gap-2">
-        {SLIDER_DATA.map((slide, index) => (
+        {slides.map((slide, index) => (
           <button
             key={slide.id}
             type="button"
@@ -1667,6 +1547,7 @@ function HeroSlider() {
 }
 
 export default function ClientHomePage({ settings = {}, pageHeroSettings }: ClientHomePageProps) {
+  const { openModal } = useOnboardingModal();
   const [showStickyCta, setShowStickyCta] = useState(false);
 
   useEffect(() => {
@@ -1695,7 +1576,7 @@ export default function ClientHomePage({ settings = {}, pageHeroSettings }: Clie
       <SiteHeader settings={settings} />
 
       {/* ── HERO SLIDER SECTION ── */}
-      <HeroSlider />
+      <HeroSlider slidesJson={pageHeroSettings?.slides} />
 
       {/* ── LENDER PANEL ── */}
       <section className="bg-white border-t border-slate-100 py-4">
@@ -1855,7 +1736,7 @@ export default function ClientHomePage({ settings = {}, pageHeroSettings }: Clie
                     </div>
                   ))}
                 </div>
-                <Link href="#" className="mt-4 inline-flex items-center gap-1.5 border border-[#2563EB] text-[#2563EB] text-[12px] font-semibold px-4 py-2 rounded-full hover:bg-[#2563EB] hover:text-white transition-all w-fit hover:scale-102 active:scale-98">
+                <Link href="/nepali-mortgage-broker-in-australia" className="mt-4 inline-flex items-center gap-1.5 border border-[#2563EB] text-[#2563EB] text-[12px] font-semibold px-4 py-2 rounded-full hover:bg-[#2563EB] hover:text-white transition-all w-fit hover:scale-102 active:scale-98">
                   Explore First Home Loans <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
@@ -1899,7 +1780,7 @@ export default function ClientHomePage({ settings = {}, pageHeroSettings }: Clie
                     ))}
                   </div>
                 </div>
-                <Link href="#" className="mt-5 inline-flex items-center gap-1.5 border border-[#16A34A] text-[#16A34A] text-[12px] font-semibold px-4 py-2 rounded-full hover:bg-[#16A34A] hover:text-white transition-all w-fit hover:scale-102 active:scale-98">
+                <Link href="/refinancing-a-loan" className="mt-5 inline-flex items-center gap-1.5 border border-[#16A34A] text-[#16A34A] text-[12px] font-semibold px-4 py-2 rounded-full hover:bg-[#16A34A] hover:text-white transition-all w-fit hover:scale-102 active:scale-98">
                   Explore Refinance Options <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
@@ -1940,7 +1821,7 @@ export default function ClientHomePage({ settings = {}, pageHeroSettings }: Clie
                   <h3 className="text-[13.5px] font-extrabold text-[#0B1F3A] mb-1" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>Investment Loans</h3>
                   <p className="text-[11px] text-slate-500 leading-relaxed">Grow your wealth with smart investment loan strategies.</p>
                 </div>
-                <Link href="#" className="mt-3 inline-flex items-center gap-1 text-[#7C3AED] text-[10px] font-semibold border border-[#7C3AED] px-2.5 py-1.5 rounded-full hover:bg-[#7C3AED] hover:text-white transition-all w-fit whitespace-nowrap hover:scale-102 active:scale-98">
+                <Link href="/investing-in-property-nepali-mortgage-broker" className="mt-3 inline-flex items-center gap-1 text-[#7C3AED] text-[10px] font-semibold border border-[#7C3AED] px-2.5 py-1.5 rounded-full hover:bg-[#7C3AED] hover:text-white transition-all w-fit whitespace-nowrap hover:scale-102 active:scale-98">
                   Explore <ArrowRight className="w-2.5 h-2.5" />
                 </Link>
               </div>
@@ -1970,7 +1851,7 @@ export default function ClientHomePage({ settings = {}, pageHeroSettings }: Clie
                   <h3 className="text-[13.5px] font-extrabold text-[#0B1F3A] mb-1" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>Healthcare Professionals</h3>
                   <p className="text-[11px] text-slate-500 leading-relaxed">Exclusive lending privileges for doctors, nurses &amp; allied health.</p>
                 </div>
-                <Link href="#" className="mt-3 inline-flex items-center gap-1 text-[#0D9488] text-[10px] font-semibold border border-[#0D9488] px-2.5 py-1.5 rounded-full hover:bg-[#0D9488] hover:text-white transition-all w-fit whitespace-nowrap hover:scale-102 active:scale-98">
+                <Link href="/home-loan-for-doctors" className="mt-3 inline-flex items-center gap-1 text-[#0D9488] text-[10px] font-semibold border border-[#0D9488] px-2.5 py-1.5 rounded-full hover:bg-[#0D9488] hover:text-white transition-all w-fit whitespace-nowrap hover:scale-102 active:scale-98">
                   Explore <ArrowRight className="w-2.5 h-2.5" />
                 </Link>
               </div>
@@ -2000,7 +1881,7 @@ export default function ClientHomePage({ settings = {}, pageHeroSettings }: Clie
                   <h3 className="text-[13.5px] font-extrabold text-[#0B1F3A] mb-1" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>Self-Employed Loans</h3>
                   <p className="text-[11px] text-slate-500 leading-relaxed">Flexible loans for self-employed Australians.</p>
                 </div>
-                <Link href="#" className="mt-3 inline-flex items-center gap-1 text-[#2563EB] text-[10px] font-semibold border border-[#2563EB] px-2.5 py-1.5 rounded-full hover:bg-[#2563EB] hover:text-white transition-all w-fit whitespace-nowrap hover:scale-102 active:scale-98">
+                <Link href="/self-employed-home-loans" className="mt-3 inline-flex items-center gap-1 text-[#2563EB] text-[10px] font-semibold border border-[#2563EB] px-2.5 py-1.5 rounded-full hover:bg-[#2563EB] hover:text-white transition-all w-fit whitespace-nowrap hover:scale-102 active:scale-98">
                   Explore <ArrowRight className="w-2.5 h-2.5" />
                 </Link>
               </div>
@@ -2030,7 +1911,14 @@ export default function ClientHomePage({ settings = {}, pageHeroSettings }: Clie
                   <h3 className="text-[13.5px] font-extrabold text-[#0B1F3A] mb-1" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>Construction Loans</h3>
                   <p className="text-[11px] text-slate-500 leading-relaxed">Build your dream home with construction solutions.</p>
                 </div>
-                <Link href="#" className="mt-3 inline-flex items-center gap-1 text-[#EA580C] text-[10px] font-semibold border border-[#EA580C] px-2.5 py-1.5 rounded-full hover:bg-[#EA580C] hover:text-white transition-all w-fit whitespace-nowrap hover:scale-102 active:scale-98">
+                <Link
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    openModal();
+                  }}
+                  className="mt-3 inline-flex items-center gap-1 text-[#EA580C] text-[10px] font-semibold border border-[#EA580C] px-2.5 py-1.5 rounded-full hover:bg-[#EA580C] hover:text-white transition-all w-fit whitespace-nowrap hover:scale-102 active:scale-98"
+                >
                   Explore <ArrowRight className="w-2.5 h-2.5" />
                 </Link>
               </div>
@@ -2065,7 +1953,14 @@ export default function ClientHomePage({ settings = {}, pageHeroSettings }: Clie
                 <div className="text-slate-500 text-[13px]">Our mortgage experts are here to help you every step of the way.</div>
               </div>
             </div>
-            <Link href="#" className="bg-[#2563EB] text-white font-bold text-[13px] px-6 py-3.5 rounded-full flex items-center gap-2 hover:bg-[#1d4ed8] transition-all shadow-sm whitespace-nowrap shrink-0 hover:scale-102 active:scale-98">
+            <Link
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                openModal();
+              }}
+              className="bg-[#2563EB] text-white font-bold text-[13px] px-6 py-3.5 rounded-full flex items-center gap-2 hover:bg-[#1d4ed8] transition-all shadow-sm whitespace-nowrap shrink-0 hover:scale-102 active:scale-98"
+            >
               Talk To An Expert <ArrowRight className="w-4 h-4" />
             </Link>
           </motion.div>
@@ -2225,12 +2120,16 @@ export default function ClientHomePage({ settings = {}, pageHeroSettings }: Clie
           >
             <Link
               href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                openModal();
+              }}
               className="flex-1 bg-[#2563EB] text-white font-bold text-[12.5px] py-3 rounded-full flex items-center justify-center gap-1.5 shadow-md shadow-blue-100 text-center"
             >
               Book Strategy Call <ArrowRight className="w-3.5 h-3.5" />
             </Link>
             <Link
-              href="#"
+              href="/borrowing-power-calculator"
               className="flex-1 border border-[#2563EB] text-[#2563EB] bg-white font-bold text-[12.5px] py-3 rounded-full flex items-center justify-center gap-1.5 text-center"
             >
               <Calculator className="w-3.5 h-3.5" /> Borrowing Power
@@ -2244,6 +2143,7 @@ export default function ClientHomePage({ settings = {}, pageHeroSettings }: Clie
 }
 
 function WhyChooseUsSection() {
+  const { openModal } = useOnboardingModal();
   const [activeIndex, setActiveIndex] = useState(0);
 
   const cards = [
@@ -2279,7 +2179,14 @@ function WhyChooseUsSection() {
             <p className="text-slate-500 text-[13px] sm:text-[14px] leading-relaxed mb-6 lg:text-right max-w-md">
               We deliver <span className="text-[#0B1F3A] font-semibold">personalised lending strategies</span> for health professionals and property investors across Australia. Whether you&apos;re purchasing your first home or building a portfolio, we have you covered.
             </p>
-            <Link href="#" className="relative group/btn inline-flex items-center justify-center gap-2 w-fit rounded-xl bg-[#2563EB] px-6 py-3.5 text-[13px] font-bold text-white shadow-md hover:shadow-lg hover:bg-[#1d4ed8] transition-all duration-300 hover:-translate-y-0.5">
+            <Link
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                openModal();
+              }}
+              className="relative group/btn inline-flex items-center justify-center gap-2 w-fit rounded-xl bg-[#2563EB] px-6 py-3.5 text-[13px] font-bold text-white shadow-md hover:shadow-lg hover:bg-[#1d4ed8] transition-all duration-300 hover:-translate-y-0.5"
+            >
               Book Free Strategy Call <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
             </Link>
           </motion.div>
@@ -2337,9 +2244,9 @@ function WhyChooseUsSection() {
                     </div>
                     <h3 className="text-white font-bold text-[24px] mb-2 leading-tight drop-shadow-md">{card.title}</h3>
                     <p className="text-white/95 text-[13px] leading-relaxed max-w-md mb-5 drop-shadow-md">{card.desc}</p>
-                    <div className="inline-flex items-center gap-1.5 text-white font-bold text-[13px] hover:opacity-80 transition-opacity">
+                    <Link href={`/branches/${card.city.toLowerCase()}`} className="inline-flex items-center gap-1.5 text-white font-bold text-[13px] hover:opacity-80 transition-opacity">
                       Explore {card.city} Options <ArrowRight className="w-3.5 h-3.5" />
-                    </div>
+                    </Link>
                   </motion.div>
                 </div>
               </motion.div>
@@ -2364,9 +2271,9 @@ function WhyChooseUsSection() {
                 </div>
                 <h3 className="text-white font-bold text-[22px] mb-2 leading-tight drop-shadow-md">{card.title}</h3>
                 <p className="text-white/95 text-[13px] leading-relaxed mb-5 drop-shadow-md">{card.desc}</p>
-                <div className="inline-flex items-center gap-1.5 text-white font-bold text-[13px] hover:opacity-80 transition-opacity">
+                <Link href={`/branches/${card.city.toLowerCase()}`} className="inline-flex items-center gap-1.5 text-white font-bold text-[13px] hover:opacity-80 transition-opacity">
                   Explore {card.city} Options <ArrowRight className="w-3.5 h-3.5" />
-                </div>
+                </Link>
               </div>
             </motion.div>
           ))}

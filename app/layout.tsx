@@ -15,6 +15,7 @@ const montserrat = Montserrat({
 });
 
 import { loadPageData } from "@/lib/pageLoader";
+import { OnboardingModalProvider } from "@/app/components/OnboardingModalContext";
 
 export async function generateMetadata(): Promise<Metadata> {
   let titleVal = "Mortgage Xperts - Australia | Leading Nepali Mortgage Brokerage Firm";
@@ -100,7 +101,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${montserrat.variable}`}>
       <body className="antialiased">
-        {children}
+        <OnboardingModalProvider>
+          {children}
+        </OnboardingModalProvider>
       </body>
     </html>
   );

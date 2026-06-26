@@ -31,6 +31,7 @@ import {
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { TestimonialSection } from "../components/TestimonialSection";
+import { MortgageMateForm } from "../components/MortgageMateForm";
 
 import { 
   EASE_OUT, 
@@ -57,88 +58,7 @@ const MIDDLE_FINANCE_REDIRECT_URL = "https://app.middle.finance/ref/6aa0e26a-6c6
 
 
 export default function MortgageMatePage() {
-  const [step, setStep] = useState(1);
-  const [formSubmitted, setFormSubmitted] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-
-  // Form State
-  const [loanPurpose, setLoanPurpose] = useState("");
-  const [timeline, setTimeline] = useState("");
-  const [savings, setSavings] = useState("");
-  const [employment, setEmployment] = useState("");
-  const [income, setIncome] = useState("");
-  const [debts, setDebts] = useState("");
-  const [state, setState] = useState("NSW");
-  
-  // Contact Info
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-
-  const totalSteps = 7;
-
-  const handleNext = () => {
-    if (step < totalSteps) setStep((prev) => prev + 1);
-  };
-
-  const handleBack = () => {
-    if (step > 1) setStep((prev) => prev - 1);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!fullName || !email || !phone) return;
-    setSubmitting(true);
-
-    const payload = {
-      type: "mortgage_mate",
-      name: fullName,
-      email: email,
-      phone: phone,
-      savings: savings || "N/A",
-      income: `Income: ${income}, Emp: ${employment}`,
-      state: state,
-      details: JSON.stringify({
-        loanPurpose,
-        timeline,
-        debts
-      })
-    };
-
-    try {
-      const res = await fetch("/api/enquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      if (res.ok) {
-        setFormSubmitted(true);
-        window.setTimeout(() => {
-          window.location.href = MIDDLE_FINANCE_REDIRECT_URL;
-        }, 1200);
-      } else {
-        alert("Submission failed. Please try again.");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("An error occurred. Please check your connection.");
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const isStepValid = () => {
-    if (step === 1) return loanPurpose !== "" && timeline !== "";
-    if (step === 2) return savings !== "";
-    if (step === 3) return employment !== "";
-    if (step === 4) return income !== "";
-    if (step === 5) return debts !== "";
-    if (step === 6) return state !== "";
-    if (step === 7) return fullName.trim() !== "" && email.trim() !== "" && phone.trim() !== "";
-    return true;
-  };
-
-  const australianStates = ["NSW", "VIC", "QLD", "WA", "SA", "ACT/NT/TAS"];
+  const [step, setStep] = useState(0);
 
   const proofStats = [
     { label: "Client Rating", value: "4.9/5" },
@@ -225,500 +145,210 @@ export default function MortgageMatePage() {
 
 
   return (
-    <div className="min-h-screen bg-slate-50/60 flex flex-col font-inter">
+    <div className="min-h-screen bg-white flex flex-col font-inter">
       <SiteHeader isSticky={true} />
 
       {/* Main Profile & Multi-step Section */}
-      <main id="lead-form" className="flex-1 max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-8 md:py-12 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+      <main id="lead-form" className="flex-1 max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-8 lg:py-0 lg:h-[calc(100vh-120px)] lg:min-h-[620px] lg:max-h-[850px] flex items-center w-full relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center w-full">
           
-          {/* LEFT COLUMN: Bio Block */}
-          <motion.div 
-            initial="hidden"
-            animate="visible"
-            variants={premiumFadeUp}
-            className="lg:col-span-5 space-y-6"
-          >
-            <div className="inline-flex items-center gap-1.5 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 border border-blue-200/50 rounded-full px-3 py-1">
-              <Sparkles className="w-3.5 h-3.5 text-[#2563EB]" />
-              <span className="text-[10px] font-extrabold text-[#2563EB] uppercase tracking-widest">Meet Your Mortgage Mate</span>
-            </div>
-
-            <div className="space-y-3">
-              <h1 className="text-[#0B1F3A] text-[28px] sm:text-[34px] md:text-[40px] font-extrabold leading-[1.1] tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                Aakash KC – The <span className="bg-gradient-to-r from-[#2563EB] to-indigo-600 bg-clip-text text-transparent">Mortgage Mate</span>
-              </h1>
-              <p className="text-slate-500 text-[13.5px] font-semibold leading-relaxed">
-                Start with a free strategy call and assessment, then complete the secure Middle Finance fact-find after your lead profile is saved.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-3 gap-2">
-              {proofStats.map((stat) => (
-                <div key={stat.label} className="bg-white border border-slate-200 rounded-xl px-3 py-3 text-center shadow-sm">
-                  <div className="text-[#0B1F3A] text-[17px] font-extrabold leading-none">{stat.value}</div>
-                  <div className="text-slate-400 text-[9px] font-extrabold uppercase tracking-wide mt-1">{stat.label}</div>
+          {/* LEFT COLUMN: Hero content (if step === 0) or form content (if step >= 1) */}
+          <div className="lg:col-span-7">
+            {step === 0 ? (
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={premiumFadeUp}
+                className="space-y-6"
+              >
+                <div className="inline-flex items-center gap-1.5 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 border border-blue-200/50 rounded-full px-3.5 py-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-[#10A3EB]" />
+                  <span className="text-[10px] font-extrabold text-[#10A3EB] uppercase tracking-widest">Strategy Call & Assessment</span>
                 </div>
-              ))}
-            </div>
 
-            <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-[#0B1F3A] shadow-xl shadow-blue-950/10">
-              <div className="relative h-[250px]">
-                <Image src="/images/aakash_new.png" fill alt="Aakash KC mortgage strategy video" className="object-cover object-top opacity-80" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-[#0B1F3A]/35 to-transparent" />
-                <button
-                  type="button"
-                  className="absolute inset-0 flex items-center justify-center text-white"
-                  aria-label="Play Mortgage Mate introduction video"
-                >
-                  <span className="w-16 h-16 rounded-full bg-white/95 text-[#2563EB] flex items-center justify-center shadow-2xl shadow-blue-950/30 transition-transform hover:scale-105">
-                    <PlayCircle className="w-9 h-9" />
-                  </span>
-                </button>
-                <div className="absolute left-4 right-4 bottom-4">
-                  <div className="inline-flex items-center gap-1.5 bg-white/15 border border-white/15 rounded-full px-3 py-1 mb-2">
-                    <Clock className="w-3 h-3 text-sky-200" />
-                    <span className="text-[10px] text-sky-100 font-extrabold uppercase tracking-wider">2 min explainer</span>
-                  </div>
-                  <h2 className="text-white text-[20px] font-extrabold leading-tight">
-                    Watch how the free assessment works before you submit.
-                  </h2>
+                <div className="space-y-4">
+                  <h1 className="text-[#0B1F3A] text-[25px] sm:text-[40px] lg:text-[46px] font-extrabold leading-[1.15] sm:leading-[1.1] tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                    Complete the form and get a reply from us <span className="text-[#10A3EB]">within 24 hours</span>.
+                  </h1>
+                  <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] font-medium leading-relaxed max-w-xl">
+                    The information provided is for assessment purposes only. <span className="font-bold text-slate-800">No enquiry is made on your credit file.</span>
+                  </p>
                 </div>
-              </div>
-            </div>
 
-            {/* Profile Card */}
-            <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-md shadow-slate-100/50 relative overflow-hidden">
-              <div className="flex items-center gap-4 pb-4 border-b border-slate-100">
-                <div className="w-14 h-14 rounded-xl overflow-hidden relative border border-slate-150 shrink-0">
-                  <Image src="/images/aakash_new.png" fill alt="Aakash KC" className="object-cover object-top" />
-                </div>
-                <div>
-                  <h3 className="text-slate-900 text-[15px] font-bold">Aakash KC</h3>
-                  <p className="text-[#2563EB] text-[11.5px] font-semibold">Principal Mortgage Advisor</p>
-                  
-                  <div className="flex items-center gap-1 mt-0.5">
-                    <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
-                    <span className="text-[10.5px] text-slate-500 font-bold">4.9/5 from 1,200+ clients</span>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setStep(1)}
+                    className="bg-[#10A3EB] hover:bg-[#0e92d3] text-white font-extrabold uppercase text-[13.5px] tracking-wider py-4 px-8 rounded-full flex items-center justify-center gap-2 shadow-md shadow-sky-500/10 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                  >
+                    LET&apos;S START <ArrowRight className="w-4.5 h-4.5 stroke-[2.5]" />
+                  </button>
+
+                  <div className="flex items-center gap-3 bg-slate-50 border border-slate-200/50 px-4 py-2.5 rounded-2xl shadow-sm">
+                    <div className="w-9 h-9 rounded-xl bg-slate-200/60 flex items-center justify-center text-slate-500 shrink-0">
+                      <Clock className="w-4.5 h-4.5" />
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-[9px] text-slate-400 font-extrabold tracking-wider uppercase leading-none">COMPLETION</span>
+                      <span className="text-[13px] text-slate-700 font-extrabold mt-0.5">2 minutes</span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="pt-4 space-y-3 text-slate-600 text-[12.5px] leading-relaxed">
-                <p>
-                  👋 Hi! Finding the right home loan doesn&apos;t have to feel like navigating a maze. As your licensed mortgage broker, I leverage one of Australia&apos;s leading lending networks to make financing simple and stress-free.
-                </p>
-                <p className="text-[#0B1F3A] font-bold">
-                  The best part? My service is 100% free. We get paid by the lenders, not by you.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3 mt-4 pt-4 border-t border-slate-100">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-[#2563EB]" />
-                  <span className="text-[10.5px] text-slate-600 font-semibold">MFAA Registered</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Award className="w-4 h-4 text-[#2563EB]" />
-                  <span className="text-[10.5px] text-slate-600 font-semibold">40+ Lenders Panel</span>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* RIGHT COLUMN: Interactive Multi-Step Form */}
-          <motion.div 
-            initial="hidden"
-            animate="visible"
-            variants={premiumFadeUp}
-            className="lg:col-span-7"
-          >
-            <div className="bg-white border-2 border-blue-500/20 rounded-2xl p-5 sm:p-6 shadow-xl shadow-blue-500/5 relative">
-              
-              {formSubmitted ? (
-                <motion.div 
-                  initial="hidden"
-                  animate="visible"
-                  variants={premiumFadeUp}
-                  className="text-center py-10 px-4 space-y-5"
-                >
-                  <div className="w-14 h-14 bg-emerald-50 border border-emerald-100 rounded-xl flex items-center justify-center mx-auto text-emerald-500 shadow-sm">
-                    <CheckCircle className="w-8 h-8" strokeWidth={2.5} />
-                  </div>
-                  <div className="space-y-1.5">
-                    <h2 className="text-[#0B1F3A] text-xl font-bold" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                      Assessment Profile Created!
-                    </h2>
-                    <p className="text-slate-500 text-xs max-w-sm mx-auto leading-relaxed">
-                      Thanks, <strong className="text-slate-800 font-bold">{fullName}</strong>. Your lead has been saved. Redirecting you to the secure Middle Finance fact-find now.
+                {/* Rating Badges Section */}
+                <div className="grid grid-cols-3 gap-6 pt-5 border-t border-slate-200 max-w-xl">
+                  {/* ProductReview */}
+                  <div className="flex flex-col items-start gap-1 pr-4 border-r border-slate-200">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-5 h-5 rounded-full bg-[#34A853]/10 flex items-center justify-center text-[#34A853] shrink-0">
+                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5">
+                          <path d="M12 2C6.477 2 2 6.477 2 12c0 2.223.725 4.28 1.956 5.945L3.02 21.02a.5.5 0 00.686.686l3.075-.936A9.954 9.954 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z" />
+                        </svg>
+                      </div>
+                      <div className="flex gap-0.5">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className="w-2.5 h-2.5 text-[#FBBF24] fill-[#FBBF24]" />
+                        ))}
+                      </div>
+                    </div>
+                    <p className="text-[11.5px] text-slate-500 font-medium leading-tight mt-1">
+                      <strong className="text-slate-800 font-bold">4.9</strong> out of 2,000+ reviews
                     </p>
                   </div>
-                  <div className="pt-2">
-                    <a
-                      href={MIDDLE_FINANCE_REDIRECT_URL}
-                      className="inline-flex items-center gap-1.5 bg-[#0B1F3A] text-white hover:bg-slate-800 text-[11px] font-bold uppercase px-5 py-3 rounded-xl transition-all"
-                    >
-                      Continue to Middle Finance <ArrowRight className="w-4 h-4" />
-                    </a>
-                  </div>
-                </motion.div>
-              ) : (
-                <div>
-                  <div className="flex items-center justify-between mb-3.5">
-                    <div>
-                      <span className="text-[9px] text-[#2563EB] font-extrabold uppercase tracking-widest block">Strategy Call & Assessment</span>
-                      <h2 className="text-[#0B1F3A] text-base font-extrabold tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                        Start Your Mortgage Profile
-                      </h2>
+
+                  {/* Facebook */}
+                  <div className="flex flex-col items-start gap-1 px-2 border-r border-slate-200">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-5 h-5 rounded-full bg-[#1877F2]/10 flex items-center justify-center text-[#1877F2] shrink-0">
+                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5">
+                          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                        </svg>
+                      </div>
+                      <div className="flex gap-0.5">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className="w-2.5 h-2.5 text-[#FBBF24] fill-[#FBBF24]" />
+                        ))}
+                      </div>
                     </div>
-                    <div className="text-[11px] text-[#2563EB] font-bold bg-blue-50 border border-blue-100/30 px-2.5 py-0.5 rounded-md">
-                      Step {step} of {totalSteps}
+                    <p className="text-[11.5px] text-slate-500 font-medium leading-tight mt-1">
+                      <strong className="text-slate-800 font-bold">4.8</strong> out of 430+ reviews
+                    </p>
+                  </div>
+
+                  {/* Google */}
+                  <div className="flex flex-col items-start gap-1 pl-4">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-5 h-5 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
+                        <svg viewBox="0 0 24 24" className="w-3.5 h-3.5">
+                          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
+                          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+                          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05" />
+                          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335" />
+                        </svg>
+                      </div>
+                      <div className="flex gap-0.5">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className="w-2.5 h-2.5 text-[#FBBF24] fill-[#FBBF24]" />
+                        ))}
+                      </div>
                     </div>
-                  </div>
-
-                  <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mb-5">
-                    <div 
-                      className="bg-gradient-to-r from-blue-500 to-indigo-600 h-full rounded-full transition-all duration-300"
-                      style={{ width: `${(step / totalSteps) * 100}%` }}
-                    />
-                  </div>
-
-                  <div className="min-h-[220px] flex flex-col justify-center">
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={step}
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -8 }}
-                        transition={{ duration: 0.2 }}
-                        className="space-y-4"
-                      >
-                        {/* STEP 1: Loan Purpose & Settle Timeline */}
-                        {step === 1 && (
-                          <div className="space-y-4">
-                            <div className="space-y-2">
-                              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">1. What is your primary financing goal?</label>
-                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                {[
-                                  { value: "purchase", label: "Buy a First Home" },
-                                  { value: "refinance", label: "Refinance Smarter" },
-                                  { value: "invest", label: "Property Investment" },
-                                  { value: "land", label: "House & Land Package" },
-                                  { value: "commercial", label: "Commercial Finance" }
-                                ].map((obj) => (
-                                  <button
-                                    type="button"
-                                    key={obj.value}
-                                    onClick={() => setLoanPurpose(obj.value)}
-                                    className={`p-2.5 rounded-xl border text-[12.5px] font-bold text-left transition-all ${
-                                      loanPurpose === obj.value
-                                        ? "border-[#2563EB] bg-blue-50/50 text-[#2563EB]"
-                                        : "border-slate-200 bg-white text-slate-700 hover:bg-slate-55"
-                                    }`}
-                                  >
-                                    <div className="flex items-center justify-between">
-                                      <span>{obj.label}</span>
-                                      {loanPurpose === obj.value && <Check className="w-3.5 h-3.5 text-[#2563EB]" />}
-                                    </div>
-                                  </button>
-                                ))}
-                              </div>
-                            </div>
-
-                            {loanPurpose && (
-                              <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
-                                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">2. When are you looking to purchase/settle?</label>
-                                <div className="grid grid-cols-2 gap-2">
-                                  {[
-                                    { value: "Immediately", label: "Immediately" },
-                                    { value: "1-3 Months", label: "1-3 Months" },
-                                    { value: "3-6 Months", label: "3-6 Months" },
-                                    { value: "6+ Months", label: "6+ Months" }
-                                  ].map((obj) => (
-                                    <button
-                                      type="button"
-                                      key={obj.value}
-                                      onClick={() => setTimeline(obj.value)}
-                                      className={`p-2 rounded-xl border text-[12px] font-bold text-left transition-all ${
-                                        timeline === obj.value
-                                          ? "border-[#2563EB] bg-blue-50/50 text-[#2563EB]"
-                                          : "border-slate-200 bg-white text-slate-700 hover:bg-slate-55"
-                                      }`}
-                                    >
-                                      <div className="flex items-center justify-between">
-                                        <span>{obj.label}</span>
-                                        {timeline === obj.value && <Check className="w-3.5 h-3.5 text-[#2563EB]" />}
-                                      </div>
-                                    </button>
-                                  ))}
-                                </div>
-                              </motion.div>
-                            )}
-                          </div>
-                        )}
-
-                        {/* STEP 2: Savings */}
-                        {step === 2 && (
-                          <div className="space-y-2">
-                            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">Current Savings / Deposit Available:</label>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                              {[
-                                { value: "Less than $10,000", label: "Less than $10k" },
-                                { value: "$10,000 - $30,000", label: "$10k - $30k" },
-                                { value: "$30,000 - $50,000", label: "$30k - $50k" },
-                                { value: "$50,000 - $100,000", label: "$50k - $100k" },
-                                { value: "$100,000+", label: "$100k+" }
-                              ].map((obj) => (
-                                <button
-                                  type="button"
-                                  key={obj.value}
-                                  onClick={() => setSavings(obj.value)}
-                                  className={`p-3 rounded-xl border text-[12.5px] font-bold text-left flex items-center justify-between transition-all ${
-                                    savings === obj.value
-                                      ? "border-[#2563EB] bg-blue-50/50 text-[#2563EB]"
-                                      : "border-slate-200 bg-white text-slate-700 hover:bg-slate-55"
-                                  }`}
-                                >
-                                  <div className="flex items-center gap-2">
-                                    <PiggyBank className="w-4 h-4 text-slate-400" />
-                                    <span>{obj.label}</span>
-                                  </div>
-                                  {savings === obj.value && <Check className="w-3.5 h-3.5 text-[#2563EB]" />}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* STEP 3: Employment */}
-                        {step === 3 && (
-                          <div className="space-y-2">
-                            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">Your Current Employment Status:</label>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                              {[
-                                { value: "Full-Time PAYG", label: "Full-Time PAYG" },
-                                { value: "Part-Time PAYG", label: "Part-Time PAYG" },
-                                { value: "Self-Employed / Business Owner", label: "Self-Employed" },
-                                { value: "Casual / Contract Worker", label: "Casual / Contractor" },
-                                { value: "Other Structure / Unemployed", label: "Other / Unemployed" }
-                              ].map((obj) => (
-                                <button
-                                  type="button"
-                                  key={obj.value}
-                                  onClick={() => setEmployment(obj.value)}
-                                  className={`p-3 rounded-xl border text-[12.5px] font-bold text-left flex items-center justify-between transition-all ${
-                                    employment === obj.value
-                                      ? "border-[#2563EB] bg-blue-50/50 text-[#2563EB]"
-                                      : "border-slate-200 bg-white text-slate-700 hover:bg-slate-55"
-                                  }`}
-                                >
-                                  <div className="flex items-center gap-2">
-                                    <Briefcase className="w-4 h-4 text-slate-400" />
-                                    <span>{obj.label}</span>
-                                  </div>
-                                  {employment === obj.value && <Check className="w-3.5 h-3.5 text-[#2563EB]" />}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* STEP 4: Income */}
-                        {step === 4 && (
-                          <div className="space-y-2">
-                            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">Annual Household Income (Gross):</label>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                              {[
-                                { value: "Under $50,000", label: "Under $50k" },
-                                { value: "$50,000 - $80,000", label: "$50k - $80k" },
-                                { value: "$80,000 - $120,000", label: "$80k - $120k" },
-                                { value: "$120,000 - $180,000", label: "$120k - $180k" },
-                                { value: "$180,000+", label: "$180k+" }
-                              ].map((obj) => (
-                                <button
-                                  type="button"
-                                  key={obj.value}
-                                  onClick={() => setIncome(obj.value)}
-                                  className={`p-3 rounded-xl border text-[12.5px] font-bold text-left flex items-center justify-between transition-all ${
-                                    income === obj.value
-                                      ? "border-[#2563EB] bg-blue-50/50 text-[#2563EB]"
-                                      : "border-slate-200 bg-white text-slate-700 hover:bg-slate-55"
-                                  }`}
-                                >
-                                  <div className="flex items-center gap-2">
-                                    <DollarSign className="w-4 h-4 text-slate-400" />
-                                    <span>{obj.label}</span>
-                                  </div>
-                                  {income === obj.value && <Check className="w-3.5 h-3.5 text-[#2563EB]" />}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* STEP 5: Debts & Liabilities */}
-                        {step === 5 && (
-                          <div className="space-y-2">
-                            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">Do you have active loans, credit cards or student debt?</label>
-                            <div className="grid grid-cols-1 gap-2">
-                              {[
-                                { value: "No major active liabilities", label: "No major debts" },
-                                { value: "Credit Cards (Under $5,000 limit)", label: "Credit Cards (Under $5,000 limit)" },
-                                { value: "Credit Cards (Over $5,000 limit)", label: "Credit Cards (Over $5,000 limit)" },
-                                { value: "Active Car or Personal Loans", label: "Active Car or Personal Loans" },
-                                { value: "HECS / HELP Student Debt", label: "HECS / HELP Student Debt" }
-                              ].map((obj) => (
-                                <button
-                                  type="button"
-                                  key={obj.value}
-                                  onClick={() => setDebts(obj.value)}
-                                  className={`p-2.5 rounded-xl border text-[12.5px] font-bold text-left flex items-center justify-between transition-all ${
-                                    debts === obj.value
-                                      ? "border-[#2563EB] bg-blue-50/50 text-[#2563EB]"
-                                      : "border-slate-200 bg-white text-slate-700 hover:bg-slate-55"
-                                  }`}
-                                >
-                                  <span>{obj.label}</span>
-                                  {debts === obj.value && <Check className="w-3.5 h-3.5 text-[#2563EB]" />}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* STEP 6: State */}
-                        {step === 6 && (
-                          <div className="space-y-2">
-                            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">Which state are you buying property in?</label>
-                            <div className="grid grid-cols-3 gap-2">
-                              {australianStates.map((st) => (
-                                <button
-                                  type="button"
-                                  key={st}
-                                  onClick={() => setState(st)}
-                                  className={`p-3.5 rounded-xl border text-[13px] font-bold flex flex-col items-center justify-center gap-1 transition-all ${
-                                    state === st
-                                      ? "border-[#2563EB] bg-blue-50/50 text-[#2563EB]"
-                                      : "border-slate-200 bg-white text-slate-700 hover:bg-slate-55"
-                                  }`}
-                                >
-                                  <MapPin className="w-4.5 h-4.5" />
-                                  <span>{st}</span>
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* STEP 7: Contact Info */}
-                        {step === 7 && (
-                          <div className="space-y-3.5">
-                            <div className="bg-blue-50/30 border border-blue-100/60 p-3.5 rounded-xl flex gap-3">
-                              <Bookmark className="w-4.5 h-4.5 text-[#2563EB] shrink-0 mt-0.5" />
-                              <div className="text-[11px] text-slate-600 font-medium leading-relaxed">
-                                Perfect! We have matched lending strategies for <strong className="text-slate-800 font-bold">{state}</strong>. Provide your details below so Aakash can compile your pre-approval analysis.
-                              </div>
-                            </div>
-
-                            <div className="space-y-2.5">
-                              <div>
-                                <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Full Name:</label>
-                                <div className="relative">
-                                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-                                  <input
-                                    type="text"
-                                    placeholder="John Doe"
-                                    value={fullName}
-                                    onChange={(e) => setFullName(e.target.value)}
-                                    className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 pl-9 pr-4 text-[12.5px] text-slate-800 focus:outline-none focus:border-blue-500 transition-all font-semibold"
-                                    required
-                                  />
-                                </div>
-                              </div>
-
-                              <div>
-                                <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Email Address:</label>
-                                <div className="relative">
-                                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-                                  <input
-                                    type="email"
-                                    placeholder="john@example.com"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 pl-9 pr-4 text-[12.5px] text-slate-800 focus:outline-none focus:border-blue-500 transition-all font-semibold"
-                                    required
-                                  />
-                                </div>
-                              </div>
-
-                              <div>
-                                <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Phone Number:</label>
-                                <div className="relative">
-                                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-                                  <input
-                                    type="tel"
-                                    placeholder="0400 000 000"
-                                    value={phone}
-                                    onChange={(e) => setPhone(e.target.value)}
-                                    className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 pl-9 pr-4 text-[12.5px] text-slate-800 focus:outline-none focus:border-blue-500 transition-all font-semibold"
-                                    required
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </motion.div>
-                    </AnimatePresence>
-                  </div>
-
-                  {/* Navigation Buttons */}
-                  <div className="flex items-center justify-between pt-4 border-t border-slate-100 mt-6 gap-4">
-                    <button
-                      type="button"
-                      onClick={handleBack}
-                      disabled={step === 1}
-                      className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
-                        step === 1
-                          ? "opacity-30 text-slate-350 cursor-not-allowed border border-transparent"
-                          : "text-slate-600 hover:bg-slate-55 border border-slate-200"
-                      }`}
-                    >
-                      <ArrowLeft className="w-3.5 h-3.5" /> Back
-                    </button>
-
-                    {step < totalSteps ? (
-                      <button
-                        type="button"
-                        onClick={handleNext}
-                        disabled={!isStepValid()}
-                        className={`flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-xs font-bold uppercase transition-all shadow-sm ${
-                          isStepValid()
-                            ? "bg-[#2563EB] hover:bg-[#1d4ed8] text-white hover:scale-[1.01]"
-                            : "bg-slate-100 text-slate-400 cursor-not-allowed"
-                        }`}
-                      >
-                        Next <ArrowRight className="w-3.5 h-3.5" />
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={handleSubmit}
-                        disabled={!isStepValid() || submitting}
-                        className={`flex items-center gap-1.5 px-6 py-2.5 rounded-xl text-xs font-bold uppercase transition-all shadow-sm ${
-                          isStepValid() && !submitting
-                            ? "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white hover:scale-[1.01]"
-                            : "bg-slate-100 text-slate-400 cursor-not-allowed"
-                        }`}
-                      >
-                        {submitting ? "Submitting..." : "Submit Profile"} <Check className="w-3.5 h-3.5" />
-                      </button>
-                    )}
+                    <p className="text-[11.5px] text-slate-500 font-medium leading-tight mt-1">
+                      <strong className="text-slate-800 font-bold">4.8</strong> out of 1,000+ reviews
+                    </p>
                   </div>
                 </div>
-              )}
+              </motion.div>
+            ) : (
+              <MortgageMateForm initialStep={1} onClose={() => setStep(0)} compact={false} />
+            )}
+          </div>
+
+          {/* RIGHT COLUMN: Akash KC Portrait (Background) & Bio Details Card (Overlapping Left) */}
+          <motion.div 
+            initial="hidden"
+            animate="visible"
+            variants={premiumFadeUp}
+            className="lg:col-span-5 relative h-[380px] lg:h-[440px] w-full flex items-center justify-center lg:justify-start select-none"
+          >
+            {/* Background Portrait of Aakash */}
+            <div className="absolute right-0 bottom-0 top-0 w-[240px] sm:w-[280px] lg:w-[320px] h-full z-0 overflow-hidden flex items-end justify-end opacity-70 lg:opacity-100 transition-opacity duration-300">
+              <Image 
+                src="/images/aakash_new.png" 
+                width={320}
+                height={440}
+                alt="Aakash KC - Principal Mortgage Advisor" 
+                className="object-contain object-bottom h-full w-auto select-none pointer-events-none" 
+                priority
+              />
+              {/* Soft gradient masks to blend the portrait with the background */}
+              <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white to-transparent pointer-events-none" />
+              <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+            </div>
+
+            {/* Overlapping Info Card (Left-aligned) */}
+            <div className="relative mr-auto ml-2 lg:ml-0 lg:absolute lg:left-[-30px] xl:left-[-50px] lg:top-1/2 lg:-translate-y-1/2 w-[285px] sm:w-[315px] lg:w-[330px] bg-white/95 backdrop-blur-md border border-slate-200/80 rounded-3xl p-5 shadow-2xl shadow-blue-950/10 z-10">
+              {/* Licensed Advisor & Rating Badges row */}
+              <div className="flex items-center justify-between gap-2 mb-4">
+                <div className="inline-flex items-center gap-1.5 bg-[#0B1F3A] border border-white/10 rounded-full px-2.5 py-0.5 shadow-sm">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-[8px] text-white font-extrabold uppercase tracking-wider">Licensed Advisor</span>
+                </div>
+
+                <div className="inline-flex items-center gap-1 bg-[#10A3EB] rounded-full px-2.5 py-0.5 shadow-sm">
+                  <Star className="w-2.5 h-2.5 text-yellow-300 fill-yellow-300" />
+                  <span className="text-[8px] text-white font-extrabold tracking-wider">4.9/5 Rated</span>
+                </div>
+              </div>
+
+              {/* Bio Details */}
+              <div className="space-y-3 text-left">
+                <div>
+                  <h3 className="text-[#0B1F3A] text-[17px] font-black leading-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                    Aakash KC
+                  </h3>
+                  <p className="text-[#10A3EB] text-[11px] font-bold">Principal Mortgage Advisor & Founder</p>
+                </div>
+
+                <p className="text-slate-500 text-[11px] leading-relaxed italic font-medium">
+                  &ldquo;I guide first home buyers and investors across Australia to find tailored lending structures, negotiate lower interest rates, and skip LMI fees—completely free.&rdquo;
+                </p>
+
+                {/* Stats Row */}
+                <div className="grid grid-cols-3 gap-2 py-2 border-y border-slate-100 text-center">
+                  <div>
+                    <div className="text-[#0B1F3A] text-[13.5px] font-black">4.9/5</div>
+                    <div className="text-slate-400 text-[7.5px] font-extrabold uppercase tracking-wider mt-0.5">Rating</div>
+                  </div>
+                  <div className="border-x border-slate-100">
+                    <div className="text-[#0B1F3A] text-[13.5px] font-black">1,200+</div>
+                    <div className="text-slate-400 text-[7.5px] font-extrabold uppercase tracking-wider mt-0.5">Families</div>
+                  </div>
+                  <div>
+                    <div className="text-[#0B1F3A] text-[13.5px] font-black">40+</div>
+                    <div className="text-slate-400 text-[7.5px] font-extrabold uppercase tracking-wider mt-0.5">Lenders</div>
+                  </div>
+                </div>
+
+                {/* Badges footer */}
+                <div className="flex items-center justify-between pt-0.5">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-4.5 h-4.5 rounded-full bg-blue-50 flex items-center justify-center text-[#10A3EB] shrink-0">
+                      <ShieldCheck className="w-3 h-3 text-[#10A3EB]" />
+                    </div>
+                    <span className="text-[10px] text-slate-600 font-bold">MFAA Member</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-4.5 h-4.5 rounded-full bg-blue-50 flex items-center justify-center text-[#10A3EB] shrink-0">
+                      <Award className="w-3 h-3 text-[#10A3EB]" />
+                    </div>
+                    <span className="text-[10px] text-slate-600 font-bold">Credit Licensee</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </motion.div>
+
         </div>
       </main>
 

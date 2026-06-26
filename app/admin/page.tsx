@@ -1352,7 +1352,7 @@ export default function AdminPage() {
                     <option value="/home-loan-for-doctors">Home Loan for Doctors</option>
                     <option value="/refinancing-a-loan">Refinancing a Loan</option>
                     <option value="/first-home-guide">First Home Guide</option>
-                    <option value="/investing-in-property">Investing in Property</option>
+                    <option value="/investing-in-property-nepali-mortgage-broker">Investing in Property</option>
                     <option value="/self-employed-home-loans">Self-Employed Home Loans</option>
                     <option value="/branches/sydney">Sydney Branch</option>
                     <option value="/branches/melbourne">Melbourne Branch</option>
@@ -1664,13 +1664,13 @@ export default function AdminPage() {
                     <option value="/home-loan-for-doctors">Home Loan for Doctors (/home-loan-for-doctors)</option>
                     <option value="/home-loan-for-accountants">Home Loan for Accountants (/home-loan-for-accountants)</option>
                     <option value="/home-guarantee-scheme">Home Guarantee Scheme (/home-guarantee-scheme)</option>
-                    <option value="/no-deposit-home-loans">No Deposit Home Loans (/no-deposit-home-loans)</option>
+                    <option value="/no-deposit-home-loans-in-australia">No Deposit Home Loans (/no-deposit-home-loans-in-australia)</option>
                     <option value="/home-loan-with-visas">Visa & Non-Resident Home Loans (/home-loan-with-visas)</option>
                     <option value="/refinancing-a-loan">Refinancing a Loan (/refinancing-a-loan)</option>
                     <option value="/self-employed-home-loans">Self-Employed Home Loans (/self-employed-home-loans)</option>
-                    <option value="/investing-in-property">Investing in Property (/investing-in-property)</option>
-                    <option value="/investing-in-property-nepali-mortgage-broker">Investing in Property (Nepali Broker Slug) (/investing-in-property-nepali-mortgage-broker)</option>
+                    <option value="/investing-in-property-nepali-mortgage-broker">Investing in Property (/investing-in-property-nepali-mortgage-broker)</option>
                     <option value="/loan-repayment-calculator">Loan Repayment Calculator (/loan-repayment-calculator)</option>
+                    <option value="/loan-comparison-calculator">Loan Comparison Calculator (/loan-comparison-calculator)</option>
                     <option value="/rent-yield-calculators">Rent Yield Calculator (/rent-yield-calculators)</option>
                     <option value="/equity-calculator">Equity Calculator (/equity-calculator)</option>
                     <option value="/branches/adelaide">Adelaide Branch (/branches/adelaide)</option>
@@ -2087,7 +2087,7 @@ export default function AdminPage() {
                                 } catch (err) { console.error(err); }
                               }}
                               className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500"
-                              placeholder="#calculator"
+                              placeholder="/home-loan-for-doctors"
                             />
                           </div>
 

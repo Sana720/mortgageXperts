@@ -1,4 +1,5 @@
 "use client";
+import { useOnboardingModal } from "@/app/components/OnboardingModalContext";
 
 import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
@@ -83,6 +84,7 @@ const GoogleIcon = () => (
 );
 
 export default function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings }) {
+  const { openModal } = useOnboardingModal();
   // Step form state: 1 = Enter Details, 2 = Results Dashboard
   const [currentStep, setCurrentStep] = useState<number>(1);
 
@@ -1364,13 +1366,10 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
                   Different banks offer varying interest rates, offset structures, and fees. Our experienced mortgage brokers compare products across 30+ lenders to locate the best home loan for your financial setup.
                 </p>
                 <div className="pt-2">
-                  <a
-                    href="#contact"
-                    className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white text-[13px] font-bold px-6 py-3 shadow-lg shadow-rose-500/10 transition-all duration-300"
-                  >
+                  <button type="button" onClick={openModal} className="cursor-pointer border-0 inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white text-[13px] font-bold px-6 py-3 shadow-lg shadow-rose-500/10 transition-all duration-300">
                     Talk to a Broker
                     <ArrowRight className="w-4 h-4" />
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>

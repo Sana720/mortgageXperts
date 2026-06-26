@@ -1,4 +1,5 @@
 "use client";
+import { useOnboardingModal } from "@/app/components/OnboardingModalContext";
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
@@ -98,6 +99,7 @@ export interface PageHeroSettings {
 }
 
 export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings }) {
+  const { openModal } = useOnboardingModal();
   const badgeText = pageHeroSettings?.hero_badge || "Strategic Property Investment";
   const titleText = pageHeroSettings?.hero_title || "Investing in Property";
   const subtextText = pageHeroSettings?.hero_subtext || "Property investment can be a powerful way to build long-term wealth, but it’s not something you should rush into without a plan. As your mortgage broker, I’ll help you understand the market, review your financial position, and find the right strategy for your goals.";
@@ -511,18 +513,44 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
 
               {/* CTAs */}
               <motion.div variants={premiumFadeUp} className="flex flex-wrap items-center gap-4">
-                <a
-                  href={btn1Link}
-                  className="inline-flex items-center justify-center gap-2 bg-[#D97706] hover:bg-[#B45309] text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-amber-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap"
-                >
-                  {btn1Text} <ArrowRight className="w-4 h-4" />
-                </a>
-                <a
-                  href={btn2Link}
-                  className="inline-flex items-center justify-center gap-2 border-2 border-[#D97706] text-amber-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-[#D97706] hover:text-white text-center w-full sm:w-auto whitespace-nowrap"
-                >
-                  {btn2Text}
-                </a>
+                {(!btn1Link || btn1Link === "#" || btn1Link === "#contact" || btn1Link === "#callback") ? (
+                  <button
+                    type="button"
+                    onClick={openModal}
+                    className="inline-flex items-center justify-center gap-2 bg-[#D97706] hover:bg-[#B45309] text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-amber-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap cursor-pointer border-0"
+                  >
+                    {btn1Text} <ArrowRight className="w-4 h-4" />
+                  </button>
+                ) : (
+                  <Link
+                    href={btn1Link}
+                    className="inline-flex items-center justify-center gap-2 bg-[#D97706] hover:bg-[#B45309] text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-amber-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap"
+                  >
+                    {btn1Text} <ArrowRight className="w-4 h-4" />
+                  </Link>
+                )}
+                {(btn2Link === "#contact" || btn2Link === "#callback") ? (
+                  <button
+                    type="button"
+                    onClick={openModal}
+                    className="inline-flex items-center justify-center gap-2 border-2 border-[#D97706] text-amber-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-[#D97706] hover:text-white text-center w-full sm:w-auto whitespace-nowrap cursor-pointer border-0 bg-transparent"
+                  >
+                    {btn2Text}
+                  </button>
+                ) : (
+                  <a
+                    href={btn2Link}
+                    onClick={(e) => {
+                      if (btn2Link.startsWith("#")) {
+                        e.preventDefault();
+                        document.getElementById(btn2Link.substring(1))?.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }}
+                    className="inline-flex items-center justify-center gap-2 border-2 border-[#D97706] text-amber-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-[#D97706] hover:text-white text-center w-full sm:w-auto whitespace-nowrap"
+                  >
+                    {btn2Text}
+                  </a>
+                )}
               </motion.div>
 
               {/* Trust Reviews Badge Row */}
@@ -1624,13 +1652,10 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
             >
               Call 0450 240 757
             </a>
-            <Link
-              href="#contact"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 text-slate-950 font-bold text-[13.5px] px-6 py-4 hover:bg-amber-600 transition-colors shadow-lg shadow-amber-500/10 text-center"
-            >
+            <button type="button" onClick={openModal} className="cursor-pointer border-0 inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 text-slate-950 font-bold text-[13.5px] px-6 py-4 hover:bg-amber-600 transition-colors shadow-lg shadow-amber-500/10 text-center">
               Book Strategy Session
               <ArrowRight className="w-4 h-4 text-slate-950" />
-            </Link>
+            </button>
           </div>
         </div>
       </section>

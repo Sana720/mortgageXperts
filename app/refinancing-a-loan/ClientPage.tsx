@@ -1,4 +1,5 @@
 "use client";
+import { useOnboardingModal } from "@/app/components/OnboardingModalContext";
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
@@ -105,6 +106,7 @@ export interface PageHeroSettings {
 }
 
 export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings }) {
+  const { openModal } = useOnboardingModal();
   const badgeText = pageHeroSettings?.hero_badge || "Smart Refinance Strategies";
   const titleText = pageHeroSettings?.hero_title || "Refinancing a Loan";
   const subtextText = pageHeroSettings?.hero_subtext || "Refinancing your home loan is one of the smartest ways to save money, lower your repayments, or get better features from your mortgage.";
@@ -516,12 +518,22 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
 
               {/* CTAs */}
               <motion.div variants={premiumFadeUp} className="flex flex-wrap items-center gap-4">
-                <a
-                  href={btn1Link}
-                  className="inline-flex items-center justify-center gap-2 bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-purple-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap"
-                >
-                  {btn1Text} <ArrowRight className="w-4 h-4" />
-                </a>
+                {(!btn1Link || btn1Link === "#" || btn1Link === "#contact" || btn1Link === "#callback") ? (
+                  <button
+                    type="button"
+                    onClick={openModal}
+                    className="inline-flex items-center justify-center gap-2 bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-purple-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap cursor-pointer border-0"
+                  >
+                    {btn1Text} <ArrowRight className="w-4 h-4" />
+                  </button>
+                ) : (
+                  <Link
+                    href={btn1Link}
+                    className="inline-flex items-center justify-center gap-2 bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-purple-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap"
+                  >
+                    {btn1Text} <ArrowRight className="w-4 h-4" />
+                  </Link>
+                )}
                 <a
                   href={btn2Link}
                   onClick={(e) => {
@@ -2005,9 +2017,9 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
             Book a free, 100% obligation-free refinancing strategy audit. We&apos;ll outline your interest savings, exit fees, and find cash back offers.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="#contact" className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#7C3AED] to-[#5B21B6] hover:from-[#6D28D9] hover:to-[#4C1D95] px-10 py-4.5 text-[15px] font-extrabold text-white transition-all duration-300 shadow-lg hover:scale-[1.02] whitespace-nowrap">
+            <button type="button" onClick={openModal} className="cursor-pointer border-0 inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#7C3AED] to-[#5B21B6] hover:from-[#6D28D9] hover:to-[#4C1D95] px-10 py-4.5 text-[15px] font-extrabold text-white transition-all duration-300 shadow-lg hover:scale-[1.02] whitespace-nowrap">
               Book Free Consultation <ArrowRight className="w-5 h-5" />
-            </Link>
+            </button>
             <a href="tel:0450240757" className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-white/20 bg-white/5 backdrop-blur-sm px-10 py-4 text-[15px] font-extrabold text-white hover:bg-white/15 hover:border-white/40 transition-all duration-300 whitespace-nowrap">
               Speak With An Expert
             </a>

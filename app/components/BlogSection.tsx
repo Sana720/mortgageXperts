@@ -1,4 +1,5 @@
 "use client";
+import { useOnboardingModal } from "@/app/components/OnboardingModalContext";
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
@@ -49,6 +50,7 @@ export function BlogSection({
   accentBgClass = "bg-[#7C3AED]",
   darkTheme = true
 }: BlogSectionProps) {
+  const { openModal } = useOnboardingModal();
   const [blogs, setBlogs] = useState<DBBlog[]>([]);
 
   useEffect(() => {
@@ -173,14 +175,11 @@ export function BlogSection({
             </p>
             
             <div>
-              <Link
-                href="#contact"
-                className={`inline-flex items-center gap-2 rounded-xl border ${darkTheme ? "border-white/90 text-white hover:bg-white/10" : "border-slate-300 text-slate-700 hover:bg-slate-100"} bg-transparent px-5 py-3 text-[13px] font-bold transition-colors`}
-              >
+              <button type="button" onClick={openModal} className={`cursor-pointer border-0 inline-flex items-center gap-2 rounded-xl border ${darkTheme ? "border-white/90 text-white hover:bg-white/10" : "border-slate-300 text-slate-700 hover:bg-slate-100"} bg-transparent px-5 py-3 text-[13px] font-bold transition-colors`}>
                 <FileText className="w-4 h-4 shrink-0" />
                 Explore Resource Hub
                 <ArrowRight className="w-4 h-4 shrink-0" />
-              </Link>
+              </button>
             </div>
           </div>
 
@@ -221,10 +220,10 @@ export function BlogSection({
                   ))}
                 </div>
                 
-                <Link href="#contact" className="inline-flex items-center gap-1.5 text-[13px] font-bold hover:underline w-fit" style={{ color: accentColor }}>
+                <button type="button" onClick={openModal} className="cursor-pointer border-0 inline-flex items-center gap-1.5 text-[13px] font-bold hover:underline w-fit" style={{ color: accentColor }}>
                   Read article
                   <ArrowRight className="w-4 h-4" />
-                </Link>
+                </button>
               </div>
               
               {/* Cover Image */}
@@ -268,10 +267,10 @@ export function BlogSection({
               <p className="text-[13px] text-slate-600 leading-relaxed mb-4 flex-1">
                 {refinance.excerpt}
               </p>
-              <Link href="#contact" className="inline-flex items-center gap-1.5 text-[13px] font-bold text-emerald-600 hover:underline w-fit">
+              <button type="button" onClick={openModal} className="cursor-pointer border-0 inline-flex items-center gap-1.5 text-[13px] font-bold text-emerald-600 hover:underline w-fit">
                 Read full details
                 <ArrowRight className="w-4 h-4" />
-              </Link>
+              </button>
             </div>
             
             <div className="relative min-h-[200px] sm:min-h-0 sm:w-[44%] shrink-0">
@@ -319,10 +318,10 @@ export function BlogSection({
               <p className="text-[13px] text-slate-600 leading-relaxed mb-4 flex-1">
                 {healthcare.excerpt}
               </p>
-              <Link href="#contact" className="inline-flex items-center gap-1.5 text-[13px] font-bold text-teal-600 hover:underline w-fit">
+              <button type="button" onClick={openModal} className="cursor-pointer border-0 inline-flex items-center gap-1.5 text-[13px] font-bold text-teal-600 hover:underline w-fit">
                 Read full details
                 <ArrowRight className="w-4 h-4" />
-              </Link>
+              </button>
             </div>
             
             <div className="relative min-h-[220px] sm:min-h-0 sm:w-[44%] shrink-0">
@@ -380,13 +379,10 @@ export function BlogSection({
             </div>
           </div>
           
-          <Link
-            href="#contact"
-            className="text-white font-extrabold text-[13.5px] px-8 py-3.5 rounded-2xl shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all whitespace-nowrap"
-            style={{ backgroundColor: accentColor }}
-          >
+          <button type="button" onClick={openModal} className="cursor-pointer border-0 text-white font-extrabold text-[13.5px] px-8 py-3.5 rounded-2xl shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all whitespace-nowrap"
+            style={{ backgroundColor: accentColor }}>
             Start Your Plan
-          </Link>
+          </button>
         </motion.div>
 
       </div>

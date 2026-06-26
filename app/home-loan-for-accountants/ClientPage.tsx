@@ -1,4 +1,5 @@
 "use client";
+import { useOnboardingModal } from "@/app/components/OnboardingModalContext";
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
@@ -91,6 +92,7 @@ export interface PageHeroSettings {
 }
 
 export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings }) {
+  const { openModal } = useOnboardingModal();
   const [navSticky, setNavSticky] = useState(false);
   const [activeNav, setActiveNav] = useState("overview");
   const navSentinelRef = useRef<HTMLDivElement>(null);
@@ -349,18 +351,44 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
 
               {/* CTAs */}
               <motion.div variants={premiumFadeUp} className="flex flex-wrap items-center gap-4">
-                <a
-                  href={btn1Link}
-                  className="inline-flex items-center justify-center gap-2 bg-violet-600 hover:bg-violet-700 text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-violet-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap"
-                >
-                  {btn1Text} <ArrowRight className="w-4 h-4" />
-                </a>
-                <a
-                  href={btn2Link}
-                  className="inline-flex items-center justify-center gap-2 border-2 border-violet-600 text-violet-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-violet-600 hover:text-white text-center w-full sm:w-auto whitespace-nowrap"
-                >
-                  {btn2Text}
-                </a>
+                {(!btn1Link || btn1Link === "#" || btn1Link === "#contact" || btn1Link === "#callback") ? (
+                  <button
+                    type="button"
+                    onClick={openModal}
+                    className="inline-flex items-center justify-center gap-2 bg-violet-600 hover:bg-violet-700 text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-violet-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap cursor-pointer border-0"
+                  >
+                    {btn1Text} <ArrowRight className="w-4 h-4" />
+                  </button>
+                ) : (
+                  <Link
+                    href={btn1Link}
+                    className="inline-flex items-center justify-center gap-2 bg-violet-600 hover:bg-violet-700 text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-violet-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap"
+                  >
+                    {btn1Text} <ArrowRight className="w-4 h-4" />
+                  </Link>
+                )}
+                {(btn2Link === "#contact" || btn2Link === "#callback") ? (
+                  <button
+                    type="button"
+                    onClick={openModal}
+                    className="inline-flex items-center justify-center gap-2 border-2 border-violet-600 text-violet-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-violet-600 hover:text-white text-center w-full sm:w-auto whitespace-nowrap cursor-pointer border-0 bg-transparent"
+                  >
+                    {btn2Text}
+                  </button>
+                ) : (
+                  <a
+                    href={btn2Link}
+                    onClick={(e) => {
+                      if (btn2Link.startsWith("#")) {
+                        e.preventDefault();
+                        document.getElementById(btn2Link.substring(1))?.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }}
+                    className="inline-flex items-center justify-center gap-2 border-2 border-violet-600 text-violet-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-violet-600 hover:text-white text-center w-full sm:w-auto whitespace-nowrap"
+                  >
+                    {btn2Text}
+                  </a>
+                )}
               </motion.div>
 
               {/* Trust Reviews Badge Row */}
@@ -882,12 +910,9 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                 </p>
               </div>
             </div>
-            <a
-              href="#contact"
-              className="rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-[13px] font-extrabold px-6 py-3 transition-colors shrink-0 whitespace-nowrap"
-            >
+            <button type="button" onClick={openModal} className="cursor-pointer border-0 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-[13px] font-extrabold px-6 py-3 transition-colors shrink-0 whitespace-nowrap">
               Get Started
-            </a>
+            </button>
           </div>
         </div>
       </section>
@@ -1192,13 +1217,10 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                 </div>
 
                 <div className="pt-2">
-                  <a
-                    href="#contact"
-                    className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-500 hover:from-violet-700 hover:to-indigo-600 text-white text-[13px] font-bold px-6 py-3 shadow-lg shadow-violet-500/10 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
-                  >
+                  <button type="button" onClick={openModal} className="cursor-pointer border-0 inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-500 hover:from-violet-700 hover:to-indigo-600 text-white text-[13px] font-bold px-6 py-3 shadow-lg shadow-violet-500/10 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer">
                     Consult a Specialist
                     <ArrowRight className="w-4 h-4" />
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>

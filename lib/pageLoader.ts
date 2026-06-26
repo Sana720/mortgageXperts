@@ -1,4 +1,4 @@
-import { executeQuery } from '@/lib/db';
+import { executeQuery, migrateHomepageSlideLinks } from '@/lib/db';
 import type { Metadata } from 'next';
 
 export type GlobalSettings = Record<string, string>;
@@ -34,6 +34,10 @@ export interface PageData {
  * the latest admin changes. Add unstable_cache at call site if needed.
  */
 export async function loadPageData(pagePath: string): Promise<PageData> {
+  if (pagePath === '/') {
+    migrateHomepageSlideLinks().catch(() => {});
+  }
+
   const settings: GlobalSettings = {};
   let pageHeroSettings: PageHeroSettings | undefined = undefined;
   let pageContent: string | undefined = undefined;
