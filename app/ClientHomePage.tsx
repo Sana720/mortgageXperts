@@ -575,7 +575,7 @@ function SuccessStoriesSection({ settings = {} }: { settings?: Record<string, st
             </motion.p>
             <motion.div variants={fadeInUp}>
               <Link
-                href="#"
+                href="/blog"
                 className="inline-flex items-center gap-2 rounded-xl border border-white/90 bg-transparent px-5 py-3 text-[13px] font-bold text-white hover:bg-white/10 transition-colors"
               >
                 <FileText className="w-4 h-4 shrink-0" />
@@ -600,10 +600,10 @@ function SuccessStoriesSection({ settings = {} }: { settings?: Record<string, st
                   {featured.category}
                 </span>
                 <h3
-                  className="text-[22px] sm:text-[24px] font-extrabold text-[#0B1F3A] leading-snug mb-3"
+                  className="text-[22px] sm:text-[24px] font-extrabold text-[#0B1F3A] leading-snug mb-3 hover:text-[#2563EB] transition-colors"
                   style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
                 >
-                  {featured.title}
+                  <Link href={`/blog/${featured.slug}`}>{featured.title}</Link>
                 </h3>
                 <p className="text-[13px] sm:text-[14px] text-slate-600 leading-relaxed mb-5">
                   {featured.excerpt}
@@ -619,7 +619,7 @@ function SuccessStoriesSection({ settings = {} }: { settings?: Record<string, st
                     </div>
                   ))}
                 </div>
-                <Link href="#" className="inline-flex items-center gap-1.5 text-[13px] font-bold text-[#2563EB] hover:underline w-fit">
+                <Link href={`/blog/${featured.slug}`} className="inline-flex items-center gap-1.5 text-[13px] font-bold text-[#2563EB] hover:underline w-fit">
                   Read their journey
                   <ArrowRight className="w-4 h-4" />
                 </Link>
@@ -657,15 +657,15 @@ function SuccessStoriesSection({ settings = {} }: { settings?: Record<string, st
                 {refinance.category}
               </span>
               <h3
-                className="text-[19px] sm:text-[21px] font-extrabold text-[#0B1F3A] leading-snug mb-3"
+                className="text-[19px] sm:text-[21px] font-extrabold text-[#0B1F3A] leading-snug mb-3 hover:text-[#16A34A] transition-colors"
                 style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
               >
-                {refinance.title}
+                <Link href={`/blog/${refinance.slug}`}>{refinance.title}</Link>
               </h3>
               <p className="text-[13px] text-slate-600 leading-relaxed mb-4 flex-1">
                 {refinance.excerpt}
               </p>
-              <Link href="#" className="inline-flex items-center gap-1.5 text-[13px] font-bold text-[#16A34A] hover:underline w-fit">
+              <Link href={`/blog/${refinance.slug}`} className="inline-flex items-center gap-1.5 text-[13px] font-bold text-[#16A34A] hover:underline w-fit">
                 Read their story
                 <ArrowRight className="w-4 h-4" />
               </Link>
@@ -708,15 +708,15 @@ function SuccessStoriesSection({ settings = {} }: { settings?: Record<string, st
                 {healthcare.category}
               </span>
               <h3
-                className="text-[19px] sm:text-[21px] font-extrabold text-[#0B1F3A] leading-snug mb-3"
+                className="text-[19px] sm:text-[21px] font-extrabold text-[#0B1F3A] leading-snug mb-3 hover:text-[#0D9488] transition-colors"
                 style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
               >
-                {healthcare.title}
+                <Link href={`/blog/${healthcare.slug}`}>{healthcare.title}</Link>
               </h3>
               <p className="text-[13px] text-slate-600 leading-relaxed mb-4 flex-1">
                 {healthcare.excerpt}
               </p>
-              <Link href="#" className="inline-flex items-center gap-1.5 text-[13px] font-bold text-[#0D9488] hover:underline w-fit">
+              <Link href={`/blog/${healthcare.slug}`} className="inline-flex items-center gap-1.5 text-[13px] font-bold text-[#0D9488] hover:underline w-fit">
                 Read their story
                 <ArrowRight className="w-4 h-4" />
               </Link>

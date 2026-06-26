@@ -1,4 +1,5 @@
 "use client";
+import { useOnboardingModal } from "@/app/components/OnboardingModalContext";
 
 import React, { useState } from "react";
 import Link from "next/link";
@@ -66,6 +67,7 @@ const YoutubeIcon = () => (
 );
 
 export function SiteFooter({ settings = {} }: { settings?: Record<string, string> }) {
+  const { openModal } = useOnboardingModal();
   const [newsletterEmail, setNewsletterEmail] = useState("");
 
   const phoneVal = settings.header_phone || "0450 240 757";
@@ -123,13 +125,14 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
                 </div>
               </div>
             </div>
-            <Link
-              href="#"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#2563EB] text-white font-bold text-[13px] px-6 py-3.5 hover:bg-[#1d4ed8] transition-colors shadow-md shadow-blue-200 whitespace-nowrap lg:ml-6"
+            <button
+              type="button"
+              onClick={openModal}
+              className="cursor-pointer border-0 inline-flex items-center justify-center gap-2 rounded-xl bg-[#2563EB] text-white font-bold text-[13px] px-6 py-3.5 hover:bg-[#1d4ed8] transition-colors shadow-md shadow-blue-200 whitespace-nowrap lg:ml-6"
             >
               Book a Free Consultation
               <ArrowRight className="w-4 h-4" />
-            </Link>
+            </button>
           </div>
         </motion.div>
       </div>

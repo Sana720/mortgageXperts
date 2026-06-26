@@ -175,30 +175,30 @@ export default function MortgageMatePage() {
                   </p>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 pt-2">
+                <div className="flex flex-row items-center gap-3 sm:gap-5 pt-2">
                   <button
                     type="button"
                     onClick={() => setStep(1)}
-                    className="bg-[#10A3EB] hover:bg-[#0e92d3] text-white font-extrabold uppercase text-[13.5px] tracking-wider py-4 px-8 rounded-full flex items-center justify-center gap-2 shadow-md shadow-sky-500/10 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                    className="bg-[#10A3EB] hover:bg-[#0e92d3] text-white font-extrabold uppercase text-[11px] sm:text-[13.5px] tracking-wider py-3 px-5 sm:py-4 sm:px-8 rounded-full flex items-center justify-center gap-2 shadow-md shadow-sky-500/10 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer whitespace-nowrap"
                   >
-                    LET&apos;S START <ArrowRight className="w-4.5 h-4.5 stroke-[2.5]" />
+                    LET&apos;S START <ArrowRight className="w-3.5 h-3.5 sm:w-4.5 sm:h-4.5 stroke-[2.5]" />
                   </button>
 
-                  <div className="flex items-center gap-3 bg-slate-50 border border-slate-200/50 px-4 py-2.5 rounded-2xl shadow-sm">
-                    <div className="w-9 h-9 rounded-xl bg-slate-200/60 flex items-center justify-center text-slate-500 shrink-0">
-                      <Clock className="w-4.5 h-4.5" />
+                  <div className="flex items-center gap-2 sm:gap-3 bg-slate-50 border border-slate-200/50 px-3 py-2 sm:px-4 sm:py-2.5 rounded-2xl shadow-sm whitespace-nowrap shrink-0">
+                    <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-xl bg-slate-200/60 flex items-center justify-center text-slate-500 shrink-0">
+                      <Clock className="w-3.5 h-3.5 sm:w-4.5 sm:h-4.5" />
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[9px] text-slate-400 font-extrabold tracking-wider uppercase leading-none">COMPLETION</span>
-                      <span className="text-[13px] text-slate-700 font-extrabold mt-0.5">2 minutes</span>
+                      <span className="text-[8px] sm:text-[9px] text-slate-400 font-extrabold tracking-wider uppercase leading-none">COMPLETION</span>
+                      <span className="text-[11px] sm:text-[13px] text-slate-700 font-extrabold mt-0.5">2 minutes</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Rating Badges Section */}
-                <div className="grid grid-cols-3 gap-6 pt-5 border-t border-slate-200 max-w-xl">
+                <div className="grid grid-cols-3 gap-2 sm:gap-6 pt-5 border-t border-slate-200 max-w-xl">
                   {/* ProductReview */}
-                  <div className="flex flex-col items-start gap-1 pr-4 border-r border-slate-200">
+                  <div className="flex flex-col items-start gap-1 pr-1.5 sm:pr-4 border-r border-slate-200">
                     <div className="flex items-center gap-1.5">
                       <div className="w-5 h-5 rounded-full bg-[#34A853]/10 flex items-center justify-center text-[#34A853] shrink-0">
                         <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5">
@@ -211,13 +211,13 @@ export default function MortgageMatePage() {
                         ))}
                       </div>
                     </div>
-                    <p className="text-[11.5px] text-slate-500 font-medium leading-tight mt-1">
+                    <p className="text-[10px] sm:text-[11.5px] text-slate-500 font-medium leading-tight mt-1">
                       <strong className="text-slate-800 font-bold">4.9</strong> out of 2,000+ reviews
                     </p>
                   </div>
 
                   {/* Facebook */}
-                  <div className="flex flex-col items-start gap-1 px-2 border-r border-slate-200">
+                  <div className="flex flex-col items-start gap-1 px-1 sm:px-2 border-r border-slate-200">
                     <div className="flex items-center gap-1.5">
                       <div className="w-5 h-5 rounded-full bg-[#1877F2]/10 flex items-center justify-center text-[#1877F2] shrink-0">
                         <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5">
@@ -230,13 +230,13 @@ export default function MortgageMatePage() {
                         ))}
                       </div>
                     </div>
-                    <p className="text-[11.5px] text-slate-500 font-medium leading-tight mt-1">
+                    <p className="text-[10px] sm:text-[11.5px] text-slate-500 font-medium leading-tight mt-1">
                       <strong className="text-slate-800 font-bold">4.8</strong> out of 430+ reviews
                     </p>
                   </div>
 
                   {/* Google */}
-                  <div className="flex flex-col items-start gap-1 pl-4">
+                  <div className="flex flex-col items-start gap-1 pl-1.5 sm:pl-4">
                     <div className="flex items-center gap-1.5">
                       <div className="w-5 h-5 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
                         <svg viewBox="0 0 24 24" className="w-3.5 h-3.5">
@@ -252,7 +252,7 @@ export default function MortgageMatePage() {
                         ))}
                       </div>
                     </div>
-                    <p className="text-[11.5px] text-slate-500 font-medium leading-tight mt-1">
+                    <p className="text-[10px] sm:text-[11.5px] text-slate-500 font-medium leading-tight mt-1">
                       <strong className="text-slate-800 font-bold">4.8</strong> out of 1,000+ reviews
                     </p>
                   </div>
@@ -268,25 +268,24 @@ export default function MortgageMatePage() {
             initial="hidden"
             animate="visible"
             variants={premiumFadeUp}
-            className="lg:col-span-5 relative h-[380px] lg:h-[440px] w-full flex items-center justify-center lg:justify-start select-none"
+            className="lg:col-span-5 relative w-full flex flex-col items-center gap-6 lg:gap-0 lg:h-[440px] lg:flex-row lg:items-center lg:justify-start select-none"
           >
-            {/* Background Portrait of Aakash */}
-            <div className="absolute right-0 bottom-0 top-0 w-[240px] sm:w-[280px] lg:w-[320px] h-full z-0 overflow-hidden flex items-end justify-end opacity-70 lg:opacity-100 transition-opacity duration-300">
+            {/* Portrait of Aakash */}
+            <div className="relative w-[260px] sm:w-[280px] h-[340px] lg:absolute lg:right-0 lg:bottom-0 lg:top-0 lg:w-[320px] lg:h-full z-0 overflow-hidden rounded-3xl lg:rounded-none transition-all duration-300">
               <Image 
                 src="/images/aakash_new.png" 
-                width={320}
-                height={440}
+                fill
                 alt="Aakash KC - Principal Mortgage Advisor" 
-                className="object-contain object-bottom h-full w-auto select-none pointer-events-none" 
+                className="object-cover object-top select-none pointer-events-none" 
                 priority
               />
-              {/* Soft gradient masks to blend the portrait with the background */}
-              <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white to-transparent pointer-events-none" />
-              <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+              {/* Soft gradient masks to blend the portrait with the background (desktop only) */}
+              <div className="hidden lg:block absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white to-transparent pointer-events-none" />
+              <div className="hidden lg:block absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white to-transparent pointer-events-none" />
             </div>
 
             {/* Overlapping Info Card (Left-aligned) */}
-            <div className="relative mr-auto ml-2 lg:ml-0 lg:absolute lg:left-[-30px] xl:left-[-50px] lg:top-1/2 lg:-translate-y-1/2 w-[285px] sm:w-[315px] lg:w-[330px] bg-white/95 backdrop-blur-md border border-slate-200/80 rounded-3xl p-5 shadow-2xl shadow-blue-950/10 z-10">
+            <div className="relative w-[285px] sm:w-[315px] lg:w-[330px] bg-white border border-slate-200/80 rounded-3xl p-5 shadow-2xl shadow-blue-950/10 z-10 lg:absolute lg:left-[-30px] xl:left-[-50px] lg:top-1/2 lg:-translate-y-1/2">
               {/* Licensed Advisor & Rating Badges row */}
               <div className="flex items-center justify-between gap-2 mb-4">
                 <div className="inline-flex items-center gap-1.5 bg-[#0B1F3A] border border-white/10 rounded-full px-2.5 py-0.5 shadow-sm">

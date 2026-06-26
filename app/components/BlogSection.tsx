@@ -175,11 +175,11 @@ export function BlogSection({
             </p>
             
             <div>
-              <button type="button" onClick={openModal} className={`cursor-pointer border-0 inline-flex items-center gap-2 rounded-xl border ${darkTheme ? "border-white/90 text-white hover:bg-white/10" : "border-slate-300 text-slate-700 hover:bg-slate-100"} bg-transparent px-5 py-3 text-[13px] font-bold transition-colors`}>
+              <Link href="/blog" className={`inline-flex items-center gap-2 rounded-xl border ${darkTheme ? "border-white/90 text-white hover:bg-white/10" : "border-slate-300 text-slate-700 hover:bg-slate-100"} bg-transparent px-5 py-3 text-[13px] font-bold transition-colors`}>
                 <FileText className="w-4 h-4 shrink-0" />
                 Explore Resource Hub
                 <ArrowRight className="w-4 h-4 shrink-0" />
-              </button>
+              </Link>
             </div>
           </div>
 
@@ -198,10 +198,10 @@ export function BlogSection({
                   {featured.category}
                 </span>
                 <h3
-                  className="text-[22px] sm:text-[24px] font-extrabold text-[#0B1F3A] leading-snug mb-3"
+                  className="text-[22px] sm:text-[24px] font-extrabold text-[#0B1F3A] leading-snug mb-3 hover:text-blue-600 transition-colors"
                   style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
                 >
-                  {featured.title}
+                  <Link href={`/blog/${featured.slug}`}>{featured.title}</Link>
                 </h3>
                 <p className="text-[13px] sm:text-[14px] text-slate-600 leading-relaxed mb-5">
                   {featured.excerpt}
@@ -220,10 +220,10 @@ export function BlogSection({
                   ))}
                 </div>
                 
-                <button type="button" onClick={openModal} className="cursor-pointer border-0 inline-flex items-center gap-1.5 text-[13px] font-bold hover:underline w-fit" style={{ color: accentColor }}>
+                <Link href={`/blog/${featured.slug}`} className="inline-flex items-center gap-1.5 text-[13px] font-bold hover:underline w-fit" style={{ color: accentColor }}>
                   Read article
                   <ArrowRight className="w-4 h-4" />
-                </button>
+                </Link>
               </div>
               
               {/* Cover Image */}
@@ -259,18 +259,18 @@ export function BlogSection({
                 {refinance.category}
               </span>
               <h3
-                className="text-[19px] sm:text-[21px] font-extrabold text-[#0B1F3A] leading-snug mb-3"
+                className="text-[19px] sm:text-[21px] font-extrabold text-[#0B1F3A] leading-snug mb-3 hover:text-emerald-600 transition-colors"
                 style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
               >
-                {refinance.title}
+                <Link href={`/blog/${refinance.slug}`}>{refinance.title}</Link>
               </h3>
               <p className="text-[13px] text-slate-600 leading-relaxed mb-4 flex-1">
                 {refinance.excerpt}
               </p>
-              <button type="button" onClick={openModal} className="cursor-pointer border-0 inline-flex items-center gap-1.5 text-[13px] font-bold text-emerald-600 hover:underline w-fit">
+              <Link href={`/blog/${refinance.slug}`} className="inline-flex items-center gap-1.5 text-[13px] font-bold text-emerald-600 hover:underline w-fit">
                 Read full details
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </Link>
             </div>
             
             <div className="relative min-h-[200px] sm:min-h-0 sm:w-[44%] shrink-0">
@@ -310,18 +310,18 @@ export function BlogSection({
                 {healthcare.category}
               </span>
               <h3
-                className="text-[19px] sm:text-[21px] font-extrabold text-[#0B1F3A] leading-snug mb-3"
+                className="text-[19px] sm:text-[21px] font-extrabold text-[#0B1F3A] leading-snug mb-3 hover:text-teal-600 transition-colors"
                 style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
               >
-                {healthcare.title}
+                <Link href={`/blog/${healthcare.slug}`}>{healthcare.title}</Link>
               </h3>
               <p className="text-[13px] text-slate-600 leading-relaxed mb-4 flex-1">
                 {healthcare.excerpt}
               </p>
-              <button type="button" onClick={openModal} className="cursor-pointer border-0 inline-flex items-center gap-1.5 text-[13px] font-bold text-teal-600 hover:underline w-fit">
+              <Link href={`/blog/${healthcare.slug}`} className="inline-flex items-center gap-1.5 text-[13px] font-bold text-teal-600 hover:underline w-fit">
                 Read full details
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </Link>
             </div>
             
             <div className="relative min-h-[220px] sm:min-h-0 sm:w-[44%] shrink-0">
