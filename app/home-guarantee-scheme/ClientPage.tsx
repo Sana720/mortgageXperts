@@ -96,7 +96,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings }) {
+export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
   const { openModal } = useOnboardingModal();
   const [navSticky, setNavSticky] = useState(false);
   const [activeNav, setActiveNav] = useState("overview");
@@ -613,7 +613,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                 Buying a home can be tricky and sometimes you need a lot of money saved up to start. The Home Guarantee Scheme is like a helpful friend that lets you buy a home sooner by making the deposit smaller.
               </p>
               <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed">
-                If saving for a 20% deposit has felt like a never-ending struggle, you’re not alone. That’s why the First Home Guarantee (FHBG), backed by the Australian Government and administered by Housing Australia, could be your breakthrough into the property market. Under the guarantee, the government steps in to guarantee the difference between your 5% deposit and the standard 20% deposit.
+                {pageContent || "If saving for a 20% deposit has felt like a never-ending struggle, you’re not alone. That’s why the First Home Guarantee (FHBG), backed by the Australian Government and administered by Housing Australia, could be your breakthrough into the property market. Under the guarantee, the government steps in to guarantee the difference between your 5% deposit and the standard 20% deposit."}
               </p>
               <div className="flex flex-wrap gap-6 pt-2">
                 <div className="flex items-center gap-2.5">

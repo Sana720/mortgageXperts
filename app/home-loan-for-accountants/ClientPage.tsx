@@ -91,7 +91,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings }) {
+export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
   const { openModal } = useOnboardingModal();
   const [navSticky, setNavSticky] = useState(false);
   const [activeNav, setActiveNav] = useState("overview");
@@ -536,7 +536,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                 Home Loans for <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-600">Accountants &amp; Finance Experts</span>
               </h2>
               <p className="text-slate-550 text-[14px] sm:text-[15px] leading-relaxed">
-                Accountants often have access to special home loan offers because lenders recognise their stable income, financial knowledge, and responsible money management. These benefits can include waived Lenders Mortgage Insurance (LMI), special interest rates, and flexible lending policies.
+                {pageContent || "Accountants often have access to special home loan offers because lenders recognise their stable income, financial knowledge, and responsible money management. These benefits can include waived Lenders Mortgage Insurance (LMI), special interest rates, and flexible lending policies."}
               </p>
               <div className="flex flex-wrap gap-6 pt-2">
                 <div className="flex items-center gap-2.5">

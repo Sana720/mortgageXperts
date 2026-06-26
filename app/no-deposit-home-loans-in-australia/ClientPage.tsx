@@ -106,7 +106,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings }) {
+export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
   const { openModal } = useOnboardingModal();
   const [navSticky, setNavSticky] = useState(false);
   const [activeNav, setActiveNav] = useState("overview");
@@ -590,7 +590,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                 Buying a Property with <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-cyan-600">Zero or Low Deposit</span>
               </h2>
               <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed">
-                Saving for a full 20% deposit in Australia&apos;s current market can take years, all while property values and rents continue to rise. Fortunately, you don&apos;t necessarily need a massive cash stockpile to purchase your home.
+                {pageContent || "Saving for a full 20% deposit in Australia's current market can take years, all while property values and rents continue to rise. Fortunately, you don't necessarily need a massive cash stockpile to purchase your home."}
               </p>
               <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed">
                 By utilizing family guarantor loans, First Home Buyer government schemes, and alternative assessment criteria, you can secure a mortgage with a deposit as low as 5%—or even 0% in cash out-of-pocket. Our specialists guide you through all routes to minimize up-front cash requirements and completely waive or reduce Lenders Mortgage Insurance (LMI).

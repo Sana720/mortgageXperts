@@ -92,7 +92,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings }) {
+export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
   const { openModal } = useOnboardingModal();
   const [navSticky, setNavSticky] = useState(false);
   const [activeNav, setActiveNav] = useState("overview");
@@ -565,7 +565,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                 Getting a Home Loan When <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-pink-600">You’re Self-Employed</span>
               </h2>
               <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed">
-                Getting a home loan can be a bit different if you’re self-employed, but with the right preparation, it’s definitely possible to secure the finance you need. Understanding what lenders require and how they assess your income will help you approach the process confidently.
+                {pageContent || "Getting a home loan can be a bit different if you’re self-employed, but with the right preparation, it’s definitely possible to secure the finance you need. Understanding what lenders require and how they assess your income will help you approach the process confidently."}
               </p>
               <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed">
                 While traditional banks make it look complicated, our specialized brokers understand how business structures work. We represent your true income by identifying legitimate add-backs, utilizing one-year tax return policies, or selecting alt-doc options so you get the same premium interest rates as salaried employees.

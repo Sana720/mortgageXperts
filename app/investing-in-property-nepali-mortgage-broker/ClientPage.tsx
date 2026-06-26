@@ -98,7 +98,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings }) {
+export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
   const { openModal } = useOnboardingModal();
   const badgeText = pageHeroSettings?.hero_badge || "Strategic Property Investment";
   const titleText = pageHeroSettings?.hero_title || "Investing in Property";
@@ -708,7 +708,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                 Build Long-Term Wealth Through <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-yellow-600">Property Investment</span>
               </h2>
               <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed">
-                Investing in property is one of the most effective ways for Australians to grow their wealth over time. When structured properly, a property portfolio provides double-sided growth: long-term asset value appreciation alongside consistent rental cash flows.
+                {pageContent || "Investing in property is one of the most effective ways for Australians to grow their wealth over time. When structured properly, a property portfolio provides double-sided growth: long-term asset value appreciation alongside consistent rental cash flows."}
               </p>
               <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed">
                 However, entering the market successfully requires a detailed lending strategy. Factors such as borrowing capacities, tax depreciation, gearing outcomes, and lender rate structures will determine your net return. At Mortgage Xperts, we specialize in building flexible debt structures tailored specifically for property investors.

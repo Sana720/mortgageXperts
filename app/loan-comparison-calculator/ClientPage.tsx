@@ -83,7 +83,7 @@ const GoogleIcon = () => (
   </svg>
 );
 
-export default function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings }) {
+export default function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
   const { openModal } = useOnboardingModal();
   // Step form state: 1 = Enter Details, 2 = Results Dashboard
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -546,7 +546,7 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
               </h2>
               <div className="w-12 h-[3px] bg-[#E11D48] rounded-full" />
               <p className="text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium">
-                Evaluating different interest rates, loan terms, and repayment frequencies enables you to pick the best home loan product. Analyze Loan 1 and Loan 2 directly to review payment differences and total interest savings.
+                {pageContent || "Evaluating different interest rates, loan terms, and repayment frequencies enables you to pick the best home loan product. Analyze Loan 1 and Loan 2 directly to review payment differences and total interest savings."}
               </p>
 
               <div className="space-y-4 pt-4">

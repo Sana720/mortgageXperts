@@ -35,7 +35,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export default function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings }) {
+export default function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
   // Wizard steps
   const [currentStep, setCurrentStep] = useState(1);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
@@ -302,7 +302,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
               </h2>
               <div className="w-12 h-[3px] bg-teal-600 rounded-full" />
               <p className="text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium">
-                Rental yield is a key metric used by smart property investors to evaluate the cash flow performance of real estate. Use this calculator to compare gross and net yields for any Australian property.
+                {pageContent || "Rental yield is a key metric used by smart property investors to evaluate the cash flow performance of real estate. Use this calculator to compare gross and net yields for any Australian property."}
               </p>
 
               <div className="space-y-4 pt-4">

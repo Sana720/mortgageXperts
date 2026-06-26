@@ -93,7 +93,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings }) {
+export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
   const { openModal } = useOnboardingModal();
   const [navSticky, setNavSticky] = useState(false);
   const [activeNav, setActiveNav] = useState("overview");
@@ -533,7 +533,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                 What Exactly Is a <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-yellow-500">Non-Resident Home Loan?</span>
               </h2>
               <p className="text-slate-550 text-[14.5px] sm:text-[15.5px] leading-relaxed">
-                A non-resident home loan is designed for people living overseas or those who don’t hold Australian citizenship or permanent residency. This includes foreign nationals, temporary visa holders, and Australians living abroad. Since lenders view non-residents as higher-risk borrowers, they apply stricter criteria, including more documentation and often larger deposits than regular home loans.
+                {pageContent || "A non-resident home loan is designed for people living overseas or those who don’t hold Australian citizenship or permanent residency. This includes foreign nationals, temporary visa holders, and Australians living abroad. Since lenders view non-residents as higher-risk borrowers, they apply stricter criteria, including more documentation and often larger deposits than regular home loans."}
               </p>
               <div className="flex flex-wrap gap-6 pt-2">
                 <div className="flex items-center gap-2.5">

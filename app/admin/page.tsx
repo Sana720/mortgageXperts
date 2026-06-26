@@ -698,7 +698,7 @@ export default function AdminPage() {
               <form onSubmit={handleLogin} className="space-y-5">
                 {/* Username Input */}
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">
+                  <label className="text-[11.5px] font-black text-slate-500 uppercase tracking-wider block">
                     Username
                   </label>
                   <div className="relative flex items-center">
@@ -717,7 +717,7 @@ export default function AdminPage() {
                 {/* Password Input */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">
+                    <label className="text-[11.5px] font-black text-slate-500 uppercase tracking-wider block">
                       Password
                     </label>
                     <button
@@ -819,18 +819,15 @@ export default function AdminPage() {
         {/* Sidebar Header (Fixed height h-20) */}
         <div className="h-20 border-b border-slate-100 flex items-center justify-between px-6 shrink-0 animate-fade-in">
           <div className="flex items-center gap-3">
-            {settings.logo_url ? (
-              <img src={settings.logo_url} alt="Logo" className="h-10 max-w-[180px] object-contain" />
-            ) : (
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white font-black text-base shadow-sm shadow-blue-500/20 animate-pulse">
-                  M
-                </div>
-                <span className="text-slate-900 text-[15px] font-black tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                  Mortgage Xperts
-                </span>
-              </div>
-            )}
+            <div className="relative w-40 h-10">
+              <Image
+                src={settings.logo_url || "/images/logo.png"}
+                alt="Mortgage Xperts Logo"
+                fill
+                className="object-contain object-left"
+                priority
+              />
+            </div>
           </div>
 
           {/* Close Sidebar Button for Mobile */}
@@ -859,7 +856,7 @@ export default function AdminPage() {
         <nav className="p-3 flex-1 space-y-1">
           <button
             onClick={() => setActiveTab("enquiries")}
-            className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+            className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all ${
               activeTab === "enquiries"
                 ? "bg-blue-50 text-blue-700 shadow-sm border border-blue-100/50"
                 : "text-slate-500 hover:bg-slate-50 hover:text-slate-800 border border-transparent"
@@ -877,7 +874,7 @@ export default function AdminPage() {
 
           <button
             onClick={() => setActiveTab("settings")}
-            className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+            className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all ${
               activeTab === "settings"
                 ? "bg-blue-50 text-blue-700 shadow-sm border border-blue-100/50"
                 : "text-slate-500 hover:bg-slate-50 hover:text-slate-800 border border-transparent"
@@ -890,7 +887,7 @@ export default function AdminPage() {
 
           <button
             onClick={() => setActiveTab("hero")}
-            className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+            className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all ${
               activeTab === "hero"
                 ? "bg-blue-50 text-blue-700 shadow-sm border border-blue-100/50"
                 : "text-slate-500 hover:bg-slate-50 hover:text-slate-800 border border-transparent"
@@ -903,7 +900,7 @@ export default function AdminPage() {
 
           <button
             onClick={() => { setActiveTab("pages_manager"); setEditingPagePath(null); }}
-            className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+            className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all ${
               activeTab === "pages_manager"
                 ? "bg-blue-50 text-blue-700 shadow-sm border border-blue-100/50"
                 : "text-slate-500 hover:bg-slate-50 hover:text-slate-800 border border-transparent"
@@ -917,7 +914,7 @@ export default function AdminPage() {
 
           <button
             onClick={() => setActiveTab("blogs")}
-            className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+            className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all ${
               activeTab === "blogs"
                 ? "bg-blue-50 text-blue-700 shadow-sm border border-blue-100/50"
                 : "text-slate-500 hover:bg-slate-50 hover:text-slate-800 border border-transparent"
@@ -930,7 +927,7 @@ export default function AdminPage() {
 
           <button
             onClick={() => setActiveTab("testimonials")}
-            className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+            className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all ${
               activeTab === "testimonials"
                 ? "bg-blue-50 text-blue-700 shadow-sm border border-blue-100/50"
                 : "text-slate-500 hover:bg-slate-50 hover:text-slate-800 border border-transparent"
@@ -1014,7 +1011,7 @@ export default function AdminPage() {
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
-                      <tr className="bg-slate-50/70 border-b border-slate-200/80 text-[10px] font-black uppercase text-slate-500 tracking-wider">
+                      <tr className="bg-slate-50/70 border-b border-slate-200/80 text-[11.5px] font-black uppercase text-slate-500 tracking-wider">
                         <th className="p-4">Client Detail</th>
                         <th className="p-4">Contact Info</th>
                         <th className="p-4">Assessed Criteria</th>
@@ -1024,7 +1021,7 @@ export default function AdminPage() {
                         <th className="p-4 text-center">Action</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100 text-xs">
+                    <tbody className="divide-y divide-slate-100 text-sm">
                       {enquiries.map((enq) => (
                         <tr key={enq.id} className="hover:bg-slate-50/40 transition-colors">
                           <td className="p-4">
@@ -1042,7 +1039,7 @@ export default function AdminPage() {
                               <div className="bg-slate-50 border border-slate-100 p-2 rounded-xl text-[10.5px] font-bold text-slate-700 max-w-[220px] space-y-1 shadow-xs">
                                 {enq.income && (
                                   <div className="flex flex-col">
-                                    <span className="text-[9px] text-slate-400 font-extrabold uppercase tracking-wider">Income / Details:</span>
+                                    <span className="text-[11px] text-slate-400 font-extrabold uppercase tracking-wider">Income / Details:</span>
                                     <span className="text-slate-800 break-words font-semibold leading-tight">
                                       {!isNaN(Number(enq.income)) && Number(enq.income) > 0 ? `$${Number(enq.income).toLocaleString()}` : enq.income}
                                     </span>
@@ -1050,7 +1047,7 @@ export default function AdminPage() {
                                 )}
                                 {enq.savings && (
                                   <div className={`flex flex-col ${enq.income ? "border-t border-slate-200/60 pt-1 mt-1" : ""}`}>
-                                    <span className="text-[9px] text-slate-400 font-extrabold uppercase tracking-wider">Deposit / Savings:</span>
+                                    <span className="text-[11px] text-slate-400 font-extrabold uppercase tracking-wider">Deposit / Savings:</span>
                                     <span className="text-slate-800 break-words font-semibold leading-tight">
                                       {!isNaN(Number(enq.savings)) && Number(enq.savings) > 0 ? `$${Number(enq.savings).toLocaleString()}` : enq.savings}
                                     </span>
@@ -1138,7 +1135,7 @@ export default function AdminPage() {
                           type="text"
                           value={settings.logo_url || ""}
                           onChange={e => setSettings(prev => ({ ...prev, logo_url: e.target.value }))}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                           placeholder="/images/logo.png"
                         />
                       </div>
@@ -1169,7 +1166,7 @@ export default function AdminPage() {
                           type="text"
                           value={settings.site_icon_url || ""}
                           onChange={e => setSettings(prev => ({ ...prev, site_icon_url: e.target.value }))}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                           placeholder="/favicon.ico"
                         />
                       </div>
@@ -1208,7 +1205,7 @@ export default function AdminPage() {
                       type="text"
                       value={settings.header_phone || ""}
                       onChange={e => setSettings(prev => ({ ...prev, header_phone: e.target.value }))}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                       placeholder="0450 240 757"
                     />
                   </div>
@@ -1219,7 +1216,7 @@ export default function AdminPage() {
                       type="email"
                       value={settings.support_email || ""}
                       onChange={e => setSettings(prev => ({ ...prev, support_email: e.target.value }))}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                       placeholder="mortgage@mortgagexperts.com.au"
                     />
                   </div>
@@ -1230,7 +1227,7 @@ export default function AdminPage() {
                       type="text"
                       value={settings.footer_address || ""}
                       onChange={e => setSettings(prev => ({ ...prev, footer_address: e.target.value }))}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                       placeholder="e.g. Sydney, Australia"
                     />
                   </div>
@@ -1241,7 +1238,7 @@ export default function AdminPage() {
                       type="text"
                       value={settings.google_maps_embed || ""}
                       onChange={e => setSettings(prev => ({ ...prev, google_maps_embed: e.target.value }))}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                       placeholder="https://www.google.com/maps/embed?..."
                     />
                   </div>
@@ -1262,7 +1259,7 @@ export default function AdminPage() {
                       type="text"
                       value={settings.meta_title || ""}
                       onChange={e => setSettings(prev => ({ ...prev, meta_title: e.target.value }))}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                       placeholder="Home title displayed on search results page tab"
                     />
                   </div>
@@ -1273,7 +1270,7 @@ export default function AdminPage() {
                       type="text"
                       value={settings.meta_keywords || ""}
                       onChange={e => setSettings(prev => ({ ...prev, meta_keywords: e.target.value }))}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                       placeholder="e.g. mortgage broker, home loans, low deposit, Nepali broker"
                     />
                   </div>
@@ -1284,7 +1281,7 @@ export default function AdminPage() {
                       rows={3}
                       value={settings.meta_description || ""}
                       onChange={e => setSettings(prev => ({ ...prev, meta_description: e.target.value }))}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all leading-relaxed"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all leading-relaxed"
                       placeholder="SEO meta description snippet summarizing the homepage contents..."
                     />
                   </div>
@@ -1305,7 +1302,7 @@ export default function AdminPage() {
                       type="text"
                       value={settings.smtp_host || ""}
                       onChange={e => setSettings(prev => ({ ...prev, smtp_host: e.target.value }))}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                       placeholder="smtp.mailtrap.io"
                     />
                   </div>
@@ -1316,7 +1313,7 @@ export default function AdminPage() {
                       type="text"
                       value={settings.smtp_port || ""}
                       onChange={e => setSettings(prev => ({ ...prev, smtp_port: e.target.value }))}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                       placeholder="2525"
                     />
                   </div>
@@ -1327,7 +1324,7 @@ export default function AdminPage() {
                       type="text"
                       value={settings.smtp_user || ""}
                       onChange={e => setSettings(prev => ({ ...prev, smtp_user: e.target.value }))}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                       placeholder="e.g. key_username"
                     />
                   </div>
@@ -1338,7 +1335,7 @@ export default function AdminPage() {
                       type="password"
                       value={settings.smtp_pass || ""}
                       onChange={e => setSettings(prev => ({ ...prev, smtp_pass: e.target.value }))}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                       placeholder="••••••••••••"
                     />
                   </div>
@@ -1349,7 +1346,7 @@ export default function AdminPage() {
                       type="text"
                       value={settings.smtp_from || ""}
                       onChange={e => setSettings(prev => ({ ...prev, smtp_from: e.target.value }))}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                       placeholder="noreply@mortgagexperts.com.au"
                     />
                   </div>
@@ -1392,7 +1389,7 @@ export default function AdminPage() {
                             type="url"
                             value={settings[field] || ""}
                             onChange={e => setSettings(prev => ({ ...prev, [field]: e.target.value }))}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                             placeholder="https://..."
                           />
                         </div>
@@ -1432,7 +1429,7 @@ export default function AdminPage() {
                       value={pagesManagerSearch}
                       onChange={e => setPagesManagerSearch(e.target.value)}
                       placeholder="Search pages..."
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                     />
                   </div>
                 </div>
@@ -1453,7 +1450,7 @@ export default function AdminPage() {
                         >
                           <div className="min-w-0 flex-1">
                             <div className="text-[11px] font-bold text-slate-800 truncate">{page.label.split(" (/")[0]}</div>
-                            <div className="text-[9.5px] text-slate-400 font-mono truncate mt-0.5">{page.value}</div>
+                            <div className="text-[11px] text-slate-400 font-mono truncate mt-0.5">{page.value}</div>
                           </div>
                           <div className="flex items-center gap-1.5 shrink-0">
                             <a
@@ -1468,7 +1465,7 @@ export default function AdminPage() {
                             </a>
                             <button
                               onClick={(e) => { e.stopPropagation(); setEditingPagePath(page.value); setPageEditSettings(null); setPageEditContent(""); }}
-                              className="px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 text-[10px] font-extrabold rounded-lg transition-all"
+                              className="px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 text-[11px] font-black uppercase tracking-wider rounded-lg transition-all"
                             >
                               Edit
                             </button>
@@ -1495,7 +1492,7 @@ export default function AdminPage() {
                       </button>
                       <div className="min-w-0">
                         <div className="text-xs font-extrabold text-slate-800 truncate">{pagesList.find(p => p.value === editingPagePath)?.label.split(" (/")[0] || editingPagePath}</div>
-                        <div className="text-[9.5px] text-slate-400 font-mono truncate">{editingPagePath}</div>
+                        <div className="text-[11px] text-slate-400 font-mono truncate">{editingPagePath}</div>
                       </div>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
@@ -1503,7 +1500,7 @@ export default function AdminPage() {
                         href={editingPagePath}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 px-3 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-600 text-[10px] font-bold rounded-xl transition-all"
+                        className="flex items-center gap-1.5 px-3 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-600 text-[11px] font-black uppercase tracking-wider rounded-xl transition-all"
                       >
                         <ExternalLink className="w-3.5 h-3.5" />
                         Preview
@@ -1526,40 +1523,40 @@ export default function AdminPage() {
                       <div className="bg-white border border-slate-200/70 rounded-2xl p-6 shadow-sm space-y-4">
                         <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
                           <Globe className="w-4 h-4 text-blue-600 shrink-0" />
-                          <h2 className="text-sm font-extrabold text-slate-800 tracking-tight uppercase" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>SEO Metadata</h2>
+                          <h2 className="text-base font-black text-slate-800 tracking-tight uppercase" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>SEO Metadata</h2>
                         </div>
                         
                         <div>
-                          <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-1.5">Page Title (Meta Title)</label>
+                          <label className="text-[11.5px] font-black text-slate-600 uppercase tracking-wider block mb-2">Page Title (Meta Title)</label>
                           <input
                             type="text"
                             value={pageEditSettings.meta_title || ""}
                             onChange={e => setPageEditSettings((prev: any) => ({ ...prev, meta_title: e.target.value }))}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                             placeholder="Page Title | Mortgage Xperts"
                           />
-                          <p className="text-[9px] text-slate-400 mt-1">{(pageEditSettings.meta_title || "").length}/70 chars recommended</p>
+                          <p className="text-[11px] text-slate-400 mt-1">{(pageEditSettings.meta_title || "").length}/70 chars recommended</p>
                         </div>
                         
                         <div>
-                          <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-1.5">Meta Description</label>
+                          <label className="text-[11.5px] font-black text-slate-600 uppercase tracking-wider block mb-2">Meta Description</label>
                           <textarea
                             rows={2}
                             value={pageEditSettings.meta_description || ""}
                             onChange={e => setPageEditSettings((prev: any) => ({ ...prev, meta_description: e.target.value }))}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all leading-relaxed"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all leading-relaxed"
                             placeholder="Brief description for search engines..."
                           />
-                          <p className="text-[9px] text-slate-400 mt-1">{(pageEditSettings.meta_description || "").length}/160 chars recommended</p>
+                          <p className="text-[11px] text-slate-400 mt-1">{(pageEditSettings.meta_description || "").length}/160 chars recommended</p>
                         </div>
                         
                         <div>
-                          <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-1.5">Keywords (comma-separated)</label>
+                          <label className="text-[11.5px] font-black text-slate-600 uppercase tracking-wider block mb-2">Keywords (comma-separated)</label>
                           <input
                             type="text"
                             value={pageEditSettings.meta_keywords || ""}
                             onChange={e => setPageEditSettings((prev: any) => ({ ...prev, meta_keywords: e.target.value }))}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                             placeholder="keyword one, keyword two, keyword three"
                           />
                         </div>
@@ -1569,29 +1566,29 @@ export default function AdminPage() {
                       <div className="bg-white border border-slate-200/70 rounded-2xl p-6 shadow-sm space-y-4">
                         <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
                           <Home className="w-4 h-4 text-violet-600 shrink-0" />
-                          <h2 className="text-sm font-extrabold text-slate-800 tracking-tight uppercase" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>Hero Section</h2>
+                          <h2 className="text-base font-black text-slate-800 tracking-tight uppercase" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>Hero Section</h2>
                         </div>
                         
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
-                            <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-1.5">Badge Text</label>
+                            <label className="text-[11.5px] font-black text-slate-600 uppercase tracking-wider block mb-2">Badge Text</label>
                             <input
                               type="text"
                               value={pageEditSettings.hero_badge || ""}
                               onChange={e => setPageEditSettings((prev: any) => ({ ...prev, hero_badge: e.target.value }))}
-                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                               placeholder="e.g. First Home Buyer Specialists"
                             />
                           </div>
                           
                           <div>
-                            <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-1.5">Hero Background Image URL</label>
+                            <label className="text-[11.5px] font-black text-slate-600 uppercase tracking-wider block mb-2">Hero Background Image URL</label>
                             <div className="flex gap-2">
                               <input
                                 type="text"
                                 value={pageEditSettings.hero_image || ""}
                                 onChange={e => setPageEditSettings((prev: any) => ({ ...prev, hero_image: e.target.value }))}
-                                className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                                className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                                 placeholder="/images/hero.png"
                               />
                               <label className="bg-slate-100 hover:bg-slate-200 border border-slate-200 cursor-pointer text-slate-700 text-[10px] font-bold px-3 py-2.5 rounded-xl transition-all shrink-0">
@@ -1603,23 +1600,23 @@ export default function AdminPage() {
                         </div>
                         
                         <div className="md:col-span-2">
-                          <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-1.5">Hero Headline</label>
+                          <label className="text-[11.5px] font-black text-slate-600 uppercase tracking-wider block mb-2">Hero Headline</label>
                           <input
                             type="text"
                             value={pageEditSettings.hero_title || ""}
                             onChange={e => setPageEditSettings((prev: any) => ({ ...prev, hero_title: e.target.value }))}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                             placeholder="Main hero headline..."
                           />
                         </div>
                         
                         <div>
-                          <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-1.5">Hero Subtext</label>
+                          <label className="text-[11.5px] font-black text-slate-600 uppercase tracking-wider block mb-2">Hero Subtext</label>
                           <textarea
                             rows={2}
                             value={pageEditSettings.hero_subtext || ""}
                             onChange={e => setPageEditSettings((prev: any) => ({ ...prev, hero_subtext: e.target.value }))}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all leading-relaxed"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all leading-relaxed"
                             placeholder="Supporting subtext below the headline..."
                           />
                         </div>
@@ -1631,14 +1628,14 @@ export default function AdminPage() {
                               type="text"
                               value={pageEditSettings.hero_btn1_text || ""}
                               onChange={e => setPageEditSettings((prev: any) => ({ ...prev, hero_btn1_text: e.target.value }))}
-                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                               placeholder="Button text"
                             />
                             <input
                               type="text"
                               value={pageEditSettings.hero_btn1_link || ""}
                               onChange={e => setPageEditSettings((prev: any) => ({ ...prev, hero_btn1_link: e.target.value }))}
-                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                               placeholder="Link or #anchor"
                             />
                           </div>
@@ -1648,14 +1645,14 @@ export default function AdminPage() {
                               type="text"
                               value={pageEditSettings.hero_btn2_text || ""}
                               onChange={e => setPageEditSettings((prev: any) => ({ ...prev, hero_btn2_text: e.target.value }))}
-                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                               placeholder="Button text"
                             />
                             <input
                               type="text"
                               value={pageEditSettings.hero_btn2_link || ""}
                               onChange={e => setPageEditSettings((prev: any) => ({ ...prev, hero_btn2_link: e.target.value }))}
-                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                               placeholder="Link or #anchor"
                             />
                           </div>
@@ -1667,18 +1664,18 @@ export default function AdminPage() {
                         <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
                           <FileText className="w-4 h-4 text-emerald-600 shrink-0" />
                           <div>
-                            <h2 className="text-sm font-extrabold text-slate-800 tracking-tight uppercase" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>Page Intro Paragraph</h2>
-                            <p className="text-[9.5px] text-slate-400 font-medium mt-0.5">This paragraph appears as a custom content block on the page, giving you full control over the intro text shown to visitors.</p>
+                            <h2 className="text-base font-black text-slate-800 tracking-tight uppercase" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>Page Intro Paragraph</h2>
+                            <p className="text-[11px] text-slate-400 font-medium mt-0.5">This paragraph appears as a custom content block on the page, giving you full control over the intro text shown to visitors.</p>
                           </div>
                         </div>
                         <textarea
                           rows={5}
                           value={pageEditContent}
                           onChange={e => setPageEditContent(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all leading-relaxed"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all leading-relaxed"
                           placeholder="Enter an intro paragraph for this page. This will be displayed in the page's intro/overview section..."
                         />
-                        <p className="text-[9px] text-slate-400">Supports plain text. Keep it concise and informative (2–4 sentences recommended).</p>
+                        <p className="text-[11px] text-slate-400">Supports plain text. Keep it concise and informative (2–4 sentences recommended).</p>
                       </div>
                       
                       {/* Toast Notification */}
@@ -1823,7 +1820,7 @@ export default function AdminPage() {
                       type="text"
                       value={currentPageSettings.meta_title || ""}
                       onChange={e => setCurrentPageSettings((prev: any) => ({ ...prev, meta_title: e.target.value }))}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                       placeholder="Enter premium SEO title"
                       required
                     />
@@ -1836,7 +1833,7 @@ export default function AdminPage() {
                       rows={4}
                       value={currentPageSettings.meta_description || ""}
                       onChange={e => setCurrentPageSettings((prev: any) => ({ ...prev, meta_description: e.target.value }))}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all leading-relaxed"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all leading-relaxed"
                       placeholder="Provide dynamic, key-word rich description of this page..."
                       required
                     />
@@ -1849,7 +1846,7 @@ export default function AdminPage() {
                       type="text"
                       value={currentPageSettings.meta_keywords || ""}
                       onChange={e => setCurrentPageSettings((prev: any) => ({ ...prev, meta_keywords: e.target.value }))}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                       placeholder="comma, separated, key, terms"
                       required
                     />
@@ -1878,7 +1875,7 @@ export default function AdminPage() {
                             type="text"
                             value={currentPageSettings.hero_badge || ""}
                             onChange={e => setCurrentPageSettings((prev: any) => ({ ...prev, hero_badge: e.target.value }))}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                             placeholder="e.g. First Home Buyer Specialists"
                           />
                         </div>
@@ -1889,7 +1886,7 @@ export default function AdminPage() {
                             type="text"
                             value={currentPageSettings.hero_title || ""}
                             onChange={e => setCurrentPageSettings((prev: any) => ({ ...prev, hero_title: e.target.value }))}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                             placeholder="Headline text..."
                             required
                           />
@@ -1901,7 +1898,7 @@ export default function AdminPage() {
                             rows={3}
                             value={currentPageSettings.hero_subtext || ""}
                             onChange={e => setCurrentPageSettings((prev: any) => ({ ...prev, hero_subtext: e.target.value }))}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all leading-relaxed"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all leading-relaxed"
                             placeholder="Detailed paragraph on the hero banner..."
                             required
                           />
@@ -1914,7 +1911,7 @@ export default function AdminPage() {
                               type="text"
                               value={currentPageSettings.hero_image || ""}
                               onChange={e => setCurrentPageSettings((prev: any) => ({ ...prev, hero_image: e.target.value }))}
-                              className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                              className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                               placeholder="/images/hero.png"
                             />
                             <div className="relative shrink-0">
@@ -1941,7 +1938,7 @@ export default function AdminPage() {
                             type="text"
                             value={currentPageSettings.hero_btn1_text || ""}
                             onChange={e => setCurrentPageSettings((prev: any) => ({ ...prev, hero_btn1_text: e.target.value }))}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                             placeholder="Get Started"
                           />
                         </div>
@@ -1952,7 +1949,7 @@ export default function AdminPage() {
                             type="text"
                             value={currentPageSettings.hero_btn1_link || ""}
                             onChange={e => setCurrentPageSettings((prev: any) => ({ ...prev, hero_btn1_link: e.target.value }))}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                             placeholder="#calculator"
                           />
                         </div>
@@ -1963,7 +1960,7 @@ export default function AdminPage() {
                             type="text"
                             value={currentPageSettings.hero_btn2_text || ""}
                             onChange={e => setCurrentPageSettings((prev: any) => ({ ...prev, hero_btn2_text: e.target.value }))}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                             placeholder="Free Call"
                           />
                         </div>
@@ -1974,7 +1971,7 @@ export default function AdminPage() {
                             type="text"
                             value={currentPageSettings.hero_btn2_link || ""}
                             onChange={e => setCurrentPageSettings((prev: any) => ({ ...prev, hero_btn2_link: e.target.value }))}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                             placeholder="#callback"
                           />
                         </div>
@@ -2052,7 +2049,7 @@ export default function AdminPage() {
                                   setCurrentPageSettings((prev: any) => ({ ...prev, slides: JSON.stringify(arr) }));
                                 } catch (err) { console.error(err); }
                               }}
-                              className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500"
+                              className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500"
                               placeholder="e.g. First Home Buyer Specialists"
                             />
                           </div>
@@ -2079,7 +2076,7 @@ export default function AdminPage() {
                                   setCurrentPageSettings((prev: any) => ({ ...prev, slides: JSON.stringify(arr) }));
                                 } catch (err) { console.error(err); }
                               }}
-                              className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500"
+                              className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500"
                               placeholder="Slide Headline..."
                               required
                             />
@@ -2107,7 +2104,7 @@ export default function AdminPage() {
                                   setCurrentPageSettings((prev: any) => ({ ...prev, slides: JSON.stringify(arr) }));
                                 } catch (err) { console.error(err); }
                               }}
-                              className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 leading-relaxed"
+                              className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 leading-relaxed"
                               placeholder="Slide description details..."
                               required
                             />
@@ -2136,7 +2133,7 @@ export default function AdminPage() {
                                     setCurrentPageSettings((prev: any) => ({ ...prev, slides: JSON.stringify(arr) }));
                                   } catch (err) { console.error(err); }
                                 }}
-                                className="flex-1 bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500"
+                                className="flex-1 bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500"
                                 placeholder="/images/hero.png"
                               />
                               <div className="relative shrink-0">
@@ -2179,7 +2176,7 @@ export default function AdminPage() {
                                   setCurrentPageSettings((prev: any) => ({ ...prev, slides: JSON.stringify(arr) }));
                                 } catch (err) { console.error(err); }
                               }}
-                              className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500"
+                              className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500"
                               placeholder="Get Started"
                             />
                           </div>
@@ -2206,7 +2203,7 @@ export default function AdminPage() {
                                   setCurrentPageSettings((prev: any) => ({ ...prev, slides: JSON.stringify(arr) }));
                                 } catch (err) { console.error(err); }
                               }}
-                              className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500"
+                              className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500"
                               placeholder="/home-loan-for-doctors"
                             />
                           </div>
@@ -2233,7 +2230,7 @@ export default function AdminPage() {
                                   setCurrentPageSettings((prev: any) => ({ ...prev, slides: JSON.stringify(arr) }));
                                 } catch (err) { console.error(err); }
                               }}
-                              className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500"
+                              className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500"
                               placeholder="Free Call"
                             />
                           </div>
@@ -2260,7 +2257,7 @@ export default function AdminPage() {
                                   setCurrentPageSettings((prev: any) => ({ ...prev, slides: JSON.stringify(arr) }));
                                 } catch (err) { console.error(err); }
                               }}
-                              className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500"
+                              className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500"
                               placeholder="#callback"
                             />
                           </div>

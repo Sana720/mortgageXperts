@@ -58,10 +58,12 @@ const faqs = [
 
 export default function ClientPage({
   settings = {},
-  pageHeroSettings
+  pageHeroSettings,
+  pageContent
 }: {
   settings?: Record<string, string>;
   pageHeroSettings?: PageHeroSettings;
+  pageContent?: string;
 }) {
   // Wizard steps
   const [currentStep, setCurrentStep] = useState(1);
@@ -304,7 +306,7 @@ export default function ClientPage({
               </h2>
               <div className="w-12 h-[3px] bg-rose-600 rounded-full" />
               <p className="text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium">
-                Whenever the Reserve Bank of Australia (RBA) adjusts the official cash rate, lenders typically pass this change onto variable rate home loans. Use this calculator to model how much your repayment will rise or fall.
+                {pageContent || "Whenever the Reserve Bank of Australia (RBA) adjusts the official cash rate, lenders typically pass this change onto variable rate home loans. Use this calculator to model how much your repayment will rise or fall."}
               </p>
 
               <div className="space-y-4 pt-4">

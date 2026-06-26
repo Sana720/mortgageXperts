@@ -40,7 +40,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export default function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings }) {
+export default function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
   // Wizard steps
   const [currentStep, setCurrentStep] = useState(1);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
@@ -334,7 +334,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
               </h2>
               <div className="w-12 h-[3px] bg-emerald-600 rounded-full" />
               <p className="text-slate-550 text-[14.2px] leading-relaxed max-w-xl font-medium">
-                Calculate how compound interest and regular savings grow your home deposit over time. Build a realistic plan to unlock home ownership and compare savings frequencies.
+                {pageContent || "Calculate how compound interest and regular savings grow your home deposit over time. Build a realistic plan to unlock home ownership and compare savings frequencies."}
               </p>
 
               <div className="space-y-4 pt-4">

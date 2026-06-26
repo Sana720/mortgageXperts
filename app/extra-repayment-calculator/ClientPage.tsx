@@ -40,7 +40,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export default function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings }) {
+export default function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
   // Wizard steps
   const [currentStep, setCurrentStep] = useState(1);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
@@ -369,7 +369,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
               </h2>
               <div className="w-12 h-[3px] bg-teal-600 rounded-full" />
               <p className="text-slate-550 text-[14px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium">
-                Mortgage interest compounding can be tackled by paying extra amounts weekly, fortnightly, or monthly. Input your current terms and see how much interest and time you will save.
+                {pageContent || "Mortgage interest compounding can be tackled by paying extra amounts weekly, fortnightly, or monthly. Input your current terms and see how much interest and time you will save."}
               </p>
 
               <div className="space-y-4 pt-4">

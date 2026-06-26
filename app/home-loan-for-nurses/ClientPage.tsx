@@ -93,7 +93,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings }) {
+export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
   const { openModal } = useOnboardingModal();
   const [navSticky, setNavSticky] = useState(false);
   const [activeNav, setActiveNav] = useState("overview");
@@ -554,7 +554,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
               Benefits of Home Loans <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">for Nurses</span>
             </h2>
             <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed">
-              Many lenders offer home loan discounts and perks specifically to nurses, due to the steady income and job security their profession provides. These benefits make it easier and more affordable to buy your home.
+              {pageContent || "Many lenders offer home loan discounts and perks specifically to nurses, due to the steady income and job security their profession provides. These benefits make it easier and more affordable to buy your home."}
             </p>
           </div>
 

@@ -259,7 +259,7 @@ export async function generateMetadata({
   if (!data) return { title: "Branch Not Found" };
 
   const pagePath = `/branches/${city}`;
-  const { settings, pageHeroSettings } = await loadPageData(pagePath);
+  const { settings, pageHeroSettings, pageContent } = await loadPageData(pagePath);
 
   return buildPageMetadata(pagePath, pageHeroSettings, settings, {
     title: `Mortgage Xperts ${data.city} | Home Loans in ${data.state}`,
@@ -293,7 +293,7 @@ export default async function BranchPage({
   }
 
   const pagePath = `/branches/${city}`;
-  const { settings, pageHeroSettings } = await loadPageData(pagePath);
+  const { settings, pageHeroSettings, pageContent } = await loadPageData(pagePath);
 
   const jsonLd = buildJsonLd(
     `Home Loans in ${cityData.city} - Mortgage Xperts`,
@@ -315,10 +315,7 @@ export default async function BranchPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <BranchClientPage
-        cityData={cityData}
-        settings={settings}
-        pageHeroSettings={pageHeroSettings}
+      <BranchClientPage cityData={cityData} settings={settings} pageHeroSettings={pageHeroSettings} pageContent={pageContent}
       />
     </>
   );

@@ -5,7 +5,7 @@ import { loadPageData, buildPageMetadata, buildJsonLd } from "@/lib/pageLoader";
 const PAGE_PATH = "/home-loan-for-doctors";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { settings, pageHeroSettings } = await loadPageData(PAGE_PATH);
+  const { settings, pageHeroSettings, pageContent } = await loadPageData(PAGE_PATH);
   return buildPageMetadata(PAGE_PATH, pageHeroSettings, settings, {
     title: "Home Loans for Doctors & Medical Specialists | Mortgage Xperts",
     description:
@@ -21,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
-  const { settings, pageHeroSettings } = await loadPageData(PAGE_PATH);
+  const { settings, pageHeroSettings, pageContent } = await loadPageData(PAGE_PATH);
 
   const jsonLd = buildJsonLd(
     "Home Loans for Doctors - Mortgage Xperts",
@@ -44,7 +44,7 @@ export default async function Page() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ClientPage settings={settings} pageHeroSettings={pageHeroSettings} />
+      <ClientPage settings={settings} pageHeroSettings={pageHeroSettings} pageContent={pageContent} />
     </>
   );
 }

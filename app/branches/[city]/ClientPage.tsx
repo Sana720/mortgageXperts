@@ -81,15 +81,7 @@ export interface PageHeroSettings {
   slides?: string;
 }
 
-export default function BranchClientPage({
-  cityData,
-  settings = {},
-  pageHeroSettings,
-}: {
-  cityData: CityData;
-  settings?: Record<string, string>;
-  pageHeroSettings?: PageHeroSettings;
-}) {
+export default function BranchClientPage({ cityData, settings = {}, pageHeroSettings, pageContent }: { cityData: CityData; settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -99,7 +91,7 @@ export default function BranchClientPage({
 
   const badgeText = pageHeroSettings?.hero_badge || `${cityData.city}, ${cityData.stateShort}`;
   const titleText = pageHeroSettings?.hero_title || `Home Loans in ${cityData.city}`;
-  const subtextText = pageHeroSettings?.hero_subtext || cityData.description;
+  const subtextText = pageHeroSettings?.hero_subtext || pageContent || cityData.description;
   const imageSrc = pageHeroSettings?.hero_image || cityData.heroImage;
   const btn1Text = pageHeroSettings?.hero_btn1_text || "Book Free Consultation";
   const btn1Link = pageHeroSettings?.hero_btn1_link || "#enquiry";
