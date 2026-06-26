@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import {
   LayoutDashboard,
@@ -28,9 +28,10 @@ import {
   Archive,
   Menu,
   Eye,
-  EyeOff
+  EyeOff,
+  AlertCircle
 } from "lucide-react";
-import RichTextEditor from "@/app/components/RichTextEditor";
+
 
 type Enquiry = {
   id: string;
@@ -74,21 +75,86 @@ export default function AdminPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState("");
-  const [activeTab, setActiveTab] = useState<"enquiries" | "settings" | "hero" | "blogs" | "testimonials" | "content_cms">("enquiries");
+  const [activeTab, setActiveTab] = useState<"enquiries" | "settings" | "hero" | "blogs" | "testimonials" | "pages_manager">("enquiries");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   
   // Data States
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
   const [settings, setSettings] = useState<SettingsMap>({});
-  const [cmsPage, setCmsPage] = useState<string>("homepage");
-  const [richTextContent, setRichTextContent] = useState<string>("");
-  const [richTextLoading, setRichTextLoading] = useState(false);
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  
+  // Pages Manager States
+  const [editingPagePath, setEditingPagePath] = useState<string | null>(null);
+  const [pagesManagerSearch, setPagesManagerSearch] = useState("");
+  const [pageEditSettings, setPageEditSettings] = useState<any>(null);
+  const [pageEditContent, setPageEditContent] = useState("");
+  const [pageEditSaving, setPageEditSaving] = useState(false);
+  const [pageEditToast, setPageEditToast] = useState<{ type: "success" | "error"; msg: string } | null>(null);
   
   // Page SEO & Hero Configuration States
   const [selectedPagePath, setSelectedPagePath] = useState("/");
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
+
+  // Page Searchable Dropdown States
+  const [isPageDropdownOpen, setIsPageDropdownOpen] = useState(false);
+  const [pageSearchQuery, setPageSearchQuery] = useState("");
+  const pageDropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (pageDropdownRef.current && !pageDropdownRef.current.contains(event.target as Node)) {
+        setIsPageDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const pagesList = [
+    { value: "/", label: "Homepage (/) [Multi-slide]" },
+    { value: "/nepali-mortgage-broker-in-australia", label: "Nepali Broker Page (/nepali-mortgage-broker-in-australia)" },
+    { value: "/home-loan-for-nurses", label: "Home Loan for Nurses (/home-loan-for-nurses)" },
+    { value: "/home-loan-for-doctors", label: "Home Loan for Doctors (/home-loan-for-doctors)" },
+    { value: "/home-loan-for-accountants", label: "Home Loan for Accountants (/home-loan-for-accountants)" },
+    { value: "/home-guarantee-scheme", label: "Home Guarantee Scheme (/home-guarantee-scheme)" },
+    { value: "/no-deposit-home-loans-in-australia", label: "No Deposit Home Loans (/no-deposit-home-loans-in-australia)" },
+    { value: "/home-loan-with-visas", label: "Visa & Non-Resident Home Loans (/home-loan-with-visas)" },
+    { value: "/non-resident-home-loans", label: "Non-Resident Home Loans (Legacy) (/non-resident-home-loans)" },
+    { value: "/refinancing-a-loan", label: "Refinancing a Loan (/refinancing-a-loan)" },
+    { value: "/self-employed-home-loans", label: "Self-Employed Home Loans (/self-employed-home-loans)" },
+    { value: "/investing-in-property-nepali-mortgage-broker", label: "Investing in Property (/investing-in-property-nepali-mortgage-broker)" },
+    { value: "/loan-repayment-calculator", label: "Loan Repayment Calculator (/loan-repayment-calculator)" },
+    { value: "/loan-comparison-calculator", label: "Loan Comparison Calculator (/loan-comparison-calculator)" },
+    { value: "/rent-yield-calculators", label: "Rent Yield Calculator (/rent-yield-calculators)" },
+    { value: "/equity-calculator", label: "Equity Calculator (/equity-calculator)" },
+    { value: "/stamp-duty-calculator", label: "ACT Stamp Duty Calculator (/stamp-duty-calculator)" },
+    { value: "/stamp-duty-calculator/stamp-duty-calculator", label: "ACT Stamp Duty Calculator (Duplicate) (/stamp-duty-calculator/stamp-duty-calculator)" },
+    { value: "/stamp-duty-calculator/stamp-duty-in-nsw", label: "NSW Stamp Duty Calculator (/stamp-duty-calculator/stamp-duty-in-nsw)" },
+    { value: "/deposit-calculator", label: "Deposit Calculator (/deposit-calculator)" },
+    { value: "/extra-repayment-calculator", label: "Extra Repayment Calculator (/extra-repayment-calculator)" },
+    { value: "/lmi-calculator", label: "LMI Calculator (/lmi-calculator)" },
+    { value: "/cash-rate-change-calculator", label: "Cash Rate Change Calculator (/cash-rate-change-calculator)" },
+    { value: "/ytd-calculator", label: "YTD Calculator (/ytd-calculator)" },
+    { value: "/branches/adelaide", label: "Adelaide Branch (/branches/adelaide)" },
+    { value: "/branches/brisbane", label: "Brisbane Branch (/branches/brisbane)" },
+    { value: "/branches/melbourne", label: "Melbourne Branch (/branches/melbourne)" },
+    { value: "/branches/perth", label: "Perth Branch (/branches/perth)" },
+    { value: "/branches/sydney", label: "Sydney Branch (/branches/sydney)" },
+    { value: "/about-us-nepali-mortgage-broker-in-australia", label: "About Us Page (/about-us-nepali-mortgage-broker-in-australia)" },
+    { value: "/our-team", label: "Our Team Page (/our-team)" },
+    { value: "/first-home-guide", label: "First Home Guide (/first-home-guide)" },
+    { value: "/free-resources", label: "Free Resources (/free-resources)" }
+  ];
+
+  const filteredPages = pagesList.filter(page =>
+    page.label.toLowerCase().includes(pageSearchQuery.toLowerCase()) ||
+    page.value.toLowerCase().includes(pageSearchQuery.toLowerCase())
+  );
+
+  const selectedPageOption = pagesList.find(p => p.value === selectedPagePath) || { value: selectedPagePath, label: selectedPagePath };
   const [currentPageSettings, setCurrentPageSettings] = useState<any>({
     page_path: "/",
     meta_title: "",
@@ -207,11 +273,13 @@ export default function AdminPage() {
             slides: JSON.stringify(slidesList)
           }));
         } else {
-          // Update primary hero image
+          // Update primary hero image (hero tab)
           setCurrentPageSettings((prev: any) => ({
             ...prev,
             hero_image: data.url
           }));
+          // Also update pages manager edit state if it is open
+          setPageEditSettings((prev: any) => prev ? { ...prev, hero_image: data.url } : prev);
         }
       } else {
         alert(data.error || "Upload failed");
@@ -335,43 +403,56 @@ export default function AdminPage() {
   };
 
   // Action: update settings / hero
-  
-  useEffect(() => {
-    if (cmsPage !== "homepage" && cmsPage !== "aboutus") {
-      setRichTextLoading(true);
-      fetch(`/api/admin/page-content?page_path=${cmsPage}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.content) {
-            setRichTextContent(data.content);
-          } else {
-            setRichTextContent("");
-          }
-        })
-        .finally(() => setRichTextLoading(false));
-    }
-  }, [cmsPage]);
 
-  const handleSaveRichText = async (e: React.FormEvent) => {
+  // Pages Manager: Load page data when editing a page
+  useEffect(() => {
+    if (!editingPagePath) return;
+    // Load page settings
+    fetch(`/api/admin/page-settings?page_path=${encodeURIComponent(editingPagePath)}`)
+      .then(r => r.json())
+      .then(data => {
+        if (data?.pageSettings) setPageEditSettings(data.pageSettings);
+      });
+    // Load page content (intro paragraph)
+    fetch(`/api/admin/page-content?page_path=${encodeURIComponent(editingPagePath)}`)
+      .then(r => r.json())
+      .then(data => {
+        setPageEditContent(data?.content || "");
+      });
+  }, [editingPagePath]);
+
+  // Pages Manager: Save all edits for a page
+  const handleSavePageEdit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSaveLoading(true);
+    if (!editingPagePath || !pageEditSettings) return;
+    setPageEditSaving(true);
+    setPageEditToast(null);
     try {
-      const res = await fetch("/api/admin/page-content", {
+      // Save SEO + Hero settings
+      const settingsRes = await fetch("/api/admin/page-settings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ page_path: cmsPage, content: richTextContent })
+        body: JSON.stringify({ ...pageEditSettings, page_path: editingPagePath })
       });
-      if (res.ok) {
-        alert("Page content saved successfully!");
+      // Save intro paragraph content
+      const contentRes = await fetch("/api/admin/page-content", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ page_path: editingPagePath, content: pageEditContent })
+      });
+      if (settingsRes.ok && contentRes.ok) {
+        setPageEditToast({ type: "success", msg: "Page saved successfully! Changes are now live." });
+        setTimeout(() => setPageEditToast(null), 4000);
       } else {
-        alert("Failed to save page content.");
+        setPageEditToast({ type: "error", msg: "Some settings could not be saved. Please try again." });
       }
     } catch {
-      alert("Error saving page content.");
+      setPageEditToast({ type: "error", msg: "Error saving page settings. Check your connection." });
     } finally {
-      setSaveLoading(false);
+      setPageEditSaving(false);
     }
   };
+
 
   const handleSaveSettings = async (e: React.FormEvent, keysToSave: string[]) => {
     e.preventDefault();
@@ -821,16 +902,16 @@ export default function AdminPage() {
           </button>
 
           <button
-            onClick={() => setActiveTab("content_cms")}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all ${
-              activeTab === "content_cms"
-                ? "bg-blue-600/10 text-blue-400 shadow-[inset_4px_0_0_0_#3b82f6] border border-blue-500/10"
-                : "text-slate-400 hover:bg-white/5 hover:text-slate-200 border border-transparent"
+            onClick={() => { setActiveTab("pages_manager"); setEditingPagePath(null); }}
+            className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+              activeTab === "pages_manager"
+                ? "bg-blue-50 text-blue-700 shadow-sm border border-blue-100/50"
+                : "text-slate-500 hover:bg-slate-50 hover:text-slate-800 border border-transparent"
             }`}
             style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
           >
-            <LayoutDashboard className="w-4 h-4" />
-            <span>Content CMS</span>
+            <Globe className="w-4 h-4" />
+            <span>Pages Manager</span>
           </button>
 
 
@@ -890,7 +971,7 @@ export default function AdminPage() {
             </button>
             <div>
               <h1 className="text-slate-900 text-xl md:text-2xl font-bold tracking-tight capitalize animate-fade-in" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                {activeTab === "hero" ? "Hero Banner Settings" : activeTab === "content_cms" ? "Page Content CMS" : `${activeTab} Management`}
+                {activeTab === "hero" ? "Hero Banner Settings" : activeTab === "pages_manager" ? (editingPagePath ? `Editing: ${editingPagePath}` : "Pages Manager") : `${activeTab.replace("_", " ")} Management`}
               </h1>
               <p className="text-slate-500 text-[11px] md:text-xs font-medium mt-0.5">Manage live records, tweak text displays, and monitor customer inputs.</p>
             </div>
@@ -1334,309 +1415,320 @@ export default function AdminPage() {
             </form>
           )}
 
-          
-          {/* ── TAB: CONTENT CMS ── */}
-          {activeTab === "content_cms" && (
-            <div className="bg-white border border-slate-200/50 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-xl p-6 md:p-8 max-w-4xl">
-              <div className="mb-8 pb-6 border-b border-slate-100">
-                <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">Select Page Content to Edit</label>
-                <select
-                  value={cmsPage}
-                  onChange={e => setCmsPage(e.target.value)}
-                  className="w-full sm:w-1/2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/20"
-                >
-                  <option value="homepage">Homepage (Static Form)</option>
-                  <option value="aboutus">About Us (Static Form)</option>
-                  <optgroup label="Rich Text Pages">
-                    <option value="/borrowing-power-calculator">Borrowing Power Calculator</option>
-                    <option value="/home-loan-for-doctors">Home Loan for Doctors</option>
-                    <option value="/refinancing-a-loan">Refinancing a Loan</option>
-                    <option value="/first-home-guide">First Home Guide</option>
-                    <option value="/investing-in-property-nepali-mortgage-broker">Investing in Property</option>
-                    <option value="/self-employed-home-loans">Self-Employed Home Loans</option>
-                    <option value="/branches/sydney">Sydney Branch</option>
-                    <option value="/branches/melbourne">Melbourne Branch</option>
-                  </optgroup>
-                </select>
+
+          {/* ── TAB: PAGES MANAGER ── */}
+          {activeTab === "pages_manager" && (
+            <div className="flex gap-6 max-w-7xl" style={{ minHeight: "calc(100vh - 160px)" }}>
+              
+              {/* LEFT PANEL: Page List */}
+              <div className={`${editingPagePath ? "hidden lg:flex lg:flex-col" : "flex flex-col"} w-full lg:w-[380px] shrink-0`}>
+                
+                {/* Search */}
+                <div className="bg-white border border-slate-200/70 rounded-2xl p-4 shadow-sm mb-4">
+                  <div className="relative">
+                    <Globe className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <input
+                      type="text"
+                      value={pagesManagerSearch}
+                      onChange={e => setPagesManagerSearch(e.target.value)}
+                      placeholder="Search pages..."
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                    />
+                  </div>
+                </div>
+
+                {/* Pages List */}
+                <div className="bg-white border border-slate-200/70 rounded-2xl shadow-sm overflow-hidden flex-1">
+                  <div className="p-3 border-b border-slate-100 flex items-center justify-between">
+                    <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">All Pages ({pagesList.filter(p => p.label.toLowerCase().includes(pagesManagerSearch.toLowerCase()) || p.value.toLowerCase().includes(pagesManagerSearch.toLowerCase())).length})</span>
+                  </div>
+                  <div className="divide-y divide-slate-50 overflow-y-auto" style={{ maxHeight: "calc(100vh - 280px)" }}>
+                    {pagesList
+                      .filter(p => p.label.toLowerCase().includes(pagesManagerSearch.toLowerCase()) || p.value.toLowerCase().includes(pagesManagerSearch.toLowerCase()))
+                      .map(page => (
+                        <div
+                          key={page.value}
+                          className={`flex items-center justify-between gap-3 px-4 py-3.5 hover:bg-slate-50/80 transition-all cursor-pointer group ${editingPagePath === page.value ? "bg-blue-50/60 border-l-2 border-blue-600" : ""}`}
+                          onClick={() => { setEditingPagePath(page.value); setPageEditSettings(null); setPageEditContent(""); }}
+                        >
+                          <div className="min-w-0 flex-1">
+                            <div className="text-[11px] font-bold text-slate-800 truncate">{page.label.split(" (/")[0]}</div>
+                            <div className="text-[9.5px] text-slate-400 font-mono truncate mt-0.5">{page.value}</div>
+                          </div>
+                          <div className="flex items-center gap-1.5 shrink-0">
+                            <a
+                              href={page.value === "/" ? "/" : page.value}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={e => e.stopPropagation()}
+                              className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all opacity-0 group-hover:opacity-100"
+                              title="View page"
+                            >
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); setEditingPagePath(page.value); setPageEditSettings(null); setPageEditContent(""); }}
+                              className="px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 text-[10px] font-extrabold rounded-lg transition-all"
+                            >
+                              Edit
+                            </button>
+                          </div>
+                        </div>
+                      ))
+                    }
+                  </div>
+                </div>
               </div>
 
-              {cmsPage === "homepage" && (
-                <form onSubmit={(e) => {
-                   e.preventDefault();
-                   handleSaveSettings(e, ["homepage_content"]);
-                }} className="space-y-8">
-                  <div className="space-y-4">
-                    <h3 className="text-slate-900 text-sm font-bold tracking-tight pb-2 border-b border-slate-100 flex items-center gap-2">
-                      <Globe className="w-4 h-4 text-blue-600" />
-                      <span>Smart Tools & Process Section</span>
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                      {[
-                        { key: 'tools_badge', label: 'Tools Badge', default: 'Smart Tools' },
-                        { key: 'tools_title', label: 'Tools Title', default: 'Powerful Tools. Smarter Decisions.' },
-                        { key: 'tools_desc', label: 'Tools Description', default: 'Use our easy-to-use tools and calculators to explore your options, estimate costs and plan your next move with confidence.' },
-                        { key: 'tools_btn_text', label: 'Tools Button Text', default: 'Explore All Tools' },
-                        { key: 'process_badge', label: 'Process Badge', default: 'Our Simple Process' },
-                        { key: 'process_title', label: 'Process Title', default: 'A Clear Process. Every Step of the Way.' }
-                      ].map(f => {
-                        const contentObj = settings.homepage_content ? JSON.parse(settings.homepage_content) : {};
-                        return (
-                          <div key={f.key} className={f.key === 'tools_desc' ? "md:col-span-2" : ""}>
-                            <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">{f.label}</label>
-                            {f.key.includes('desc') ? (
-                              <textarea
-                                rows={3}
-                                value={contentObj[f.key] !== undefined ? contentObj[f.key] : f.default}
-                                onChange={e => {
-                                  const newObj = { ...contentObj, [f.key]: e.target.value };
-                                  setSettings(prev => ({ ...prev, homepage_content: JSON.stringify(newObj) }));
-                                }}
-                                className="w-full bg-slate-50/50 border border-slate-200/60 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] focus:bg-white rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 transition-all"
-                              />
-                            ) : (
-                              <input
-                                type="text"
-                                value={contentObj[f.key] !== undefined ? contentObj[f.key] : f.default}
-                                onChange={e => {
-                                  const newObj = { ...contentObj, [f.key]: e.target.value };
-                                  setSettings(prev => ({ ...prev, homepage_content: JSON.stringify(newObj) }));
-                                }}
-                                className="w-full bg-slate-50/50 border border-slate-200/60 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] focus:bg-white rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 transition-all"
-                              />
-                            )}
-                          </div>
-                        )
-                      })}
+              {/* RIGHT PANEL: Edit Form */}
+              {editingPagePath ? (
+                <div className="flex-1 min-w-0">
+                  
+                  {/* Edit Panel Header */}
+                  <div className="bg-white border border-slate-200/70 rounded-2xl p-4 shadow-sm mb-4 flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <button
+                        onClick={() => setEditingPagePath(null)}
+                        className="p-2 hover:bg-slate-100 rounded-xl transition-all text-slate-500 hover:text-slate-800 shrink-0 lg:hidden"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                      <div className="min-w-0">
+                        <div className="text-xs font-extrabold text-slate-800 truncate">{pagesList.find(p => p.value === editingPagePath)?.label.split(" (/")[0] || editingPagePath}</div>
+                        <div className="text-[9.5px] text-slate-400 font-mono truncate">{editingPagePath}</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <a
+                        href={editingPagePath}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 px-3 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-600 text-[10px] font-bold rounded-xl transition-all"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                        Preview
+                      </a>
                     </div>
                   </div>
 
-                  <div className="space-y-4 pt-4 border-t border-slate-100">
-                    <h3 className="text-slate-900 text-sm font-bold tracking-tight pb-2 border-b border-slate-100 flex items-center gap-2">
-                      <Globe className="w-4 h-4 text-blue-600" />
-                      <span>Success Stories Section</span>
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                      {[
-                        { key: 'stories_badge', label: 'Stories Badge', default: 'Real Stories. Real Impact.' },
-                        { key: 'stories_title', label: 'Stories Title', default: 'Real Australians. Real Outcomes.' },
-                        { key: 'stories_desc', label: 'Stories Description', default: 'Behind every home loan is a life goal. We\'re here to make the journey simpler, the decisions clearer and the outcomes stronger.' },
-                        { key: 'stories_btn_text', label: 'Stories Button Text', default: 'View More Success Stories' }
-                      ].map(f => {
-                        const contentObj = settings.homepage_content ? JSON.parse(settings.homepage_content) : {};
-                        return (
-                          <div key={f.key} className={f.key === 'stories_desc' ? "md:col-span-2" : ""}>
-                            <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">{f.label}</label>
-                            {f.key.includes('desc') ? (
-                              <textarea
-                                rows={3}
-                                value={contentObj[f.key] !== undefined ? contentObj[f.key] : f.default}
-                                onChange={e => {
-                                  const newObj = { ...contentObj, [f.key]: e.target.value };
-                                  setSettings(prev => ({ ...prev, homepage_content: JSON.stringify(newObj) }));
-                                }}
-                                className="w-full bg-slate-50/50 border border-slate-200/60 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] focus:bg-white rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 transition-all"
-                              />
-                            ) : (
+                  {/* Edit Form */}
+                  {pageEditSettings === null ? (
+                    <div className="bg-white border border-slate-200/70 rounded-2xl p-12 shadow-sm flex items-center justify-center">
+                      <div className="text-center space-y-2">
+                        <div className="w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto" />
+                        <p className="text-slate-500 text-xs font-medium">Loading page configuration...</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleSavePageEdit} className="space-y-4">
+                      
+                      {/* SEO Metadata Card */}
+                      <div className="bg-white border border-slate-200/70 rounded-2xl p-6 shadow-sm space-y-4">
+                        <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+                          <Globe className="w-4 h-4 text-blue-600 shrink-0" />
+                          <h2 className="text-sm font-extrabold text-slate-800 tracking-tight uppercase" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>SEO Metadata</h2>
+                        </div>
+                        
+                        <div>
+                          <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-1.5">Page Title (Meta Title)</label>
+                          <input
+                            type="text"
+                            value={pageEditSettings.meta_title || ""}
+                            onChange={e => setPageEditSettings((prev: any) => ({ ...prev, meta_title: e.target.value }))}
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                            placeholder="Page Title | Mortgage Xperts"
+                          />
+                          <p className="text-[9px] text-slate-400 mt-1">{(pageEditSettings.meta_title || "").length}/70 chars recommended</p>
+                        </div>
+                        
+                        <div>
+                          <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-1.5">Meta Description</label>
+                          <textarea
+                            rows={2}
+                            value={pageEditSettings.meta_description || ""}
+                            onChange={e => setPageEditSettings((prev: any) => ({ ...prev, meta_description: e.target.value }))}
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all leading-relaxed"
+                            placeholder="Brief description for search engines..."
+                          />
+                          <p className="text-[9px] text-slate-400 mt-1">{(pageEditSettings.meta_description || "").length}/160 chars recommended</p>
+                        </div>
+                        
+                        <div>
+                          <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-1.5">Keywords (comma-separated)</label>
+                          <input
+                            type="text"
+                            value={pageEditSettings.meta_keywords || ""}
+                            onChange={e => setPageEditSettings((prev: any) => ({ ...prev, meta_keywords: e.target.value }))}
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                            placeholder="keyword one, keyword two, keyword three"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Hero Section Card */}
+                      <div className="bg-white border border-slate-200/70 rounded-2xl p-6 shadow-sm space-y-4">
+                        <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+                          <Home className="w-4 h-4 text-violet-600 shrink-0" />
+                          <h2 className="text-sm font-extrabold text-slate-800 tracking-tight uppercase" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>Hero Section</h2>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-1.5">Badge Text</label>
+                            <input
+                              type="text"
+                              value={pageEditSettings.hero_badge || ""}
+                              onChange={e => setPageEditSettings((prev: any) => ({ ...prev, hero_badge: e.target.value }))}
+                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                              placeholder="e.g. First Home Buyer Specialists"
+                            />
+                          </div>
+                          
+                          <div>
+                            <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-1.5">Hero Background Image URL</label>
+                            <div className="flex gap-2">
                               <input
                                 type="text"
-                                value={contentObj[f.key] !== undefined ? contentObj[f.key] : f.default}
-                                onChange={e => {
-                                  const newObj = { ...contentObj, [f.key]: e.target.value };
-                                  setSettings(prev => ({ ...prev, homepage_content: JSON.stringify(newObj) }));
-                                }}
-                                className="w-full bg-slate-50/50 border border-slate-200/60 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] focus:bg-white rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 transition-all"
+                                value={pageEditSettings.hero_image || ""}
+                                onChange={e => setPageEditSettings((prev: any) => ({ ...prev, hero_image: e.target.value }))}
+                                className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                                placeholder="/images/hero.png"
                               />
-                            )}
+                              <label className="bg-slate-100 hover:bg-slate-200 border border-slate-200 cursor-pointer text-slate-700 text-[10px] font-bold px-3 py-2.5 rounded-xl transition-all shrink-0">
+                                Upload
+                                <input type="file" accept="image/*" onChange={e => handlePageHeroImageUpload(e)} className="hidden" />
+                              </label>
+                            </div>
                           </div>
-                        )
-                      })}
-                    </div>
-                  </div>
-
-                  <div className="space-y-4 pt-4 border-t border-slate-100">
-                    <h3 className="text-slate-900 text-sm font-bold tracking-tight pb-2 border-b border-slate-100 flex items-center gap-2">
-                      <Globe className="w-4 h-4 text-blue-600" />
-                      <span>FAQ & CTA Section</span>
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                      {[
-                        { key: 'faq_badge', label: 'FAQ Badge', default: 'FAQs' },
-                        { key: 'faq_title', label: 'FAQ Title', default: 'Questions, Answered Clearly.' },
-                        { key: 'faq_desc', label: 'FAQ Description', default: 'Find quick answers to the most common questions about home loans, refinancing and property finance — all in one place.' },
-                        { key: 'cta_title', label: 'CTA Title', default: 'Your home goals are unique. Your journey should be too.' },
-                        { key: 'cta_desc', label: 'CTA Description', default: 'Whether you\'re buying, refinancing or investing, we\'re here to guide you every step of the way.' },
-                        { key: 'cta_btn_text', label: 'CTA Button Text', default: 'Let\'s Talk About Your Goals' }
-                      ].map(f => {
-                        const contentObj = settings.homepage_content ? JSON.parse(settings.homepage_content) : {};
-                        return (
-                          <div key={f.key} className={f.key.includes('desc') ? "md:col-span-2" : ""}>
-                            <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">{f.label}</label>
-                            {f.key.includes('desc') ? (
-                              <textarea
-                                rows={3}
-                                value={contentObj[f.key] !== undefined ? contentObj[f.key] : f.default}
-                                onChange={e => {
-                                  const newObj = { ...contentObj, [f.key]: e.target.value };
-                                  setSettings(prev => ({ ...prev, homepage_content: JSON.stringify(newObj) }));
-                                }}
-                                className="w-full bg-slate-50/50 border border-slate-200/60 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] focus:bg-white rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 transition-all"
-                              />
-                            ) : (
-                              <input
-                                type="text"
-                                value={contentObj[f.key] !== undefined ? contentObj[f.key] : f.default}
-                                onChange={e => {
-                                  const newObj = { ...contentObj, [f.key]: e.target.value };
-                                  setSettings(prev => ({ ...prev, homepage_content: JSON.stringify(newObj) }));
-                                }}
-                                className="w-full bg-slate-50/50 border border-slate-200/60 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] focus:bg-white rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 transition-all"
-                              />
-                            )}
+                        </div>
+                        
+                        <div className="md:col-span-2">
+                          <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-1.5">Hero Headline</label>
+                          <input
+                            type="text"
+                            value={pageEditSettings.hero_title || ""}
+                            onChange={e => setPageEditSettings((prev: any) => ({ ...prev, hero_title: e.target.value }))}
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                            placeholder="Main hero headline..."
+                          />
+                        </div>
+                        
+                        <div>
+                          <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-1.5">Hero Subtext</label>
+                          <textarea
+                            rows={2}
+                            value={pageEditSettings.hero_subtext || ""}
+                            onChange={e => setPageEditSettings((prev: any) => ({ ...prev, hero_subtext: e.target.value }))}
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all leading-relaxed"
+                            placeholder="Supporting subtext below the headline..."
+                          />
+                        </div>
+                        
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block">Primary Button</label>
+                            <input
+                              type="text"
+                              value={pageEditSettings.hero_btn1_text || ""}
+                              onChange={e => setPageEditSettings((prev: any) => ({ ...prev, hero_btn1_text: e.target.value }))}
+                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                              placeholder="Button text"
+                            />
+                            <input
+                              type="text"
+                              value={pageEditSettings.hero_btn1_link || ""}
+                              onChange={e => setPageEditSettings((prev: any) => ({ ...prev, hero_btn1_link: e.target.value }))}
+                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                              placeholder="Link or #anchor"
+                            />
                           </div>
-                        )
-                      })}
-                    </div>
-                  </div>
-
-                  <div className="pt-4 border-t border-slate-100 flex justify-end">
-                    <button
-                      type="submit"
-                      disabled={saveLoading}
-                      className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-extrabold shadow-lg shadow-blue-500/20 px-6 py-3 rounded-xl transition-all disabled:opacity-50"
-                    >
-                      {saveLoading ? "Saving..." : "Save Homepage Content"}
-                    </button>
-                  </div>
-                </form>
-              )}
-
-              {cmsPage === "aboutus" && (
-                <form onSubmit={(e) => {
-                   e.preventDefault();
-                   handleSaveSettings(e, ["aboutus_content"]);
-                }} className="space-y-8">
-                  <div className="space-y-4">
-                    <h3 className="text-slate-900 text-sm font-bold tracking-tight pb-2 border-b border-slate-100 flex items-center gap-2">
-                      <Globe className="w-4 h-4 text-blue-600" />
-                      <span>About Us - Section 1</span>
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                      {[
-                        { key: 'sec1_badge', label: 'Image Overlay Title', default: 'Trusted Advice' },
-                        { key: 'sec1_badge_desc', label: 'Image Overlay Text', default: 'We are fully licensed and compliant, acting in your best interest always.' },
-                        { key: 'sec1_approach_badge', label: 'Subheading Badge', default: 'Our Approach' },
-                        { key: 'sec1_title', label: 'Main Title', default: 'Making your property journey straightforward.' },
-                        { key: 'sec1_p1', label: 'Paragraph 1', default: 'At Mortgage Xperts, we understand that entering the property market can feel overwhelming. Whether you\'re buying your first home or expanding your investment portfolio, we\'re here to guide you through every step with clear, honest advice and practical support.' },
-                        { key: 'sec1_p2', label: 'Paragraph 2', default: 'Our goal is to make the home loan process as straightforward as possible. We take the time to understand your unique situation, explain your options in plain language, and coordinate with lenders so you don\'t have to worry about the details.' }
-                      ].map(f => {
-                        const contentObj = settings.aboutus_content ? JSON.parse(settings.aboutus_content) : {};
-                        return (
-                          <div key={f.key} className={f.key.includes('p') || f.key.includes('desc') ? "md:col-span-2" : ""}>
-                            <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">{f.label}</label>
-                            {f.key.includes('p') || f.key.includes('desc') ? (
-                              <textarea
-                                rows={3}
-                                value={contentObj[f.key] !== undefined ? contentObj[f.key] : f.default}
-                                onChange={e => {
-                                  const newObj = { ...contentObj, [f.key]: e.target.value };
-                                  setSettings(prev => ({ ...prev, aboutus_content: JSON.stringify(newObj) }));
-                                }}
-                                className="w-full bg-slate-50/50 border border-slate-200/60 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] focus:bg-white rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 transition-all"
-                              />
-                            ) : (
-                              <input
-                                type="text"
-                                value={contentObj[f.key] !== undefined ? contentObj[f.key] : f.default}
-                                onChange={e => {
-                                  const newObj = { ...contentObj, [f.key]: e.target.value };
-                                  setSettings(prev => ({ ...prev, aboutus_content: JSON.stringify(newObj) }));
-                                }}
-                                className="w-full bg-slate-50/50 border border-slate-200/60 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] focus:bg-white rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 transition-all"
-                              />
-                            )}
+                          <div className="space-y-2">
+                            <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block">Secondary Button</label>
+                            <input
+                              type="text"
+                              value={pageEditSettings.hero_btn2_text || ""}
+                              onChange={e => setPageEditSettings((prev: any) => ({ ...prev, hero_btn2_text: e.target.value }))}
+                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                              placeholder="Button text"
+                            />
+                            <input
+                              type="text"
+                              value={pageEditSettings.hero_btn2_link || ""}
+                              onChange={e => setPageEditSettings((prev: any) => ({ ...prev, hero_btn2_link: e.target.value }))}
+                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                              placeholder="Link or #anchor"
+                            />
                           </div>
-                        )
-                      })}
-                    </div>
-                  </div>
+                        </div>
+                      </div>
 
-                  <div className="space-y-4 pt-4 border-t border-slate-100">
-                    <h3 className="text-slate-900 text-sm font-bold tracking-tight pb-2 border-b border-slate-100 flex items-center gap-2">
-                      <Globe className="w-4 h-4 text-blue-600" />
-                      <span>About Us - Section 2</span>
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                      {[
-                        { key: 'sec2_badge', label: 'Subheading Badge', default: 'Your Lifelong Partner' },
-                        { key: 'sec2_title', label: 'Main Title', default: 'Tailored solutions for your unique situation.' },
-                        { key: 'sec2_p1', label: 'Paragraph 1', default: 'Whether you\'re buying your first home, adding a third investment property, consolidating debt, refinancing for a better rate, or accessing the equity in your property for any purpose, we make the process straightforward and manageable.' }
-                      ].map(f => {
-                        const contentObj = settings.aboutus_content ? JSON.parse(settings.aboutus_content) : {};
-                        return (
-                          <div key={f.key} className={f.key.includes('p') ? "md:col-span-2" : ""}>
-                            <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">{f.label}</label>
-                            {f.key.includes('p') ? (
-                              <textarea
-                                rows={3}
-                                value={contentObj[f.key] !== undefined ? contentObj[f.key] : f.default}
-                                onChange={e => {
-                                  const newObj = { ...contentObj, [f.key]: e.target.value };
-                                  setSettings(prev => ({ ...prev, aboutus_content: JSON.stringify(newObj) }));
-                                }}
-                                className="w-full bg-slate-50/50 border border-slate-200/60 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] focus:bg-white rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 transition-all"
-                              />
-                            ) : (
-                              <input
-                                type="text"
-                                value={contentObj[f.key] !== undefined ? contentObj[f.key] : f.default}
-                                onChange={e => {
-                                  const newObj = { ...contentObj, [f.key]: e.target.value };
-                                  setSettings(prev => ({ ...prev, aboutus_content: JSON.stringify(newObj) }));
-                                }}
-                                className="w-full bg-slate-50/50 border border-slate-200/60 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] focus:bg-white rounded-xl px-4 py-2.5 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 transition-all"
-                              />
-                            )}
+                      {/* Page Intro Paragraph Card */}
+                      <div className="bg-white border border-slate-200/70 rounded-2xl p-6 shadow-sm space-y-4">
+                        <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+                          <FileText className="w-4 h-4 text-emerald-600 shrink-0" />
+                          <div>
+                            <h2 className="text-sm font-extrabold text-slate-800 tracking-tight uppercase" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>Page Intro Paragraph</h2>
+                            <p className="text-[9.5px] text-slate-400 font-medium mt-0.5">This paragraph appears as a custom content block on the page, giving you full control over the intro text shown to visitors.</p>
                           </div>
-                        )
-                      })}
+                        </div>
+                        <textarea
+                          rows={5}
+                          value={pageEditContent}
+                          onChange={e => setPageEditContent(e.target.value)}
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-xs font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all leading-relaxed"
+                          placeholder="Enter an intro paragraph for this page. This will be displayed in the page's intro/overview section..."
+                        />
+                        <p className="text-[9px] text-slate-400">Supports plain text. Keep it concise and informative (2–4 sentences recommended).</p>
+                      </div>
+                      
+                      {/* Toast Notification */}
+                      {pageEditToast && (
+                        <div className={`flex items-center gap-3 rounded-xl px-4 py-3 text-xs font-bold border ${
+                          pageEditToast.type === "success"
+                            ? "bg-emerald-50 border-emerald-200 text-emerald-800"
+                            : "bg-red-50 border-red-200 text-red-800"
+                        }`}>
+                          {pageEditToast.type === "success"
+                            ? <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+                            : <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
+                          }
+                          {pageEditToast.msg}
+                        </div>
+                      )}
+
+                      {/* Save Actions */}
+                      <div className="bg-white border border-slate-200/70 rounded-2xl p-4 shadow-sm flex items-center justify-between gap-3">
+                        <button
+                          type="button"
+                          onClick={() => setEditingPagePath(null)}
+                          className="flex items-center gap-2 text-slate-500 hover:text-slate-800 text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-slate-100 transition-all"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          disabled={pageEditSaving}
+                          className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-extrabold px-6 py-2.5 rounded-xl transition-all shadow-md shadow-blue-500/20 disabled:opacity-50 hover:scale-[1.02] active:scale-[0.98]"
+                        >
+                          <Check className="w-3.5 h-3.5" />
+                          {pageEditSaving ? "Saving..." : "Save All Changes"}
+                        </button>
+                      </div>
+                    </form>
+                  )}
+                </div>
+              ) : (
+                /* Empty state when no page is selected */
+                <div className="flex-1 bg-white border border-slate-200/70 rounded-2xl shadow-sm flex items-center justify-center p-12">
+                  <div className="text-center space-y-3 max-w-xs">
+                    <div className="w-16 h-16 mx-auto bg-blue-50 rounded-2xl flex items-center justify-center">
+                      <Globe className="w-8 h-8 text-blue-400" />
                     </div>
+                    <h3 className="text-slate-800 font-extrabold text-sm" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>Select a Page to Edit</h3>
+                    <p className="text-slate-400 text-xs leading-relaxed">Choose any page from the left panel to edit its SEO metadata, hero section content, and intro paragraph.</p>
                   </div>
-
-                  <div className="pt-4 border-t border-slate-100 flex justify-end">
-                    <button
-                      type="submit"
-                      disabled={saveLoading}
-                      className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-extrabold shadow-lg shadow-blue-500/20 px-6 py-3 rounded-xl transition-all disabled:opacity-50"
-                    >
-                      {saveLoading ? "Saving..." : "Save About Us Content"}
-                    </button>
-                  </div>
-                </form>
-              )}
-
-              {cmsPage !== "homepage" && cmsPage !== "aboutus" && (
-                <form onSubmit={handleSaveRichText} className="space-y-6">
-                  <div className="space-y-4">
-                    <h3 className="text-slate-900 text-sm font-bold tracking-tight pb-2 border-b border-slate-100 flex items-center gap-2">
-                      <Globe className="w-4 h-4 text-blue-600" />
-                      <span>Rich Text Editor - {cmsPage}</span>
-                    </h3>
-                    {richTextLoading ? (
-                      <div className="h-64 flex items-center justify-center bg-slate-50 border border-slate-200 rounded-xl text-slate-400">Loading Content...</div>
-                    ) : (
-                      <RichTextEditor value={richTextContent} onChange={setRichTextContent} />
-                    )}
-                  </div>
-                  <div className="pt-4 border-t border-slate-100 flex justify-end">
-                    <button
-                      type="submit"
-                      disabled={saveLoading || richTextLoading}
-                      className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs font-extrabold shadow-lg shadow-blue-500/20 px-6 py-3 rounded-xl transition-all disabled:opacity-50"
-                    >
-                      {saveLoading ? "Saving..." : "Save Page Content"}
-                    </button>
-                  </div>
-                </form>
+                </div>
               )}
             </div>
           )}
@@ -1650,35 +1742,63 @@ export default function AdminPage() {
               <div className="bg-white border border-slate-200/70 rounded-2xl p-4.5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
                 <div className="space-y-1">
                   <label className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest block">Select Page to Configure</label>
-                  <select
-                    value={selectedPagePath}
-                    onChange={(e) => {
-                      setSelectedPagePath(e.target.value);
-                      setActiveSlideIndex(0);
-                    }}
-                    className="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-slate-800 text-xs font-bold focus:outline-none focus:border-blue-500 cursor-pointer min-w-[280px]"
-                  >
-                    <option value="/">Homepage (/) [Multi-slide]</option>
-                    <option value="/nepali-mortgage-broker-in-australia">Nepali Broker Page (/nepali-mortgage-broker-in-australia)</option>
-                    <option value="/home-loan-for-nurses">Home Loan for Nurses (/home-loan-for-nurses)</option>
-                    <option value="/home-loan-for-doctors">Home Loan for Doctors (/home-loan-for-doctors)</option>
-                    <option value="/home-loan-for-accountants">Home Loan for Accountants (/home-loan-for-accountants)</option>
-                    <option value="/home-guarantee-scheme">Home Guarantee Scheme (/home-guarantee-scheme)</option>
-                    <option value="/no-deposit-home-loans-in-australia">No Deposit Home Loans (/no-deposit-home-loans-in-australia)</option>
-                    <option value="/home-loan-with-visas">Visa & Non-Resident Home Loans (/home-loan-with-visas)</option>
-                    <option value="/refinancing-a-loan">Refinancing a Loan (/refinancing-a-loan)</option>
-                    <option value="/self-employed-home-loans">Self-Employed Home Loans (/self-employed-home-loans)</option>
-                    <option value="/investing-in-property-nepali-mortgage-broker">Investing in Property (/investing-in-property-nepali-mortgage-broker)</option>
-                    <option value="/loan-repayment-calculator">Loan Repayment Calculator (/loan-repayment-calculator)</option>
-                    <option value="/loan-comparison-calculator">Loan Comparison Calculator (/loan-comparison-calculator)</option>
-                    <option value="/rent-yield-calculators">Rent Yield Calculator (/rent-yield-calculators)</option>
-                    <option value="/equity-calculator">Equity Calculator (/equity-calculator)</option>
-                    <option value="/branches/adelaide">Adelaide Branch (/branches/adelaide)</option>
-                    <option value="/branches/brisbane">Brisbane Branch (/branches/brisbane)</option>
-                    <option value="/branches/melbourne">Melbourne Branch (/branches/melbourne)</option>
-                    <option value="/branches/perth">Perth Branch (/branches/perth)</option>
-                    <option value="/branches/sydney">Sydney Branch (/branches/sydney)</option>
-                  </select>
+                  <div className="relative min-w-[320px] max-w-md" ref={pageDropdownRef}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsPageDropdownOpen(!isPageDropdownOpen);
+                        setPageSearchQuery("");
+                      }}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-slate-800 text-xs font-bold focus:outline-none focus:border-blue-500 cursor-pointer flex items-center justify-between gap-2 shadow-sm"
+                    >
+                      <span className="truncate">{selectedPageOption.label}</span>
+                      <span className="text-slate-400 shrink-0">▼</span>
+                    </button>
+                    {isPageDropdownOpen && (
+                      <div className="absolute left-0 mt-1.5 w-full bg-white border border-slate-200 rounded-xl shadow-xl z-50 overflow-hidden flex flex-col">
+                        <div className="p-2 border-b border-slate-100 bg-slate-50/50">
+                          <input
+                            type="text"
+                            value={pageSearchQuery}
+                            onChange={(e) => setPageSearchQuery(e.target.value)}
+                            placeholder="Search pages..."
+                            className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-800 text-xs font-medium focus:outline-none focus:border-blue-500 shadow-xs"
+                            onClick={(e) => e.stopPropagation()}
+                            autoFocus
+                          />
+                        </div>
+                        <div className="max-h-64 overflow-y-auto divide-y divide-slate-50">
+                          {filteredPages.length > 0 ? (
+                            filteredPages.map((page) => (
+                              <button
+                                key={page.value}
+                                type="button"
+                                onClick={() => {
+                                  setSelectedPagePath(page.value);
+                                  setActiveSlideIndex(0);
+                                  setIsPageDropdownOpen(false);
+                                }}
+                                className={`w-full text-left px-3.5 py-2.5 text-xs font-semibold transition-colors flex items-center justify-between ${
+                                  selectedPagePath === page.value
+                                    ? "bg-blue-50 text-blue-700 font-bold"
+                                    : "text-slate-700 hover:bg-slate-50"
+                                }`}
+                              >
+                                <span className="truncate">{page.label}</span>
+                                {selectedPagePath === page.value && (
+                                  <Check className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                                )}
+                              </button>
+                            ))
+                          ) : (
+                            <div className="px-3.5 py-3 text-slate-400 text-xs text-center italic">
+                              No pages found
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div className="text-right sm:block hidden">
                   <span className="text-[10px] font-extrabold bg-blue-50 border border-blue-100 text-blue-700 rounded-full px-3 py-1 uppercase tracking-wide">

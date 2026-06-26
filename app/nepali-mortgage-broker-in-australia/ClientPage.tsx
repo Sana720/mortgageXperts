@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useOnboardingModal } from "@/app/components/OnboardingModalContext";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Sparkles,
@@ -152,7 +153,9 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings }) {
+export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
+  const { openModal } = useOnboardingModal();
+
   const badgeText = pageHeroSettings?.hero_badge || "First Home Buyer Specialists";
   const titleText = pageHeroSettings?.hero_title || "Your First Home Doesn't Need To Feel Complicated.";
   const subtextText = pageHeroSettings?.hero_subtext || "Securing your first home is a momentous milestone. We match you to the right lender policies, calculate your genuine limits, and unlock stamp duty concessions to make the process completely stress-free.";
@@ -161,6 +164,45 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
   const btn1Link = pageHeroSettings?.hero_btn1_link || "#contact";
   const btn2Text = pageHeroSettings?.hero_btn2_text || "Calculate Borrowing Power";
   const btn2Link = pageHeroSettings?.hero_btn2_link || "#borrowing";
+
+  const handleBtnClick = (e: React.MouseEvent, text: string, link: string) => {
+    const textLower = text.toLowerCase();
+    const isModalTrigger =
+      link === "#contact" ||
+      link === "#callback" ||
+      link === "#onboarding" ||
+      textLower.includes("start") ||
+      textLower.includes("book") ||
+      textLower.includes("call") ||
+      textLower.includes("apply") ||
+      textLower.includes("consult");
+
+    if (isModalTrigger) {
+      e.preventDefault();
+      openModal();
+    } else if (link.startsWith("#")) {
+      e.preventDefault();
+      let targetId = link.substring(1);
+      if (targetId === "calculator" || targetId === "calculator-section" || targetId === "calculator-tool") {
+        targetId = "borrowing";
+      }
+      const element = document.getElementById(targetId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
+
+  const renderBtnIcon = (text: string) => {
+    const t = text.toLowerCase();
+    if (t.includes("calculate") || t.includes("borrowing") || t.includes("power") || t.includes("repayment") || t.includes("yield") || t.includes("equity")) {
+      return <Calculator className="w-4 h-4 text-current transition-colors" />;
+    }
+    if (t.includes("call") || t.includes("consult") || t.includes("talk") || t.includes("chat")) {
+      return <Calendar className="w-4 h-4 text-current transition-colors" />;
+    }
+    return <ArrowRight className="w-4 h-4 text-current transition-colors" />;
+  };
   // ── STATE VARIABLES FOR INTERACTIVE UX ──
   const [activeStep, setActiveStep] = useState(0);
   const [activeNav, setActiveNav] = useState("overview");
@@ -622,19 +664,21 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
 
               {/* CTAs */}
               <motion.div variants={premiumFadeUp} className="flex flex-wrap items-center gap-4">
-                <Link
+                <a
                   href={btn1Link}
-                  className={`inline-flex items-center justify-center gap-2 bg-[#2563EB] hover:bg-[#1d4ed8] text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-blue-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap`}
+                  onClick={(e) => handleBtnClick(e, btn1Text, btn1Link)}
+                  className={`inline-flex items-center justify-center gap-2 bg-[#2563EB] hover:bg-[#1d4ed8] text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-blue-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap cursor-pointer`}
                 >
                   {btn1Text} <ArrowRight className="w-4 h-4" />
-                </Link>
-                <Link
+                </a>
+                <a
                   href={btn2Link}
-                  className={`inline-flex items-center justify-center gap-2 border-2 border-[#2563EB] text-[#2563EB] bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-[#2563EB] hover:text-white group/sec text-center w-full sm:w-auto whitespace-nowrap`}
+                  onClick={(e) => handleBtnClick(e, btn2Text, btn2Link)}
+                  className={`inline-flex items-center justify-center gap-2 border-2 border-[#2563EB] text-[#2563EB] bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-[#2563EB] hover:text-white group/sec text-center w-full sm:w-auto whitespace-nowrap cursor-pointer`}
                 >
-                  <Calculator className="w-4 h-4 text-current transition-colors" />
+                  {renderBtnIcon(btn2Text)}
                   {btn2Text}
-                </Link>
+                </a>
               </motion.div>
 
               {/* Trust Reviews Badge Row */}
@@ -854,7 +898,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
               <motion.div variants={premiumFadeUp} className="w-12 h-[3px] bg-[#2563EB] mb-5 rounded-full" />
 
               <motion.p variants={premiumFadeUp} className="text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed mb-6 font-inter font-normal">
-                For many Australians, buying a first home is a dream that quickly becomes overwhelming. Once you start dealing with complex terms, restrictive lender buffers, and dense regulatory requirements, it is easy to get lost.
+                {pageContent || "For many Australians, buying a first home is a dream that quickly becomes overwhelming. Once you start dealing with complex terms, restrictive lender buffers, and dense regulatory requirements, it is easy to get lost."}
               </motion.p>
 
               <motion.div variants={premiumFadeUp} className="flex items-center gap-2.5 mb-8">

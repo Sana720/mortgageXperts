@@ -1,4 +1,4 @@
-import { executeQuery, migrateHomepageSlideLinks } from '@/lib/db';
+import { executeQuery, migrateHomepageSlideLinks, migrateFirstHomeBuyerLinks, migrateVisaHomeLoanRow } from '@/lib/db';
 import type { Metadata } from 'next';
 
 export type GlobalSettings = Record<string, string>;
@@ -36,6 +36,12 @@ export interface PageData {
 export async function loadPageData(pagePath: string): Promise<PageData> {
   if (pagePath === '/') {
     migrateHomepageSlideLinks().catch(() => {});
+  }
+  if (pagePath === '/nepali-mortgage-broker-in-australia') {
+    migrateFirstHomeBuyerLinks().catch(() => {});
+  }
+  if (pagePath === '/home-loan-with-visas') {
+    migrateVisaHomeLoanRow().catch(() => {});
   }
 
   const settings: GlobalSettings = {};
