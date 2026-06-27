@@ -39,10 +39,11 @@ type Enquiry = {
   name: string;
   email: string;
   phone: string;
-  savings: string | null;
-  income: string | null;
-  state: string | null;
+  savings?: string;
+  income?: string;
+  state?: string;
   status: string;
+  message?: string;
   createdAt: string;
 };
 
@@ -75,7 +76,7 @@ export default function AdminPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState("");
-  const [activeTab, setActiveTab] = useState<"enquiries" | "settings" | "hero" | "blogs" | "testimonials" | "pages_manager">("enquiries");
+  const [activeTab, setActiveTab] = useState<"enquiries" | "settings" | "hero" | "blogs" | "testimonials" | "pages_manager" | "team">("enquiries");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   
   // Data States
@@ -83,6 +84,7 @@ export default function AdminPage() {
   const [settings, setSettings] = useState<SettingsMap>({});
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [teamMembers, setTeamMembers] = useState<any[]>([]);
   
   // Pages Manager States
   const [editingPagePath, setEditingPagePath] = useState<string | null>(null);
@@ -195,6 +197,18 @@ export default function AdminPage() {
     rating: 5,
     content: "",
     avatar: ""
+  });
+
+  const [teamModalOpen, setTeamModalOpen] = useState(false);
+  const [editingTeamMember, setEditingTeamMember] = useState<any | null>(null);
+  const [teamForm, setTeamForm] = useState({
+    name: "",
+    role: "",
+    email: "",
+    phone: "",
+    bio: "",
+    image: "",
+    orderIndex: 0
   });
 
   // Verify auth on mount
@@ -396,6 +410,10 @@ export default function AdminPage() {
         const res = await fetch("/api/admin/testimonials");
         const data = await res.json();
         setTestimonials(Array.isArray(data) ? data : []);
+      } else if (activeTab === "team") {
+        const res = await fetch("/api/admin/team");
+        const data = await res.json();
+        setTeamMembers(Array.isArray(data) ? data : []);
       }
     } catch (err) {
       console.error("Error loading tab content:", err);
@@ -661,6 +679,86 @@ export default function AdminPage() {
       avatar: "/images/aakash_new.png"
     });
     setTestimonialModalOpen(true);
+  };
+
+  const handleSaveTeamMember = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaveLoading(true);
+    const method = editingTeamMember ? "PUT" : "POST";
+    const payload = editingTeamMember ? { ...teamForm, id: editingTeamMember.id } : teamForm;
+
+    try {
+      const res = await fetch("/api/admin/team", {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if (res.ok) {
+        setTeamModalOpen(false);
+        setEditingTeamMember(null);
+        fetchTabContents();
+      } else {
+        alert("Failed to save team member");
+      }
+    } catch {
+      alert("Error saving team member");
+    } finally {
+      setSaveLoading(false);
+    }
+  };
+
+  const handleEditTeamMember = (m: any) => {
+    setEditingTeamMember(m);
+    setTeamForm({
+      name: m.name,
+      role: m.role,
+      email: m.email,
+      phone: m.phone,
+      bio: m.bio,
+      image: m.image,
+      orderIndex: m.orderIndex || 0
+    });
+    setTeamModalOpen(true);
+  };
+
+  const handleDeleteTeamMember = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this team member?")) return;
+    try {
+      const res = await fetch(`/api/admin/team?id=${id}`, { method: "DELETE" });
+      if (res.ok) fetchTabContents();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleNewTeamMember = () => {
+    setEditingTeamMember(null);
+    setTeamForm({
+      name: "",
+      role: "",
+      email: "",
+      phone: "",
+      bio: "",
+      image: "/images/aakash_new.png",
+      orderIndex: 0
+    });
+    setTeamModalOpen(true);
+  };
+
+  const handleTeamImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        setTeamForm(prev => ({ ...prev, image: data.url }));
+      }
+    } catch {
+      alert("Error uploading file");
+    }
   };
 
   // Login Screen (Beautiful Light/Dark Two-Pane Split Theme)
@@ -937,6 +1035,19 @@ export default function AdminPage() {
             <MessageSquare className="w-4 h-4" />
             <span>Testimonials</span>
           </button>
+
+          <button
+            onClick={() => setActiveTab("team")}
+            className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all ${
+              activeTab === "team"
+                ? "bg-blue-50 text-blue-700 shadow-sm border border-blue-100/50"
+                : "text-slate-500 hover:bg-slate-50 hover:text-slate-800 border border-transparent"
+            }`}
+            style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
+          >
+            <Users className="w-4 h-4" />
+            <span>Team Manager</span>
+          </button>
         </nav>
 
         {/* Sidebar Footer */}
@@ -1035,7 +1146,7 @@ export default function AdminPage() {
                             <div className="text-slate-500 text-[11px]">{enq.email}</div>
                           </td>
                           <td className="p-4 space-y-1">
-                            {enq.income || enq.savings ? (
+                            {enq.income || enq.savings || enq.message ? (
                               <div className="bg-slate-50 border border-slate-100 p-2 rounded-xl text-[10.5px] font-bold text-slate-700 max-w-[220px] space-y-1 shadow-xs">
                                 {enq.income && (
                                   <div className="flex flex-col">
@@ -1053,9 +1164,17 @@ export default function AdminPage() {
                                     </span>
                                   </div>
                                 )}
+                                {enq.message && (
+                                  <div className={`flex flex-col ${enq.income || enq.savings ? "border-t border-slate-200/60 pt-1 mt-1" : ""}`}>
+                                    <span className="text-[11px] text-slate-400 font-extrabold uppercase tracking-wider">Message:</span>
+                                    <span className="text-slate-800 break-words font-semibold leading-tight">
+                                      {enq.message}
+                                    </span>
+                                  </div>
+                                )}
                               </div>
                             ) : (
-                              <span className="text-slate-400 italic text-[11px] block">No financial details provided</span>
+                              <span className="text-slate-400 italic text-[11px] block">No details provided</span>
                             )}
                           </td>
                           <td className="p-4">
@@ -1113,7 +1232,7 @@ export default function AdminPage() {
             <form onSubmit={(e) => handleSaveSettings(e, [
               "header_phone", "support_email", "footer_address", 
               "facebook_url", "instagram_url", "linkedin_url", "tiktok_url", 
-              "logo_url", "site_icon_url", "interest_rate",
+              "logo_url", "site_icon_url", "interest_rate", "mortgage_mate_video_url",
               "meta_title", "meta_description", "meta_keywords",
               "smtp_host", "smtp_port", "smtp_user", "smtp_pass", "smtp_from",
               "google_maps_embed"
@@ -1370,6 +1489,16 @@ export default function AdminPage() {
                       onChange={e => setSettings(prev => ({ ...prev, interest_rate: e.target.value }))}
                       className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-bold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
                       placeholder="6.19"
+                    />
+                  </div>
+                  <div className="mt-4">
+                    <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">Mortgage Mate YouTube Video URL</label>
+                    <input
+                      type="url"
+                      value={settings.mortgage_mate_video_url || ""}
+                      onChange={e => setSettings(prev => ({ ...prev, mortgage_mate_video_url: e.target.value }))}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-xs font-bold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      placeholder="https://www.youtube.com/embed/XXXXX"
                     />
                   </div>
                 </div>
@@ -2020,6 +2149,56 @@ export default function AdminPage() {
                         })}
                       </div>
 
+            {/* TEAM MANAGER TAB */}
+            {activeTab === "team" && (
+              <div className="space-y-4">
+                {teamMembers.length === 0 ? (
+                  <div className="bg-white border border-slate-200/70 rounded-2xl p-12 text-center text-slate-400 space-y-4 flex flex-col items-center justify-center">
+                    <Users className="w-10 h-10 text-slate-300" />
+                    <div className="space-y-1">
+                      <h3 className="font-bold text-slate-700">No Team Members Found</h3>
+                      <p className="text-xs">Add team members to display them on the website.</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {teamMembers.map((m) => (
+                      <div key={m.id} className="bg-white border border-slate-200/70 rounded-2xl p-5 hover:shadow-md transition-shadow relative">
+                        <div className="flex gap-4">
+                          <img src={m.image} alt={m.name} className="w-16 h-16 rounded-full object-cover border-2 border-slate-100" />
+                          <div className="flex-1">
+                            <h3 className="text-sm font-bold text-slate-900">{m.name}</h3>
+                            <p className="text-[10px] font-bold text-blue-600 uppercase tracking-wider">{m.role}</p>
+                          </div>
+                        </div>
+                        <div className="mt-4 space-y-2 text-xs text-slate-500">
+                          <p>Order: {m.orderIndex || 0}</p>
+                          <p>{m.email}</p>
+                          <p>{m.phone}</p>
+                        </div>
+                        <div className="mt-4 pt-4 border-t border-slate-100 flex gap-2">
+                          <button onClick={() => handleEditTeamMember(m)} className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-bold text-slate-600">
+                            <Edit className="w-3.5 h-3.5" /> Edit
+                          </button>
+                          <button onClick={() => handleDeleteTeamMember(m.id)} className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg border border-rose-200 hover:bg-rose-50 text-xs font-bold text-rose-600">
+                            <Trash2 className="w-3.5 h-3.5" /> Delete
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                
+                <button
+                  onClick={handleNewTeamMember}
+                  className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5 self-start shadow-sm shadow-blue-500/10 hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <Plus className="w-4 h-4" />
+                  Add Team Member
+                </button>
+              </div>
+            )}
+
                       {/* Edit Active Slide Fields */}
                       <div className="bg-slate-50/60 border border-slate-200/40 rounded-2xl p-5 space-y-4">
                         <div className="text-[10px] font-black text-blue-600 uppercase tracking-widest border-b border-slate-100 pb-1.5">
@@ -2413,6 +2592,66 @@ export default function AdminPage() {
             </div>
           )}
 
+          {/* ── TAB 6: TEAM MANAGER ── */}
+          {activeTab === "team" && (
+            <div className="space-y-4">
+              {teamMembers.length === 0 ? (
+                <div className="bg-white border border-slate-200/70 rounded-2xl p-12 text-center text-slate-400 space-y-4 flex flex-col items-center justify-center">
+                  <Users className="w-10 h-10 text-slate-300" />
+                  <div className="space-y-1">
+                    <h3 className="font-bold text-slate-700">No Team Members Found</h3>
+                    <p className="text-xs">Add team members to display them on the website.</p>
+                  </div>
+                  <button
+                    onClick={handleNewTeamMember}
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all flex items-center gap-1.5 shadow-sm shadow-blue-500/10 hover:scale-[1.02] active:scale-[0.98]"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>Add First Team Member</span>
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {teamMembers.map((m) => (
+                      <div key={m.id} className="bg-white border border-slate-200/70 rounded-2xl p-5 shadow-sm flex flex-col justify-between hover:border-slate-300 transition-all relative">
+                        <div className="flex gap-4 mb-4">
+                          <img src={m.image} alt={m.name} className="w-16 h-16 rounded-full object-cover border-2 border-slate-100 shrink-0" />
+                          <div className="flex-1">
+                            <h3 className="text-sm font-bold text-slate-900">{m.name}</h3>
+                            <p className="text-[10px] font-bold text-blue-600 uppercase tracking-wider leading-tight mt-0.5">{m.role}</p>
+                          </div>
+                        </div>
+                        <div className="space-y-2 text-xs text-slate-500 mb-4 flex-1">
+                          <p className="flex items-center gap-2"><Globe className="w-3.5 h-3.5"/> Order: {m.orderIndex || 0}</p>
+                          <p className="flex items-center gap-2"><MessageSquare className="w-3.5 h-3.5"/> {m.email}</p>
+                          <p className="flex items-center gap-2"><Phone className="w-3.5 h-3.5"/> {m.phone}</p>
+                        </div>
+                        <div className="pt-4 border-t border-slate-100 flex gap-2">
+                          <button onClick={() => handleEditTeamMember(m)} className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-bold text-slate-600 transition-all">
+                            <Edit className="w-3.5 h-3.5" /> Edit
+                          </button>
+                          <button onClick={() => handleDeleteTeamMember(m.id)} className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg border border-rose-200 hover:bg-rose-50 text-xs font-bold text-rose-600 transition-all">
+                            <Trash2 className="w-3.5 h-3.5" /> Delete
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-4">
+                    <button
+                      onClick={handleNewTeamMember}
+                      className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5 shadow-sm shadow-blue-500/10 hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                      <Plus className="w-4 h-4" />
+                      Add Team Member
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+
         </div>
       </main>
 
@@ -2670,6 +2909,130 @@ export default function AdminPage() {
                   className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4.5 py-2.5 rounded-xl transition-all"
                 >
                   {saveLoading ? "Saving..." : "Save Testimonial"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── MODAL: TEAM MEMBER EDITOR ── */}
+      {teamModalOpen && (
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200/80 w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+            <div className="p-5 border-b border-slate-100 flex items-center justify-between shrink-0">
+              <h3 className="text-slate-950 text-sm font-black uppercase tracking-tight">
+                {editingTeamMember ? "Edit Team Member" : "Create Team Member"}
+              </h3>
+              <button onClick={() => setTeamModalOpen(false)} className="text-slate-400 hover:text-slate-800 transition-all">
+                <X className="w-5.5 h-5.5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveTeamMember} className="p-5 space-y-4 overflow-y-auto flex-1 text-slate-700">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-[9.5px] font-extrabold uppercase tracking-wider block mb-1">Full Name</label>
+                  <input
+                    type="text"
+                    value={teamForm.name}
+                    onChange={e => setTeamForm(prev => ({ ...prev, name: e.target.value }))}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500"
+                    placeholder="John Doe"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="text-[9.5px] font-extrabold uppercase tracking-wider block mb-1">Role / Job Title</label>
+                  <input
+                    type="text"
+                    value={teamForm.role}
+                    onChange={e => setTeamForm(prev => ({ ...prev, role: e.target.value }))}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500"
+                    placeholder="Mortgage Broker"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="text-[9.5px] font-extrabold uppercase tracking-wider block mb-1">Email Address</label>
+                  <input
+                    type="email"
+                    value={teamForm.email}
+                    onChange={e => setTeamForm(prev => ({ ...prev, email: e.target.value }))}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500"
+                    placeholder="john@example.com"
+                  />
+                </div>
+                <div>
+                  <label className="text-[9.5px] font-extrabold uppercase tracking-wider block mb-1">Phone Number</label>
+                  <input
+                    type="text"
+                    value={teamForm.phone}
+                    onChange={e => setTeamForm(prev => ({ ...prev, phone: e.target.value }))}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500"
+                    placeholder="0400 000 000"
+                  />
+                </div>
+                <div>
+                  <label className="text-[9.5px] font-extrabold uppercase tracking-wider block mb-1">Order Index (Lower = First)</label>
+                  <input
+                    type="number"
+                    value={teamForm.orderIndex}
+                    onChange={e => setTeamForm(prev => ({ ...prev, orderIndex: parseInt(e.target.value) || 0 }))}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+                <div className="col-span-1 sm:col-span-2">
+                  <label className="text-[9.5px] font-extrabold uppercase tracking-wider block mb-1">Profile Image Path</label>
+                  <div className="flex gap-2 items-center">
+                    <div className="flex-1">
+                      <input
+                        type="text"
+                        value={teamForm.image}
+                        onChange={e => setTeamForm(prev => ({ ...prev, image: e.target.value }))}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500"
+                        placeholder="/images/aakash_new.png"
+                      />
+                    </div>
+                    <div className="flex gap-2 items-center shrink-0">
+                      <label className="bg-slate-100 hover:bg-slate-200 border border-slate-250 cursor-pointer text-slate-700 text-xs font-bold px-3 py-2.5 rounded-xl transition-all inline-block select-none">
+                        Upload
+                        <input type="file" accept="image/*" onChange={handleTeamImageUpload} className="hidden" />
+                      </label>
+                      {teamForm.image && (
+                        <div className="w-9 h-9 border border-slate-200 rounded-xl overflow-hidden flex items-center justify-center p-0.5 bg-slate-50">
+                          <img src={teamForm.image} alt="Preview" className="w-full h-full object-cover rounded-lg" />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="col-span-1 sm:col-span-2">
+                  <label className="text-[9.5px] font-extrabold uppercase tracking-wider block mb-1">Biography / Bio</label>
+                  <textarea
+                    rows={4}
+                    value={teamForm.bio}
+                    onChange={e => setTeamForm(prev => ({ ...prev, bio: e.target.value }))}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500 leading-relaxed"
+                    placeholder="Short description about the team member..."
+                  />
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-slate-100 flex justify-end gap-2 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setTeamModalOpen(false)}
+                  className="bg-slate-100 hover:bg-slate-250 text-slate-600 text-xs font-extrabold px-4.5 py-2.5 rounded-xl transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={saveLoading}
+                  className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4.5 py-2.5 rounded-xl transition-all"
+                >
+                  {saveLoading ? "Saving..." : "Save Member"}
                 </button>
               </div>
             </form>

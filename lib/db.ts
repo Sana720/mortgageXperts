@@ -60,6 +60,17 @@ const tables = [
       avatar VARCHAR(255) NOT NULL,
       createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   )`,
+  `CREATE TABLE IF NOT EXISTS team_members (
+      id VARCHAR(191) PRIMARY KEY,
+      name VARCHAR(255) NOT NULL,
+      role VARCHAR(255) NOT NULL,
+      email VARCHAR(255) NOT NULL,
+      phone VARCHAR(50) NOT NULL,
+      bio TEXT NOT NULL,
+      image VARCHAR(255) NOT NULL,
+      orderIndex INT DEFAULT 0,
+      createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )`,
   `CREATE TABLE IF NOT EXISTS admins (
       id VARCHAR(191) PRIMARY KEY,
       username VARCHAR(255) UNIQUE NOT NULL,
@@ -79,6 +90,7 @@ const tables = [
       savings VARCHAR(100),
       income VARCHAR(100),
       state VARCHAR(50),
+      message TEXT,
       status VARCHAR(50) DEFAULT 'new',
       createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   )`,
@@ -94,7 +106,8 @@ const tables = [
   ('hero_subheadline', 'Guiding you through home loans, low-deposit schemes, and first-home buyer grants with professional expertise.'),
   ('logo_url', '/images/logo.png'),
   ('site_icon_url', '/favicon.ico'),
-  ('interest_rate', '6.19')`,
+  ('interest_rate', '6.19'),
+  ('mortgage_mate_video_url', 'https://www.youtube.com/embed/XXXXX')`,
   `CREATE TABLE IF NOT EXISTS page_meta_hero (
       page_path VARCHAR(191) PRIMARY KEY,
       meta_title VARCHAR(255) NOT NULL,
@@ -157,6 +170,7 @@ export async function initializeTables() {
     await migrateFirstHomeBuyerLinks();
     await migrateVisaHomeLoanRow();
     await migratePageContentDefaults();
+    await seedTeamMembers();
     console.log('Database tables successfully initialized.');
   } catch (error) {
     console.error('Error initializing database tables:', error);
@@ -303,6 +317,62 @@ export async function migrateVisaHomeLoanRow() {
     }
   } catch (error) {
     console.error('Visa home loan row migration skipped:', error);
+  }
+}
+
+export async function seedTeamMembers() {
+  try {
+    const existing = await executeQuery<any[]>('SELECT id FROM team_members LIMIT 1');
+    if (Array.isArray(existing) && existing.length > 0) return;
+
+    const defaultMembers = [
+      {
+        name: "Aakash KC",
+        role: "The Mortgage Mate | Founder & Principal Broker",
+        image: "/images/aakash_new.png",
+        email: "aakash@mortgagexperts.com.au",
+        phone: "0450 240 757",
+        bio: "As the founder of Mortgage Xperts and widely known as 'The Mortgage Mate', Aakash brings years of dedicated experience to the Australian mortgage industry. With a passion for empowering the Nepali community and all Australians, he has helped hundreds of clients secure their dream homes, build robust investment portfolios, and navigate the complexities of lending with clarity and confidence.",
+        orderIndex: 0
+      },
+      {
+        name: "Rakesh Shrestha",
+        role: "Senior Mortgage Broker",
+        image: "https://ui-avatars.com/api/?name=Rakesh+Shrestha&background=042052&color=fff&size=512",
+        email: "rakesh@mortgagexperts.com.au",
+        phone: "1300 000 000",
+        bio: "Rakesh is a highly skilled Senior Mortgage Broker known for his analytical approach and deep understanding of the property market. He specializes in helping both first-time buyers and seasoned investors structure their loans for maximum benefit, ensuring long-term financial success and stability.",
+        orderIndex: 1
+      },
+      {
+        name: "Susmita G C",
+        role: "Mortgage Broker",
+        image: "https://ui-avatars.com/api/?name=Susmita+GC&background=17aae4&color=fff&size=512",
+        email: "susmita@mortgagexperts.com.au",
+        phone: "1300 000 000",
+        bio: "Susmita is dedicated to providing exceptional service and tailored mortgage solutions. With a keen eye for detail and a warm, approachable demeanor, she simplifies the often overwhelming process of securing a home loan, making her clients feel supported every step of the way.",
+        orderIndex: 2
+      },
+      {
+        name: "Utsav Khadka",
+        role: "Mortgage Broker",
+        image: "https://ui-avatars.com/api/?name=Utsav+Khadka&background=2563eb&color=fff&size=512",
+        email: "utsav@mortgagexperts.com.au",
+        phone: "1300 000 000",
+        bio: "Utsav is a passionate Mortgage Broker who thrives on helping individuals and families achieve their property goals. Whether it's finding the most competitive interest rate or guiding clients through their first property purchase, Utsav's commitment to excellence ensures a seamless experience.",
+        orderIndex: 3
+      }
+    ];
+
+    for (const m of defaultMembers) {
+      await executeQuery(
+        'INSERT INTO team_members (id, name, role, email, phone, bio, image, orderIndex) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [crypto.randomUUID(), m.name, m.role, m.email, m.phone, m.bio, m.image, m.orderIndex]
+      );
+    }
+    console.log('Seeded default team members.');
+  } catch (error) {
+    console.error('Failed to seed team members:', error);
   }
 }
 

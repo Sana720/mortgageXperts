@@ -34,6 +34,7 @@ import {
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { SubPageHero } from "../components/SubPageHero";
+import { RoadmapGuideCard } from "../components/RoadmapGuideCard";
 import { TestimonialSection } from "../components/TestimonialSection";
 import { PageHeroSettings } from "@/lib/pageLoader";
 
@@ -678,7 +679,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             
             {/* Left Column: Rich Mortgage Context / Content */}
-            <div className="lg:col-span-6 space-y-6 no-print">
+            <div className="lg:col-span-6 space-y-6 no-print order-2 lg:order-1">
               <span className="text-[10px] font-black uppercase tracking-widest text-blue-600 bg-blue-50 border border-blue-100/60 px-3.5 py-1.5 rounded-full w-fit block shadow-sm font-bold">
                 Calculations & Insights
               </span>
@@ -739,7 +740,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
             </div>
  
             {/* Right Column: Compact 4-Step Wizard Calculator (Results inside Step 4) */}
-            <div className="lg:col-span-6 flex justify-end no-print">
+            <div className="lg:col-span-6 flex justify-end no-print order-1 lg:order-2">
               <div className="w-full max-w-[500px] bg-white rounded-3xl p-8 md:p-10 border border-slate-200 shadow-xl relative overflow-hidden flex flex-col transition-all duration-300 relative overflow-hidden">
                 {/* Signature Benchmark Corner Decoration */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-bl-full opacity-50 pointer-events-none" />

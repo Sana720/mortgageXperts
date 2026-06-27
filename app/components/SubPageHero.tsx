@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Shield, Calculator, ArrowRight, Star } from "lucide-react";
+import { useOnboardingModal } from "@/app/components/OnboardingModalContext";
 import { EASE_OUT } from "@/lib/motion";
 
 // Premium inline SVG icons
@@ -83,6 +84,15 @@ export function SubPageHero({ pageTitle, themeColor = "blue", pageHeroSettings }
   const btn2Text = pageHeroSettings?.hero_btn2_text || "Free Strategy Call";
   const btn2Link = pageHeroSettings?.hero_btn2_link || "#callback";
 
+  const { openModal } = useOnboardingModal();
+
+  const handleCtaClick = (e: React.MouseEvent<HTMLAnchorElement>, link: string) => {
+    if (link === "#callback" || link === "#strategy-call" || link === "#consultation") {
+      e.preventDefault();
+      openModal();
+    }
+  };
+
   const isGreen = themeColor === "green";
   const isViolet = themeColor === "violet";
   const isTeal = themeColor === "teal";
@@ -143,14 +153,14 @@ export function SubPageHero({ pageTitle, themeColor = "blue", pageHeroSettings }
             : "from-[#EAF3FF] to-[#F4F9FF]";
 
   return (
-    <section id="overview" className="relative overflow-hidden bg-white pt-8 pb-12 lg:pt-14 lg:pb-16 text-slate-800 border-b border-slate-100 min-h-[calc(100vh-80px)] flex flex-col justify-start">
+    <section id="overview" className="relative overflow-hidden bg-white pt-8 pb-12 lg:pt-14 lg:pb-16 text-slate-800 border-b border-slate-100 lg:min-h-[calc(100vh-80px)] flex flex-col justify-start">
       {/* Background shapes */}
       <div className="absolute top-10 right-10 w-44 h-44 opacity-25 pointer-events-none" style={{ backgroundImage: `radial-gradient(${dotColor} 1.5px, transparent 1.5px)`, backgroundSize: "8px 8px" }} />
       <div className={`absolute -left-10 -bottom-10 w-48 h-48 ${bgBlurClass} opacity-40 rounded-full blur-3xl pointer-events-none`} />
 
       <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10 w-full">
         {/* SEO Friendly Breadcrumbs */}
-        <nav aria-label="Breadcrumb" className="flex items-center gap-2 bg-white border border-slate-200/60 rounded-full px-4 py-2 w-fit mb-6 text-[11.5px] font-bold text-slate-500 shadow-sm">
+        <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-1.5 sm:gap-2 bg-white border border-slate-200/60 rounded-2xl sm:rounded-full px-3 sm:px-4 py-1.5 sm:py-2 w-fit mb-6 text-[10.5px] sm:text-[11.5px] font-bold text-slate-500 shadow-sm">
           <svg className="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
             <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
             <polyline points="9 22 9 12 15 12 15 22" />
@@ -193,12 +203,14 @@ export function SubPageHero({ pageTitle, themeColor = "blue", pageHeroSettings }
             <motion.div variants={premiumFadeUp} className="flex flex-wrap items-center gap-4">
               <Link
                 href={btn1Link}
+                onClick={(e) => handleCtaClick(e, btn1Link)}
                 className={`inline-flex items-center justify-center gap-2 ${btn1Class} text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap`}
               >
                 {btn1Text} <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href={btn2Link}
+                onClick={(e) => handleCtaClick(e, btn2Link)}
                 className={`inline-flex items-center justify-center gap-2 border-2 ${btn2Class} bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:text-white group/sec text-center w-full sm:w-auto whitespace-nowrap`}
               >
                 <Calculator className="w-4 h-4 text-current transition-colors" />
@@ -207,11 +219,11 @@ export function SubPageHero({ pageTitle, themeColor = "blue", pageHeroSettings }
             </motion.div>
 
             {/* Trust Reviews Badge Row */}
-            <motion.div variants={premiumFadeUp} className="flex flex-wrap items-center gap-6 mt-3.5 pt-3 border-t border-slate-100/80 max-w-lg">
+            <motion.div variants={premiumFadeUp} className="flex flex-row items-center gap-2.5 sm:gap-6 mt-3.5 pt-3 border-t border-slate-100/80 max-w-lg">
               {/* Google reviews */}
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center border border-slate-200/60 shrink-0 shadow-sm">
-                  <GoogleIcon />
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-50 flex items-center justify-center border border-slate-200/60 shrink-0 shadow-sm">
+                  <div className="scale-[0.75] sm:scale-100"><GoogleIcon /></div>
                 </div>
                 <div>
                   <div className="flex items-center gap-0.5">
@@ -219,7 +231,7 @@ export function SubPageHero({ pageTitle, themeColor = "blue", pageHeroSettings }
                       <Star key={i} className="w-3.5 h-3.5 text-[#FBBF24] fill-[#FBBF24]" />
                     ))}
                   </div>
-                  <div className="text-[11.5px] text-slate-500 font-bold mt-0.5">4.9/5 from 1,200+ reviews</div>
+                  <div className="text-[9.5px] sm:text-[11.5px] text-slate-500 font-bold mt-0.5">4.9/5 from 1,200+ reviews</div>
                 </div>
               </div>
 
@@ -227,9 +239,9 @@ export function SubPageHero({ pageTitle, themeColor = "blue", pageHeroSettings }
               <div className="w-px h-8 bg-slate-200/80 hidden sm:block" />
 
               {/* Facebook reviews */}
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center border border-slate-200/60 shrink-0 shadow-sm">
-                  <FacebookIcon />
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-50 flex items-center justify-center border border-slate-200/60 shrink-0 shadow-sm">
+                  <div className="scale-[0.75] sm:scale-100"><FacebookIcon /></div>
                 </div>
                 <div>
                   <div className="flex items-center gap-0.5">
@@ -237,14 +249,14 @@ export function SubPageHero({ pageTitle, themeColor = "blue", pageHeroSettings }
                       <Star key={i} className="w-3.5 h-3.5 text-[#FBBF24] fill-[#FBBF24]" />
                     ))}
                   </div>
-                  <div className="text-[11.5px] text-slate-500 font-bold mt-0.5">5.0/5 from 950+ reviews</div>
+                  <div className="text-[9.5px] sm:text-[11.5px] text-slate-500 font-bold mt-0.5">5.0/5 from 950+ reviews</div>
                 </div>
               </div>
             </motion.div>
           </motion.div>
 
           {/* Right Column: Premium Image with Floating badge & Glow Effects */}
-          <div className="relative flex items-center justify-center lg:justify-end translate-y-4 lg:translate-y-8">
+          <div className="relative hidden lg:flex items-center justify-center lg:justify-end translate-y-4 lg:translate-y-8">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 0.9, scale: 1 }}

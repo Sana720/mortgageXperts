@@ -35,6 +35,7 @@ import {
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { SubPageHero } from "../components/SubPageHero";
+import { RoadmapGuideCard } from "../components/RoadmapGuideCard";
 import { TestimonialSection } from "../components/TestimonialSection";
 import { PageHeroSettings } from "@/lib/pageLoader";
 
@@ -1233,108 +1234,10 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
         </div>
       </div>
 
-      {/* MID-PAGE CONTEXT ENQUIRY SECTION */}
-      <section className="py-16 md:py-24 bg-white border-b border-slate-100">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 bg-rose-50 border border-rose-100 rounded-full px-4 py-2">
-                <Landmark className="w-3.5 h-3.5 text-rose-600" />
-                <span className="text-[10px] font-bold tracking-widest uppercase text-rose-700">Guide to Comparing Loans</span>
-              </div>
-              <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-tight font-montserrat">
-                Find the Perfect Loan with Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-pink-500">Comparison Guide</span>
-              </h2>
-              <p className="text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed">
-                Comparing home loans goes beyond looking at the headline interest rate. Discover the key factors to consider, such as hidden offset account benefits, introductory rates, comparison rates, and annual package fees that can impact your true mortgage cost.
-              </p>
-              <div className="space-y-3 pt-2">
-                {[
-                  "Understanding standard vs comparison interest rates",
-                  "Evaluating standard redraw options and fee-free offsets",
-                  "Finding the right loan features to fit your individual goals",
-                  "Checking eligibility for government home buyer schemes"
-                ].map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-2.5">
-                    <div className="w-5 h-5 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center shrink-0">
-                      <Check className="w-3 h-3" strokeWidth={3} />
-                    </div>
-                    <span className="text-[13px] text-slate-700 font-bold">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-slate-100 relative text-[#0B1F3A]">
-              <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-rose-500 to-pink-500" />
-              
-              {!guideSubmitted ? (
-                <form onSubmit={handleGuideSubmit} className="space-y-4">
-                  <h3 className="text-[#0B1F3A] text-[18px] font-black font-montserrat">Download the Comparison Guide</h3>
-                  <p className="text-slate-500 text-xs sm:text-[12.5px] leading-relaxed">
-                    Submit your email address to immediately receive our free home loan guide. By submitting, you consent to being contacted by our mortgage experts.
-                  </p>
-
-                  <div className="space-y-3">
-                    <div className="space-y-1">
-                      <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">First Name</label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="John"
-                        value={guideName}
-                        onChange={(e) => setGuideName(e.target.value)}
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-rose-500 focus:bg-white transition-all shadow-inner"
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">Email Address</label>
-                      <input
-                        type="email"
-                        required
-                        placeholder="john.doe@example.com"
-                        value={guideEmail}
-                        onChange={(e) => setGuideEmail(e.target.value)}
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-rose-500 focus:bg-white transition-all shadow-inner"
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <label className="text-[10.5px] font-extrabold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">Phone Number</label>
-                      <input
-                        type="tel"
-                        required
-                        placeholder="0400 000 000"
-                        value={guidePhone}
-                        onChange={(e) => setGuidePhone(e.target.value)}
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-rose-500 focus:bg-white transition-all shadow-inner"
-                      />
-                    </div>
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={guideSubmitting}
-                    className="w-full bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-[13.5px] py-3.5 px-6 rounded-xl transition-all shadow-lg active:scale-[0.98] mt-2 cursor-pointer flex items-center justify-center gap-1.5"
-                  >
-                    {guideSubmitting ? "Sending..." : "Download Guide"}
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </form>
-              ) : (
-                <div className="text-center py-12 space-y-4">
-                  <div className="w-14 h-14 bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto rounded-full border border-emerald-100">
-                    ✓
-                  </div>
-                  <h3 className="text-[#0B1F3A] text-[20px] font-black font-montserrat">
-                    Guide Requested Successfully!
-                  </h3>
-                  <p className="text-slate-500 text-[13px] leading-relaxed max-w-sm mx-auto">
-                    We have sent the Home Loan Comparison Guide to your inbox. Check your email details shortly.
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
+      {/* GUIDE DOWNLOAD CARD */}
+      <section className="py-16 lg:py-24 bg-white relative overflow-hidden">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
+          <RoadmapGuideCard />
         </div>
       </section>
 

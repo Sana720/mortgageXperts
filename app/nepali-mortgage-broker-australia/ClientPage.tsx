@@ -7,9 +7,8 @@ import { SubPageHero } from '@/app/components/SubPageHero';
 import { TestimonialSection } from '@/app/components/TestimonialSection';
 import Link from 'next/link';
 import { ArrowRight, Phone, Mail, Users } from 'lucide-react';
-import { teamMembers } from '@/app/lib/teamData';
 
-export default function NepaliMortgageBrokerAustraliaClient() {
+export default function NepaliMortgageBrokerAustraliaClient({ initialTeamMembers = [] }: { initialTeamMembers?: any[] }) {
   return (
     <div className="bg-[#F0F4FA] min-h-screen font-sans flex flex-col">
       <SiteHeader isSticky={false} />
@@ -41,7 +40,7 @@ export default function NepaliMortgageBrokerAustraliaClient() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-          {teamMembers.map((member) => (
+          {initialTeamMembers.map((member) => (
             <div 
               key={member.id} 
               className="group bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-200 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col"

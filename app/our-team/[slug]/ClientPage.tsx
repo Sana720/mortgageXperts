@@ -7,7 +7,17 @@ import { SubPageHero } from '@/app/components/SubPageHero';
 import { TestimonialSection } from '@/app/components/TestimonialSection';
 import Link from 'next/link';
 import { ArrowLeft, Mail, Phone, CheckCircle2 } from 'lucide-react';
-import { TeamMember } from '@/app/lib/teamData';
+export interface TeamMember {
+  id: string;
+  slug: string;
+  name: string;
+  role: string;
+  image: string;
+  email: string;
+  phone: string;
+  bio: string;
+  expertise: string[];
+}
 
 export default function TeamMemberClient({ member }: { member: TeamMember }) {
   return (

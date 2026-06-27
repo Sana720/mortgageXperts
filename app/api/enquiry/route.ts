@@ -7,7 +7,7 @@ import nodemailer from 'nodemailer';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { type, name, email, phone, savings, income, state } = body;
+    const { type, name, email, phone, savings, income, state, message, details } = body;
 
     if (!name || !email || !phone) {
       return NextResponse.json({ error: 'Missing required fields (name, email, phone)' }, { status: 400 });
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
 
     const id = crypto.randomUUID();
     await executeQuery(
-      'INSERT INTO enquiries (id, type, name, email, phone, savings, income, state, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      'INSERT INTO enquiries (id, type, name, email, phone, savings, income, state, status, message) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
       [
         id,
         type || 'callback',
@@ -25,7 +25,8 @@ export async function POST(request: Request) {
         savings || null,
         income || null,
         state || null,
-        'new'
+        'new',
+        message || details || null
       ]
     );
 
@@ -71,6 +72,7 @@ Phone: ${phone}
 Savings: ${savings || 'N/A'}
 Income: ${income || 'N/A'}
 State: ${state || 'N/A'}
+Message/Details: ${message || details || 'N/A'}
 ------------------------------------------
 Manage this enquiry in the admin dashboard: ${process.env.NEXT_PUBLIC_SITE_URL || 'https://mortgagexperts.com.au'}/admin`;
 

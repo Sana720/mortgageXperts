@@ -23,6 +23,7 @@ import {
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { SubPageHero } from "../components/SubPageHero";
+import { RoadmapGuideCard } from "../components/RoadmapGuideCard";
 import { TestimonialSection } from "../components/TestimonialSection";
 import { EASE_OUT } from "@/lib/motion";
 
@@ -297,7 +298,7 @@ export default function ClientPage({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             
             {/* Left Column: Context / Content */}
-            <div className="lg:col-span-6 space-y-6 no-print">
+            <div className="lg:col-span-6 space-y-6 no-print order-2 lg:order-1">
               <span className="text-[10px] font-black uppercase tracking-widest text-rose-800 bg-rose-50 border border-rose-100/60 px-3.5 py-1.5 rounded-full w-fit block shadow-sm font-bold">
                 Calculations & Insights
               </span>
@@ -358,7 +359,7 @@ export default function ClientPage({
             </div>
 
             {/* Right Column: Wizard Form */}
-            <div className="lg:col-span-6 flex justify-end no-print">
+            <div className="lg:col-span-6 flex justify-end no-print order-1 lg:order-2">
               <div className="w-full max-w-[520px] bg-white rounded-3xl p-8 md:p-10 border border-slate-200 shadow-xl relative overflow-hidden flex flex-col justify-between min-h-[530px] transition-all duration-300 relative overflow-hidden">
                 {/* Signature Benchmark Corner Decoration */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-rose-50 rounded-bl-full opacity-50 pointer-events-none" />
@@ -622,88 +623,9 @@ export default function ClientPage({
       </section>
 
       {/* GUIDE DOWNLOAD CARD */}
-      <section className="py-16 lg:py-24 bg-gradient-to-br from-[#0B1F3A] via-[#102A4F] to-[#0B1F3A] text-white relative overflow-hidden">
+      <section className="py-16 lg:py-24 bg-white relative overflow-hidden">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            
-            <div className="space-y-4">
-              <span className="text-[10px] font-black uppercase tracking-widest text-rose-400 bg-rose-500/10 border border-rose-500/20 px-3.5 py-1.5 rounded-full w-fit block font-bold">
-                Guide Download
-              </span>
-              <h2 className="text-white text-[24px] sm:text-[30px] font-black leading-tight font-montserrat">
-                Navigate interest rate changes with our <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-pink-300">expert guide</span>
-              </h2>
-              <p className="text-slate-350 text-[13.5px] leading-relaxed">
-                Understand how RBA cash rate decisions impact your home loan, savings, and investment strategies, and learn how to prepare for future changes.
-              </p>
-
-              <div className="space-y-2.5 pt-2">
-                <div className="flex gap-2.5 items-center text-xs font-semibold text-slate-300">
-                  <ShieldCheck className="w-4.5 h-4.5 text-rose-500 shrink-0" />
-                  <span>How official cash rate shifts affect retail rates</span>
-                </div>
-                <div className="flex gap-2.5 items-center text-xs font-semibold text-slate-300">
-                  <ShieldCheck className="w-4.5 h-4.5 text-rose-500 shrink-0" />
-                  <span>Fixed vs. Variable interest rate strategies</span>
-                </div>
-                <div className="flex gap-2.5 items-center text-xs font-semibold text-slate-300">
-                  <ShieldCheck className="w-4.5 h-4.5 text-rose-500 shrink-0" />
-                  <span>Steps to negotiate a lower rate with your current lender</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-[28px] p-6.5 shadow-xl border border-slate-100 max-w-md lg:ml-auto w-full text-slate-800">
-              {guideSubmitted ? (
-                <div className="text-center py-8 space-y-3">
-                  <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center mx-auto border border-emerald-100">
-                    <CheckCircle2 className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-md font-bold font-montserrat text-[#0B1F3A]">Thank you!</h3>
-                  <p className="text-xs text-slate-505 leading-relaxed">Your guide has been sent to your email. One of our home loan refinancing specialists will follow up with you shortly.</p>
-                </div>
-              ) : (
-                <form onSubmit={handleGuideSubmit} className="space-y-3.5">
-                  <div className="grid grid-cols-1 gap-3">
-                    <input
-                      type="text"
-                      required
-                      placeholder="Your Name"
-                      value={guideName}
-                      onChange={(e) => setGuideName(e.target.value)}
-                      className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-rose-400 focus:bg-white text-slate-800 placeholder-slate-400 transition-all shadow-inner"
-                    />
-                    <input
-                      type="email"
-                      required
-                      placeholder="Email Address"
-                      value={guideEmail}
-                      onChange={(e) => setGuideEmail(e.target.value)}
-                      className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-rose-400 focus:bg-white text-slate-800 placeholder-slate-400 transition-all shadow-inner"
-                    />
-                    <input
-                      type="tel"
-                      required
-                      placeholder="Phone Number"
-                      value={guidePhone}
-                      onChange={(e) => setGuidePhone(e.target.value)}
-                      className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-rose-400 focus:bg-white text-slate-800 placeholder-slate-400 transition-all shadow-inner"
-                    />
-                  </div>
-                  <p className="text-[9.5px] text-slate-400 leading-relaxed">
-                    By clicking ‘Get the guide’, you acknowledge our <Link href="/privacy-collection-notice" className="text-rose-500 underline hover:text-rose-400">Privacy Collection Notice</Link> and consent to being contacted by a Mortgage Xperts broker.
-                  </p>
-                  <button
-                    type="submit"
-                    disabled={guideSubmitting}
-                    className="w-full bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs py-3 px-4 rounded-xl shadow-md transition-all active:scale-[0.98] cursor-pointer mt-2"
-                  >
-                    {guideSubmitting ? "Submitting..." : "Get the Guide"}
-                  </button>
-                </form>
-              )}
-            </div>
-          </div>
+          <RoadmapGuideCard />
         </div>
       </section>
 

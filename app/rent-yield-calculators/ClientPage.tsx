@@ -21,6 +21,7 @@ import {
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { SubPageHero } from "../components/SubPageHero";
+import { RoadmapGuideCard } from "../components/RoadmapGuideCard";
 import { TestimonialSection } from "../components/TestimonialSection";
 import { EASE_OUT } from "@/lib/motion";
 
@@ -293,7 +294,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings, pageConten
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             
             {/* Left Column: Context / Content */}
-            <div className="lg:col-span-6 space-y-6 no-print">
+            <div className="lg:col-span-6 space-y-6 no-print order-2 lg:order-1">
               <span className="text-[10px] font-black uppercase tracking-widest text-teal-800 bg-teal-50 border border-teal-100/60 px-3.5 py-1.5 rounded-full w-fit block shadow-sm font-bold">
                 Calculations & Insights
               </span>
@@ -354,7 +355,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings, pageConten
             </div>
 
             {/* Right Column: Wizard Form */}
-            <div className="lg:col-span-6 flex justify-end no-print">
+            <div className="lg:col-span-6 flex justify-end no-print order-1 lg:order-2">
               <div className="w-full max-w-[520px] bg-white rounded-3xl p-8 md:p-10 border border-slate-200 shadow-xl relative overflow-hidden flex flex-col justify-between min-h-[530px] transition-all duration-300 relative overflow-hidden">
                 {/* Signature Benchmark Corner Decoration */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-teal-50 rounded-bl-full opacity-50 pointer-events-none" />
@@ -664,88 +665,9 @@ export default function ClientPage({ settings = {}, pageHeroSettings, pageConten
       </section>
 
       {/* GUIDE DOWNLOAD CARD */}
-      <section className="py-16 lg:py-24 bg-gradient-to-br from-[#0B1F3A] via-[#102A4F] to-[#0B1F3A] text-white relative overflow-hidden">
+      <section className="py-16 lg:py-24 bg-white relative overflow-hidden">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            
-            <div className="space-y-4">
-              <span className="text-[10px] font-black uppercase tracking-widest text-teal-400 bg-teal-500/10 border border-teal-500/20 px-3.5 py-1.5 rounded-full w-fit block font-bold">
-                Guide Download
-              </span>
-              <h2 className="text-white text-[24px] sm:text-[30px] font-black leading-tight font-montserrat">
-                Maximise your returns with our <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-300">Rental Yield Guide</span>
-              </h2>
-              <p className="text-slate-350 text-[13.5px] leading-relaxed">
-                Unlock our comprehensive guide to rental yield analysis, learn what expenses you can claim, and find proven strategies to increase your property portfolio returns.
-              </p>
-
-              <div className="space-y-2.5 pt-2">
-                <div className="flex gap-2.5 items-center text-xs font-semibold text-slate-300">
-                  <ShieldCheck className="w-4.5 h-4.5 text-teal-500 shrink-0" />
-                  <span>How to calculate and improve gross & net yield</span>
-                </div>
-                <div className="flex gap-2.5 items-center text-xs font-semibold text-slate-300">
-                  <ShieldCheck className="w-4.5 h-4.5 text-teal-500 shrink-0" />
-                  <span>Suburbs with the highest rental yields in Australia</span>
-                </div>
-                <div className="flex gap-2.5 items-center text-xs font-semibold text-slate-300">
-                  <ShieldCheck className="w-4.5 h-4.5 text-teal-500 shrink-0" />
-                  <span>Tax deductions and depreciation rules for investors</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-[28px] p-6.5 shadow-xl border border-slate-100 max-w-md lg:ml-auto w-full text-slate-800">
-              {guideSubmitted ? (
-                <div className="text-center py-8 space-y-3">
-                  <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center mx-auto border border-emerald-100">
-                    <CheckCircle2 className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-md font-bold font-montserrat text-[#0B1F3A]">Thank you!</h3>
-                  <p className="text-xs text-slate-500 leading-relaxed">Your guide has been sent to your email. One of our property investment mortgage specialists will follow up with you shortly.</p>
-                </div>
-              ) : (
-                <form onSubmit={handleGuideSubmit} className="space-y-3.5">
-                  <div className="grid grid-cols-1 gap-3">
-                    <input
-                      type="text"
-                      required
-                      placeholder="Your Name"
-                      value={guideName}
-                      onChange={(e) => setGuideName(e.target.value)}
-                      className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-teal-400 focus:bg-white text-slate-800 placeholder-slate-400 transition-all shadow-inner"
-                    />
-                    <input
-                      type="email"
-                      required
-                      placeholder="Email Address"
-                      value={guideEmail}
-                      onChange={(e) => setGuideEmail(e.target.value)}
-                      className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-teal-400 focus:bg-white text-slate-800 placeholder-slate-400 transition-all shadow-inner"
-                    />
-                    <input
-                      type="tel"
-                      required
-                      placeholder="Phone Number"
-                      value={guidePhone}
-                      onChange={(e) => setGuidePhone(e.target.value)}
-                      className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-3.5 py-2.5 text-xs font-semibold focus:outline-none focus:border-teal-400 focus:bg-white text-slate-800 placeholder-slate-400 transition-all shadow-inner"
-                    />
-                  </div>
-                  <p className="text-[9.5px] text-slate-400 leading-relaxed">
-                    By clicking ‘Get the guide’, you acknowledge our <Link href="/privacy-collection-notice" className="text-teal-500 underline hover:text-teal-400">Privacy Collection Notice</Link> and consent to being contacted by a Mortgage Xperts broker.
-                  </p>
-                  <button
-                    type="submit"
-                    disabled={guideSubmitting}
-                    className="w-full bg-teal-600 hover:bg-teal-700 text-white font-extrabold text-xs py-3 px-4 rounded-xl shadow-md transition-all active:scale-[0.98] cursor-pointer mt-2"
-                  >
-                    {guideSubmitting ? "Submitting..." : "Get the Guide"}
-                  </button>
-                </form>
-              )}
-            </div>
-          </div>
+          <RoadmapGuideCard />
         </div>
       </section>
 
