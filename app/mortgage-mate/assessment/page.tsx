@@ -17,7 +17,7 @@ export default function MortgageMateAssessmentPage() {
   };
 
   return (
-    <div className={`min-h-screen ${isSubmitted ? "overflow-y-auto" : "h-screen overflow-hidden"} bg-gradient-to-br from-[#FAF6F0] via-[#F5EFE6] to-[#EAE0D1] flex flex-col font-inter relative`}>
+    <div className="min-h-screen overflow-y-auto bg-gradient-to-br from-[#FAF6F0] via-[#F5EFE6] to-[#EAE0D1] flex flex-col font-inter relative">
       {/* Decorative Premium Glowing Orbs (Layered correctly with z-0) */}
       <div className="absolute top-[15%] left-[5%] w-[500px] h-[500px] rounded-full bg-[#F59E0B]/20 blur-[130px] pointer-events-none z-0 animate-pulse" style={{ animationDuration: '8s' }} />
       <div className="absolute bottom-[15%] right-[5%] w-[600px] h-[600px] rounded-full bg-[#D97706]/15 blur-[150px] pointer-events-none z-0 animate-pulse" style={{ animationDuration: '10s' }} />
@@ -28,12 +28,12 @@ export default function MortgageMateAssessmentPage() {
         <SiteHeader isSticky={true} />
       </div>
 
-      <main className={`relative z-10 flex-1 flex flex-col justify-center py-4 sm:py-6 w-full max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 ${isSubmitted ? "overflow-y-auto py-10" : "h-[calc(100vh-80px)] overflow-hidden"}`}>
-        <div className={isSubmitted ? "w-full" : "grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch h-full py-2"}>
+      <main className={`relative z-10 flex-1 flex flex-col justify-center py-8 sm:py-12 w-full max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 ${isSubmitted ? "py-10" : "min-h-[calc(100vh-80px)]"}`}>
+        <div className={isSubmitted ? "w-full" : "grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start py-2"}>
             
             {/* LEFT COLUMN: The Form inside a beautiful white card container */}
-            <div className={isSubmitted ? "w-full" : "lg:col-span-7 flex flex-col justify-center h-full"}>
-              <div className={isSubmitted ? "w-full overflow-visible" : "bg-white rounded-3xl shadow-[0_15px_40px_rgba(11,31,58,0.06)] border border-slate-100/80 p-6 sm:p-10 flex flex-col justify-between h-full overflow-y-auto max-h-[82vh]"}>
+            <div className={isSubmitted ? "w-full" : "lg:col-span-7 flex flex-col justify-center"}>
+              <div className={isSubmitted ? "w-full overflow-visible" : "bg-white rounded-3xl shadow-[0_15px_40px_rgba(11,31,58,0.06)] border border-slate-100/80 p-6 sm:p-10 flex flex-col justify-between"}>
                 <MortgageMateForm 
                   onClose={handleClose} 
                   compact={!isSubmitted} 
@@ -47,7 +47,7 @@ export default function MortgageMateAssessmentPage() {
 
             {/* RIGHT COLUMN: Relevant Info (Trust, Details, Aakash credentials, etc.) */}
             {!isSubmitted && (
-              <div className="lg:col-span-5 hidden lg:flex flex-col justify-center space-y-5">
+              <div className="lg:col-span-5 hidden lg:flex flex-col justify-start space-y-5 pt-2">
                 
                 {/* Trust Badge */}
                 <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-white/40 p-5 shadow-sm space-y-3.5">

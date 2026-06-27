@@ -29,7 +29,8 @@ import {
   Menu,
   Eye,
   EyeOff,
-  AlertCircle
+  AlertCircle,
+  Phone
 } from "lucide-react";
 
 
@@ -2148,57 +2149,6 @@ export default function AdminPage() {
                           );
                         })}
                       </div>
-
-            {/* TEAM MANAGER TAB */}
-            {activeTab === "team" && (
-              <div className="space-y-4">
-                {teamMembers.length === 0 ? (
-                  <div className="bg-white border border-slate-200/70 rounded-2xl p-12 text-center text-slate-400 space-y-4 flex flex-col items-center justify-center">
-                    <Users className="w-10 h-10 text-slate-300" />
-                    <div className="space-y-1">
-                      <h3 className="font-bold text-slate-700">No Team Members Found</h3>
-                      <p className="text-xs">Add team members to display them on the website.</p>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {teamMembers.map((m) => (
-                      <div key={m.id} className="bg-white border border-slate-200/70 rounded-2xl p-5 hover:shadow-md transition-shadow relative">
-                        <div className="flex gap-4">
-                          <img src={m.image} alt={m.name} className="w-16 h-16 rounded-full object-cover border-2 border-slate-100" />
-                          <div className="flex-1">
-                            <h3 className="text-sm font-bold text-slate-900">{m.name}</h3>
-                            <p className="text-[10px] font-bold text-blue-600 uppercase tracking-wider">{m.role}</p>
-                          </div>
-                        </div>
-                        <div className="mt-4 space-y-2 text-xs text-slate-500">
-                          <p>Order: {m.orderIndex || 0}</p>
-                          <p>{m.email}</p>
-                          <p>{m.phone}</p>
-                        </div>
-                        <div className="mt-4 pt-4 border-t border-slate-100 flex gap-2">
-                          <button onClick={() => handleEditTeamMember(m)} className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-bold text-slate-600">
-                            <Edit className="w-3.5 h-3.5" /> Edit
-                          </button>
-                          <button onClick={() => handleDeleteTeamMember(m.id)} className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg border border-rose-200 hover:bg-rose-50 text-xs font-bold text-rose-600">
-                            <Trash2 className="w-3.5 h-3.5" /> Delete
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                
-                <button
-                  onClick={handleNewTeamMember}
-                  className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5 self-start shadow-sm shadow-blue-500/10 hover:scale-[1.02] active:scale-[0.98]"
-                >
-                  <Plus className="w-4 h-4" />
-                  Add Team Member
-                </button>
-              </div>
-            )}
-
                       {/* Edit Active Slide Fields */}
                       <div className="bg-slate-50/60 border border-slate-200/40 rounded-2xl p-5 space-y-4">
                         <div className="text-[10px] font-black text-blue-600 uppercase tracking-widest border-b border-slate-100 pb-1.5">

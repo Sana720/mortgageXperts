@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default async function NepaliMortgageBrokerAustraliaPage() {
   const members = await executeQuery('SELECT * FROM team_members ORDER BY orderIndex ASC, createdAt DESC');
-  const teamMembers = members.map((m: any) => ({
+  const teamMembers = members.map((m: { name: string; [key: string]: unknown }) => ({
     ...m,
     slug: m.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '')
   }));

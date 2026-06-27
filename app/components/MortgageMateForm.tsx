@@ -102,6 +102,16 @@ export function MortgageMateForm({
     setter(formatted);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (isStepValid()) {
+        if (step < totalSteps) handleNext();
+        else handleSubmit(e as unknown as React.FormEvent);
+      }
+    }
+  };
+
   const handleNext = () => {
     if (step === 8) {
       if (depositFunds === "YES" || depositFunds === "YES_AND_GUARANTOR") {
@@ -197,6 +207,24 @@ export function MortgageMateForm({
     return true;
   };
 
+  const getHelpfulHint = (currentStep: number) => {
+    switch (currentStep) {
+      case 1: return "Your name helps us personalise your assessment summary and dashboard.";
+      case 2: return "We will send your tailored strategy and next steps directly to you.";
+      case 3: return "We respect your time. Let us know the best way for Aakash to reach out.";
+      case 5: return "Knowing your goal helps us filter down to the most relevant lending structures.";
+      case 6: return loanPurpose === "REFINANCE_A_LOAN" 
+        ? "This helps us calculate your Loan-to-Value Ratio (LVR) to unlock better interest rates." 
+        : "This helps us estimate your required deposit and stamp duty costs.";
+      case 7: return "We need this to estimate your monthly repayments and borrowing capacity.";
+      case 8: return "Understanding your deposit source helps us determine if you qualify for LMI waivers or grants.";
+      case 9: return "A clear view of your savings helps us negotiate the best possible rate discounts.";
+      case 10: return "Different lenders have different policies. This helps us match you with the right one.";
+      case 11: return "Any extra context helps Aakash provide a more accurate and comprehensive strategy.";
+      default: return "";
+    }
+  };
+
   if (formSubmitted) {
     return (
       <div className="w-full space-y-6 text-left p-2">
@@ -257,13 +285,13 @@ export function MortgageMateForm({
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h4 className="text-slate-900 text-[14px] font-extrabold">FactFind Completion</h4>
+                    <h4 className="text-slate-900 text-[14px] font-extrabold">Financial Profile Completion</h4>
                     <span className="bg-blue-100 text-[#2563EB] text-[9.5px] font-extrabold uppercase px-1.5 py-0.5 rounded">
                       Current Stage
                     </span>
                   </div>
                   <p className="text-slate-500 text-[12px] leading-relaxed mt-1 font-medium">
-                    Your next step is to complete and submit your FactFind form. This helps Aakash understand your needs and prepare lender fit options.
+                    Your next step is to complete and submit your Financial Profile. This helps Aakash understand your needs and prepare lender fit options.
                   </p>
                 </div>
               </div>
@@ -323,7 +351,7 @@ export function MortgageMateForm({
               </div>
             </div>
 
-            {/* FactFind Interstitial Card */}
+            {/* Financial Profile Interstitial Card */}
             <div className={`border rounded-xl p-5 mt-6 transition-all duration-500 ${dashboardProgress >= 100 ? "bg-emerald-50/60 border-emerald-100" : "bg-blue-50/60 border-blue-100"}`}>
               {dashboardProgress >= 100 ? (
                 <>
@@ -343,7 +371,7 @@ export function MortgageMateForm({
               ) : (
                 <>
                   <span className="text-[#0B1F3A] text-[13.5px] font-bold block">
-                    Preparing your FactFind form...
+                    Preparing your secure profile...
                   </span>
                   <span className="text-slate-500 text-[11px] font-semibold mt-1 block">
                     You&apos;ll be able to continue in just a moment.
@@ -620,21 +648,22 @@ export function MortgageMateForm({
       ) : (
         <div className="flex flex-col justify-between h-full space-y-4">
           <div>
-            <div className="flex items-center justify-between mb-3.5">
-              <div>
-                <span className="text-[9px] text-[#10A3EB] font-extrabold uppercase tracking-widest block">
-                  {step <= 3 ? "Phase 1: Personal Details" : "Phase 2: Property details"}
+            <div className="mb-4 sm:mb-5">
+              <div className="flex items-center justify-between mb-1.5 sm:mb-2">
+                <span className="text-[9.5px] sm:text-[10px] text-[#10A3EB] font-extrabold uppercase tracking-widest block shrink-0 mr-2">
+                  {step <= 3 ? "Phase 1: Personal Details" : "Phase 2: Property Details"}
                 </span>
-                <h2 className="text-[#0B1F3A] text-sm font-extrabold tracking-tight">
-                  {step <= 3 ? `Onboarding Question ${step} of 3` : `Property Question ${step - 3} of 8`}
-                </h2>
+                <div className="text-[9.5px] sm:text-[10px] text-[#10A3EB] font-bold bg-blue-50 border border-blue-100/30 px-2.5 py-1 rounded-md shrink-0">
+                  Step {step} of {totalSteps}
+                </div>
               </div>
-              <div className="text-[10px] text-[#10A3EB] font-bold bg-blue-50 border border-blue-100/30 px-2.5 py-0.5 rounded-md">
-                Step {step} of {totalSteps}
-              </div>
+              
+              <h2 className="text-[#0B1F3A] text-[17px] sm:text-[20px] font-extrabold tracking-tight leading-tight">
+                {step <= 3 ? `Onboarding Question ${step} of 3` : `Property Question ${step - 3} of 8`}
+              </h2>
             </div>
 
-            <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mb-5">
+            <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mb-6 sm:mb-8">
               <div 
                 className="bg-[#10A3EB] h-full rounded-full transition-all duration-300"
                 style={{ width: `${(step / totalSteps) * 100}%` }}
@@ -657,12 +686,12 @@ export function MortgageMateForm({
                       <label className="text-[13.5px] font-extrabold text-[#0B1F3A] block">What is your full name?</label>
                       <div className="relative">
                         <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-                        <input
-                          type="text"
+                        <input type="text"
                           placeholder="Enter your full name"
                           value={fullName}
                           onChange={(e) => setFullName(e.target.value)}
-                          className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
+                          onKeyDown={handleKeyDown}
+                          className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[16px] md:text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
                           required
                           autoFocus
                         />
@@ -677,12 +706,12 @@ export function MortgageMateForm({
                       <div className="space-y-3">
                         <div className="relative">
                           <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-                          <input
-                            type="tel"
+                          <input type="tel"
                             placeholder="Phone number (e.g. 0400 000 000)"
                             value={phone}
                             onChange={(e) => handlePhoneChange(e.target.value)}
-                            className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
+                            onKeyDown={handleKeyDown}
+                          className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[16px] md:text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
                             required
                             autoFocus
                           />
@@ -692,12 +721,12 @@ export function MortgageMateForm({
                         )}
                         <div className="relative">
                           <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-                          <input
-                            type="email"
+                          <input type="email"
                             placeholder="example@email.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
+                            onKeyDown={handleKeyDown}
+                          className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[16px] md:text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
                             required
                           />
                         </div>
@@ -791,12 +820,12 @@ export function MortgageMateForm({
                       </label>
                       <div className="relative">
                         <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-                        <input
-                          type="text"
+                        <input type="text"
                           placeholder="e.g. 750,000"
                           value={propertyWorth}
                           onChange={(e) => handleCurrencyChange(e.target.value, setPropertyWorth)}
-                          className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
+                          onKeyDown={handleKeyDown}
+                          className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[16px] md:text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
                           required
                           autoFocus
                         />
@@ -810,12 +839,12 @@ export function MortgageMateForm({
                       <label className="text-[13.5px] font-extrabold text-[#0B1F3A] block">How much were you looking to borrow?</label>
                       <div className="relative">
                         <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-                        <input
-                          type="text"
+                        <input type="text"
                           placeholder="e.g. 600,000"
                           value={loanAmount}
                           onChange={(e) => handleCurrencyChange(e.target.value, setLoanAmount)}
-                          className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
+                          onKeyDown={handleKeyDown}
+                          className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[16px] md:text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
                           required
                           autoFocus
                         />
@@ -864,12 +893,12 @@ export function MortgageMateForm({
                       <label className="text-[13.5px] font-extrabold text-[#0B1F3A] block">How much deposit do you have?</label>
                       <div className="relative">
                         <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-                        <input
-                          type="text"
+                        <input type="text"
                           placeholder="e.g. 80,000"
                           value={amountOfSavings}
                           onChange={(e) => handleCurrencyChange(e.target.value, setAmountOfSavings)}
-                          className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
+                          onKeyDown={handleKeyDown}
+                          className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[16px] md:text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
                           required
                           autoFocus
                         />
@@ -938,8 +967,25 @@ export function MortgageMateForm({
                           placeholder="Type your comments or questions here..."
                           value={comments}
                           onChange={(e) => setComments(e.target.value)}
-                          className="w-full bg-white border border-slate-200 rounded-2xl py-3 px-4 text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs min-h-[100px]"
+                          onKeyDown={handleKeyDown}
+                          className="w-full bg-white border border-slate-200 rounded-2xl py-3 px-4 text-[16px] md:text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs min-h-[100px]"
                         />
+                      </div>
+                    </div>
+                  )}
+                
+                  {/* Helpful Hint Box (Just below the field) */}
+                  {step > 0 && step !== 4 && step !== 11 && getHelpfulHint(step) !== "" && (
+                    <div className="mt-4 rounded-xl overflow-hidden border border-[#10A3EB]/30 shadow-sm">
+                      <div className="bg-[#10A3EB] px-3 py-1.5 flex items-center gap-1.5 relative">
+                        <div className="absolute -bottom-1.5 left-6 w-3 h-3 bg-[#10A3EB] rotate-45 transform" />
+                        <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span className="text-white text-[11px] font-extrabold uppercase tracking-wide">Helpful hint:</span>
+                      </div>
+                      <div className="bg-sky-50/50 p-3.5 pt-4 text-[12.5px] text-slate-700 font-medium">
+                        {getHelpfulHint(step)}
                       </div>
                     </div>
                   )}
@@ -949,11 +995,11 @@ export function MortgageMateForm({
           </div>
 
           {/* Navigation Buttons */}
-          <div className="flex items-center justify-between pt-4 border-t border-slate-100 mt-6 gap-4">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between pt-4 border-t border-slate-100 mt-6 gap-3 sm:gap-4">
             <button
               type="button"
               onClick={handleBack}
-              className="flex items-center gap-1.5 px-5 py-2.5 rounded-full text-xs font-bold text-slate-500 hover:bg-slate-55 border border-slate-200 transition-all cursor-pointer"
+              className="flex items-center justify-center gap-1.5 px-5 py-3 sm:py-2.5 rounded-full text-xs font-bold text-slate-500 hover:bg-slate-100 border border-slate-200 transition-all cursor-pointer order-2 sm:order-1"
             >
               <ArrowLeft className="w-3.5 h-3.5" /> Back
             </button>
@@ -963,7 +1009,7 @@ export function MortgageMateForm({
                 type="button"
                 onClick={handleNext}
                 disabled={!isStepValid()}
-                className={`flex items-center gap-1.5 px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer ${
+                className={`flex items-center justify-center gap-1.5 px-6 py-3.5 sm:py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer order-1 sm:order-2 ${
                   isStepValid()
                     ? "bg-[#10A3EB] hover:bg-[#0e92d3] text-white hover:scale-[1.01]"
                     : "bg-slate-100 text-slate-400 cursor-not-allowed"
@@ -976,7 +1022,7 @@ export function MortgageMateForm({
                 type="button"
                 onClick={handleSubmit}
                 disabled={!isStepValid() || submitting}
-                className={`flex items-center gap-1.5 px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer ${
+                className={`flex items-center justify-center gap-1.5 px-6 py-3.5 sm:py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer order-1 sm:order-2 ${
                   isStepValid() && !submitting
                     ? "bg-[#10A3EB] hover:bg-[#0e92d3] text-white hover:scale-[1.01]"
                     : "bg-slate-100 text-slate-400 cursor-not-allowed"
@@ -986,6 +1032,23 @@ export function MortgageMateForm({
               </button>
             )}
           </div>
+
+          {/* Helpful Hint & Legal Consent Footer */}
+          {step > 0 && step !== 4 && (
+            <div className="mt-6 space-y-5 border-t border-slate-100 pt-5 pb-2">
+              
+
+              {/* Legal Text */}
+              <div className="text-[9.5px] leading-[1.6] text-slate-400 font-medium">
+                <p className="mb-2">
+                  By providing your contact information, you consent to Mortgage Xperts contacting you at the provided email and phone number to discuss your home loan journey. This may include phone calls, SMS messages, or automated emails. You also acknowledge and agree to our terms of service and privacy policy.
+                </p>
+                <p>
+                  We&apos;re here to simplify your property goals. If you are unable to complete the form, we may securely save your contact details and follow up to assist you. Consent is not required to use our services.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

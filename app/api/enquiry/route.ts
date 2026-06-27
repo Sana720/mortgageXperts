@@ -6,9 +6,20 @@ import nodemailer from 'nodemailer';
 
 export async function POST(request: Request) {
   try {
+    // 1. Basic Security: Block direct API access (Open API protection)
+    // Most legitimate browser requests will include either an Origin or Referer header.
+    const origin = request.headers.get('origin');
+    const referer = request.headers.get('referer');
+    
+    if (!origin && !referer) {
+      console.warn('Blocked direct API access attempt (missing Origin and Referer headers).');
+      return NextResponse.json({ error: 'Direct API access is forbidden for security reasons.' }, { status: 403 });
+    }
+
     const body = await request.json();
     const { type, name, email, phone, savings, income, state, message, details } = body;
 
+    // 2. Input Validation
     if (!name || !email || !phone) {
       return NextResponse.json({ error: 'Missing required fields (name, email, phone)' }, { status: 400 });
     }

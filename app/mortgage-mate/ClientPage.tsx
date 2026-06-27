@@ -81,8 +81,8 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
     },
     {
       icon: ShieldCheck,
-      title: "3. Middle Finance Fact Find",
-      desc: "After this lead form, you are redirected to securely complete the detailed application."
+      title: "3. Middle Finance Profile",
+      desc: "After this lead form, you are redirected to securely complete your detailed financial profile."
     }
   ];
 
@@ -93,11 +93,11 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
     },
     {
       q: "Why do I need to give my details first?",
-      a: "Your contact details let the broker connect your answers with the secure fact-find and follow up with lender-specific guidance."
+      a: "Your contact details let the broker connect your answers with the secure financial profile and follow up with lender-specific guidance."
     },
     {
       q: "What happens after I submit the form?",
-      a: "Your enquiry is saved for Mortgage Xperts, then you are redirected to Middle Finance to complete the detailed fact-find."
+      a: "Your enquiry is saved for Mortgage Xperts, then you are redirected to Middle Finance to complete your detailed financial profile."
     },
     {
       q: "Can first-home buyers, investors and refinancers all use this?",
@@ -366,7 +366,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
                 Strategy call first. Full application after trust is built.
               </h2>
               <p className="text-slate-500 text-[14px] leading-relaxed mt-3 font-medium">
-                The page now asks for only the details needed to qualify the enquiry, then moves serious clients into the Middle Finance fact-find.
+                The page now asks for only the details needed to qualify the enquiry, then moves serious clients into the Middle Finance secure profile.
               </p>
             </div>
 

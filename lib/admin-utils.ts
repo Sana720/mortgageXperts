@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Shared utilities for admin panel integration
  * Provides helper functions for frontend components to fetch and use admin data

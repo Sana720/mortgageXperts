@@ -8,7 +8,17 @@ import { TestimonialSection } from '@/app/components/TestimonialSection';
 import Link from 'next/link';
 import { ArrowRight, Phone, Mail, Users } from 'lucide-react';
 
-export default function NepaliMortgageBrokerAustraliaClient({ initialTeamMembers = [] }: { initialTeamMembers?: any[] }) {
+interface TeamMember {
+  id: string | number;
+  name: string;
+  role: string;
+  email: string;
+  phone: string;
+  slug: string;
+  image: string;
+}
+
+export default function NepaliMortgageBrokerAustraliaClient({ initialTeamMembers = [] }: { initialTeamMembers?: TeamMember[] }) {
   return (
     <div className="bg-[#F0F4FA] min-h-screen font-sans flex flex-col">
       <SiteHeader isSticky={false} />
@@ -42,7 +52,7 @@ export default function NepaliMortgageBrokerAustraliaClient({ initialTeamMembers
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {initialTeamMembers.map((member) => (
             <div 
-              key={member.id} 
+              key={member.id as string} 
               className="group bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-200 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col"
             >
               {/* Card Header Background */}
@@ -57,7 +67,7 @@ export default function NepaliMortgageBrokerAustraliaClient({ initialTeamMembers
                 <div className="absolute -top-12 left-6 md:left-8 w-24 h-24 rounded-full border-4 border-white shadow-md overflow-hidden bg-white z-10 group-hover:scale-105 transition-transform duration-300">
                   {member.image.includes('ui-avatars') ? (
                     <div className="w-full h-full bg-slate-100 flex items-center justify-center text-[#2563EB] font-bold text-2xl" style={{ fontFamily: "var(--font-montserrat, sans-serif)" }}>
-                      {member.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
+                      {member.name.split(' ').map((n: string) => n[0]).join('').substring(0, 2)}
                     </div>
                   ) : (
                     <img 

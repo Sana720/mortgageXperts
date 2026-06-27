@@ -5,12 +5,12 @@ import { executeQuery } from '@/lib/db';
 
 async function getMemberBySlug(slug: string) {
   const members = await executeQuery('SELECT * FROM team_members ORDER BY orderIndex ASC, createdAt DESC');
-  const allMembers = members.map((m: any) => ({
+  const allMembers = members.map((m: { name: string; [key: string]: unknown }) => ({
     ...m,
     slug: m.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
     expertise: []
   }));
-  return allMembers.find((m: any) => m.slug === slug);
+  return allMembers.find((m: { slug: string; [key: string]: unknown }) => m.slug === slug);
 }
 
 export async function generateMetadata(
