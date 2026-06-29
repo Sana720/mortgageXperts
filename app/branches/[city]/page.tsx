@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import BranchClientPage, { CityData } from "./ClientPage";
 import { Metadata } from "next";
 import { loadPageData, buildPageMetadata, buildJsonLd } from "@/lib/pageLoader";
+import { executeQuery } from "@/lib/db";
 
 
 // ── City Data Map ─────────────────────────────────────────────────────────────
@@ -263,7 +264,7 @@ export async function generateMetadata({
 
   return buildPageMetadata(pagePath, pageHeroSettings, settings, {
     title: `Mortgage Xperts ${data.city} | Home Loans in ${data.state}`,
-    description: `${data.city}'s trusted mortgage brokers. Compare 40+ lenders, access local government grants and secure the best home loan rate in ${data.state}. Free consultation.`,
+    description: `${data.city}'s trusted Nepali mortgage brokers. Compare 40+ lenders, access ${data.state} government grants and secure the best home loan rate. Free consultation.`,
     keywords: [
       `mortgage broker ${data.city}`,
       `home loans ${data.city}`,
@@ -295,9 +296,24 @@ export default async function BranchPage({
   const pagePath = `/branches/${city}`;
   const { settings, pageHeroSettings, pageContent } = await loadPageData(pagePath);
 
+  // Fetch branch-specific team lead from DB (editable via admin)
+  type DbMember = { name: string; role: string; image: string; bio: string; phone: string };
+  let dbTeamLead: DbMember | null = null;
+  try {
+    const rows = await executeQuery<DbMember[]>(
+      'SELECT name, role, image, bio, phone FROM team_members WHERE branch = ? LIMIT 1',
+      [city]
+    );
+    if (Array.isArray(rows) && rows.length > 0) {
+      dbTeamLead = rows[0];
+    }
+  } catch {
+    // DB not available — fall back to static data
+  }
+
   const jsonLd = buildJsonLd(
     `Home Loans in ${cityData.city} - Mortgage Xperts`,
-    pageHeroSettings?.meta_description || `${cityData.city}'s trusted mortgage brokers. Compare 40+ lenders and secure the best rate in ${cityData.state}.`,
+    pageHeroSettings?.meta_description || `${cityData.city}'s trusted Nepali mortgage brokers. Compare 40+ lenders and secure the best rate in ${cityData.state}.`,
     pagePath,
     settings,
     [
@@ -315,7 +331,7 @@ export default async function BranchPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <BranchClientPage cityData={cityData} settings={settings} pageHeroSettings={pageHeroSettings} pageContent={pageContent}
+      <BranchClientPage cityData={cityData} settings={settings} pageHeroSettings={pageHeroSettings} pageContent={pageContent} dbTeamLead={dbTeamLead}
       />
     </>
   );

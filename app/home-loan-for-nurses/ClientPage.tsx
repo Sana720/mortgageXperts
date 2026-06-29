@@ -34,6 +34,7 @@ import {
   Plus,
   Minus
 } from "lucide-react";
+import { RoadmapSection } from "../components/RoadmapSection";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { TestimonialSection } from "../components/TestimonialSection";
@@ -95,6 +96,43 @@ export interface PageHeroSettings {
 
 export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
   const { openModal } = useOnboardingModal();
+
+  const handleBtnClick = (e: React.MouseEvent, text: string, link: string) => {
+    const textLower = text.toLowerCase();
+    const isModalTrigger =
+      !link ||
+      link === "#" ||
+      link === "#contact" ||
+      link === "#callback" ||
+      link === "#onboarding" ||
+      (!link.startsWith("#") && (
+        textLower.includes("book") ||
+        textLower.includes("call") ||
+        textLower.includes("consult") ||
+        textLower.includes("apply")
+      ));
+
+    if (isModalTrigger) {
+      e.preventDefault();
+      openModal();
+    } else if (link.startsWith("#")) {
+      e.preventDefault();
+      const targetId = link.substring(1);
+      let el = document.getElementById(targetId);
+      if (!el && (targetId.includes("calc") || targetId.includes("borrow") || targetId.includes("option") || targetId.includes("eligibility"))) {
+        el = document.getElementById("calculator") || 
+             document.getElementById("calculator-section") || 
+             document.getElementById("borrowing") || 
+             document.getElementById("borrowing-capacity") ||
+             document.getElementById("options") ||
+             document.getElementById("eligibility") ||
+             document.getElementById("calculator-tool");
+      }
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
   const [navSticky, setNavSticky] = useState(false);
   const [activeNav, setActiveNav] = useState("overview");
   const navSentinelRef = useRef<HTMLDivElement>(null);
@@ -194,10 +232,11 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
     const sectionIds = [
       "overview",
       "benefits",
+      "roadmap",
+      "calculator-section",
       "lmi-waivers",
       "deposit-requirements",
       "grants",
-      "calculator-section",
       "checklist-section",
       "faqs",
       "contact"
@@ -275,10 +314,11 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
   const navItems = [
     { id: "overview", label: "Overview", icon: HomeIcon },
     { id: "benefits", label: "Benefits", icon: Sparkles },
+    { id: "roadmap", label: "Roadmap", icon: Calendar },
+    { id: "calculator-section", label: "Calculator", icon: Calculator },
     { id: "lmi-waivers", label: "LMI Waivers", icon: Percent },
     { id: "deposit-requirements", label: "Deposit Needs", icon: Wallet },
     { id: "grants", label: "Govt Grants", icon: Landmark },
-    { id: "calculator-section", label: "Calculator", icon: Calculator },
     { id: "checklist-section", label: "Required Docs", icon: FileText },
     { id: "faqs", label: "FAQs", icon: HelpCircle },
     { id: "contact", label: "Enquire Now", icon: ArrowRight }
@@ -372,44 +412,20 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
 
               {/* CTAs */}
               <motion.div variants={premiumFadeUp} className="flex flex-wrap items-center gap-4">
-                {(!btn1Link || btn1Link === "#" || btn1Link === "#contact" || btn1Link === "#callback") ? (
-                  <button
-                    type="button"
-                    onClick={openModal}
-                    className="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-emerald-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap cursor-pointer border-0"
-                  >
-                    {btn1Text} <ArrowRight className="w-4 h-4" />
-                  </button>
-                ) : (
-                  <Link
-                    href={btn1Link}
-                    className="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-emerald-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap"
-                  >
-                    {btn1Text} <ArrowRight className="w-4 h-4" />
-                  </Link>
-                )}
-                {(btn2Link === "#contact" || btn2Link === "#callback") ? (
-                  <button
-                    type="button"
-                    onClick={openModal}
-                    className="inline-flex items-center justify-center gap-2 border-2 border-emerald-600 text-emerald-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-emerald-600 hover:text-white text-center w-full sm:w-auto whitespace-nowrap cursor-pointer border-0 bg-transparent"
-                  >
-                    {btn2Text}
-                  </button>
-                ) : (
-                  <a
-                    href={btn2Link}
-                    onClick={(e) => {
-                      if (btn2Link.startsWith("#")) {
-                        e.preventDefault();
-                        document.getElementById(btn2Link.substring(1))?.scrollIntoView({ behavior: "smooth" });
-                      }
-                    }}
-                    className="inline-flex items-center justify-center gap-2 border-2 border-emerald-600 text-emerald-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-emerald-600 hover:text-white text-center w-full sm:w-auto whitespace-nowrap"
-                  >
-                    {btn2Text}
-                  </a>
-                )}
+                <a
+                  href={btn1Link}
+                  onClick={(e) => handleBtnClick(e, btn1Text, btn1Link)}
+                  className="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-emerald-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap cursor-pointer"
+                >
+                  {btn1Text} <ArrowRight className="w-4 h-4" />
+                </a>
+                <a
+                  href={btn2Link}
+                  onClick={(e) => handleBtnClick(e, btn2Text, btn2Link)}
+                  className="inline-flex items-center justify-center gap-2 border-2 border-emerald-600 text-emerald-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-emerald-600 hover:text-white text-center w-full sm:w-auto whitespace-nowrap cursor-pointer bg-transparent"
+                >
+                  {btn2Text}
+                </a>
               </motion.div>
 
               {/* Trust Reviews Badge Row */}
@@ -607,164 +623,8 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
         </div>
       </section>
 
-      {/* ── SECTION 3: EXCLUSIVE DISCOUNTS & LMI WAIVERS ── */}
-      <section id="lmi-waivers" className="py-16 md:py-24 bg-slate-50 border-b border-slate-100 relative">
-        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(#0B1F3A 1.5px, transparent 1.5px)", backgroundSize: "24px 24px" }} />
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
-          
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-2 bg-white shadow-sm border border-emerald-100 rounded-full px-4 py-2 mb-4">
-              <Star className="w-3.5 h-3.5 text-emerald-600 fill-emerald-600" />
-              <span className="text-[10px] font-bold tracking-widest uppercase text-emerald-700">Waiver Schemes</span>
-            </div>
-            <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-tight mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-              Exclusive Discounts &amp; <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">Waived LMI Offers</span>
-            </h2>
-            <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed">
-              Lenders understand that nurses are essential workers, and some offer exclusive discounts or waive LMI fees altogether.
-            </p>
-          </div>
+      <RoadmapSection colorTheme="emerald" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <div className="bg-white border border-slate-200 rounded-3xl p-8 hover:shadow-lg transition-all duration-300 relative overflow-hidden group">
-              <div className="absolute top-0 left-0 w-full h-1.5 bg-emerald-600" />
-              <h3 className="text-[#0B1F3A] text-[18px] font-black mb-4">Waived LMI up to 90% LVR</h3>
-              <p className="text-slate-550 text-[13.5px] leading-relaxed">
-                If you have a deposit of 10% (instead of the standard 20%), you might still avoid paying LMI altogether, saving you thousands in upfront bank fees.
-              </p>
-            </div>
-
-            <div className="bg-white border border-slate-200 rounded-3xl p-8 hover:shadow-lg transition-all duration-300 relative overflow-hidden group">
-              <div className="absolute top-0 left-0 w-full h-1.5 bg-teal-500" />
-              <h3 className="text-[#0B1F3A] text-[18px] font-black mb-4">Public Hospital Interest Rate Cuts</h3>
-              <p className="text-slate-500 text-[13.5px] leading-relaxed">
-                Interest rate cuts or special medical staff packages apply if you are employed in a public hospital, health service provider, or registered nursing clinic.
-              </p>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* ── SECTION 4: DEPOSIT REQUIREMENTS ── */}
-      <section id="deposit-requirements" className="py-16 md:py-24 bg-white border-b border-slate-100">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
-          <div className="grid grid-cols-1 lg:grid-cols-[52%_48%] gap-12 items-center">
-            
-            <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-100 rounded-full px-4 py-2">
-                <Wallet className="w-3.5 h-3.5 text-emerald-600" />
-                <span className="text-[10px] font-bold tracking-widest uppercase text-emerald-700">Deposits Explained</span>
-              </div>
-              <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.1]" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                Deposit Requirements <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">for Nurses</span>
-              </h2>
-              <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed">
-                Most home loans require a deposit of at least 20% of the property price. However, nurses often have access to loans with smaller deposits, sometimes as low as 5%. This means you can enter the property market sooner without waiting years to save a large deposit.
-              </p>
-              
-              {/* Premium Styled Callout/Alert */}
-              <div className="bg-emerald-50/40 border border-emerald-100/60 rounded-[24px] p-5 flex items-start gap-4 mt-6">
-                <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center shrink-0 text-emerald-600">
-                  <AlertCircle className="w-5.5 h-5.5" />
-                </div>
-                <div>
-                  <h4 className="text-[14px] font-extrabold text-[#0B1F3A]">Flexible Policy Application</h4>
-                  <p className="text-slate-600 text-[12.5px] leading-relaxed mt-0.5">
-                    Nurses may be eligible for LMI waivers through specialized medical lending packages, or through government-backed schemes.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Card Panel */}
-            <div className="bg-gradient-to-br from-slate-50 to-slate-100/70 border border-slate-200/80 rounded-3xl p-6 md:p-8 space-y-6 relative overflow-hidden shadow-sm">
-              <div className="absolute top-0 right-0 w-28 h-28 bg-emerald-100/20 opacity-30 rounded-bl-full pointer-events-none" />
-              <h3 className="text-[#0B1F3A] text-[18px] sm:text-[20px] font-black" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                Typical Nurse Deposit Scenarios
-              </h3>
-              <div className="space-y-4">
-                {[
-                  {
-                    title: "20% Deposit (Standard)",
-                    desc: "Requires standard deposit. LMI waived automatically for all applicants."
-                  },
-                  {
-                    title: "10% Deposit (Healthcare Specialist)",
-                    desc: "No LMI charged under specific Medical professional guidelines."
-                  },
-                  {
-                    title: "5% Deposit (Government Scheme)",
-                    desc: "LMI waived under the First Home Guarantee scheme for eligible healthcare workers."
-                  }
-                ].map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="flex gap-4 items-start bg-white border border-slate-200/60 rounded-2xl p-5 shadow-sm hover:border-emerald-500/20 hover:shadow-md transition-all duration-300"
-                  >
-                    <div className="w-7 h-7 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center font-black text-xs shrink-0 mt-0.5 border border-emerald-100/50">
-                      {idx + 1}
-                    </div>
-                    <div>
-                      <h4 className="text-[#0B1F3A] font-extrabold text-[14.5px]">{item.title}</h4>
-                      <p className="text-slate-500 text-[12.5px] leading-relaxed mt-0.5">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* ── SECTION 5: GOVERNMENT GRANTS & SCHEMES ── */}
-      <section id="grants" className="py-16 md:py-24 bg-slate-50 border-b border-slate-100">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-2 bg-white shadow-sm border border-emerald-100 rounded-full px-4 py-2 mb-4">
-              <Landmark className="w-3.5 h-3.5 text-emerald-600" />
-              <span className="text-[10px] font-bold tracking-widest uppercase text-emerald-700">Government Support</span>
-            </div>
-            <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-tight mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-              Using Government Grants <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">&amp; Schemes</span>
-            </h2>
-            <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed">
-              In addition to lender benefits, you may be eligible for government grants and schemes designed to support first-home buyers and essential workers:
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                title: "First Home Owner Grant (FHOG)",
-                desc: "A cash grant to help with the purchase of your first home, which varies by state."
-              },
-              {
-                title: "Stamp Duty Concessions or Exemptions",
-                desc: "Some states offer reduced or waived stamp duty fees for eligible first-time buyers."
-              },
-              {
-                title: "Home Guarantee Schemes",
-                desc: "These allow you to buy with a deposit as low as 5% without paying LMI by providing a government guarantee on your loan."
-              }
-            ].map((grant, idx) => (
-              <div key={idx} className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 hover:shadow-md transition-all duration-300 flex flex-col justify-between">
-                <div>
-                  <h3 className="text-[#0B1F3A] text-[16px] font-black mb-3">{grant.title}</h3>
-                  <p className="text-slate-500 text-[12.5px] leading-relaxed">{grant.desc}</p>
-                </div>
-                <div className="pt-6 mt-6 border-t border-slate-100 flex justify-between items-center text-[11px] font-bold uppercase tracking-wider text-emerald-600">
-                  <span>Learn eligibility</span>
-                  <ChevronRight className="w-3.5 h-3.5" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── SECTION 6: NURSES SPECIALIST CALCULATOR ── */}
       <section id="calculator-section" className="py-16 md:py-24 bg-white border-b border-slate-100 relative">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-[33%_67%] gap-8 lg:gap-12 items-center">
@@ -999,6 +859,168 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
           </div>
         </div>
       </section>
+
+      {/* ── SECTION 3: EXCLUSIVE DISCOUNTS & LMI WAIVERS ── */}
+      <section id="lmi-waivers" className="py-16 md:py-24 bg-slate-50 border-b border-slate-100 relative">
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(#0B1F3A 1.5px, transparent 1.5px)", backgroundSize: "24px 24px" }} />
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
+          
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="inline-flex items-center gap-2 bg-white shadow-sm border border-emerald-100 rounded-full px-4 py-2 mb-4">
+              <Star className="w-3.5 h-3.5 text-emerald-600 fill-emerald-600" />
+              <span className="text-[10px] font-bold tracking-widest uppercase text-emerald-700">Waiver Schemes</span>
+            </div>
+            <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-tight mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+              Exclusive Discounts &amp; <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">Waived LMI Offers</span>
+            </h2>
+            <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed">
+              Lenders understand that nurses are essential workers, and some offer exclusive discounts or waive LMI fees altogether.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div className="bg-white border border-slate-200 rounded-3xl p-8 hover:shadow-lg transition-all duration-300 relative overflow-hidden group">
+              <div className="absolute top-0 left-0 w-full h-1.5 bg-emerald-600" />
+              <h3 className="text-[#0B1F3A] text-[18px] font-black mb-4">Waived LMI up to 90% LVR</h3>
+              <p className="text-slate-550 text-[13.5px] leading-relaxed">
+                If you have a deposit of 10% (instead of the standard 20%), you might still avoid paying LMI altogether, saving you thousands in upfront bank fees.
+              </p>
+            </div>
+
+            <div className="bg-white border border-slate-200 rounded-3xl p-8 hover:shadow-lg transition-all duration-300 relative overflow-hidden group">
+              <div className="absolute top-0 left-0 w-full h-1.5 bg-teal-500" />
+              <h3 className="text-[#0B1F3A] text-[18px] font-black mb-4">Public Hospital Interest Rate Cuts</h3>
+              <p className="text-slate-500 text-[13.5px] leading-relaxed">
+                Interest rate cuts or special medical staff packages apply if you are employed in a public hospital, health service provider, or registered nursing clinic.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── SECTION 4: DEPOSIT REQUIREMENTS ── */}
+      <section id="deposit-requirements" className="py-16 md:py-24 bg-white border-b border-slate-100">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+          <div className="grid grid-cols-1 lg:grid-cols-[52%_48%] gap-12 items-center">
+            
+            <div className="space-y-6">
+              <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-100 rounded-full px-4 py-2">
+                <Wallet className="w-3.5 h-3.5 text-emerald-600" />
+                <span className="text-[10px] font-bold tracking-widest uppercase text-emerald-700">Deposits Explained</span>
+              </div>
+              <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.1]" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                Deposit Requirements <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">for Nurses</span>
+              </h2>
+              <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed">
+                Most home loans require a deposit of at least 20% of the property price. However, nurses often have access to loans with smaller deposits, sometimes as low as 5%. This means you can enter the property market sooner without waiting years to save a large deposit.
+              </p>
+              
+              {/* Premium Styled Callout/Alert */}
+              <div className="bg-emerald-50/40 border border-emerald-100/60 rounded-[24px] p-5 flex items-start gap-4 mt-6">
+                <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center shrink-0 text-emerald-600">
+                  <AlertCircle className="w-5.5 h-5.5" />
+                </div>
+                <div>
+                  <h4 className="text-[14px] font-extrabold text-[#0B1F3A]">Flexible Policy Application</h4>
+                  <p className="text-slate-600 text-[12.5px] leading-relaxed mt-0.5">
+                    Nurses may be eligible for LMI waivers through specialized medical lending packages, or through government-backed schemes.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Card Panel */}
+            <div className="bg-gradient-to-br from-slate-50 to-slate-100/70 border border-slate-200/80 rounded-3xl p-6 md:p-8 space-y-6 relative overflow-hidden shadow-sm">
+              <div className="absolute top-0 right-0 w-28 h-28 bg-emerald-100/20 opacity-30 rounded-bl-full pointer-events-none" />
+              <h3 className="text-[#0B1F3A] text-[18px] sm:text-[20px] font-black" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                Typical Nurse Deposit Scenarios
+              </h3>
+              <div className="space-y-4">
+                {[
+                  {
+                    title: "20% Deposit (Standard)",
+                    desc: "Requires standard deposit. LMI waived automatically for all applicants."
+                  },
+                  {
+                    title: "10% Deposit (Healthcare Specialist)",
+                    desc: "No LMI charged under specific Medical professional guidelines."
+                  },
+                  {
+                    title: "5% Deposit (Government Scheme)",
+                    desc: "LMI waived under the First Home Guarantee scheme for eligible healthcare workers."
+                  }
+                ].map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="flex gap-4 items-start bg-white border border-slate-200/60 rounded-2xl p-5 shadow-sm hover:border-emerald-500/20 hover:shadow-md transition-all duration-300"
+                  >
+                    <div className="w-7 h-7 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center font-black text-xs shrink-0 mt-0.5 border border-emerald-100/50">
+                      {idx + 1}
+                    </div>
+                    <div>
+                      <h4 className="text-[#0B1F3A] font-extrabold text-[14.5px]">{item.title}</h4>
+                      <p className="text-slate-500 text-[12.5px] leading-relaxed mt-0.5">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ── SECTION 5: GOVERNMENT GRANTS & SCHEMES ── */}
+      <section id="grants" className="py-16 md:py-24 bg-slate-50 border-b border-slate-100">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="inline-flex items-center gap-2 bg-white shadow-sm border border-emerald-100 rounded-full px-4 py-2 mb-4">
+              <Landmark className="w-3.5 h-3.5 text-emerald-600" />
+              <span className="text-[10px] font-bold tracking-widest uppercase text-emerald-700">Government Support</span>
+            </div>
+            <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-tight mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+              Using Government Grants <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">&amp; Schemes</span>
+            </h2>
+            <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed">
+              In addition to lender benefits, you may be eligible for government grants and schemes designed to support first-home buyers and essential workers:
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                title: "First Home Owner Grant (FHOG)",
+                desc: "A cash grant to help with the purchase of your first home, which varies by state."
+              },
+              {
+                title: "Stamp Duty Concessions or Exemptions",
+                desc: "Some states offer reduced or waived stamp duty fees for eligible first-time buyers."
+              },
+              {
+                title: "Home Guarantee Schemes",
+                desc: "These allow you to buy with a deposit as low as 5% without paying LMI by providing a government guarantee on your loan."
+              }
+            ].map((grant, idx) => (
+              <div key={idx} className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 hover:shadow-md transition-all duration-300 flex flex-col justify-between">
+                <div>
+                  <h3 className="text-[#0B1F3A] text-[16px] font-black mb-3">{grant.title}</h3>
+                  <p className="text-slate-500 text-[12.5px] leading-relaxed">{grant.desc}</p>
+                </div>
+                <div className="pt-6 mt-6 border-t border-slate-100 flex justify-between items-center text-[11px] font-bold uppercase tracking-wider text-emerald-600">
+                  <span>Learn eligibility</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SECTION 6: NURSES SPECIALIST CALCULATOR ── */}
+      
+      
+      
 
       {/* ── SECTION 7: CHECKLIST DOCUMENT AUDIT ── */}
       <section id="checklist-section" className="py-16 md:py-24 bg-slate-50 border-b border-slate-100">
@@ -1258,7 +1280,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                         required
                         value={formData.phone}
                         onChange={handleInputChange}
-                        placeholder="0400 000 000"
+                        placeholder=""
                         className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>

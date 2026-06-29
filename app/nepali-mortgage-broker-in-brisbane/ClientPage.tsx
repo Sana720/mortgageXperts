@@ -19,6 +19,7 @@ export function ClientPage({ settings }: ClientPageProps) {
       <SubPageHero
         pageTitle="Why Use Mortgage Xperts?"
         themeColor="blue"
+        layoutType="clean"
         pageHeroSettings={{
           hero_badge: "Nepali Mortgage Broker in Brisbane",
           hero_title: "Why Use Mortgage Xperts?",
@@ -32,7 +33,7 @@ export function ClientPage({ settings }: ClientPageProps) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="relative rounded-3xl overflow-hidden shadow-2xl h-[400px] sm:h-[500px] lg:h-[600px] order-2 lg:order-1">
             <Image
-              src="/images/family_couch_laptop.png"
+              src="/images/first_home_family_modern.png"
               alt="Family looking at laptop"
               fill
               className="object-cover"
@@ -54,28 +55,25 @@ export function ClientPage({ settings }: ClientPageProps) {
           <div className="space-y-6 order-1 lg:order-2">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-100/50 border border-blue-200">
               <Users className="w-4 h-4 text-[#2563EB]" />
-              <span className="text-[12px] font-bold text-[#2563EB] uppercase tracking-wider">Who We Are</span>
+              <span className="text-[12px] font-bold text-[#2563EB] uppercase tracking-wider">Our Difference</span>
             </div>
             
             <h2 
               className="text-[28px] sm:text-[36px] font-bold leading-tight text-[#0B1F3A]"
               style={{ fontFamily: "var(--font-montserrat, sans-serif)" }}
             >
-              Your Trusted Nepali Mortgage Broker in Australia.
+              Why Hundreds of Families Choose Mortgage Xperts.
             </h2>
             
             <div className="space-y-5 text-[15px] sm:text-[16px] text-slate-600 leading-relaxed">
               <p>
-                As a trusted Nepali mortgage broker in Australia, we understand the unique challenges our community faces when navigating the complex Australian lending system — and we make the process simple, transparent, and stress-free.
+                Navigating the Australian property market doesn't have to be overwhelming. As a premier Nepali mortgage broker, we bridge the gap between complex banking policies and your property dreams.
               </p>
               <p>
-                We proudly serve clients all across Australia, with a strong presence in Sydney and growing networks in Melbourne, Brisbane, Adelaide, and Perth.
+                We do not just find you a loan; we structure your finance for long-term success, ensuring you secure the best possible deal with zero stress and absolute clarity.
               </p>
               <p>
-                Mortgage Xperts - Australia was founded with a mission: to empower the Nepali community in Australia by providing reliable, honest, and personalised mortgage solutions.
-              </p>
-              <p>
-                We specialise in supporting Nepali first-home buyers, visa holders, self-employed clients, investors, and families looking for refinancing options. With access to 40+ lenders, including major banks and specialist lenders, we work tirelessly to find the most suitable home loan tailored to your financial goals and circumstances.
+                From bilingual support to fierce negotiation with over 40+ major banks and specialist lenders, we ensure your financial interests always come first.
               </p>
             </div>
           </div>
@@ -89,43 +87,35 @@ export function ClientPage({ settings }: ClientPageProps) {
             <div className="space-y-6">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200">
                 <Target className="w-4 h-4 text-amber-600" />
-                <span className="text-[12px] font-bold text-amber-700 uppercase tracking-wider">What We Do</span>
+                <span className="text-[12px] font-bold text-amber-700 uppercase tracking-wider">Value Proposition</span>
               </div>
               
               <h2 
                 className="text-[28px] sm:text-[36px] font-bold leading-tight text-[#0B1F3A]"
                 style={{ fontFamily: "var(--font-montserrat, sans-serif)" }}
               >
-                A wide range of mortgage services tailored for you.
+                Zero Hidden Fees. Complete Transparency.
               </h2>
               
               <div className="space-y-5 text-[15px] sm:text-[16px] text-slate-600 leading-relaxed">
                 <div>
-                  <strong className="text-[#0B1F3A] block mb-1">✔ First Home Buyer Loans</strong>
-                  From government grants to lender eligibility, we guide first-time buyers through every step of the home buying journey.
+                  <strong className="text-[#0B1F3A] block mb-1">✔ Unbiased Advice</strong>
+                  We work for you, not the lenders. We rigorously compare thousands of home loan products to present you with the top options for your specific scenario.
                 </div>
                 <div>
-                  <strong className="text-[#0B1F3A] block mb-1">✔ Refinance & Rate Reviews</strong>
-                  Save money with a smarter home loan. We compare offers from major Australian lenders to get the best rate for you.
+                  <strong className="text-[#0B1F3A] block mb-1">✔ 100% Free Service</strong>
+                  Our comprehensive broker service is completely free to you. We are paid a fully disclosed commission by the lender you choose, meaning no out-of-pocket costs.
                 </div>
                 <div>
-                  <strong className="text-[#0B1F3A] block mb-1">✔ Visa-Holder Home Loans</strong>
-                  Specialising in 485, 491, 482, 189, 190, and other visa categories — we help non-PR buyers understand exactly what is possible.
-                </div>
-                <div>
-                  <strong className="text-[#0B1F3A] block mb-1">✔ Investment Loans</strong>
-                  For Nepali investors looking to build property portfolios in Australia.
-                </div>
-                <div>
-                  <strong className="text-[#0B1F3A] block mb-1">✔ Self-Employed Home Loans</strong>
-                  We simplify income documentation and find lenders who understand small business owners.
+                  <strong className="text-[#0B1F3A] block mb-1">✔ Lifelong Partnership</strong>
+                  Our job doesn't end at settlement. We proactively monitor your loan, offering regular rate reviews to ensure you are always on the most competitive deal.
                 </div>
               </div>
 
               <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
-                  "Our Mission: To make homeownership achievable for all Nepali families in Australia.",
-                  "Our Vision: To become Australia’s most trusted mortgage brokerage for Nepali home buyers."
+                  "No Hidden Charges.",
+                  "Trusted & Experienced."
                 ].map((feature, i) => (
                   <div key={i} className="flex items-start gap-2.5">
                     <CheckCircle className="w-5 h-5 text-[#2563EB] shrink-0 mt-0.5" />
@@ -137,7 +127,7 @@ export function ClientPage({ settings }: ClientPageProps) {
 
             <div className="relative rounded-3xl overflow-hidden shadow-2xl h-[400px] sm:h-[500px] lg:h-[700px]">
               <Image
-                src="/images/cta-couple.png"
+                src="/images/mortgage_broker_handshake.png"
                 alt="Happy couple looking at keys"
                 fill
                 className="object-cover"

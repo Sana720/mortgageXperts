@@ -908,7 +908,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
                       <input
                         type="tel"
                         id="enq-phone"
-                        placeholder="0400 000 000"
+                        placeholder=""
                         required
                         value={enquiryPhone}
                         onChange={(e) => setEnquiryPhone(e.target.value)}

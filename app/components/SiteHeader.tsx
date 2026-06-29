@@ -115,7 +115,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
     { name: "Why Use Mortgage Xperts ?", href: "/nepali-mortgage-broker-in-brisbane" },
     { name: "What We Do", href: "/best-nepali-mortgage-broker-australia" },
     { name: "Who We Help", href: "/top-nepali-mortgage-broker-in-australia" },
-    { name: "Our Team", href: "/nepali-mortgage-broker-australia" },
+    { name: "Our Team", href: "/our-team" },
   ];
 
   const freeResourcesMenu = [
@@ -126,13 +126,23 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
   const resourcesMenu = [
     { name: "The Xperts News & Insights", href: "/the-xperts-news-insights" },
     { name: "Blog", href: "/blog" },
+    {
+      name: "Property Reports",
+      href: "/resources/property-reports",
+      submenu: [
+        { name: "Property Reports Hub", href: "/resources/property-reports" },
+        { name: "Canning Vale, WA", href: "/resources/property-reports/canning-vale-wa" },
+        { name: "Baldivis, WA", href: "/resources/property-reports/baldivis-wa" },
+        { name: "Box Hill, VIC", href: "/resources/property-reports/box-hill-vic" },
+      ]
+    },
     { name: "First Home Guide", href: "/first-home-guide" },
     { name: "Refinancing Guide", href: "/refinancing-guide" },
     { name: "Property Investment Guide", href: "/property-investment-guide" },
-    { 
-      name: "Free Resources", 
-      href: "#", 
-      submenu: freeResourcesMenu 
+    {
+      name: "Free Resources",
+      href: "#",
+      submenu: freeResourcesMenu
     },
   ];
 
@@ -546,12 +556,16 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                 <div className="border-b border-slate-50 pb-2 flex flex-col gap-1.5">
                   <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Resources</span>
                   <div className="pl-2 flex flex-col gap-2.5 text-[13.5px] font-medium text-slate-600">
-                    <Link href="/#guides" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">
-                      Mortgage Resource Hub
+                    <Link href="/resources/property-reports" onClick={() => setIsMobileMenuOpen(false)} className="font-semibold hover:text-[#2563EB] transition-colors">
+                      Property Reports
                     </Link>
-                    <Link href="/home-guarantee-scheme" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">
-                      Home Guarantee Scheme
-                    </Link>
+                    <div className="pl-3 flex flex-col gap-2 text-[12.5px] text-slate-500">
+                      <Link href="/resources/property-reports/canning-vale-wa" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">↳ Canning Vale, WA</Link>
+                      <Link href="/resources/property-reports/baldivis-wa" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">↳ Baldivis, WA</Link>
+                      <Link href="/resources/property-reports/box-hill-vic" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">↳ Box Hill, VIC</Link>
+                    </div>
+                    <Link href="/the-xperts-news-insights" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">News & Insights</Link>
+                    <Link href="/first-home-guide" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">First Home Guide</Link>
                   </div>
                 </div>
 

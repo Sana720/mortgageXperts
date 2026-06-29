@@ -81,7 +81,11 @@ export interface PageHeroSettings {
   slides?: string;
 }
 
-export default function BranchClientPage({ cityData, settings = {}, pageHeroSettings, pageContent }: { cityData: CityData; settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
+export default function BranchClientPage({ cityData, settings = {}, pageHeroSettings, pageContent, dbTeamLead }: { cityData: CityData; settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string; dbTeamLead?: { name: string; role: string; image: string; bio: string; phone: string } | null }) {
+  // Use DB team lead (admin-editable) if available, otherwise fall back to static city data
+  const effectiveTeamLead: { name: string; title: string; image: string; bio: string; phone?: string } = dbTeamLead
+    ? { name: dbTeamLead.name, title: dbTeamLead.role, image: dbTeamLead.image, bio: dbTeamLead.bio, phone: dbTeamLead.phone }
+    : cityData.teamLead;
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -452,12 +456,12 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
                 className="text-[28px] sm:text-[36px] font-bold leading-tight text-white"
                 style={{ fontFamily: "var(--font-montserrat, sans-serif)" }}
               >
-                Meet {cityData.teamLead.name}
+                Meet {effectiveTeamLead.name}
               </h2>
               <p className="text-[15px] font-bold" style={{ color: cityData.accentColor }}>
-                {cityData.teamLead.title}
+                {effectiveTeamLead.title}
               </p>
-              <p className="text-white/70 text-[14.5px] leading-relaxed">{cityData.teamLead.bio}</p>
+              <p className="text-white/70 text-[14.5px] leading-relaxed">{effectiveTeamLead.bio}</p>
 
               <div className="flex flex-wrap gap-3 pt-2">
                 <Link
@@ -465,13 +469,13 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
                   className="inline-flex items-center gap-2 font-bold text-[13px] py-3 px-6 rounded-full text-white transition-all hover:scale-[1.03]"
                   style={{ background: cityData.accentColor }}
                 >
-                  Book with {cityData.teamLead.name.split(" ")[0]} <ArrowRight className="w-4 h-4" />
+                  Book with {effectiveTeamLead.name.split(" ")[0]} <ArrowRight className="w-4 h-4" />
                 </Link>
                 <a
-                  href={`tel:${cityData.officePhone.replace(/\s/g, "")}`}
+                  href={`tel:${(effectiveTeamLead.phone || cityData.officePhone).replace(/\s/g, "")}`}
                   className="inline-flex items-center gap-2 font-bold text-[13px] py-3 px-6 rounded-full border border-white/25 text-white hover:bg-white/10 transition-all"
                 >
-                  <Phone className="w-4 h-4" /> {cityData.officePhone}
+                  <Phone className="w-4 h-4" /> {effectiveTeamLead.phone || cityData.officePhone}
                 </a>
               </div>
 
@@ -674,7 +678,7 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
                       <input
                         type="tel"
                         required
-                        placeholder="0400 000 000"
+                        placeholder=""
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-slate-400 focus:bg-white transition-all shadow-inner"

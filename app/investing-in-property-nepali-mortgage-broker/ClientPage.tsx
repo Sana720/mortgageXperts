@@ -33,6 +33,7 @@ import {
   Coins,
   Landmark
 } from "lucide-react";
+import { RoadmapSection } from "../components/RoadmapSection";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { TestimonialSection } from "../components/TestimonialSection";
@@ -100,6 +101,43 @@ export interface PageHeroSettings {
 
 export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
   const { openModal } = useOnboardingModal();
+
+  const handleBtnClick = (e: React.MouseEvent, text: string, link: string) => {
+    const textLower = text.toLowerCase();
+    const isModalTrigger =
+      !link ||
+      link === "#" ||
+      link === "#contact" ||
+      link === "#callback" ||
+      link === "#onboarding" ||
+      (!link.startsWith("#") && (
+        textLower.includes("book") ||
+        textLower.includes("call") ||
+        textLower.includes("consult") ||
+        textLower.includes("apply")
+      ));
+
+    if (isModalTrigger) {
+      e.preventDefault();
+      openModal();
+    } else if (link.startsWith("#")) {
+      e.preventDefault();
+      const targetId = link.substring(1);
+      let el = document.getElementById(targetId);
+      if (!el && (targetId.includes("calc") || targetId.includes("borrow") || targetId.includes("option") || targetId.includes("eligibility"))) {
+        el = document.getElementById("calculator") || 
+             document.getElementById("calculator-section") || 
+             document.getElementById("borrowing") || 
+             document.getElementById("borrowing-capacity") ||
+             document.getElementById("options") ||
+             document.getElementById("eligibility") ||
+             document.getElementById("calculator-tool");
+      }
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
   const badgeText = pageHeroSettings?.hero_badge || "Strategic Property Investment";
   const titleText = pageHeroSettings?.hero_title || "Investing in Property";
   const subtextText = pageHeroSettings?.hero_subtext || "Property investment can be a powerful way to build long-term wealth, but it’s not something you should rush into without a plan. As your mortgage broker, I’ll help you understand the market, review your financial position, and find the right strategy for your goals.";
@@ -115,9 +153,9 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
   const navSentinelRef = useRef<HTMLDivElement>(null);
 
   // Dynamic Scroll Progress state for Roadmap Steps
-  const roadmapSectionRef = useRef<HTMLDivElement>(null);
-  const [activeStepIndex, setActiveStepIndex] = useState(0);
-  const [mobileActiveStepIndex, setMobileActiveStepIndex] = useState(0);
+  
+  
+  
 
   // Rental Yield & Cash Flow Calculator State
   const [purchasePrice, setPurchasePrice] = useState(750000);
@@ -192,35 +230,17 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Scroll spy Roadmap effect
-  useEffect(() => {
-    const handleScroll = () => {
-      const el = roadmapSectionRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const sectionHeight = el.offsetHeight;
-      const viewportHeight = window.innerHeight;
-      const scrolledIntoSection = -rect.top;
-      const scrollableRun = sectionHeight - viewportHeight;
-      if (scrollableRun <= 0) return;
-      const progress = Math.max(0, Math.min(1, scrolledIntoSection / scrollableRun));
-      const idx = Math.min(4, Math.floor(progress * 5)); // 5 steps (0 to 4)
-      setActiveStepIndex(idx);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  
 
   // Sticky Navigation Spy active items
   useEffect(() => {
     const sectionIds = [
       "overview",
       "why-invest",
+      "roadmap",
+      "calculator-section",
       "property-types",
       "tax-benefits",
-      "calculator-section",
-      "roadmap",
       "faqs",
       "contact"
     ];
@@ -319,73 +339,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
     }
   ];
 
-  const roadmapSteps = [
-    {
-      title: "Financial Strategy & Assessment",
-      phase: "Phase 1: Planning",
-      tagline: "Evaluate borrowing capacity and equity",
-      desc: "We analyze your household income, savings, and current home equity to determine your exact borrowing capacity and establish a clear purchase price budget.",
-      highlightsRow: [{ label: "Equity Audit" }, { label: "Borrowing Power Check" }, { label: "Budget Definition" }],
-      evaluate: [
-        { label: "Equity Verification", icon: Wallet, color: "bg-amber-50 text-amber-700" },
-        { label: "Household Income", icon: Coins, color: "bg-blue-50 text-blue-700" }
-      ],
-      img: "/images/hero_slide_3_yellow.png",
-      floatingText: "Structuring Strategy..."
-    },
-    {
-      title: "Pre-Approval & Structure",
-      phase: "Phase 2: Approval",
-      tagline: "Secure conditional loan approval",
-      desc: "We recommend loan structures (such as split accounts or interest-only terms) and handle the application process to secure formal pre-approval, putting you in a strong position to buy.",
-      highlightsRow: [{ label: "Lender Shortlisting" }, { label: "Interest-Only Structure" }, { label: "Formal Pre-Approval" }],
-      evaluate: [
-        { label: "Offset Account Setup", icon: Calculator, color: "bg-emerald-50 text-emerald-700" },
-        { label: "LVR Verification", icon: Percent, color: "bg-purple-50 text-purple-700" }
-      ],
-      img: "/images/hero_slide_2_green.png",
-      floatingText: "Submitting Application..."
-    },
-    {
-      title: "Property Selection & Analysis",
-      phase: "Phase 3: Due Diligence",
-      tagline: "Find high-yield, high-growth assets",
-      desc: "Identify potential properties based on location demand, historical vacancy rates, capital growth trends, and rental yield. Run detailed stamp duty and purchase cost estimates.",
-      highlightsRow: [{ label: "Market Insights" }, { label: "Yield Estimations" }, { label: "Building Inspections" }],
-      evaluate: [
-        { label: "Vacancy Rate Check", icon: Users, color: "bg-indigo-50 text-indigo-700" },
-        { label: "Stamp Duty Estimates", icon: Landmark, color: "bg-rose-50 text-rose-700" }
-      ],
-      img: "/images/hero_slide_4_purple.png",
-      floatingText: "Analyzing Suburbs..."
-    },
-    {
-      title: "Settlement & Loan Setup",
-      phase: "Phase 4: Acquisition",
-      tagline: "We manage exchange and final settlement",
-      desc: "Our team coordinates with your legal conveyancer and the lender to execute loan agreements and complete settlement transfers smoothly, transferring the property title to you.",
-      highlightsRow: [{ label: "Title Registration" }, { label: "Exchange of Contracts" }, { label: "Loan Drawing" }],
-      evaluate: [
-        { label: "Conveyancing Check", icon: FileText, color: "bg-amber-50 text-amber-700" },
-        { label: "Final Settlement Done", icon: CheckCircle2, color: "bg-emerald-50 text-emerald-700" }
-      ],
-      img: "/images/hero_slide_5_rose.png",
-      floatingText: "Completing Settlement..."
-    },
-    {
-      title: "Property Management & Reviews",
-      phase: "Phase 5: Management",
-      tagline: "Appoint a manager and grow your portfolio",
-      desc: "Choose a local property manager to handle marketing, inspect conditions, collect rent, and address maintenance requests, while you watch your capital grow.",
-      highlightsRow: [{ label: "Landlord Insurance" }, { label: "Tenant Selection" }, { label: "Annual Loan Review" }],
-      evaluate: [
-        { label: "Depreciation Schedule", icon: Scale, color: "bg-blue-50 text-blue-700" },
-        { label: "Rent Review Audit", icon: UserCheck, color: "bg-purple-50 text-purple-700" }
-      ],
-      img: "/images/refinance_family_clean.png",
-      floatingText: "Managing Assets..."
-    }
-  ];
+  
 
   const faqGroupData = {
     investing: [
@@ -421,10 +375,10 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
   const navItems = [
     { id: "overview", label: "Overview", icon: HomeIcon },
     { id: "why-invest", label: "Why Invest", icon: Coins },
+    { id: "roadmap", label: "Roadmap", icon: Calendar },
+    { id: "calculator-section", label: "Yield Calculator", icon: Calculator },
     { id: "property-types", label: "Property Types", icon: Landmark },
     { id: "tax-benefits", label: "Tax Benefits", icon: Percent },
-    { id: "calculator-section", label: "Yield Calculator", icon: Calculator },
-    { id: "roadmap", label: "Roadmap", icon: Calendar },
     { id: "faqs", label: "FAQs", icon: HelpCircle },
     { id: "contact", label: "Enquire", icon: Clock }
   ];
@@ -513,44 +467,20 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
 
               {/* CTAs */}
               <motion.div variants={premiumFadeUp} className="flex flex-wrap items-center gap-4">
-                {(!btn1Link || btn1Link === "#" || btn1Link === "#contact" || btn1Link === "#callback") ? (
-                  <button
-                    type="button"
-                    onClick={openModal}
-                    className="inline-flex items-center justify-center gap-2 bg-[#D97706] hover:bg-[#B45309] text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-amber-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap cursor-pointer border-0"
-                  >
-                    {btn1Text} <ArrowRight className="w-4 h-4" />
-                  </button>
-                ) : (
-                  <Link
-                    href={btn1Link}
-                    className="inline-flex items-center justify-center gap-2 bg-[#D97706] hover:bg-[#B45309] text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-amber-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap"
-                  >
-                    {btn1Text} <ArrowRight className="w-4 h-4" />
-                  </Link>
-                )}
-                {(btn2Link === "#contact" || btn2Link === "#callback") ? (
-                  <button
-                    type="button"
-                    onClick={openModal}
-                    className="inline-flex items-center justify-center gap-2 border-2 border-[#D97706] text-amber-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-[#D97706] hover:text-white text-center w-full sm:w-auto whitespace-nowrap cursor-pointer border-0 bg-transparent"
-                  >
-                    {btn2Text}
-                  </button>
-                ) : (
-                  <a
-                    href={btn2Link}
-                    onClick={(e) => {
-                      if (btn2Link.startsWith("#")) {
-                        e.preventDefault();
-                        document.getElementById(btn2Link.substring(1))?.scrollIntoView({ behavior: "smooth" });
-                      }
-                    }}
-                    className="inline-flex items-center justify-center gap-2 border-2 border-[#D97706] text-amber-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-[#D97706] hover:text-white text-center w-full sm:w-auto whitespace-nowrap"
-                  >
-                    {btn2Text}
-                  </a>
-                )}
+                <a
+                  href={btn1Link}
+                  onClick={(e) => handleBtnClick(e, btn1Text, btn1Link)}
+                  className="inline-flex items-center justify-center gap-2 bg-[#D97706] hover:bg-[#B45309] text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-amber-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap cursor-pointer"
+                >
+                  {btn1Text} <ArrowRight className="w-4 h-4" />
+                </a>
+                <a
+                  href={btn2Link}
+                  onClick={(e) => handleBtnClick(e, btn2Text, btn2Link)}
+                  className="inline-flex items-center justify-center gap-2 border-2 border-[#D97706] text-amber-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-[#D97706] hover:text-white text-center w-full sm:w-auto whitespace-nowrap cursor-pointer bg-transparent"
+                >
+                  {btn2Text}
+                </a>
               </motion.div>
 
               {/* Trust Reviews Badge Row */}
@@ -846,138 +776,8 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
         </div>
       </section>
 
-      {/* ── SECTION 4: TYPES OF INVESTMENT PROPERTIES ── */}
-      <section id="property-types" className="py-16 md:py-24 bg-white border-b border-slate-100">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
-          
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-full px-4 py-2 mb-4">
-              <Landmark className="w-3.5 h-3.5 text-amber-600" />
-              <span className="text-[10px] font-bold tracking-widest uppercase text-amber-700">Property Categories</span>
-            </div>
-            <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-tight mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-              Choosing the Right <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-yellow-600">Property Type</span>
-            </h2>
-            <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed">
-              Not all investment assets perform similarly. Your choice depends directly on your borrowing capability and capital strategy.
-            </p>
-          </div>
+      <RoadmapSection colorTheme="amber" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-            {propertyTypes.map((type, idx) => {
-              const IconComp = type.icon;
-              return (
-                <div
-                  key={idx}
-                  className="bg-white border border-slate-200/60 rounded-[32px] p-6 sm:p-8 shadow-sm hover:shadow-md transition-all duration-300"
-                >
-                  <div className="flex items-center gap-4 border-b border-slate-100 pb-5 mb-5">
-                    <div className={`w-11 h-11 rounded-xl border flex items-center justify-center shrink-0 ${type.accent}`}>
-                      <IconComp className="w-5 h-5" />
-                    </div>
-                    <h3 className="text-[#0B1F3A] text-[18px] font-extrabold" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                      {type.title}
-                    </h3>
-                  </div>
-
-                  <div className="space-y-5">
-                    <div>
-                      <div className="text-[10.5px] font-extrabold text-emerald-600 uppercase tracking-widest mb-2 flex items-center gap-1">
-                        <Check className="w-3 h-3 text-emerald-500" strokeWidth={3} />
-                        <span>Key Advantages (Pros)</span>
-                      </div>
-                      <ul className="space-y-1.5">
-                        {type.pros.map((pro, pidx) => (
-                          <li key={pidx} className="flex items-start gap-2 text-[12.5px] text-slate-500 font-semibold">
-                            <span className="text-emerald-500 font-black mt-0.5">•</span>
-                            <span>{pro}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div>
-                      <div className="text-[10.5px] font-extrabold text-rose-600 uppercase tracking-widest mb-2 flex items-center gap-1">
-                        <AlertCircle className="w-3 h-3 text-rose-500" />
-                        <span>Main Considerations (Cons)</span>
-                      </div>
-                      <ul className="space-y-1.5">
-                        {type.cons.map((con, cidx) => (
-                          <li key={cidx} className="flex items-start gap-2 text-[12.5px] text-slate-400 font-medium">
-                            <span className="text-rose-400 font-black mt-0.5">•</span>
-                            <span>{con}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-        </div>
-      </section>
-
-      {/* ── SECTION 5: TAX IMPLICATIONS AND BENEFITS ── */}
-      <section id="tax-benefits" className="py-16 md:py-24 bg-slate-50 border-b border-slate-100">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
-          <div className="grid grid-cols-1 lg:grid-cols-[45%_55%] gap-12 items-center">
-            
-            {/* Left Texts */}
-            <div>
-              <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-full px-4 py-2 mb-6">
-                <Percent className="w-3.5 h-3.5 text-amber-600" />
-                <span className="text-[10px] font-bold tracking-widest uppercase text-amber-700">Tax Deductions</span>
-              </div>
-              <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.1] mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                Understanding the <span className="text-[#CA8A04]">Tax Rules &amp; Offsets</span>
-              </h2>
-              <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed mb-6">
-                Lending structures have major tax effects. When you invest in real estate, the interest charged on the loan and the costs of running the property are typically deductible from your salary, reducing your yearly income tax bill.
-              </p>
-              <div className="bg-white border border-slate-200 rounded-[24px] p-5.5 space-y-4 shadow-sm">
-                <div className="flex items-start gap-3.5">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0 text-emerald-600">
-                    <ShieldCheck className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h4 className="text-[14px] font-extrabold text-[#0B1F3A]">Negative Gearing Benefit</h4>
-                    <p className="text-slate-400 text-[12.5px] mt-0.5 leading-relaxed">
-                      Offset property losses directly against your personal income to lower your overall tax assessment.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right List */}
-            <div className="space-y-4">
-              {taxBenefits.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="bg-white border border-slate-200/60 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all duration-300"
-                >
-                  <div className="flex items-center gap-3.5 mb-2">
-                    <span className="w-6 h-6 rounded-full bg-amber-50 text-amber-700 text-[11px] font-black flex items-center justify-center shrink-0 border border-amber-100">
-                      {idx + 1}
-                    </span>
-                    <h3 className="text-[#0B1F3A] text-[14.5px] font-extrabold">
-                      {item.title}
-                    </h3>
-                  </div>
-                  <p className="text-slate-400 text-[12.5px] leading-relaxed pl-9">
-                    {item.desc}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* ── SECTION 6: RENTAL YIELD & CASH FLOW CALCULATOR ── */}
       <section id="calculator-section" className="py-16 md:py-24 bg-white border-b border-slate-100 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-amber-50 rounded-full blur-[120px] opacity-30 translate-x-1/2 -translate-y-1/2 pointer-events-none" />
         
@@ -1205,116 +1005,142 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
         </div>
       </section>
 
-      {/* ── SECTION 7: ROADMAP STEPS ── */}
-      <section id="roadmap" className="py-16 md:py-24 bg-slate-50 border-b border-slate-100">
+      {/* ── SECTION 4: TYPES OF INVESTMENT PROPERTIES ── */}
+      <section id="property-types" className="py-16 md:py-24 bg-white border-b border-slate-100">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
           
           <div className="max-w-3xl mx-auto text-center mb-16">
             <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-full px-4 py-2 mb-4">
-              <Calendar className="w-3.5 h-3.5 text-amber-600" />
-              <span className="text-[10px] font-bold tracking-widest uppercase text-amber-700">Lending Roadmap</span>
+              <Landmark className="w-3.5 h-3.5 text-amber-600" />
+              <span className="text-[10px] font-bold tracking-widest uppercase text-amber-700">Property Categories</span>
             </div>
             <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-tight mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-              Steps to Buying an <span className="text-[#CA8A04]">Investment Property</span>
+              Choosing the Right <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-yellow-600">Property Type</span>
             </h2>
             <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed">
-              We guide you from initial asset analysis through pre-approvals and final management setup.
+              Not all investment assets perform similarly. Your choice depends directly on your borrowing capability and capital strategy.
             </p>
           </div>
 
-          <div ref={roadmapSectionRef} className="relative grid grid-cols-1 lg:grid-cols-[45%_55%] gap-12 items-start">
-            
-            {/* Left Steps Progression */}
-            <div className="sticky top-[160px] space-y-6">
-              {roadmapSteps.map((step, idx) => {
-                const isActive = activeStepIndex === idx;
-                return (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => {
-                      setActiveStepIndex(idx);
-                      setMobileActiveStepIndex(idx);
-                    }}
-                    className={`w-full text-left p-6 rounded-2xl border transition-all duration-300 flex items-center gap-5 ${
-                      isActive
-                        ? "bg-white border-amber-500/30 shadow-[0_4px_25px_rgba(234,179,8,0.08)]"
-                        : "bg-white/40 border-slate-200/60 hover:bg-white shadow-sm"
-                    }`}
-                  >
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center border transition-all shrink-0 font-black text-[12.5px] ${
-                      isActive ? "bg-amber-600 border-amber-600 text-white shadow-sm" : "border-slate-200 text-slate-400 bg-white"
-                    }`}>
-                      {idx + 1}
-                    </div>
-                    <div>
-                      <div className={`text-[13.5px] font-extrabold ${isActive ? "text-amber-700" : "text-[#0B1F3A]"}`}>{step.title}</div>
-                      <div className="text-[10.5px] text-slate-400 mt-0.5 font-medium">{step.phase}</div>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Right details box */}
-            <div className="bg-white border border-slate-200/80 rounded-[32px] p-6 sm:p-8 shadow-sm space-y-6">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeStepIndex}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -15 }}
-                  transition={{ duration: 0.3 }}
-                  className="space-y-6"
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+            {propertyTypes.map((type, idx) => {
+              const IconComp = type.icon;
+              return (
+                <div
+                  key={idx}
+                  className="bg-white border border-slate-200/60 rounded-[32px] p-6 sm:p-8 shadow-sm hover:shadow-md transition-all duration-300"
                 >
-                  <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                    <span className="text-[11px] font-bold text-amber-700 bg-amber-50 px-3 py-1 rounded-full uppercase tracking-wider">
-                      {roadmapSteps[activeStepIndex].phase}
-                    </span>
-                    <span className="text-[11px] text-slate-400 font-semibold">Step {activeStepIndex + 1} of 5</span>
+                  <div className="flex items-center gap-4 border-b border-slate-100 pb-5 mb-5">
+                    <div className={`w-11 h-11 rounded-xl border flex items-center justify-center shrink-0 ${type.accent}`}>
+                      <IconComp className="w-5 h-5" />
+                    </div>
+                    <h3 className="text-[#0B1F3A] text-[18px] font-extrabold" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                      {type.title}
+                    </h3>
                   </div>
 
-                  <h3 className="text-[#0B1F3A] text-[20px] font-extrabold" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                    {roadmapSteps[activeStepIndex].title}
-                  </h3>
+                  <div className="space-y-5">
+                    <div>
+                      <div className="text-[10.5px] font-extrabold text-emerald-600 uppercase tracking-widest mb-2 flex items-center gap-1">
+                        <Check className="w-3 h-3 text-emerald-500" strokeWidth={3} />
+                        <span>Key Advantages (Pros)</span>
+                      </div>
+                      <ul className="space-y-1.5">
+                        {type.pros.map((pro, pidx) => (
+                          <li key={pidx} className="flex items-start gap-2 text-[12.5px] text-slate-500 font-semibold">
+                            <span className="text-emerald-500 font-black mt-0.5">•</span>
+                            <span>{pro}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
 
-                  <p className="text-slate-500 text-[13.5px] leading-relaxed">
-                    {roadmapSteps[activeStepIndex].desc}
-                  </p>
-
-                  <div className="space-y-4 bg-slate-50 border border-slate-100 rounded-2xl p-5">
-                    <div className="text-[10.5px] font-extrabold text-slate-400 uppercase tracking-widest mb-2">Technical checks involved:</div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {roadmapSteps[activeStepIndex].evaluate.map((item, id) => {
-                        const IconComp = item.icon;
-                        return (
-                          <div key={id} className="flex items-center gap-3 bg-white border border-slate-200/50 rounded-xl p-3">
-                            <div className={`w-8 h-8 rounded-lg ${item.color} flex items-center justify-center shrink-0`}>
-                              <IconComp className="w-4 h-4" />
-                            </div>
-                            <span className="text-[12px] font-bold text-slate-700">{item.label}</span>
-                          </div>
-                        );
-                      })}
+                    <div>
+                      <div className="text-[10.5px] font-extrabold text-rose-600 uppercase tracking-widest mb-2 flex items-center gap-1">
+                        <AlertCircle className="w-3 h-3 text-rose-500" />
+                        <span>Main Considerations (Cons)</span>
+                      </div>
+                      <ul className="space-y-1.5">
+                        {type.cons.map((con, cidx) => (
+                          <li key={cidx} className="flex items-start gap-2 text-[12.5px] text-slate-400 font-medium">
+                            <span className="text-rose-400 font-black mt-0.5">•</span>
+                            <span>{con}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
-
-                  <div className="border-t border-slate-100 pt-4 flex flex-wrap gap-2">
-                    {roadmapSteps[activeStepIndex].highlightsRow.map((hl, id) => (
-                      <span key={id} className="bg-amber-50 text-amber-800 text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase">
-                        {hl.label}
-                      </span>
-                    ))}
-                  </div>
-
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
+                </div>
+              );
+            })}
           </div>
 
         </div>
       </section>
+
+      {/* ── SECTION 5: TAX IMPLICATIONS AND BENEFITS ── */}
+      <section id="tax-benefits" className="py-16 md:py-24 bg-slate-50 border-b border-slate-100">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+          <div className="grid grid-cols-1 lg:grid-cols-[45%_55%] gap-12 items-center">
+            
+            {/* Left Texts */}
+            <div>
+              <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-full px-4 py-2 mb-6">
+                <Percent className="w-3.5 h-3.5 text-amber-600" />
+                <span className="text-[10px] font-bold tracking-widest uppercase text-amber-700">Tax Deductions</span>
+              </div>
+              <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.1] mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                Understanding the <span className="text-[#CA8A04]">Tax Rules &amp; Offsets</span>
+              </h2>
+              <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed mb-6">
+                Lending structures have major tax effects. When you invest in real estate, the interest charged on the loan and the costs of running the property are typically deductible from your salary, reducing your yearly income tax bill.
+              </p>
+              <div className="bg-white border border-slate-200 rounded-[24px] p-5.5 space-y-4 shadow-sm">
+                <div className="flex items-start gap-3.5">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0 text-emerald-600">
+                    <ShieldCheck className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h4 className="text-[14px] font-extrabold text-[#0B1F3A]">Negative Gearing Benefit</h4>
+                    <p className="text-slate-400 text-[12.5px] mt-0.5 leading-relaxed">
+                      Offset property losses directly against your personal income to lower your overall tax assessment.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right List */}
+            <div className="space-y-4">
+              {taxBenefits.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="bg-white border border-slate-200/60 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all duration-300"
+                >
+                  <div className="flex items-center gap-3.5 mb-2">
+                    <span className="w-6 h-6 rounded-full bg-amber-50 text-amber-700 text-[11px] font-black flex items-center justify-center shrink-0 border border-amber-100">
+                      {idx + 1}
+                    </span>
+                    <h3 className="text-[#0B1F3A] text-[14.5px] font-extrabold">
+                      {item.title}
+                    </h3>
+                  </div>
+                  <p className="text-slate-400 text-[12.5px] leading-relaxed pl-9">
+                    {item.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ── SECTION 6: RENTAL YIELD & CASH FLOW CALCULATOR ── */}
+      
+
+      {/* ── SECTION 7: ROADMAP STEPS ── */}
+      
 
       {/* ── SECTION 8: CLIENT READINESS CHECKS ── */}
       <section className="py-16 md:py-24 bg-white border-b border-slate-100 relative overflow-hidden">
@@ -1581,7 +1407,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                         <input
                           type="tel"
                           name="phone"
-                          placeholder="0400 000 000"
+                          placeholder=""
                           className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:bg-white transition-all shadow-inner"
                           required
                         />
@@ -1761,7 +1587,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                         required
                         value={leadPhone}
                         onChange={(e) => setLeadPhone(e.target.value)}
-                        placeholder="0400 000 000"
+                        placeholder=""
                         className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>

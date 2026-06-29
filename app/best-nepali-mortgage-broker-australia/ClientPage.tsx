@@ -17,12 +17,13 @@ export function ClientPage({ settings }: ClientPageProps) {
     <div className="bg-[#F0F4FA] min-h-screen font-sans flex flex-col">
       <SiteHeader isSticky={false} settings={settings} />
       <SubPageHero
-        pageTitle="Nepali Mortgage Broker Australia"
+        pageTitle="What We Do"
         themeColor="blue"
+        layoutType="clean"
         pageHeroSettings={{
-          hero_badge: "What We Do",
-          hero_title: "Nepali Mortgage Broker Australia",
-          hero_subtext: "Home Loans, Simplified. Personalised mortgage solutions for Nepali Australians Nationwide Perth | Sydney | Melbourne | Adelaide | Brisbane | Nationwide",
+          hero_badge: "Our Services",
+          hero_title: "Comprehensive Mortgage Solutions",
+          hero_subtext: "From your first home purchase to complex investment portfolios, we provide end-to-end financial structuring and loan management.",
           hero_image: "/images/hero.png",
         }}
       />
@@ -32,7 +33,7 @@ export function ClientPage({ settings }: ClientPageProps) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="relative rounded-3xl overflow-hidden shadow-2xl h-[400px] sm:h-[500px] lg:h-[600px] order-2 lg:order-1">
             <Image
-              src="/images/family_couch_laptop.png"
+              src="/images/sleek_modern_home_keys.png"
               alt="Family looking at laptop"
               fill
               className="object-cover"
@@ -42,10 +43,10 @@ export function ClientPage({ settings }: ClientPageProps) {
               <div className="bg-white/95 backdrop-blur-md p-6 rounded-2xl shadow-lg border border-white/20">
                 <div className="flex items-center gap-4 mb-2">
                   <Shield className="w-8 h-8 text-[#2563EB]" />
-                  <h3 className="text-[18px] font-bold text-[#0B1F3A]">Trusted Advice</h3>
+                  <h3 className="text-[18px] font-bold text-[#0B1F3A]">End-to-End Support</h3>
                 </div>
                 <p className="text-[14px] text-slate-600">
-                  We work for you, not the lender. That means you get honest advice, real support, and competitive loan products.
+                  From initial borrowing capacity assessments all the way through to property settlement and beyond.
                 </p>
               </div>
             </div>
@@ -54,28 +55,25 @@ export function ClientPage({ settings }: ClientPageProps) {
           <div className="space-y-6 order-1 lg:order-2">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-100/50 border border-blue-200">
               <Users className="w-4 h-4 text-[#2563EB]" />
-              <span className="text-[12px] font-bold text-[#2563EB] uppercase tracking-wider">Our Approach</span>
+              <span className="text-[12px] font-bold text-[#2563EB] uppercase tracking-wider">Our Services</span>
             </div>
             
             <h2 
               className="text-[28px] sm:text-[36px] font-bold leading-tight text-[#0B1F3A]"
               style={{ fontFamily: "var(--font-montserrat, sans-serif)" }}
             >
-              What We Do at Mortgage Xperts?
+              How Mortgage Xperts Helps You Succeed.
             </h2>
             
             <div className="space-y-5 text-[15px] sm:text-[16px] text-slate-600 leading-relaxed">
               <p>
-                At Mortgage Xperts, we specialise in making home financing simple, transparent, and tailored to your unique needs. Whether you're a first-time buyer, looking to refinance, or building your investment property portfolio, our mission is to find the right mortgage solution for you — not the banks.
+                We handle the complexity of the Australian lending market so you can focus on what matters most — enjoying your new property.
               </p>
               <p>
-                We take the stress and confusion out of the mortgage process by providing expert guidance every step of the way. From comparing rates across a wide range of lenders to helping you understand your borrowing power and paperwork, we do the heavy lifting so you don't have to.
+                Whether you are buying your first home, upgrading to a larger property, or building a high-yielding investment portfolio, our experts structure your loans to maximize borrowing power and minimize interest.
               </p>
               <p>
-                Our team doesn't believe in one-size-fits-all. We listen to your goals, assess your financial situation, and provide personalised options — whether you're after a low deposit loan, a solution for self-employed income, or navigating complex credit histories.
-              </p>
-              <p>
-                At Mortgage Xperts, we're not just about home loans - we're about helping people secure their future with confidence.
+                We simplify income documentation for self-employed individuals and find lenders who understand complex financial situations. We don't believe in "one size fits all" — we believe in custom-tailored financial strategy.
               </p>
             </div>
           </div>
@@ -89,7 +87,7 @@ export function ClientPage({ settings }: ClientPageProps) {
             <div className="space-y-6">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200">
                 <Target className="w-4 h-4 text-amber-600" />
-                <span className="text-[12px] font-bold text-amber-700 uppercase tracking-wider">How We Can Help</span>
+                <span className="text-[12px] font-bold text-amber-700 uppercase tracking-wider">Key Specializations</span>
               </div>
               
               <h2 
@@ -135,7 +133,7 @@ export function ClientPage({ settings }: ClientPageProps) {
 
             <div className="relative rounded-3xl overflow-hidden shadow-2xl h-[400px] sm:h-[500px] lg:h-[700px]">
               <Image
-                src="/images/cta-couple.png"
+                src="/images/financial_blueprints.png"
                 alt="Happy couple looking at keys"
                 fill
                 className="object-cover"

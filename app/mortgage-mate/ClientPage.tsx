@@ -107,6 +107,15 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
 
   const flyerCards = [
     {
+      title: "Health Professionals",
+      tag: "LMI Waiver",
+      href: "/home-loan-for-doctors",
+      image: "/images/hero_slide_2_green.png",
+      accent: "from-emerald-600 to-teal-500",
+      summary: "Up to 95% LVR with zero LMI and discounted rates tailored for medical practitioners and healthcare staff.",
+      points: ["LMI waiver up to 95%", "Discounted rates", "Fast approvals"]
+    },
+    {
       title: "First Home Buyers",
       tag: "Start Here",
       href: "/first-home-guide",
@@ -114,15 +123,6 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
       accent: "from-blue-600 to-sky-500",
       summary: "Deposit, grants, lender options and pre-approval guidance in one simple path.",
       points: ["Low deposit options", "Grant checks", "Pre-approval plan"]
-    },
-    {
-      title: "Refinance Review",
-      tag: "Save Smarter",
-      href: "/refinancing-guide",
-      image: "/images/Refinancing.png",
-      accent: "from-emerald-600 to-teal-500",
-      summary: "Check whether your current loan is still competitive before rates move again.",
-      points: ["Rate comparison", "Cashflow review", "Switching costs"]
     },
     {
       title: "Investment Loans",
@@ -134,13 +134,13 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
       points: ["Equity strategy", "Rental income", "Portfolio planning"]
     },
     {
-      title: "Self-Employed Loans",
-      tag: "Alt Doc Ready",
-      href: "/self-employed-home-loans",
-      image: "/images/Self-Employed Loans.png",
-      accent: "from-amber-500 to-orange-500",
-      summary: "Turn business income into a lender-ready application without the guesswork.",
-      points: ["ABN scenarios", "Alt-doc options", "Income packaging"]
+      title: "Refinancing",
+      tag: "Save Smarter",
+      href: "/refinancing-guide",
+      image: "/images/Refinancing.png",
+      accent: "from-rose-600 to-pink-500",
+      summary: "Check whether your current loan is still competitive before rates move again.",
+      points: ["Rate comparison", "Cashflow review", "Switching costs"]
     }
   ];
 

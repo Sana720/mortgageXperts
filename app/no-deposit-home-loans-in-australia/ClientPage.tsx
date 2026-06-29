@@ -31,6 +31,7 @@ import {
   Info,
   Home as HomeIcon
 } from "lucide-react";
+import { RoadmapSection } from "../components/RoadmapSection";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { TestimonialSection } from "../components/TestimonialSection";
@@ -108,6 +109,43 @@ export interface PageHeroSettings {
 
 export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
   const { openModal } = useOnboardingModal();
+
+  const handleBtnClick = (e: React.MouseEvent, text: string, link: string) => {
+    const textLower = text.toLowerCase();
+    const isModalTrigger =
+      !link ||
+      link === "#" ||
+      link === "#contact" ||
+      link === "#callback" ||
+      link === "#onboarding" ||
+      (!link.startsWith("#") && (
+        textLower.includes("book") ||
+        textLower.includes("call") ||
+        textLower.includes("consult") ||
+        textLower.includes("apply")
+      ));
+
+    if (isModalTrigger) {
+      e.preventDefault();
+      openModal();
+    } else if (link.startsWith("#")) {
+      e.preventDefault();
+      const targetId = link.substring(1);
+      let el = document.getElementById(targetId);
+      if (!el && (targetId.includes("calc") || targetId.includes("borrow") || targetId.includes("option") || targetId.includes("eligibility"))) {
+        el = document.getElementById("calculator") || 
+             document.getElementById("calculator-section") || 
+             document.getElementById("borrowing") || 
+             document.getElementById("borrowing-capacity") ||
+             document.getElementById("options") ||
+             document.getElementById("eligibility") ||
+             document.getElementById("calculator-tool");
+      }
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
   const [navSticky, setNavSticky] = useState(false);
   const [activeNav, setActiveNav] = useState("overview");
   const navSentinelRef = useRef<HTMLDivElement>(null);
@@ -196,8 +234,9 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
     const sectionIds = [
       "overview",
       "options",
-      "eligibility",
+      "roadmap",
       "calculator-section",
+      "eligibility",
       "faqs",
       "contact"
     ];
@@ -273,8 +312,9 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
   const navItems = [
     { id: "overview", label: "Overview", icon: HomeIcon },
     { id: "options", label: "Loan Options", icon: Sparkles },
-    { id: "eligibility", label: "Eligibility Criteria", icon: CheckCircle2 },
+    { id: "roadmap", label: "Roadmap", icon: Calendar },
     { id: "calculator-section", label: "Low/No Deposit Calc", icon: Calculator },
+    { id: "eligibility", label: "Eligibility Criteria", icon: CheckCircle2 },
     { id: "faqs", label: "FAQs", icon: HelpCircle },
     { id: "contact", label: "Enquire Now", icon: ArrowRight }
   ];
@@ -395,44 +435,20 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
 
               {/* CTAs */}
               <motion.div variants={premiumFadeUp} className="flex flex-wrap items-center gap-4">
-                {(!btn1Link || btn1Link === "#" || btn1Link === "#contact" || btn1Link === "#callback") ? (
-                  <button
-                    type="button"
-                    onClick={openModal}
-                    className="inline-flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-teal-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap cursor-pointer border-0"
-                  >
-                    {btn1Text} <ArrowRight className="w-4 h-4" />
-                  </button>
-                ) : (
-                  <Link
-                    href={btn1Link}
-                    className="inline-flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-teal-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap"
-                  >
-                    {btn1Text} <ArrowRight className="w-4 h-4" />
-                  </Link>
-                )}
-                {(btn2Link === "#contact" || btn2Link === "#callback") ? (
-                  <button
-                    type="button"
-                    onClick={openModal}
-                    className="inline-flex items-center justify-center gap-2 border-2 border-teal-600 text-teal-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-teal-600 hover:text-white text-center w-full sm:w-auto whitespace-nowrap cursor-pointer border-0 bg-transparent"
-                  >
-                    {btn2Text}
-                  </button>
-                ) : (
-                  <a
-                    href={btn2Link}
-                    onClick={(e) => {
-                      if (btn2Link.startsWith("#")) {
-                        e.preventDefault();
-                        document.getElementById(btn2Link.substring(1))?.scrollIntoView({ behavior: "smooth" });
-                      }
-                    }}
-                    className="inline-flex items-center justify-center gap-2 border-2 border-teal-600 text-teal-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-teal-600 hover:text-white text-center w-full sm:w-auto whitespace-nowrap"
-                  >
-                    {btn2Text}
-                  </a>
-                )}
+                <a
+                  href={btn1Link}
+                  onClick={(e) => handleBtnClick(e, btn1Text, btn1Link)}
+                  className="inline-flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-teal-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap cursor-pointer"
+                >
+                  {btn1Text} <ArrowRight className="w-4 h-4" />
+                </a>
+                <a
+                  href={btn2Link}
+                  onClick={(e) => handleBtnClick(e, btn2Text, btn2Link)}
+                  className="inline-flex items-center justify-center gap-2 border-2 border-teal-600 text-teal-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-teal-600 hover:text-white text-center w-full sm:w-auto whitespace-nowrap cursor-pointer bg-transparent"
+                >
+                  {btn2Text}
+                </a>
               </motion.div>
 
               {/* Trust Reviews Badge Row */}
@@ -751,80 +767,8 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
         </div>
       </section>
 
-      {/* ── SECTION 4: ELIGIBILITY ── */}
-      <section id="eligibility" className="py-16 md:py-24 bg-white border-b border-slate-100">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
-          <div className="grid grid-cols-1 lg:grid-cols-[45%_55%] gap-12 items-center">
-            
-            {/* Left Column: Heading & Progress */}
-            <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 bg-teal-50 border border-teal-100 rounded-full px-4 py-2">
-                <CheckCircle2 className="w-3.5 h-3.5 text-teal-600" />
-                <span className="text-teal-700 text-[10px] font-bold tracking-widest uppercase">Self-Check</span>
-              </div>
-              <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                Do You Qualify? <span className="text-[#0D9488]">Evaluate Your Options</span>
-              </h2>
-              <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed">
-                While a big cash deposit isn&apos;t necessary, lenders will evaluate other factors like your income stability and credit history. Use our interactive checklist to see which conditions you meet.
-              </p>
+      <RoadmapSection colorTheme="teal" />
 
-              {/* Progress Bar Container */}
-              <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 space-y-3">
-                <div className="flex justify-between text-xs font-bold uppercase tracking-wider text-slate-500">
-                  <span>Qualifying Criteria Checklist</span>
-                  <span className={`font-black ${progress === 100 ? "text-teal-600 animate-pulse" : "text-slate-700"}`}>
-                    {progress}% Complete
-                  </span>
-                </div>
-                <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                  <div
-                    className="bg-gradient-to-r from-teal-500 to-cyan-500 h-full transition-all duration-500"
-                    style={{ width: `${progress}%` }}
-                  />
-                </div>
-                <p className="text-[11.5px] text-slate-400 font-semibold leading-relaxed">
-                  {progress === 100 
-                    ? "🎉 Awesome! You seem to meet all key checklist items! Connect with our credit brokers to verify details and start your application."
-                    : "Tick the boxes on the right to see if you qualify for a low or no deposit home loan."
-                  }
-                </p>
-              </div>
-            </div>
-
-            {/* Right Column: Checkboxes */}
-            <div className="space-y-3.5">
-              {checklist.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => toggleChecklist(item.id)}
-                  className={`w-full text-left flex items-start gap-4 p-4.5 rounded-2xl border transition-all duration-300 ${
-                    item.checked 
-                      ? "bg-[#F0FDFA] border-teal-200 shadow-sm" 
-                      : "bg-white border-slate-200/70 hover:border-slate-300"
-                  }`}
-                >
-                  <div className={`w-5.5 h-5.5 rounded-lg border flex items-center justify-center shrink-0 mt-0.5 transition-all ${
-                    item.checked 
-                      ? "bg-teal-600 border-teal-600 text-white" 
-                      : "border-slate-300 hover:border-slate-400"
-                  }`}>
-                    {item.checked && <Check className="w-3.5 h-3.5 stroke-[3]" />}
-                  </div>
-                  <span className={`text-[13.5px] font-semibold transition-colors ${
-                    item.checked ? "text-[#0B1F3A]" : "text-slate-500"
-                  }`}>
-                    {item.label}
-                  </span>
-                </button>
-              ))}
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* ── SECTION 5: CALCULATOR ── */}
       <section id="calculator-section" className="py-16 md:py-24 bg-slate-50 border-b border-slate-100 relative overflow-hidden">
         {/* Decorative background glows */}
         <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#F0FDFA] rounded-full blur-[100px] opacity-60 pointer-events-none" />
@@ -1112,6 +1056,84 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
         </div>
       </section>
 
+      {/* ── SECTION 4: ELIGIBILITY ── */}
+      <section id="eligibility" className="py-16 md:py-24 bg-white border-b border-slate-100">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+          <div className="grid grid-cols-1 lg:grid-cols-[45%_55%] gap-12 items-center">
+            
+            {/* Left Column: Heading & Progress */}
+            <div className="space-y-6">
+              <div className="inline-flex items-center gap-2 bg-teal-50 border border-teal-100 rounded-full px-4 py-2">
+                <CheckCircle2 className="w-3.5 h-3.5 text-teal-600" />
+                <span className="text-teal-700 text-[10px] font-bold tracking-widest uppercase">Self-Check</span>
+              </div>
+              <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                Do You Qualify? <span className="text-[#0D9488]">Evaluate Your Options</span>
+              </h2>
+              <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed">
+                While a big cash deposit isn&apos;t necessary, lenders will evaluate other factors like your income stability and credit history. Use our interactive checklist to see which conditions you meet.
+              </p>
+
+              {/* Progress Bar Container */}
+              <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 space-y-3">
+                <div className="flex justify-between text-xs font-bold uppercase tracking-wider text-slate-500">
+                  <span>Qualifying Criteria Checklist</span>
+                  <span className={`font-black ${progress === 100 ? "text-teal-600 animate-pulse" : "text-slate-700"}`}>
+                    {progress}% Complete
+                  </span>
+                </div>
+                <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                  <div
+                    className="bg-gradient-to-r from-teal-500 to-cyan-500 h-full transition-all duration-500"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+                <p className="text-[11.5px] text-slate-400 font-semibold leading-relaxed">
+                  {progress === 100 
+                    ? "🎉 Awesome! You seem to meet all key checklist items! Connect with our credit brokers to verify details and start your application."
+                    : "Tick the boxes on the right to see if you qualify for a low or no deposit home loan."
+                  }
+                </p>
+              </div>
+            </div>
+
+            {/* Right Column: Checkboxes */}
+            <div className="space-y-3.5">
+              {checklist.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => toggleChecklist(item.id)}
+                  className={`w-full text-left flex items-start gap-4 p-4.5 rounded-2xl border transition-all duration-300 ${
+                    item.checked 
+                      ? "bg-[#F0FDFA] border-teal-200 shadow-sm" 
+                      : "bg-white border-slate-200/70 hover:border-slate-300"
+                  }`}
+                >
+                  <div className={`w-5.5 h-5.5 rounded-lg border flex items-center justify-center shrink-0 mt-0.5 transition-all ${
+                    item.checked 
+                      ? "bg-teal-600 border-teal-600 text-white" 
+                      : "border-slate-300 hover:border-slate-400"
+                  }`}>
+                    {item.checked && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                  </div>
+                  <span className={`text-[13.5px] font-semibold transition-colors ${
+                    item.checked ? "text-[#0B1F3A]" : "text-slate-500"
+                  }`}>
+                    {item.label}
+                  </span>
+                </button>
+              ))}
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ── SECTION 5: CALCULATOR ── */}
+      
+      
+      
+
       {/* ── SECTION 6: FAQS ACCORDION ── */}
       <section id="faqs" className="py-16 md:py-24 bg-white border-b border-slate-100">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
@@ -1299,7 +1321,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                         type="tel"
                         name="phone"
                         required
-                        placeholder="0400 000 000"
+                        placeholder=""
                         value={formData.phone}
                         onChange={handleInputChange}
                         className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-teal-500 focus:bg-white transition-all shadow-inner"

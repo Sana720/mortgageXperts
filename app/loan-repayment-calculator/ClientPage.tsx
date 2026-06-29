@@ -1707,7 +1707,7 @@ export function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Rec
                         required
                         value={formData.phone}
                         onChange={handleInputChange}
-                        placeholder="0400 000 000"
+                        placeholder=""
                         className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white transition-all shadow-inner"
                       />
                     </div>

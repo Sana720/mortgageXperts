@@ -23,15 +23,15 @@ export async function POST(request: Request) {
   if (!(await checkAuth())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   try {
-    const { name, role, email, phone, bio, image, orderIndex } = await request.json();
+    const { name, role, email, phone, bio, image, orderIndex, branch } = await request.json();
     if (!name || !role) {
       return NextResponse.json({ error: 'Name and role are required' }, { status: 400 });
     }
 
     const id = crypto.randomUUID();
     await executeQuery(
-      'INSERT INTO team_members (id, name, role, email, phone, bio, image, orderIndex) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-      [id, name, role, email || '', phone || '', bio || '', image || '/images/aakash_new.png', orderIndex || 0]
+      'INSERT INTO team_members (id, name, role, email, phone, bio, image, orderIndex, branch) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [id, name, role, email || '', phone || '', bio || '', image || '/images/aakash_new.png', orderIndex || 0, branch || null]
     );
 
     return NextResponse.json({ success: true, id });
@@ -45,14 +45,14 @@ export async function PUT(request: Request) {
   if (!(await checkAuth())) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   try {
-    const { id, name, role, email, phone, bio, image, orderIndex } = await request.json();
+    const { id, name, role, email, phone, bio, image, orderIndex, branch } = await request.json();
     if (!id || !name || !role) {
       return NextResponse.json({ error: 'ID, name and role are required' }, { status: 400 });
     }
 
     await executeQuery(
-      'UPDATE team_members SET name = ?, role = ?, email = ?, phone = ?, bio = ?, image = ?, orderIndex = ? WHERE id = ?',
-      [name, role, email || '', phone || '', bio || '', image || '', orderIndex || 0, id]
+      'UPDATE team_members SET name = ?, role = ?, email = ?, phone = ?, bio = ?, image = ?, orderIndex = ?, branch = ? WHERE id = ?',
+      [name, role, email || '', phone || '', bio || '', image || '', orderIndex || 0, branch || null, id]
     );
 
     return NextResponse.json({ success: true });

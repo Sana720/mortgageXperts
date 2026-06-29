@@ -48,9 +48,16 @@ export function MortgageMateForm({
   const [dashboardProgress, setDashboardProgress] = useState(0);
 
   // Form State - Phase 1: Personal Details
+  const [numApplicants, setNumApplicants] = useState<"single" | "joint" | "">("");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+
+  // Applicant 2 Details
+  const [app2Name, setApp2Name] = useState("");
+  const [app2Email, setApp2Email] = useState("");
+  const [app2Phone, setApp2Phone] = useState("");
+
   const [contactMethod, setContactMethod] = useState("");
 
   // Form State - Phase 2: Property & Financial Details
@@ -63,7 +70,8 @@ export function MortgageMateForm({
   const [comments, setComments] = useState("");
   const [state, setState] = useState("NSW"); // default state option
 
-  const totalSteps = 11;
+  const totalSteps = 12;
+  const hasInlineButton = [2, 3, 5, 7, 8, 10, 12].includes(step);
 
   // Dashboard redirect and progress timer
   useEffect(() => {
@@ -96,6 +104,12 @@ export function MortgageMateForm({
     setPhone(limited);
   };
 
+  const handleApp2PhoneChange = (val: string) => {
+    const digitsOnly = val.replace(/\D/g, "");
+    const limited = digitsOnly.slice(0, 10);
+    setApp2Phone(limited);
+  };
+
   const handleCurrencyChange = (val: string, setter: (v: string) => void) => {
     const digits = val.replace(/\D/g, "");
     const formatted = digits ? Number(digits).toLocaleString("en-AU") : "";
@@ -113,11 +127,21 @@ export function MortgageMateForm({
   };
 
   const handleNext = () => {
-    if (step === 8) {
-      if (depositFunds === "YES" || depositFunds === "YES_AND_GUARANTOR") {
-        setStep(9);
+    if (step === 1) {
+      setStep(2);
+    } else if (step === 2) {
+      if (numApplicants === "single") {
+        setStep(4);
       } else {
+        setStep(3);
+      }
+    } else if (step === 3) {
+      setStep(4);
+    } else if (step === 9) {
+      if (depositFunds === "YES" || depositFunds === "YES_AND_GUARANTOR") {
         setStep(10);
+      } else {
+        setStep(11);
       }
     } else if (step < totalSteps) {
       setStep((prev) => prev + 1);
@@ -125,11 +149,17 @@ export function MortgageMateForm({
   };
 
   const handleBack = () => {
-    if (step === 10) {
+    if (step === 11) {
       if (depositFunds === "YES" || depositFunds === "YES_AND_GUARANTOR") {
-        setStep(9);
+        setStep(10);
       } else {
-        setStep(8);
+        setStep(9);
+      }
+    } else if (step === 4) {
+      if (numApplicants === "single") {
+        setStep(2);
+      } else {
+        setStep(3);
       }
     } else if (step === 1 && initialStep === 1 && onClose) {
       onClose();
@@ -141,20 +171,24 @@ export function MortgageMateForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!fullName || !email || !phone) return;
+    if (numApplicants === "joint" && (!app2Name || !app2Email || !app2Phone)) return;
     setSubmitting(true);
 
     const payload = {
       type: "mortgage_mate",
-      name: fullName,
-      email: email,
-      phone: phone,
+      name: numApplicants === "joint" ? `${fullName} & ${app2Name}` : fullName,
+      email: numApplicants === "joint" ? `${email} / ${app2Email}` : email,
+      phone: numApplicants === "joint" ? `${phone} / ${app2Phone}` : phone,
       savings: amountOfSavings || depositFunds || "N/A",
       income: `Borrow: ${loanAmount}, Worth: ${propertyWorth}, Goal: ${loanPurpose}`,
       state: state || "NSW",
       details: JSON.stringify({
+        numApplicants,
         contactMethod,
         creditHistory,
-        comments
+        comments,
+        applicant1: { name: fullName, email, phone },
+        applicant2: numApplicants === "joint" ? { name: app2Name, email: app2Email, phone: app2Phone } : null
       })
     };
 
@@ -178,49 +212,53 @@ export function MortgageMateForm({
   };
 
   const isStepValid = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (step === 0) return true;
-    if (step === 1) return fullName.trim().length > 0;
+    if (step === 1) return numApplicants !== "";
     if (step === 2) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      const digitsOnly = phone.replace(/\D/g, "");
-      const isPhoneValid = digitsOnly.length === 10;
-      return isPhoneValid && emailRegex.test(email.trim());
+      const isPhoneValid = phone.replace(/\D/g, "").length === 10;
+      return fullName.trim().length > 0 && isPhoneValid && emailRegex.test(email.trim());
     }
-    if (step === 3) return contactMethod !== "";
-    if (step === 4) return true; // Interstitial
-    if (step === 5) return loanPurpose !== "";
-    if (step === 6) {
+    if (step === 3) {
+      const isPhoneValid = app2Phone.replace(/\D/g, "").length === 10;
+      return app2Name.trim().length > 0 && isPhoneValid && emailRegex.test(app2Email.trim());
+    }
+    if (step === 4) return contactMethod !== "";
+    if (step === 5) return true; // Interstitial
+    if (step === 6) return loanPurpose !== "";
+    if (step === 7) {
       const numericVal = Number(propertyWorth.replace(/\D/g, ""));
       return !isNaN(numericVal) && numericVal > 0;
     }
-    if (step === 7) {
+    if (step === 8) {
       const numericVal = Number(loanAmount.replace(/\D/g, ""));
       return !isNaN(numericVal) && numericVal > 0;
     }
-    if (step === 8) return depositFunds !== "";
-    if (step === 9) {
+    if (step === 9) return depositFunds !== "";
+    if (step === 10) {
       const numericVal = Number(amountOfSavings.replace(/\D/g, ""));
       return !isNaN(numericVal) && numericVal > 0;
     }
-    if (step === 10) return creditHistory !== "";
-    if (step === 11) return true; // comments are optional
+    if (step === 11) return creditHistory !== "";
+    if (step === 12) return true; // comments are optional
     return true;
   };
 
   const getHelpfulHint = (currentStep: number) => {
     switch (currentStep) {
-      case 1: return "Your name helps us personalise your assessment summary and dashboard.";
-      case 2: return "We will send your tailored strategy and next steps directly to you.";
-      case 3: return "We respect your time. Let us know the best way for Aakash to reach out.";
-      case 5: return "Knowing your goal helps us filter down to the most relevant lending structures.";
-      case 6: return loanPurpose === "REFINANCE_A_LOAN" 
+      case 1: return "Knowing if this is a single or joint application is crucial for assessing borrowing capacity.";
+      case 2: return "We will send the tailored strategy and assessment summary directly to you.";
+      case 3: return "Second applicant details help us calculate joint income and assessment rates.";
+      case 4: return "We respect your time. Let us know the best way for Aakash to reach out.";
+      case 6: return "Knowing your goal helps us filter down to the most relevant lending structures.";
+      case 7: return loanPurpose === "REFINANCE_A_LOAN" 
         ? "This helps us calculate your Loan-to-Value Ratio (LVR) to unlock better interest rates." 
         : "This helps us estimate your required deposit and stamp duty costs.";
-      case 7: return "We need this to estimate your monthly repayments and borrowing capacity.";
-      case 8: return "Understanding your deposit source helps us determine if you qualify for LMI waivers or grants.";
-      case 9: return "A clear view of your savings helps us negotiate the best possible rate discounts.";
-      case 10: return "Different lenders have different policies. This helps us match you with the right one.";
-      case 11: return "Any extra context helps Aakash provide a more accurate and comprehensive strategy.";
+      case 8: return "We need this to estimate your monthly repayments and borrowing capacity.";
+      case 9: return "Understanding your deposit source helps us determine if you qualify for LMI waivers or grants.";
+      case 10: return "A clear view of your savings helps us negotiate the best possible rate discounts.";
+      case 11: return "Different lenders have different policies. This helps us match you with the right one.";
+      case 12: return "Any extra context helps Aakash provide a more accurate and comprehensive strategy.";
       default: return "";
     }
   };
@@ -506,8 +544,7 @@ export function MortgageMateForm({
               <button
                 type="button"
                 onClick={() => {
-                  if (onClose) onClose();
-                  router.push("/mortgage-mate/assessment");
+                  setStep(1);
                 }}
                 className="w-full sm:w-auto bg-[#10A3EB] hover:bg-[#0e92d3] text-white font-extrabold uppercase text-[12px] tracking-wider py-3.5 px-6 rounded-full flex items-center justify-center gap-2 shadow-md shadow-sky-500/10 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer shrink-0"
               >
@@ -649,17 +686,17 @@ export function MortgageMateForm({
         <div className="flex flex-col justify-between h-full space-y-4">
           <div>
             <div className="mb-4 sm:mb-5">
-              <div className="flex items-center justify-between mb-1.5 sm:mb-2">
+              <div className="flex items-center justify-between mb-1.5 sm:mb-2 pr-8">
                 <span className="text-[9.5px] sm:text-[10px] text-[#10A3EB] font-extrabold uppercase tracking-widest block shrink-0 mr-2">
-                  {step <= 3 ? "Phase 1: Personal Details" : "Phase 2: Property Details"}
+                  {step <= 4 ? "Phase 1: Personal Details" : "Phase 2: Property Details"}
                 </span>
                 <div className="text-[9.5px] sm:text-[10px] text-[#10A3EB] font-bold bg-blue-50 border border-blue-100/30 px-2.5 py-1 rounded-md shrink-0">
                   Step {step} of {totalSteps}
                 </div>
               </div>
               
-              <h2 className="text-[#0B1F3A] text-[17px] sm:text-[20px] font-extrabold tracking-tight leading-tight">
-                {step <= 3 ? `Onboarding Question ${step} of 3` : `Property Question ${step - 3} of 8`}
+              <h2 className="text-[#0B1F3A] text-[17px] sm:text-[20px] font-extrabold tracking-tight leading-tight pr-8">
+                {step === 5 ? "Property Details" : step <= 4 ? `Onboarding Question ${step === 1 ? 1 : step === 2 ? 2 : step === 3 ? 3 : (numApplicants === "joint" ? 4 : 3)} of ${numApplicants === "joint" ? 4 : 3}` : `Property Question ${step - 5} of 7`}
               </h2>
             </div>
 
@@ -680,40 +717,63 @@ export function MortgageMateForm({
                   transition={{ duration: 0.2 }}
                   className="space-y-4 max-w-[680px] mx-auto w-full"
                 >
-                  {/* STEP 1: Full Name */}
+                  {/* STEP 1: Number of Applicants */}
                   {step === 1 && (
                     <div className="space-y-3">
-                      <label className="text-[13.5px] font-extrabold text-[#0B1F3A] block">What is your full name?</label>
-                      <div className="relative">
-                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-                        <input type="text"
-                          placeholder="Enter your full name"
-                          value={fullName}
-                          onChange={(e) => setFullName(e.target.value)}
-                          onKeyDown={handleKeyDown}
-                          className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[16px] md:text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
-                          required
-                          autoFocus
-                        />
+                      <label className="text-[13.5px] font-extrabold text-[#0B1F3A] block">How many applicants are there?</label>
+                      <div className="grid grid-cols-1 gap-3">
+                        {[
+                          { value: "single", label: "Single Applicant" },
+                          { value: "joint", label: "Joint Applicants (2 Applicants)" }
+                        ].map((obj) => (
+                          <button
+                            type="button"
+                            key={obj.value}
+                            onClick={() => {
+                              setNumApplicants(obj.value as "single" | "joint");
+                              setStep(2);
+                            }}
+                            className={`w-full rounded-2xl border-0 py-3.5 px-6 text-center font-bold text-[13.5px] transition-all duration-300 cursor-pointer ${
+                              numApplicants === obj.value
+                                ? "bg-sky-50 text-[#10A3EB] shadow-[0_4px_12px_rgba(16,163,235,0.12)] ring-2 ring-[#10A3EB] scale-[1.01]"
+                                : "bg-white text-slate-700 shadow-[0_4px_12px_rgba(148,163,184,0.08)] hover:-translate-y-0.5 hover:shadow-[0_8px_18px_rgba(148,163,184,0.16)]"
+                            }`}
+                          >
+                            {obj.label}
+                          </button>
+                        ))}
                       </div>
                     </div>
                   )}
 
-                  {/* STEP 2: Contact Details */}
+                  {/* STEP 2: Applicant 1 Contact Details */}
                   {step === 2 && (
                     <div className="space-y-3">
-                      <label className="text-[13.5px] font-extrabold text-[#0B1F3A] block">Please provide your mobile number and email address.</label>
+                      <label className="text-[13.5px] font-extrabold text-[#0B1F3A] block">
+                        {numApplicants === "joint" ? "Please provide details for the First Applicant." : "Please provide your contact details."}
+                      </label>
                       <div className="space-y-3">
+                        <div className="relative">
+                          <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                          <input type="text"
+                            placeholder="Full name"
+                            value={fullName}
+                            onChange={(e) => setFullName(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[16px] md:text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
+                            required
+                            autoFocus
+                          />
+                        </div>
                         <div className="relative">
                           <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                           <input type="tel"
-                            placeholder="Phone number (e.g. 0400 000 000)"
+                            placeholder=""
                             value={phone}
                             onChange={(e) => handlePhoneChange(e.target.value)}
                             onKeyDown={handleKeyDown}
-                          className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[16px] md:text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
+                            className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[16px] md:text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
                             required
-                            autoFocus
                           />
                         </div>
                         {phone.trim().length > 0 && phone.replace(/\D/g, "").length !== 10 && (
@@ -726,7 +786,7 @@ export function MortgageMateForm({
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             onKeyDown={handleKeyDown}
-                          className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[16px] md:text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
+                            className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[16px] md:text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
                             required
                           />
                         </div>
@@ -734,11 +794,84 @@ export function MortgageMateForm({
                           <p className="text-rose-500 text-[10px] font-bold mt-1">Please enter a valid email address.</p>
                         )}
                       </div>
+                      <button
+                        type="button"
+                        onClick={handleNext}
+                        disabled={!isStepValid()}
+                        className={`w-full flex items-center justify-center gap-1.5 px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer ${
+                          isStepValid()
+                            ? "bg-[#10A3EB] hover:bg-[#0e92d3] text-white"
+                            : "bg-slate-100 text-slate-400 cursor-not-allowed"
+                        }`}
+                      >
+                        Next Question <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
                     </div>
                   )}
 
-                  {/* STEP 3: Best Contact Method */}
-                  {step === 3 && (
+                  {/* STEP 3: Applicant 2 Contact Details */}
+                  {step === 3 && numApplicants === "joint" && (
+                    <div className="space-y-3">
+                      <label className="text-[13.5px] font-extrabold text-[#0B1F3A] block">Please provide details for the Second Applicant.</label>
+                      <div className="space-y-3">
+                        <div className="relative">
+                          <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                          <input type="text"
+                            placeholder="Full name"
+                            value={app2Name}
+                            onChange={(e) => setApp2Name(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[16px] md:text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
+                            required
+                            autoFocus
+                          />
+                        </div>
+                        <div className="relative">
+                          <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                          <input type="tel"
+                            placeholder=""
+                            value={app2Phone}
+                            onChange={(e) => handleApp2PhoneChange(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[16px] md:text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
+                            required
+                          />
+                        </div>
+                        {app2Phone.trim().length > 0 && app2Phone.replace(/\D/g, "").length !== 10 && (
+                          <p className="text-rose-500 text-[10px] font-bold mt-1">Please enter a valid 10-digit phone number.</p>
+                        )}
+                        <div className="relative">
+                          <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                          <input type="email"
+                            placeholder="example@email.com"
+                            value={app2Email}
+                            onChange={(e) => setApp2Email(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-[16px] md:text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs"
+                            required
+                          />
+                        </div>
+                        {app2Email.trim().length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(app2Email.trim()) && (
+                          <p className="text-rose-500 text-[10px] font-bold mt-1">Please enter a valid email address.</p>
+                        )}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleNext}
+                        disabled={!isStepValid()}
+                        className={`w-full flex items-center justify-center gap-1.5 px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer ${
+                          isStepValid()
+                            ? "bg-[#10A3EB] hover:bg-[#0e92d3] text-white"
+                            : "bg-slate-100 text-slate-400 cursor-not-allowed"
+                        }`}
+                      >
+                        Next Question <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  )}
+
+                  {/* STEP 4: Best Contact Method */}
+                  {step === 4 && (
                     <div className="space-y-3">
                       <label className="text-[13.5px] font-extrabold text-[#0B1F3A] block">What is the best way to contact you?</label>
                       <div className="grid grid-cols-1 gap-3">
@@ -751,7 +884,7 @@ export function MortgageMateForm({
                             key={obj.value}
                             onClick={() => {
                               setContactMethod(obj.value);
-                              setStep(4);
+                              setStep(5);
                             }}
                             className={`w-full rounded-2xl border-0 py-3 px-6 text-center font-bold text-[13.5px] transition-all duration-300 cursor-pointer ${
                               contactMethod === obj.value
@@ -766,21 +899,28 @@ export function MortgageMateForm({
                     </div>
                   )}
 
-                  {/* STEP 4: Interstitial Intermission */}
-                  {step === 4 && (
+                  {/* STEP 5: Interstitial Intermission */}
+                  {step === 5 && (
                     <div className="space-y-3 text-center py-2">
                       <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center mx-auto mb-2 border border-emerald-100 shadow-sm">
                         <CheckCircle className="w-6 h-6" />
                       </div>
                       <h3 className="text-[#0B1F3A] text-[16px] font-extrabold">Personal Details Saved!</h3>
-                      <p className="text-slate-500 text-xs font-semibold leading-relaxed max-w-md mx-auto">
+                      <p className="text-slate-500 text-xs font-semibold leading-relaxed max-w-md mx-auto mb-2">
                         Great! Now, let&apos;s proceed to gather details about the property so Aakash can match you with the right lender structures.
                       </p>
+                      <button
+                        type="button"
+                        onClick={handleNext}
+                        className="w-full bg-[#10A3EB] hover:bg-[#0e92d3] text-white flex items-center justify-center gap-1.5 px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer"
+                      >
+                        Proceed to Property Details <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
                     </div>
                   )}
 
-                  {/* STEP 5: Planning Goal */}
-                  {step === 5 && (
+                  {/* STEP 6: Planning Goal */}
+                  {step === 6 && (
                     <div className="space-y-3">
                       <label className="text-[13.5px] font-extrabold text-[#0B1F3A] block">What are you planning to do?</label>
                       <div className="grid grid-cols-1 gap-3">
@@ -795,7 +935,7 @@ export function MortgageMateForm({
                             key={obj.value}
                             onClick={() => {
                               setLoanPurpose(obj.value);
-                              setStep(6);
+                              setStep(7);
                             }}
                             className={`w-full rounded-2xl border-0 py-3 px-6 text-center font-bold text-[13.5px] transition-all duration-300 cursor-pointer ${
                               loanPurpose === obj.value
@@ -810,8 +950,8 @@ export function MortgageMateForm({
                     </div>
                   )}
 
-                  {/* STEP 6: Valuation/Purchase Price */}
-                  {step === 6 && (
+                  {/* STEP 7: Valuation/Purchase Price */}
+                  {step === 7 && (
                     <div className="space-y-3">
                       <label className="text-[13.5px] font-extrabold text-[#0B1F3A] block">
                         {loanPurpose === "REFINANCE_A_LOAN" ? "How much is your property worth?" :
@@ -830,11 +970,23 @@ export function MortgageMateForm({
                           autoFocus
                         />
                       </div>
+                      <button
+                        type="button"
+                        onClick={handleNext}
+                        disabled={!isStepValid()}
+                        className={`w-full flex items-center justify-center gap-1.5 px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer ${
+                          isStepValid()
+                            ? "bg-[#10A3EB] hover:bg-[#0e92d3] text-white"
+                            : "bg-slate-100 text-slate-400 cursor-not-allowed"
+                        }`}
+                      >
+                        Next Question <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
                     </div>
                   )}
 
-                  {/* STEP 7: Loan Target */}
-                  {step === 7 && (
+                  {/* STEP 8: Loan Target */}
+                  {step === 8 && (
                     <div className="space-y-3">
                       <label className="text-[13.5px] font-extrabold text-[#0B1F3A] block">How much were you looking to borrow?</label>
                       <div className="relative">
@@ -849,11 +1001,23 @@ export function MortgageMateForm({
                           autoFocus
                         />
                       </div>
+                      <button
+                        type="button"
+                        onClick={handleNext}
+                        disabled={!isStepValid()}
+                        className={`w-full flex items-center justify-center gap-1.5 px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer ${
+                          isStepValid()
+                            ? "bg-[#10A3EB] hover:bg-[#0e92d3] text-white"
+                            : "bg-slate-100 text-slate-400 cursor-not-allowed"
+                        }`}
+                      >
+                        Next Question <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
                     </div>
                   )}
 
-                  {/* STEP 8: Funds Assessment */}
-                  {step === 8 && (
+                  {/* STEP 9: Funds Assessment */}
+                  {step === 9 && (
                     <div className="space-y-3">
                       <label className="text-[13.5px] font-extrabold text-[#0B1F3A] block">Do you have the funds required for a deposit?</label>
                       <div className="grid grid-cols-1 gap-3">
@@ -869,9 +1033,9 @@ export function MortgageMateForm({
                             onClick={() => {
                               setDepositFunds(obj.value);
                               if (obj.value === "YES" || obj.value === "YES_AND_GUARANTOR") {
-                                setStep(9);
-                              } else {
                                 setStep(10);
+                              } else {
+                                setStep(11);
                               }
                             }}
                             className={`w-full rounded-2xl border-0 py-3 px-6 text-center font-bold text-[13.5px] transition-all duration-300 cursor-pointer ${
@@ -887,8 +1051,8 @@ export function MortgageMateForm({
                     </div>
                   )}
 
-                  {/* STEP 9: Savings Breakdown (Conditional) */}
-                  {step === 9 && (
+                  {/* STEP 10: Savings Breakdown (Conditional) */}
+                  {step === 10 && (
                     <div className="space-y-3">
                       <label className="text-[13.5px] font-extrabold text-[#0B1F3A] block">How much deposit do you have?</label>
                       <div className="relative">
@@ -903,11 +1067,23 @@ export function MortgageMateForm({
                           autoFocus
                         />
                       </div>
+                      <button
+                        type="button"
+                        onClick={handleNext}
+                        disabled={!isStepValid()}
+                        className={`w-full flex items-center justify-center gap-1.5 px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer ${
+                          isStepValid()
+                            ? "bg-[#10A3EB] hover:bg-[#0e92d3] text-white"
+                            : "bg-slate-100 text-slate-400 cursor-not-allowed"
+                        }`}
+                      >
+                        Next Question <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
                     </div>
                   )}
 
-                  {/* STEP 10: Credit Assessment */}
-                  {step === 10 && (
+                  {/* STEP 11: Credit Assessment */}
+                  {step === 11 && (
                     <div className="space-y-3">
                       <label className="text-[13.5px] font-extrabold text-[#0B1F3A] block">How would you describe your credit history?</label>
                       <div className="grid grid-cols-1 gap-3">
@@ -922,7 +1098,7 @@ export function MortgageMateForm({
                             key={obj.value}
                             onClick={() => {
                               setCreditHistory(obj.value);
-                              setStep(11);
+                              setStep(12);
                             }}
                             className={`w-full rounded-2xl border-0 py-3 px-6 text-center font-bold text-[13.5px] transition-all duration-300 cursor-pointer ${
                               creditHistory === obj.value
@@ -937,8 +1113,8 @@ export function MortgageMateForm({
                     </div>
                   )}
 
-                  {/* STEP 11: Comments & Submit */}
-                  {step === 11 && (
+                  {/* STEP 12: Comments & Submit */}
+                  {step === 12 && (
                     <div className="space-y-4">
                       <div className="space-y-2">
                         <label className="text-[13.5px] font-extrabold text-[#0B1F3A] block">Which state are you buying property in?</label>
@@ -971,11 +1147,24 @@ export function MortgageMateForm({
                           className="w-full bg-white border border-slate-200 rounded-2xl py-3 px-4 text-[16px] md:text-[13.5px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#10A3EB] focus:ring-1 focus:ring-[#10A3EB] transition-all font-semibold shadow-xs min-h-[100px]"
                         />
                       </div>
+
+                      <button
+                        type="button"
+                        onClick={handleSubmit}
+                        disabled={!isStepValid() || submitting}
+                        className={`w-full flex items-center justify-center gap-1.5 px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer ${
+                          isStepValid() && !submitting
+                            ? "bg-[#10A3EB] hover:bg-[#0e92d3] text-white"
+                            : "bg-slate-100 text-slate-400 cursor-not-allowed"
+                        }`}
+                      >
+                        {submitting ? "Submitting..." : "Submit Profile"} <Check className="w-3.5 h-3.5" />
+                      </button>
                     </div>
                   )}
-                
+
                   {/* Helpful Hint Box (Just below the field) */}
-                  {step > 0 && step !== 4 && step !== 11 && getHelpfulHint(step) !== "" && (
+                  {step > 0 && step !== 5 && step !== 12 && getHelpfulHint(step) !== "" && (
                     <div className="mt-4 rounded-xl overflow-hidden border border-[#10A3EB]/30 shadow-sm">
                       <div className="bg-[#10A3EB] px-3 py-1.5 flex items-center gap-1.5 relative">
                         <div className="absolute -bottom-1.5 left-6 w-3 h-3 bg-[#10A3EB] rotate-45 transform" />
@@ -1004,32 +1193,34 @@ export function MortgageMateForm({
               <ArrowLeft className="w-3.5 h-3.5" /> Back
             </button>
 
-            {step < totalSteps ? (
-              <button
-                type="button"
-                onClick={handleNext}
-                disabled={!isStepValid()}
-                className={`flex items-center justify-center gap-1.5 px-6 py-3.5 sm:py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer order-1 sm:order-2 ${
-                  isStepValid()
-                    ? "bg-[#10A3EB] hover:bg-[#0e92d3] text-white hover:scale-[1.01]"
-                    : "bg-slate-100 text-slate-400 cursor-not-allowed"
-                }`}
-              >
-                {step === 4 ? "Proceed to Property Details" : "Next Question"} <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={handleSubmit}
-                disabled={!isStepValid() || submitting}
-                className={`flex items-center justify-center gap-1.5 px-6 py-3.5 sm:py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer order-1 sm:order-2 ${
-                  isStepValid() && !submitting
-                    ? "bg-[#10A3EB] hover:bg-[#0e92d3] text-white hover:scale-[1.01]"
-                    : "bg-slate-100 text-slate-400 cursor-not-allowed"
-                }`}
-              >
-                {submitting ? "Submitting..." : "Submit Profile"} <Check className="w-3.5 h-3.5" />
-              </button>
+            {!hasInlineButton && (
+              step < totalSteps ? (
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  disabled={!isStepValid()}
+                  className={`flex items-center justify-center gap-1.5 px-6 py-3.5 sm:py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer order-1 sm:order-2 ${
+                    isStepValid()
+                      ? "bg-[#10A3EB] hover:bg-[#0e92d3] text-white hover:scale-[1.01]"
+                      : "bg-slate-100 text-slate-400 cursor-not-allowed"
+                  }`}
+                >
+                  {step === 4 ? "Proceed to Property Details" : "Next Question"} <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleSubmit}
+                  disabled={!isStepValid() || submitting}
+                  className={`flex items-center justify-center gap-1.5 px-6 py-3.5 sm:py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer order-1 sm:order-2 ${
+                    isStepValid() && !submitting
+                      ? "bg-[#10A3EB] hover:bg-[#0e92d3] text-white hover:scale-[1.01]"
+                      : "bg-slate-100 text-slate-400 cursor-not-allowed"
+                  }`}
+                >
+                  {submitting ? "Submitting..." : "Submit Profile"} <Check className="w-3.5 h-3.5" />
+                </button>
+              )
             )}
           </div>
 

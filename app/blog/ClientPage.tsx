@@ -18,6 +18,7 @@ export default function BlogClient() {
       <SubPageHero
         pageTitle="Blog"
         themeColor="rose"
+        layoutType="clean"
         pageHeroSettings={{
           hero_badge: "Property Insights",
           hero_title: "Mortgage Xperts Blog",

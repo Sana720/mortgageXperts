@@ -17,23 +17,24 @@ export function ClientPage({ settings }: ClientPageProps) {
     <div className="bg-[#F0F4FA] min-h-screen font-sans flex flex-col">
       <SiteHeader isSticky={false} settings={settings} />
       <SubPageHero
-        pageTitle="Who We Help"
+        pageTitle="Top Nepali Mortgage Broker in Australia"
         themeColor="blue"
+        layoutType="clean"
         pageHeroSettings={{
           hero_badge: "Who We Help",
-          hero_title: "Who We Help",
-          hero_subtext: "Australia’s Trusted Multilingual Mortgage Broker in Melbourne, Sydney, Perth, Brisbane & Nationwide",
+          hero_title: "Top Nepali Mortgage Broker in Australia",
+          hero_subtext: "Securing your property dreams with the top Nepali mortgage broker in Australia. We negotiate with 40+ lenders for your best deal.",
           hero_image: "/images/hero.png",
         }}
       />
 
-      {/* SECTION 1: Expert Home Loan Services */}
+      {/* SECTION 1: Who We Help */}
       <section className="py-16 md:py-24 max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="relative rounded-3xl overflow-hidden shadow-2xl h-[400px] sm:h-[500px] lg:h-[600px] order-2 lg:order-1">
             <Image
-              src="/images/family_couch_laptop.png"
-              alt="Family looking at laptop"
+              src="/images/diverse_professional_clients.png"
+              alt="Healthcare Professionals"
               fill
               className="object-cover"
             />
@@ -42,10 +43,10 @@ export function ClientPage({ settings }: ClientPageProps) {
               <div className="bg-white/95 backdrop-blur-md p-6 rounded-2xl shadow-lg border border-white/20">
                 <div className="flex items-center gap-4 mb-2">
                   <Shield className="w-8 h-8 text-[#2563EB]" />
-                  <h3 className="text-[18px] font-bold text-[#0B1F3A]">Trusted Advice</h3>
+                  <h3 className="text-[18px] font-bold text-[#0B1F3A]">Exclusive Perks</h3>
                 </div>
                 <p className="text-[14px] text-slate-600">
-                  Recognized for excellence and trusted by the multicultural community to achieve home ownership in Australia.
+                  We unlock LMI waivers and specialized lender policies for medical and finance professionals.
                 </p>
               </div>
             </div>
@@ -54,32 +55,32 @@ export function ClientPage({ settings }: ClientPageProps) {
           <div className="space-y-6 order-1 lg:order-2">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-100/50 border border-blue-200">
               <Users className="w-4 h-4 text-[#2563EB]" />
-              <span className="text-[12px] font-bold text-[#2563EB] uppercase tracking-wider">Expertise</span>
+              <span className="text-[12px] font-bold text-[#2563EB] uppercase tracking-wider">Diverse Clients</span>
             </div>
             
             <h2 
               className="text-[28px] sm:text-[36px] font-bold leading-tight text-[#0B1F3A]"
               style={{ fontFamily: "var(--font-montserrat, sans-serif)" }}
             >
-              Australia’s Trusted Multilingual Mortgage Broker
+              Tailored Solutions For Every Unique Situation.
             </h2>
             
             <div className="space-y-5 text-[15px] sm:text-[16px] text-slate-600 leading-relaxed">
               <p>
-                Mortgage Xperts is a trusted Australian mortgage broker, led by Aakash and supported by an expert team, providing personalized home loan solutions for first-home buyers, investors, refinancers, and clients with unique financial situations. With deep knowledge of the home loan market and strong connections with buyers’ agents and conveyancers, we ensure a smooth and efficient loan process.
+                No two borrowers are the same. We pride ourselves on deeply understanding the unique circumstances of every client we serve. 
               </p>
               <p>
-                We have proudly helped hundreds of Nepali families and Australian clients across Melbourne, Sydney, Perth, Brisbane, and nationwide, offering expert support in multiple languages including English and Nepali. 
+                From straightforward PAYG income families to highly complex financial structures involving trusts and companies, we have the expertise to get your loan approved smoothly.
               </p>
               <p>
-                Mortgage Xperts works with a wide panel of leading Australian banks and lenders, providing competitive rates and tailored solutions. Recognized for excellence and trusted by the multicultural community, we are committed to helping families and individuals achieve their dream of home ownership in Australia.
+                As Australia's leading multicultural broker, we also specialize in helping visa holders, expats, and new migrants navigate strict FIRB regulations and secure funding when traditional banks say no.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION 2: Supporting Multicultural Communities */}
+      {/* SECTION 2: Target Audience */}
       <section className="py-16 md:py-24 bg-white">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -93,43 +94,43 @@ export function ClientPage({ settings }: ClientPageProps) {
                 className="text-[28px] sm:text-[36px] font-bold leading-tight text-[#0B1F3A]"
                 style={{ fontFamily: "var(--font-montserrat, sans-serif)" }}
               >
-                Supporting Nepali Families and Multicultural Communities Across Australia
+                Proudly serving diverse communities across Australia.
               </h2>
               
               <div className="space-y-5 text-[15px] sm:text-[16px] text-slate-600 leading-relaxed">
                 <div>
-                  <strong className="text-[#0B1F3A] block mb-1">✔ First-Home Buyers</strong>
-                  We specialize in assisting first-home buyers, including many Nepali families and migrants, navigating the challenges of entering the Australian property market for the first time. From understanding eligibility to deposit requirements, we walk you through every step.
+                  <strong className="text-[#0B1F3A] block mb-1">✔ Australian Families</strong>
+                  From young couples buying their first apartment to growing families upgrading to a larger home.
+                </div>
+                <div>
+                  <strong className="text-[#0B1F3A] block mb-1">✔ Visa Holders & Migrants</strong>
+                  We navigate strict criteria to secure funding for non-residents and new arrivals.
+                </div>
+                <div>
+                  <strong className="text-[#0B1F3A] block mb-1">✔ Medical & Finance Pros</strong>
+                  Doctors, nurses, and accountants capitalize on exclusive discounts and LMI waivers up to 95% LVR.
+                </div>
+                <div>
+                  <strong className="text-[#0B1F3A] block mb-1">✔ Self-Employed & Tradies</strong>
+                  We work with alternative documentation options to ensure contractors aren't locked out.
                 </div>
                 <div>
                   <strong className="text-[#0B1F3A] block mb-1">✔ Property Investors</strong>
-                  For property investors, we provide tailored strategies to help maximize your returns and secure loans suited to your long-term investment goals.
-                </div>
-                <div>
-                  <strong className="text-[#0B1F3A] block mb-1">✔ Refinancing</strong>
-                  We assist clients looking to refinance, whether it’s to reduce interest rates, consolidate debt, or access equity for future investments, ensuring a smooth process that saves you time and money.
-                </div>
-                <div>
-                  <strong className="text-[#0B1F3A] block mb-1">✔ Complex Financial Situations</strong>
-                  Beyond standard lending, we help self-employed borrowers, migrants with limited Australian credit history, or anyone whose financial profile doesn’t fit traditional lending criteria.
-                </div>
-                <div>
-                  <strong className="text-[#0B1F3A] block mb-1">✔ Multilingual Support</strong>
-                  We understand the unique needs of the Nepali and multicultural communities. We offer support in Nepali, English, Hindi, and Punjabi.
+                  Seasoned investors looking to scale their portfolios with tax-efficient structures.
                 </div>
               </div>
 
               <div className="pt-4 bg-blue-50/50 p-5 rounded-2xl border border-blue-100">
                 <p className="text-[14px] font-medium text-[#0B1F3A] leading-relaxed">
-                  Whether you are buying your first home, investing in property, refinancing your loan, or navigating a complex financial situation, Mortgage Xperts is committed to helping you achieve your dreams.
+                  Whatever your situation, Mortgage Xperts is here to make the process simpler and less stressful. With access to a wide range of lenders and loan options, we focus on finding the right solution for your needs – not the banks’. We handle the complexity, so you can move forward with confidence.
                 </p>
               </div>
             </div>
 
             <div className="relative rounded-3xl overflow-hidden shadow-2xl h-[400px] sm:h-[500px] lg:h-[700px]">
               <Image
-                src="/images/cta-couple.png"
-                alt="Happy couple looking at keys"
+                src="/images/happy_family_sold_sign.png"
+                alt="Lenders Bank 3D"
                 fill
                 className="object-cover"
               />

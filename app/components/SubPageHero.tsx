@@ -62,6 +62,7 @@ const premiumFadeUp = {
 interface SubPageHeroProps {
   pageTitle: string;
   themeColor?: "blue" | "green" | "violet" | "teal" | "orange" | "rose";
+  layoutType?: "landing" | "clean";
   pageHeroSettings?: {
     hero_badge?: string;
     hero_title?: string;
@@ -74,7 +75,7 @@ interface SubPageHeroProps {
   } | null;
 }
 
-export function SubPageHero({ pageTitle, themeColor = "blue", pageHeroSettings }: SubPageHeroProps) {
+export function SubPageHero({ pageTitle, themeColor = "blue", layoutType = "landing", pageHeroSettings }: SubPageHeroProps) {
   const badgeText = pageHeroSettings?.hero_badge || "Premium Mortgage Experts";
   const titleText = pageHeroSettings?.hero_title || pageTitle;
   const subtextText = pageHeroSettings?.hero_subtext || "We help you unlock better interest rates, calculate your borrowing limits, and secure your finance with a completely stress-free experience.";
@@ -151,6 +152,165 @@ export function SubPageHero({ pageTitle, themeColor = "blue", pageHeroSettings }
           : isRose
             ? "from-rose-50 to-pink-50/30"
             : "from-[#EAF3FF] to-[#F4F9FF]";
+
+  if (layoutType === "clean") {
+    const isDarkGreen = themeColor === "green";
+    const isDarkViolet = themeColor === "violet";
+    const isDarkTeal = themeColor === "teal";
+    const isDarkOrange = themeColor === "orange";
+    const isDarkRose = themeColor === "rose";
+
+    const darkAccentText = isDarkGreen
+      ? "text-emerald-400"
+      : isDarkViolet
+        ? "text-violet-400"
+        : isDarkTeal
+          ? "text-teal-400"
+          : isDarkOrange
+            ? "text-orange-400"
+            : isDarkRose
+              ? "text-rose-450"
+              : "text-blue-400";
+
+    const darkBadgeClass = isDarkGreen
+      ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400"
+      : isDarkViolet
+        ? "bg-violet-500/10 border-violet-500/20 text-violet-400"
+        : isDarkTeal
+          ? "bg-teal-500/10 border-teal-500/20 text-teal-400"
+          : isDarkOrange
+            ? "bg-orange-500/10 border-orange-500/20 text-orange-400"
+            : isDarkRose
+              ? "bg-rose-500/10 border-rose-500/20 text-rose-400"
+              : "bg-blue-500/10 border-blue-500/20 text-blue-400";
+
+    const darkLineClass = isDarkGreen
+      ? "bg-emerald-500"
+      : isDarkViolet
+        ? "bg-violet-500"
+        : isDarkTeal
+          ? "bg-teal-500"
+          : isDarkOrange
+            ? "bg-orange-500"
+            : isDarkRose
+              ? "bg-rose-500"
+              : "bg-blue-500";
+
+    const lowerTitle = pageTitle.toLowerCase();
+    let cardTitle = "Editorial Insights";
+    let cardItems = [
+      { title: "Market Analysis", desc: "Updated real-time data & interest rates." },
+      { title: "Educational Resources", desc: "Detailed buying & refinancing guides." },
+      { title: "Unbiased Guidance", desc: "Pure, expert-led financial information." }
+    ];
+
+    if (lowerTitle.includes("team") || lowerTitle.includes("broker") || lowerTitle.includes("xperts") || lowerTitle.includes("about")) {
+      cardTitle = "Our Service Standards";
+      cardItems = [
+        { title: "Accredited Specialists", desc: "Over 15+ years of combined experience." },
+        { title: "Bilingual Services", desc: "Expert guidance in English & Nepali." },
+        { title: "Client First Approach", desc: "Direct, personal access to senior brokers." }
+      ];
+    } else if (lowerTitle.includes("blog") || lowerTitle.includes("news") || lowerTitle.includes("insights")) {
+      cardTitle = "Independent Insights";
+      cardItems = [
+        { title: "Market Updates", desc: "Helping you stay ahead of changing rates." },
+        { title: "Finance Education", desc: "Demystifying complex home loan processes." },
+        { title: "Industry Analysis", desc: "Actionable tips from active field experts." }
+      ];
+    }
+
+    return (
+      <section id="overview" className="relative overflow-hidden bg-gradient-to-b from-[#091526] via-[#0B1F3A] to-[#0A182E] pt-12 pb-14 lg:pt-16 lg:pb-20 text-white border-b border-slate-800/80 flex flex-col justify-start">
+        {/* Glow Orbs */}
+        <div className={`absolute top-0 left-1/4 w-[350px] h-[350px] bg-gradient-to-br ${isDarkGreen ? 'from-emerald-500/10' : isDarkViolet ? 'from-violet-500/10' : isDarkTeal ? 'from-teal-500/10' : isDarkOrange ? 'from-orange-500/10' : isDarkRose ? 'from-rose-500/10' : 'from-blue-500/10'} to-transparent rounded-full blur-[100px] pointer-events-none`} />
+        <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-gradient-to-tr from-indigo-500/10 to-transparent rounded-full blur-[90px] pointer-events-none" />
+        
+        {/* Dot Pattern */}
+        <div className="absolute top-6 right-10 w-36 h-36 opacity-10 pointer-events-none" style={{ backgroundImage: `radial-gradient(${dotColor} 1.5px, transparent 1.5px)`, backgroundSize: "8px 8px" }} />
+
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10 w-full">
+          {/* Breadcrumb */}
+          <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-1.5 sm:gap-2 bg-white/5 border border-white/10 text-slate-300 backdrop-blur-md rounded-full px-3.5 py-1.5 w-fit mb-6 text-[10.5px] sm:text-[11px] font-bold shadow-sm">
+            <svg className="w-3.5 h-3.5 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
+              <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+            <Link href="/" className="hover:text-white transition-colors">Home</Link>
+            <span className="text-slate-500 font-normal">&gt;</span>
+            <span className="text-slate-100 font-bold">{pageTitle}</span>
+          </nav>
+
+          <div className="grid grid-cols-1 lg:grid-cols-[58%_42%] gap-8 lg:gap-12 items-center">
+            {/* Left Content */}
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={premiumStagger}
+              className="flex flex-col pt-1"
+            >
+              {badgeText && (
+                <motion.div variants={premiumFadeUp} className={`inline-flex items-center gap-1.5 border rounded-full px-3 py-1 ${darkBadgeClass} w-fit mb-4 shadow-xs font-bold tracking-wider uppercase text-[10px] sm:text-[10.5px]`}>
+                  <Shield className="w-3.5 h-3.5 shrink-0" />
+                  <span>{badgeText}</span>
+                </motion.div>
+              )}
+
+              <motion.h1
+                variants={premiumFadeUp}
+                className="text-[28px] sm:text-[38px] lg:text-[45px] font-black leading-tight tracking-tight text-white mb-4"
+                style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
+              >
+                {titleText}
+              </motion.h1>
+
+              <motion.div variants={premiumFadeUp} className={`w-14 h-[3.5px] ${darkLineClass} mb-5 rounded-full`} />
+
+              <motion.p variants={premiumFadeUp} className="text-slate-300 text-[14.5px] sm:text-[15.5px] leading-relaxed max-w-2xl font-medium font-inter">
+                {subtextText}
+              </motion.p>
+            </motion.div>
+
+            {/* Right Premium Highlights Card */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, ease: EASE_OUT, delay: 0.2 }}
+              className="relative bg-white/[0.03] backdrop-blur-lg border border-white/10 rounded-2xl p-6 lg:p-7 shadow-2xl overflow-hidden group hover:border-white/15 transition-all duration-300"
+            >
+              {/* Card top shine line */}
+              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+              
+              <div className="relative z-10">
+                <span className={`text-[10.5px] font-bold tracking-widest uppercase ${darkAccentText} block mb-1`}>
+                  {cardTitle}
+                </span>
+                <h3 className="text-white text-[16px] sm:text-[18px] font-bold mb-4" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                  What You Can Expect
+                </h3>
+
+                <div className="space-y-4">
+                  {cardItems.map((item, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <div className="w-6 h-6 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-white/10 transition-colors">
+                        <svg className={`w-3 h-3 ${darkAccentText}`} fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h4 className="text-white font-bold text-[13px] sm:text-[13.5px]">{item.title}</h4>
+                        <p className="text-slate-450 text-[11.5px] sm:text-[12px] leading-snug">{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="overview" className="relative overflow-hidden bg-white pt-8 pb-12 lg:pt-14 lg:pb-16 text-slate-800 border-b border-slate-100 lg:min-h-[calc(100vh-80px)] flex flex-col justify-start">

@@ -29,6 +29,7 @@ export function ClientPage({ settings, pageHeroSettings }: ClientPageProps) {
       <SubPageHero
         pageTitle="About Us"
         themeColor="blue"
+        layoutType="clean"
         pageHeroSettings={{
           hero_badge: "About Us",
           hero_title: h1Heading,
@@ -161,7 +162,7 @@ export function ClientPage({ settings, pageHeroSettings }: ClientPageProps) {
       <section className="py-12 bg-white border-y border-slate-100 overflow-hidden">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 mb-6">
           <h3 className="text-center text-[14px] font-bold text-slate-400 uppercase tracking-widest">
-            Over 40+ Lending Partners
+            40+ Lenders
           </h3>
         </div>
         <div className="relative flex overflow-x-hidden group">
@@ -274,7 +275,7 @@ export function ClientPage({ settings, pageHeroSettings }: ClientPageProps) {
                 </div>
                 <div className="space-y-1.5">
                   <label className="text-[12px] font-bold text-slate-700">Phone Number</label>
-                  <input type="tel" className="w-full h-12 px-4 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all text-[14px]" placeholder="0400 000 000" />
+                  <input type="tel" className="w-full h-12 px-4 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all text-[14px]" placeholder="" />
                 </div>
                 <div className="space-y-1.5">
                   <label className="text-[12px] font-bold text-slate-700">How can we help?</label>

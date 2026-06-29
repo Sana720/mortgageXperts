@@ -18,6 +18,7 @@ export default function NewsInsightsClient() {
       <SubPageHero
         pageTitle="The Xperts News & Insights"
         themeColor="blue"
+        layoutType="clean"
         pageHeroSettings={{
           hero_badge: "Company News",
           hero_title: "The Xperts News & Insights",

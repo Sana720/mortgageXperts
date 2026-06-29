@@ -800,7 +800,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings, pageConten
                         type="tel"
                         id="enq-phone"
                         required
-                        placeholder="0400 000 000"
+                        placeholder=""
                         value={enquiryPhone}
                         onChange={(e) => setEnquiryPhone(e.target.value)}
                         className="w-full bg-white border border-slate-200 shadow-sm rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-teal-400 focus:bg-white transition-all shadow-inner"

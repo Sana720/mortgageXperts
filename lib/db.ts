@@ -156,7 +156,11 @@ const tables = [
   ('/about-us-nepali-mortgage-broker-in-australia', 'About Mortgage Xperts | Nepali Mortgage Brokerage in Australia', 'Learn about Mortgage Xperts, Australia\'s leading Nepali mortgage brokerage. Meet our team, values and commitment to the community.', 'about Mortgage Xperts, Nepali mortgage broker about us, mortgage brokerage Australia, bilingual mortgage broker', 'Our Story', 'About Mortgage Xperts', 'We are Australia\'s leading Nepali-owned mortgage brokerage, committed to helping the community achieve homeownership through honest advice, bilingual support and 40+ lender access.', '/images/hero.png', 'Meet Our Team', '/our-team', 'Book Free Consultation', '#callback', '[]'),
   ('/our-team', 'Our Team | Mortgage Xperts Australia', 'Meet the expert Nepali mortgage brokers behind Mortgage Xperts. Our licensed team is dedicated to helping you secure the right home loan.', 'mortgage broker team, meet our brokers, Nepali mortgage broker team, licensed brokers Australia', 'Our Experts', 'Meet the Mortgage Xperts Team', 'Our team of licensed, bilingual mortgage brokers brings years of experience helping Australian families and the Nepali community navigate the home loan journey.', '/images/hero.png', 'Book a Consultation', '#callback', 'View Services', '/', '[]'),
   ('/first-home-guide', 'First Home Buyer Guide | Step-by-Step Mortgage Xperts', 'The complete guide to buying your first home in Australia. Understand grants, deposits, borrowing power, and the settlement process.', 'first home buyer guide, first home buyer Australia, how to buy first home, first home buyer grant guide', 'First Home Buyer Resource', 'Your Complete First Home Buyer Guide', 'Everything a first home buyer needs to know — from government grants and deposit schemes to choosing the right loan type and navigating the settlement process.', '/images/hero.png', 'Get Free Consultation', '#callback', 'Check Eligibility', '/nepali-mortgage-broker-in-australia', '[]'),
-  ('/free-resources', 'Free Mortgage Resources & Guides | Mortgage Xperts', 'Access free guides, calculators, checklists and resources to help you navigate the home loan process with confidence.', 'free mortgage resources, home loan guides, mortgage calculators, first home buyer resources Australia', 'Free Expert Resources', 'Free Resources for Home Buyers', 'Download guides, use our free calculators, and access expert checklists to help you make smarter property and mortgage decisions at every stage.', '/images/hero.png', 'Explore Resources', '#resources', 'Talk to a Broker', '#callback', '[]')`
+  ('/free-resources', 'Free Mortgage Resources & Guides | Mortgage Xperts', 'Access free guides, calculators, checklists and resources to help you navigate the home loan process with confidence.', 'free mortgage resources, home loan guides, mortgage calculators, first home buyer resources Australia', 'Free Expert Resources', 'Free Resources for Home Buyers', 'Download guides, use our free calculators, and access expert checklists to help you make smarter property and mortgage decisions at every stage.', '/images/hero.png', 'Explore Resources', '#resources', 'Talk to a Broker', '#callback', '[]'),
+  ('/resources/property-reports', 'Free Suburb Property Reports Australia | Mortgage Xperts', 'Get free, instant suburb property reports across Australia. Access median house & unit prices, rental yields, vacancy rates, and market trends for any suburb.', 'free property report, suburb profile report, median house price Australia, suburb growth trends, rental yield by suburb', 'Property Report Hub', 'Free Suburb Property Reports across Australia', 'Get instant access to median prices, rental yields, vacancy rates, and market trends for any suburb. Empower your buying or investing decisions with official data.', '/images/hero.png', 'Search Suburbs', '#suburb-search', 'Book Consultation', '#callback', '[]'),
+  ('/resources/property-reports/canning-vale-wa', 'Canning Vale WA Suburb Profile & Property Report | Mortgage Xperts', 'Get a free suburb property report for Canning Vale, WA 6155. Check median house price $685,000, vacancy rate 0.8%, yields, and growth trends.', 'Canning Vale property report, Canning Vale suburb profile, Canning Vale median house price, Canning Vale property market trends', 'Suburb Property Report', 'Market Report for Canning Vale (WA 6155)', 'Canning Vale is a vibrant, family-oriented suburb in Perth's south-eastern corridor, renowned for its beautifully landscaped parks, highly-regarded schools, and extensive retail hubs.', '/images/hero.png', 'Download Full Report', '#report', 'Book Consultation', '#callback', '[]'),
+  ('/resources/property-reports/baldivis-wa', 'Baldivis WA Suburb Profile & Property Report | Mortgage Xperts', 'Get a free suburb property report for Baldivis, WA 6171. Check median house price $545,000, vacancy rate 0.6%, yields, and growth trends.', 'Baldivis property report, Baldivis suburb profile, Baldivis median house price, Baldivis property market trends', 'Suburb Property Report', 'Market Report for Baldivis (WA 6171)', 'Baldivis is a rapidly expanding master-planned suburb in Perth's southern fringe, offering modern housing estates, excellent schools and strong transport links.', '/images/hero.png', 'Download Full Report', '#report', 'Book Consultation', '#callback', '[]'),
+  ('/resources/property-reports/box-hill-vic', 'Box Hill VIC Suburb Profile & Property Report | Mortgage Xperts', 'Get a free suburb property report for Box Hill, VIC 3128. Check median house price $1,650,000, vacancy rate 1.8%, yields, and growth trends.', 'Box Hill property report, Box Hill suburb profile, Box Hill median house price, Box Hill property market trends', 'Suburb Property Report', 'Market Report for Box Hill (VIC 3128)', 'Box Hill is a major metropolitan activity centre in Melbourne's eastern suburbs, celebrated for its bustling commercial district, premium dining, and exceptional institutions.', '/images/hero.png', 'Download Full Report', '#report', 'Book Consultation', '#callback', '[]')`
 ];
 
 
@@ -168,6 +172,7 @@ export async function initializeTables() {
     }
     await migrateHomepageSlideLinks();
     await migrateFirstHomeBuyerLinks();
+    await migrateRefinancingLinks();
     await migrateVisaHomeLoanRow();
     await migratePageContentDefaults();
     await seedTeamMembers();
@@ -251,6 +256,19 @@ export async function migrateFirstHomeBuyerLinks() {
     }
   } catch (error) {
     console.error('First home buyer landing page migration skipped:', error);
+  }
+}
+
+/** One-time fix: update links for refinancing page in existing DB row. */
+export async function migrateRefinancingLinks() {
+  try {
+    await executeQuery(
+      'UPDATE page_meta_hero SET hero_btn1_text = ?, hero_btn1_link = ?, hero_btn2_text = ?, hero_btn2_link = ? WHERE page_path = ?',
+      ['Get Started', '#calculator-section', 'Free Strategy Call', '#contact', '/refinancing-a-loan']
+    );
+    console.log('Migrated refinancing landing page hero links and texts in DB.');
+  } catch (error) {
+    console.error('Refinancing landing page migration skipped:', error);
   }
 }
 

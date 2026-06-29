@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  serverExternalPackages: ["mysql2"],
   // ── SECURITY HEADERS ──────────────────────────────────────────────
   async headers() {
     return [

@@ -27,6 +27,7 @@ export default function TeamMemberClient({ member }: { member: TeamMember }) {
       <SubPageHero
         pageTitle={member.name}
         themeColor="blue"
+        layoutType="clean"
         pageHeroSettings={{
           hero_badge: "Team Profile",
           hero_title: member.name,
@@ -40,7 +41,7 @@ export default function TeamMemberClient({ member }: { member: TeamMember }) {
       />
 
       <section className="py-16 md:py-24 max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 w-full">
-        <Link href="/nepali-mortgage-broker-australia" className="inline-flex items-center text-[14px] text-slate-500 hover:text-[#2563EB] font-bold mb-10 transition-colors">
+        <Link href="/our-team" className="inline-flex items-center text-[14px] text-slate-500 hover:text-[#2563EB] font-bold mb-10 transition-colors">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Team
         </Link>

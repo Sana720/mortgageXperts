@@ -1419,7 +1419,7 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
                         id="phone"
                         name="phone"
                         required
-                        placeholder="0400 000 000"
+                        placeholder=""
                         value={formData.phone}
                         onChange={handleInputChange}
                         className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-rose-500 focus:bg-white transition-all shadow-inner"

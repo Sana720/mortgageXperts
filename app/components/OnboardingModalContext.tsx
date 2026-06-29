@@ -130,7 +130,7 @@ export function OnboardingModalProvider({ children }: { children: React.ReactNod
               transition={{ type: "spring", duration: 0.4 }}
               className="relative bg-white w-full max-w-[850px] rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(11,31,58,0.15)] z-10"
             >
-              <div className="max-h-[90vh] overflow-y-auto">
+              <div className="max-h-[90vh] overflow-y-auto no-scrollbar">
                 <MortgageMateForm onClose={closeModal} compact={true} />
               </div>
             </motion.div>

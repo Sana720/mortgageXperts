@@ -149,7 +149,11 @@ export default function AdminPage() {
     { value: "/about-us-nepali-mortgage-broker-in-australia", label: "About Us Page (/about-us-nepali-mortgage-broker-in-australia)" },
     { value: "/our-team", label: "Our Team Page (/our-team)" },
     { value: "/first-home-guide", label: "First Home Guide (/first-home-guide)" },
-    { value: "/free-resources", label: "Free Resources (/free-resources)" }
+    { value: "/free-resources", label: "Free Resources (/free-resources)" },
+    { value: "/resources/property-reports", label: "Property Reports Hub (/resources/property-reports)" },
+    { value: "/resources/property-reports/canning-vale-wa", label: "Property Report — Canning Vale WA (/resources/property-reports/canning-vale-wa)" },
+    { value: "/resources/property-reports/baldivis-wa", label: "Property Report — Baldivis WA (/resources/property-reports/baldivis-wa)" },
+    { value: "/resources/property-reports/box-hill-vic", label: "Property Report — Box Hill VIC (/resources/property-reports/box-hill-vic)" },
   ];
 
   const filteredPages = pagesList.filter(page =>
@@ -209,7 +213,8 @@ export default function AdminPage() {
     phone: "",
     bio: "",
     image: "",
-    orderIndex: 0
+    orderIndex: 0,
+    branch: ""
   });
 
   // Verify auth on mount
@@ -717,7 +722,8 @@ export default function AdminPage() {
       phone: m.phone,
       bio: m.bio,
       image: m.image,
-      orderIndex: m.orderIndex || 0
+      orderIndex: m.orderIndex || 0,
+      branch: m.branch || ""
     });
     setTeamModalOpen(true);
   };
@@ -741,7 +747,8 @@ export default function AdminPage() {
       phone: "",
       bio: "",
       image: "/images/aakash_new.png",
-      orderIndex: 0
+      orderIndex: 0,
+      branch: ""
     });
     setTeamModalOpen(true);
   };
@@ -2920,8 +2927,23 @@ export default function AdminPage() {
                     value={teamForm.phone}
                     onChange={e => setTeamForm(prev => ({ ...prev, phone: e.target.value }))}
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500"
-                    placeholder="0400 000 000"
+                    placeholder=""
                   />
+                </div>
+                <div>
+                  <label className="text-[9.5px] font-extrabold uppercase tracking-wider block mb-1">Branch Assignment</label>
+                  <select
+                    value={teamForm.branch}
+                    onChange={e => setTeamForm(prev => ({ ...prev, branch: e.target.value }))}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500"
+                  >
+                    <option value="">None (General Team Page)</option>
+                    <option value="adelaide">Adelaide Branch</option>
+                    <option value="brisbane">Brisbane Branch</option>
+                    <option value="melbourne">Melbourne Branch</option>
+                    <option value="perth">Perth Branch</option>
+                    <option value="sydney">Sydney Branch</option>
+                  </select>
                 </div>
                 <div>
                   <label className="text-[9.5px] font-extrabold uppercase tracking-wider block mb-1">Order Index (Lower = First)</label>

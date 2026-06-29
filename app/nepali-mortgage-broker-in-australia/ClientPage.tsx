@@ -46,6 +46,7 @@ import {
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { BlogSection } from "../components/BlogSection";
+import { RoadmapSection } from "../components/RoadmapSection";
 import {
   fadeInUp,
   staggerContainer,
@@ -165,30 +166,39 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
   const btn2Text = pageHeroSettings?.hero_btn2_text || "Calculate Borrowing Power";
   const btn2Link = pageHeroSettings?.hero_btn2_link || "#borrowing";
 
-  const handleBtnClick = (e: React.MouseEvent, text: string, link: string) => {
+    const handleBtnClick = (e: React.MouseEvent, text: string, link: string) => {
     const textLower = text.toLowerCase();
     const isModalTrigger =
+      !link ||
+      link === "#" ||
       link === "#contact" ||
       link === "#callback" ||
       link === "#onboarding" ||
-      textLower.includes("start") ||
-      textLower.includes("book") ||
-      textLower.includes("call") ||
-      textLower.includes("apply") ||
-      textLower.includes("consult");
+      (!link.startsWith("#") && (
+        textLower.includes("book") ||
+        textLower.includes("call") ||
+        textLower.includes("consult") ||
+        textLower.includes("apply")
+      ));
 
     if (isModalTrigger) {
       e.preventDefault();
       openModal();
     } else if (link.startsWith("#")) {
       e.preventDefault();
-      let targetId = link.substring(1);
-      if (targetId === "calculator" || targetId === "calculator-section" || targetId === "calculator-tool") {
-        targetId = "borrowing";
+      const targetId = link.substring(1);
+      let el = document.getElementById(targetId);
+      if (!el && (targetId.includes("calc") || targetId.includes("borrow") || targetId.includes("option") || targetId.includes("eligibility"))) {
+        el = document.getElementById("calculator") || 
+             document.getElementById("calculator-section") || 
+             document.getElementById("borrowing") || 
+             document.getElementById("borrowing-capacity") ||
+             document.getElementById("options") ||
+             document.getElementById("eligibility") ||
+             document.getElementById("calculator-tool");
       }
-      const element = document.getElementById(targetId);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
       }
     }
   };
@@ -209,33 +219,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
   const [navSticky, setNavSticky] = useState(false);
   const navSentinelRef = useRef<HTMLDivElement>(null);
 
-  // Dynamic Scroll Progress state for Section 4 Sticky Steps
-  // Uses window scroll listener with getBoundingClientRect for reliable sticky tracking
-  const roadmapSectionRef = useRef<HTMLDivElement>(null);
-  const [activeStepIndex, setActiveStepIndex] = useState(0);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const el = roadmapSectionRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const sectionHeight = el.offsetHeight;
-      const viewportHeight = window.innerHeight;
-      // How far we've scrolled INTO the section past the sticky point
-      // rect.top is negative once we've scrolled past the section start
-      const scrolledIntoSection = -rect.top;
-      // Total scrollable runway = section height minus one viewport
-      const scrollableRun = sectionHeight - viewportHeight;
-      if (scrollableRun <= 0) return;
-      const progress = Math.max(0, Math.min(1, scrolledIntoSection / scrollableRun));
-      // Map 0→1 progress to steps 0→4
-      const idx = Math.min(4, Math.floor(progress * 5));
-      setActiveStepIndex(idx);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   // Borrowing Capacity Widget State
   const [monthlyIncome, setMonthlyIncome] = useState(8500);
@@ -262,7 +246,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
   const [callbackSubmitted, setCallbackSubmitted] = useState(false);
   const [showFullReport, setShowFullReport] = useState(false);
   const [calcTab, setCalcTab] = useState<"inputs" | "results">("inputs");
-  const [mobileActiveStepIndex, setMobileActiveStepIndex] = useState(0);
+
 
   // Deposit Strategy State
   const [activeDepositTab, setActiveDepositTab] = useState<"five" | "twenty">("five");
@@ -374,145 +358,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
   }, []);
 
   // ── DATA FOR COMPONENT SECTIONS ──
-  const roadmapSteps = [
-    {
-      num: "01",
-      img: "/images/step_1.png",
-      phase: "PHASE 01",
-      title: "Borrowing Power",
-      tagline: "Know your limit",
-      desc: "We analyze your income, expenses, and existing debts to calculate your exact borrowing limits across 40+ Australian lenders.",
-      highlight: "Overcomes HECS debt parameters.",
-      floatingText: "Know Your Limit. Buy With Confidence.",
-      accentClass: "from-[#2563EB] to-[#1D4ED8]",
-      glowColor: "rgba(37,99,235,0.12)",
-      bgGradient: "from-[#0A2540] to-[#004899]",
-      icon: Calculator,
-      colorClass: "bg-blue-50 text-blue-600",
-      highlightsRow: [
-        { label: "Personalised Assessment" },
-        { label: "40+ Lenders Compared" },
-        { label: "Quick & Accurate" },
-        { label: "100% Secure" }
-      ],
-      evaluate: [
-        { label: "Income & Earnings", icon: TrendingUp, color: "bg-emerald-50 text-emerald-600" },
-        { label: "Monthly Expenses", icon: Wallet, color: "bg-rose-50 text-rose-600" },
-        { label: "Existing Debts & Loans", icon: CreditCard, color: "bg-amber-50 text-amber-600" },
-        { label: "Savings & Deposit", icon: PiggyBank, color: "bg-blue-50 text-blue-600" }
-      ]
-    },
-    {
-      num: "02",
-      img: "/images/step_2.png",
-      phase: "PHASE 02",
-      title: "Deposit Planning",
-      tagline: "Leverage schemes",
-      desc: "Explore government 5% schemes to waive expensive Lenders Mortgage Insurance (LMI) and buy with a lower upfront deposit.",
-      highlight: "Save up to $15,000+ in fees.",
-      floatingText: "Minimize Upfront Cost. Save Up to $25k.",
-      accentClass: "from-[#10B981] to-[#059669]",
-      glowColor: "rgba(16,185,129,0.12)",
-      bgGradient: "from-[#062F24] to-[#094E3A]",
-      icon: PiggyBank,
-      colorClass: "bg-emerald-50 text-emerald-600",
-      highlightsRow: [
-        { label: "LMI Waiver Analysis" },
-        { label: "Grant Matching" },
-        { label: "Equity Setup" },
-        { label: "Feasibility Review" }
-      ],
-      evaluate: [
-        { label: "First Home Guarantee", icon: ShieldCheck, color: "bg-blue-50 text-blue-600" },
-        { label: "Stamp Duty Exemptions", icon: Percent, color: "bg-purple-50 text-purple-600" },
-        { label: "Family Guarantees", icon: Users, color: "bg-amber-50 text-amber-600" },
-        { label: "LMI Bank Thresholds", icon: AlertCircle, color: "bg-rose-50 text-rose-600" }
-      ]
-    },
-    {
-      num: "03",
-      img: "/images/step_3.png",
-      phase: "PHASE 03",
-      title: "Find Property",
-      tagline: "Shop with budget",
-      desc: "With a pre-approved budget in hand, search for your ideal home confidently. We provide complimentary property reports.",
-      highlight: "Free property data validation.",
-      floatingText: "Shop Confidently. Lock in Pre-Approval.",
-      accentClass: "from-[#8B5CF6] to-[#7C3AED]",
-      glowColor: "rgba(139,92,246,0.12)",
-      bgGradient: "from-[#1F1A3A] to-[#3B1547]",
-      icon: Search,
-      colorClass: "bg-purple-50 text-purple-600",
-      highlightsRow: [
-        { label: "Pre-Approved Status" },
-        { label: "Complimentary Valuation" },
-        { label: "Contract Legal Prep" },
-        { label: "Negotiating Power" }
-      ],
-      evaluate: [
-        { label: "Property Suitability", icon: HomeIcon, color: "bg-emerald-50 text-emerald-600" },
-        { label: "Lender Security Rules", icon: ShieldAlert, color: "bg-rose-50 text-rose-600" },
-        { label: "Growth Potential", icon: TrendingUp, color: "bg-blue-50 text-blue-600" },
-        { label: "Offer Compliance", icon: FileText, color: "bg-amber-50 text-amber-600" }
-      ]
-    },
-    {
-      num: "04",
-      img: "/images/step_4.png",
-      phase: "PHASE 04",
-      title: "Loan Approval",
-      tagline: "Formal confirmation",
-      desc: "We package and submit your loan application to your chosen lender, managing communications until formal approval is secured.",
-      highlight: "Fast-tracked expert channel submission.",
-      floatingText: "Stress-Free Processing. Fast-Tracked.",
-      accentClass: "from-[#F59E0B] to-[#D97706]",
-      glowColor: "rgba(245,158,11,0.12)",
-      bgGradient: "from-[#3B1E0A] to-[#542103]",
-      icon: ShieldCheck,
-      colorClass: "bg-amber-50 text-amber-600",
-      highlightsRow: [
-        { label: "Compliance Review" },
-        { label: "Fast Submission" },
-        { label: "Assessment Liaison" },
-        { label: "Formal Signoff" }
-      ],
-      evaluate: [
-        { label: "Lender Credit Checks", icon: UserCheck, color: "bg-blue-50 text-blue-600" },
-        { label: "Security Valuations", icon: MapPin, color: "bg-emerald-50 text-emerald-600" },
-        { label: "Employment Checks", icon: Briefcase, color: "bg-indigo-50 text-indigo-600" },
-        { label: "Formal Commitment", icon: CheckCircle2, color: "bg-emerald-50 text-emerald-600" }
-      ]
-    },
-    {
-      num: "05",
-      img: "/images/step_5.png",
-      phase: "PHASE 05",
-      title: "Settlement",
-      tagline: "Collect your keys",
-      desc: "Your solicitor coordinates with the lender to transfer funds to the vendor. The property is officially yours—keys in hand!",
-      highlight: "Celebrate your home-ownership!",
-      floatingText: "Keys Transferred. Welcome Home!",
-      accentClass: "from-[#EC4899] to-[#DB2777]",
-      glowColor: "rgba(236,72,153,0.12)",
-      bgGradient: "from-[#3D0A25] to-[#540733]",
-      icon: Gift,
-      colorClass: "bg-pink-50 text-pink-600",
-      highlightsRow: [
-        { label: "Legal Alignment" },
-        { label: "Fund Clearance" },
-        { label: "Title Insurance" },
-        { label: "Key Handover" }
-      ],
-      evaluate: [
-        { label: "Conveyancing Checks", icon: Scale, color: "bg-indigo-50 text-indigo-600" },
-        { label: "Final Bank Drawdown", icon: Coins, color: "bg-amber-50 text-amber-600" },
-        { label: "Title Transfer", icon: Landmark, color: "bg-purple-50 text-purple-600" },
-        { label: "Key Collection", icon: Key, color: "bg-emerald-50 text-emerald-600" }
-      ]
-    }
-  ];
-
-  const costsBreakdown = [
+    const costsBreakdown = [
     { title: "Target Deposit", amount: "$35,000", tag: "Typically 5% to 10%", desc: "The core cash deposit required by the bank to secure your mortgage structure.", highlight: true, bgClass: "bg-[#2563EB]/5 border-[#2563EB]/15" },
     { title: "Stamp Duty Concessions", amount: "$0", tag: "State Dependent", desc: "First home buyers are often fully exempt from stamp duty up to certain purchase price caps.", highlight: false, bgClass: "bg-emerald-50/50 border-emerald-100" },
     { title: "Legal & Conveyancing", amount: "$1,500", tag: "Estimated Average", desc: "Covers contract reviews, title checks, transfer paperwork, and legal representation.", highlight: false, bgClass: "bg-slate-50 border-slate-200" },
@@ -667,16 +513,15 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 <a
                   href={btn1Link}
                   onClick={(e) => handleBtnClick(e, btn1Text, btn1Link)}
-                  className={`inline-flex items-center justify-center gap-2 bg-[#2563EB] hover:bg-[#1d4ed8] text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-blue-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap cursor-pointer`}
+                  className="inline-flex items-center justify-center gap-2 bg-[#2563EB] hover:bg-[#1d4ed8] text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-blue-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap cursor-pointer"
                 >
                   {btn1Text} <ArrowRight className="w-4 h-4" />
                 </a>
                 <a
                   href={btn2Link}
                   onClick={(e) => handleBtnClick(e, btn2Text, btn2Link)}
-                  className={`inline-flex items-center justify-center gap-2 border-2 border-[#2563EB] text-[#2563EB] bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-[#2563EB] hover:text-white group/sec text-center w-full sm:w-auto whitespace-nowrap cursor-pointer`}
+                  className="inline-flex items-center justify-center gap-2 border-2 border-[#2563EB] text-[#2563EB] bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-[#2563EB] hover:text-white text-center w-full sm:w-auto whitespace-nowrap cursor-pointer bg-transparent"
                 >
-                  {renderBtnIcon(btn2Text)}
                   {btn2Text}
                 </a>
               </motion.div>
@@ -1092,369 +937,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
 
       {/* ── SECTION 4: HOME BUYING ROADMAP (RESPONSIVE SPLIT LAYOUT) ── */}
       <div id="roadmap">
-        
-        {/* DESKTOP VERSION: STICKY DYNAMIC SCROLL REVEAL (lg and up) */}
-        <section 
-          ref={roadmapSectionRef} 
-          className="hidden lg:block relative bg-slate-50/50 border-b border-slate-100" 
-          style={{ minHeight: "550vh" }}
-        >
-          {/* Sticky Wrapper — top-[64px] accounts for sub-nav (64px) with vertical centering */}
-          <div className="sticky w-full flex items-center" style={{ zIndex: 5, top: "64px", height: "calc(100vh - 64px)", padding: "40px 0" }}>
-            
-            {/* Subtle background glow — pointer-events-none so it doesn't break sticky */}
-            <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
-              <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[600px] h-[600px] bg-blue-50/40 rounded-full blur-3xl" />
-            </div>
-
-            <div className="relative max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12" style={{ zIndex: 1 }}>
-
-              {/* ── LEFT: Heading + Large Beautiful Step Tracker ── */}
-              <div className="flex flex-col justify-center">
-                {/* Label */}
-                <div className="inline-flex items-center gap-2 bg-[#EAF3FF] border border-[#2563EB]/15 rounded-full px-4 py-2 mb-5 w-fit">
-                  <span className="w-2 h-2 rounded-full bg-[#2563EB]" />
-                  <span className="text-[#2563EB] text-[11px] font-black tracking-widest uppercase">
-                    The Roadmap to Ownership
-                  </span>
-                </div>
-
-                <h2 className="text-[#0B1F3A] text-[26px] sm:text-[34px] lg:text-[40px] font-extrabold leading-[1.05] mb-5" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                  Five Steps To Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#38BDF8]">First Home Keys</span>
-                </h2>
-                
-                <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed mb-8 max-w-lg">
-                  Scroll down — watch each step light up as we guide you through the process, providing full policy transparency at every milestone.
-                </p>
-
-                {/* ── LARGE STEP TRACKER ── */}
-                <div className="relative">
-                  {/* Vertical connector line running behind icons */}
-                  <div
-                    className="absolute pointer-events-none"
-                    style={{ left: "21px", top: "22px", bottom: "22px", width: "2px" }}
-                  >
-                    {/* Gray background line */}
-                    <div className="absolute inset-0 bg-[#E2E8F0]" />
-                    {/* Filled progress line */}
-                    <div
-                      className="absolute top-0 left-0 w-full transition-all duration-500"
-                      style={{
-                        height: `${(activeStepIndex / 4) * 100}%`,
-                        background: "linear-gradient(to bottom, #2563EB, #10B981, #8B5CF6, #F59E0B, #EC4899)"
-                      }}
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    {roadmapSteps.map((step, idx) => {
-                      const isActive = activeStepIndex === idx;
-                      const isPast = activeStepIndex > idx;
-                      const StepIcon = step.icon;
-
-                      const colors = [
-                        { accent: "#2563EB", lightBg: "#EAF3FF", border: "#BFDBFE" },
-                        { accent: "#10B981", lightBg: "#ECFDF5", border: "#A7F3D0" },
-                        { accent: "#8B5CF6", lightBg: "#EDE9FE", border: "#DDD6FE" },
-                        { accent: "#F59E0B", lightBg: "#FFFBEB", border: "#FDE68A" },
-                        { accent: "#EC4899", lightBg: "#FDF2F8", border: "#FBCFE8" },
-                      ][idx];
-
-                      return (
-                        <div
-                          key={idx}
-                          className="flex items-center gap-3.5 py-2.5 px-3 rounded-xl transition-all duration-500"
-                          style={{
-                            background: isActive ? colors.lightBg : "transparent",
-                            border: `1px solid ${isActive ? colors.border : "transparent"}`,
-                            boxShadow: isActive ? "0 10px 25px -5px rgba(11,31,58,0.05), 0 8px 10px -6px rgba(11,31,58,0.05)" : "none",
-                            opacity: isActive || isPast ? 1 : 0.35,
-                            transform: isActive ? "translateX(4px)" : "translateX(0)",
-                          }}
-                        >
-                          {/* Icon circle — compact */}
-                          <div
-                            className="shrink-0 flex items-center justify-center rounded-xl transition-all duration-500"
-                            style={{
-                              width: "44px",
-                              height: "44px",
-                              background: isActive ? colors.accent : isPast ? colors.lightBg : "#F8FAFC",
-                              border: `2px solid ${isActive ? colors.accent : isPast ? colors.border : "#E2E8F0"}`,
-                              boxShadow: isActive ? `0 6px 16px ${colors.accent}28` : "none",
-                              color: isActive ? "#ffffff" : isPast ? colors.accent : "#94A3B8",
-                            }}
-                          >
-                            <StepIcon style={{ width: "18px", height: "18px", strokeWidth: 2.2 }} />
-                          </div>
-
-                          {/* Text */}
-                          <div className="flex flex-col min-w-0 flex-1">
-                            <span
-                              className="text-[10px] font-black uppercase tracking-widest mb-0.5"
-                              style={{ color: isActive ? colors.accent : isPast ? colors.accent : "#94A3B8" }}
-                            >
-                              Step {idx + 1}
-                            </span>
-                            <span
-                              className="text-[14px] leading-tight font-bold"
-                              style={{
-                                color: isActive ? "#0B1F3A" : isPast ? "#475569" : "#94A3B8",
-                                fontFamily: "var(--font-montserrat), sans-serif",
-                              }}
-                            >
-                              {step.title}
-                            </span>
-                            {isActive && (
-                              <span className="text-[11.5px] text-slate-500 font-normal leading-tight mt-0.5">
-                                {step.tagline}
-                              </span>
-                            )}
-                          </div>
-
-                          {/* Status icon */}
-                          {isActive && (
-                            <div
-                              className="ml-auto shrink-0 w-6 h-6 rounded-full flex items-center justify-center"
-                              style={{ background: colors.accent }}
-                            >
-                              <ChevronRight className="w-3.5 h-3.5 text-white" />
-                            </div>
-                          )}
-                          {isPast && !isActive && (
-                            <div className="ml-auto shrink-0">
-                              <CheckCircle2 style={{ width: "18px", height: "18px", color: colors.accent }} />
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-
-              {/* ── RIGHT: Animated Dashboard Card ── */}
-              <div className="w-full flex flex-col justify-center">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeStepIndex}
-                    initial={{ opacity: 0, y: 14 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -14 }}
-                    transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
-                    className="rounded-2xl overflow-hidden border border-slate-200/80 shadow-[0_20px_50px_rgba(11,31,58,0.08)] flex flex-col"
-                    style={{ background: "#FFFFFF" }}
-                  >
-                    {/* Card top: step info — compact padding */}
-                    <div className="px-6 pt-5 pb-4" style={{ background: "#F8FAFC", borderBottom: "1px solid #F1F5F9", flexShrink: 0 }}>
-                      <span
-                        className="inline-block text-[9px] tracking-widest font-black uppercase px-2.5 py-1 rounded-full mb-2.5 border"
-                        style={{
-                          background: "#EAF3FF",
-                          color: "#2563EB",
-                          borderColor: "#BFDBFE",
-                        }}
-                      >
-                        {roadmapSteps[activeStepIndex].phase}
-                      </span>
-                      <h3
-                        className="text-[20px] sm:text-[22px] font-extrabold text-[#0B1F3A] leading-snug mb-1.5"
-                        style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
-                      >
-                        {roadmapSteps[activeStepIndex].title}
-                      </h3>
-                      <p className="text-slate-500 text-[12.5px] leading-relaxed">
-                        {roadmapSteps[activeStepIndex].desc}
-                      </p>
-                    </div>
-
-                    {/* Card middle: two columns — compact */}
-                    <div className="grid grid-cols-2" style={{ flexShrink: 0 }}>
-                      {/* Highlights */}
-                      <div className="px-5 py-4 border-r border-slate-100">
-                        <h4 className="text-[9px] font-black uppercase tracking-wider text-slate-400 mb-2.5">Highlights</h4>
-                        <div className="space-y-2">
-                          {roadmapSteps[activeStepIndex].highlightsRow.map((h, i) => (
-                            <div key={i} className="flex items-center gap-2">
-                              <div className="w-4 h-4 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
-                                <Check className="w-2.5 h-2.5 text-emerald-500 stroke-[3px]" />
-                              </div>
-                              <span className="text-[#0B1F3A] text-[12px] font-semibold leading-tight">{h.label}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* What we evaluate */}
-                      <div className="px-5 py-4">
-                        <h4 className="text-[9px] font-black uppercase tracking-wider text-slate-400 mb-2.5">We Evaluate</h4>
-                        <div className="space-y-2">
-                          {roadmapSteps[activeStepIndex].evaluate.map((ev, i) => {
-                            const EvalIcon = ev.icon;
-                            return (
-                              <div key={i} className="flex items-center gap-2">
-                                <div className={`w-6 h-6 rounded-lg ${ev.color} flex items-center justify-center shrink-0`}>
-                                  <EvalIcon className="w-3 h-3" />
-                                </div>
-                                <span className="text-[#0B1F3A] text-[12px] font-semibold leading-tight">{ev.label}</span>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Photo strip — fixed height for beautiful aspect ratio and breathing room */}
-                    <div className="relative h-44 md:h-48 w-full overflow-hidden" style={{ borderTop: "1px solid #F1F5F9" }}>
-                      <Image
-                        src={roadmapSteps[activeStepIndex].img}
-                        alt={roadmapSteps[activeStepIndex].title}
-                        fill
-                        className="object-cover object-center"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/40 to-transparent" />
-                      <div className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-sm border border-slate-100 rounded-xl px-3 py-1.5 flex items-center gap-2 shadow-md">
-                        <div className="w-6 h-6 rounded-full bg-[#EAF3FF] flex items-center justify-center text-[#2563EB]">
-                          <HomeIcon className="w-3 h-3" />
-                        </div>
-                        <span className="text-[#0B1F3A] text-[10.5px] font-bold">{roadmapSteps[activeStepIndex].floatingText}</span>
-                      </div>
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-
-            </div>
-          </div>
-        </section>
-
-        {/* MOBILE VERSION: VERTICAL ACCORDION TIMELINE (Under lg) */}
-        <section 
-          className="lg:hidden py-14 px-6 bg-slate-50/50 border-b border-slate-100 relative overflow-hidden"
-        >
-          <div className="max-w-md mx-auto relative z-10">
-            {/* Label */}
-            <div className="inline-flex items-center gap-2 bg-[#EAF3FF] border border-[#2563EB]/15 rounded-full px-3.5 py-1.5 mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#2563EB]" />
-              <span className="text-[#2563EB] text-[9.5px] font-black tracking-widest uppercase">
-                The Roadmap to Ownership
-              </span>
-            </div>
-
-            <h2 className="text-[#0B1F3A] text-[22px] font-extrabold leading-tight mb-3" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-              Five Steps To Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2563EB] to-[#38BDF8]">First Home Keys</span>
-            </h2>
-            
-            <p className="text-slate-500 text-xs leading-relaxed mb-6">
-              Tap each step to view the processing actions, highlight lists, and lender checklist guidelines.
-            </p>
-
-            {/* Stack of accordion cards */}
-            <div className="space-y-3">
-              {roadmapSteps.map((step, idx) => {
-                const isMobileActive = mobileActiveStepIndex === idx;
-                const StepIcon = step.icon;
-                const colors = [
-                  { accent: "#2563EB", lightBg: "#EAF3FF", border: "#BFDBFE" },
-                  { accent: "#10B981", lightBg: "#ECFDF5", border: "#A7F3D0" },
-                  { accent: "#8B5CF6", lightBg: "#EDE9FE", border: "#DDD6FE" },
-                  { accent: "#F59E0B", lightBg: "#FFFBEB", border: "#FDE68A" },
-                  { accent: "#EC4899", lightBg: "#FDF2F8", border: "#FBCFE8" },
-                ][idx];
-
-                return (
-                  <div 
-                    key={idx} 
-                    className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden transition-all duration-300"
-                  >
-                    {/* Accordion Trigger Header */}
-                    <button
-                      type="button"
-                      onClick={() => setMobileActiveStepIndex(idx)}
-                      className="w-full flex items-center gap-3 p-3 text-left transition-colors hover:bg-slate-50/50 focus:outline-none"
-                    >
-                      <div
-                        className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-colors"
-                        style={{
-                          background: isMobileActive ? colors.accent : colors.lightBg,
-                          border: `1.5px solid ${isMobileActive ? colors.accent : colors.border}`,
-                          color: isMobileActive ? "#ffffff" : colors.accent
-                        }}
-                      >
-                        <StepIcon className="w-4 h-4 stroke-[2.2]" />
-                      </div>
-
-                      <div className="flex-1 min-w-0">
-                        <span 
-                          className="text-[8.5px] font-black uppercase tracking-wider block mb-0.5"
-                          style={{ color: colors.accent }}
-                        >
-                          Step {idx + 1} • {step.phase}
-                        </span>
-                        <h3 className="text-slate-800 text-[13.5px] font-bold leading-none">{step.title}</h3>
-                      </div>
-
-                      <div className={`transition-transform duration-300 ${isMobileActive ? "rotate-90 text-[#2563EB]" : "rotate-0 text-slate-400"}`}>
-                        <ChevronRight className="w-4 h-4" />
-                      </div>
-                    </button>
-
-                    {/* Expandable panel */}
-                    {isMobileActive && (
-                      <div className="border-t border-slate-100 bg-slate-50/30">
-                        <div className="p-4 space-y-4">
-                          <p className="text-slate-500 text-xs leading-relaxed">
-                            {step.desc}
-                          </p>
-
-                          {/* Highlights & Evaluates Grid */}
-                          <div className="grid grid-cols-2 gap-3 pt-1">
-                            <div className="bg-white p-2.5 rounded-lg border border-slate-100 shadow-sm">
-                              <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-2">Highlights</span>
-                              <div className="space-y-1.5">
-                                {step.highlightsRow.map((h, i) => (
-                                  <div key={i} className="flex items-center gap-1.5">
-                                    <Check className="w-2.5 h-2.5 text-emerald-500 shrink-0 stroke-[3px]" />
-                                    <span className="text-slate-700 text-[10.5px] font-semibold truncate leading-none">{h.label}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-
-                            <div className="bg-white p-2.5 rounded-lg border border-slate-100 shadow-sm">
-                              <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-2">We Evaluate</span>
-                              <div className="space-y-1.5">
-                                {step.evaluate.map((ev, i) => {
-                                  const EvalIcon = ev.icon;
-                                  return (
-                                    <div key={i} className="flex items-center gap-1.5">
-                                      <div className={`w-3.5 h-3.5 rounded ${ev.color} flex items-center justify-center shrink-0`}>
-                                        <EvalIcon className="w-2 h-2 text-current" />
-                                      </div>
-                                      <span className="text-slate-700 text-[10.5px] font-semibold truncate leading-none">{ev.label}</span>
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Floating badge */}
-                          <div className="bg-white p-2 rounded-lg border border-slate-100 flex items-center gap-2 shadow-sm">
-                            <div className="w-5 h-5 rounded-full bg-[#EAF3FF] flex items-center justify-center text-[#2563EB] shrink-0">
-                              <HomeIcon className="w-2.5 h-2.5" />
-                            </div>
-                            <span className="text-slate-700 text-[10px] font-bold">{step.floatingText}</span>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
+        <RoadmapSection colorTheme="blue" />
       </div>
 
       {/* ── SECTION 5: BORROWING POWER (LIVE CALCULATOR WIDGET WITH DYNAMIC GLOW) ── */}
@@ -2587,7 +2070,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                           <input
                             type="tel"
                             name="phone"
-                            placeholder="0450 000 000"
+                            placeholder=""
                             className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition-all shadow-inner"
                             required
                           />

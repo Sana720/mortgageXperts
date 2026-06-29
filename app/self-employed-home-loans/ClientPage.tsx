@@ -32,6 +32,7 @@ import {
   Sparkle,
   Home as HomeIcon
 } from "lucide-react";
+import { RoadmapSection } from "../components/RoadmapSection";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { TestimonialSection } from "../components/TestimonialSection";
@@ -94,6 +95,43 @@ export interface PageHeroSettings {
 
 export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
   const { openModal } = useOnboardingModal();
+
+  const handleBtnClick = (e: React.MouseEvent, text: string, link: string) => {
+    const textLower = text.toLowerCase();
+    const isModalTrigger =
+      !link ||
+      link === "#" ||
+      link === "#contact" ||
+      link === "#callback" ||
+      link === "#onboarding" ||
+      (!link.startsWith("#") && (
+        textLower.includes("book") ||
+        textLower.includes("call") ||
+        textLower.includes("consult") ||
+        textLower.includes("apply")
+      ));
+
+    if (isModalTrigger) {
+      e.preventDefault();
+      openModal();
+    } else if (link.startsWith("#")) {
+      e.preventDefault();
+      const targetId = link.substring(1);
+      let el = document.getElementById(targetId);
+      if (!el && (targetId.includes("calc") || targetId.includes("borrow") || targetId.includes("option") || targetId.includes("eligibility"))) {
+        el = document.getElementById("calculator") || 
+             document.getElementById("calculator-section") || 
+             document.getElementById("borrowing") || 
+             document.getElementById("borrowing-capacity") ||
+             document.getElementById("options") ||
+             document.getElementById("eligibility") ||
+             document.getElementById("calculator-tool");
+      }
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
   const [navSticky, setNavSticky] = useState(false);
   const [activeNav, setActiveNav] = useState("overview");
   const navSentinelRef = useRef<HTMLDivElement>(null);
@@ -197,9 +235,10 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
     const sectionIds = [
       "overview",
       "how-it-works",
+      "roadmap",
+      "calculator-section",
       "documents",
       "low-doc-vs-full-doc",
-      "calculator-section",
       "approval-tips",
       "faqs",
       "contact"
@@ -277,9 +316,10 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
   const navItems = [
     { id: "overview", label: "Overview", icon: HomeIcon },
     { id: "how-it-works", label: "How It Works", icon: Sparkles },
+    { id: "roadmap", label: "Roadmap", icon: Calendar },
+    { id: "calculator-section", label: "Borrowing Estimator", icon: Calculator },
     { id: "documents", label: "Documents Checklist", icon: FileText },
     { id: "low-doc-vs-full-doc", label: "Low-Doc vs Full-Doc", icon: Percent },
-    { id: "calculator-section", label: "Borrowing Estimator", icon: Calculator },
     { id: "faqs", label: "FAQs", icon: HelpCircle },
     { id: "contact", label: "Enquire Now", icon: ArrowRight }
   ];
@@ -372,44 +412,20 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
 
               {/* CTAs */}
               <motion.div variants={premiumFadeUp} className="flex flex-wrap items-center gap-4">
-                {(!btn1Link || btn1Link === "#" || btn1Link === "#contact" || btn1Link === "#callback") ? (
-                  <button
-                    type="button"
-                    onClick={openModal}
-                    className="inline-flex items-center justify-center gap-2 bg-[#E11D48] hover:bg-[#BE123C] text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-rose-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap cursor-pointer border-0"
-                  >
-                    {btn1Text} <ArrowRight className="w-4 h-4" />
-                  </button>
-                ) : (
-                  <Link
-                    href={btn1Link}
-                    className="inline-flex items-center justify-center gap-2 bg-[#E11D48] hover:bg-[#BE123C] text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-rose-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap"
-                  >
-                    {btn1Text} <ArrowRight className="w-4 h-4" />
-                  </Link>
-                )}
-                {(btn2Link === "#contact" || btn2Link === "#callback") ? (
-                  <button
-                    type="button"
-                    onClick={openModal}
-                    className="inline-flex items-center justify-center gap-2 border-2 border-rose-600 text-rose-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-rose-600 hover:text-white text-center w-full sm:w-auto whitespace-nowrap cursor-pointer border-0 bg-transparent"
-                  >
-                    {btn2Text}
-                  </button>
-                ) : (
-                  <a
-                    href={btn2Link}
-                    onClick={(e) => {
-                      if (btn2Link.startsWith("#")) {
-                        e.preventDefault();
-                        document.getElementById(btn2Link.substring(1))?.scrollIntoView({ behavior: "smooth" });
-                      }
-                    }}
-                    className="inline-flex items-center justify-center gap-2 border-2 border-rose-600 text-rose-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-rose-600 hover:text-white text-center w-full sm:w-auto whitespace-nowrap"
-                  >
-                    {btn2Text}
-                  </a>
-                )}
+                <a
+                  href={btn1Link}
+                  onClick={(e) => handleBtnClick(e, btn1Text, btn1Link)}
+                  className="inline-flex items-center justify-center gap-2 bg-[#E11D48] hover:bg-[#BE123C] text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-rose-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap cursor-pointer"
+                >
+                  {btn1Text} <ArrowRight className="w-4 h-4" />
+                </a>
+                <a
+                  href={btn2Link}
+                  onClick={(e) => handleBtnClick(e, btn2Text, btn2Link)}
+                  className="inline-flex items-center justify-center gap-2 border-2 border-rose-600 text-rose-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-rose-600 hover:text-white text-center w-full sm:w-auto whitespace-nowrap cursor-pointer bg-transparent"
+                >
+                  {btn2Text}
+                </a>
               </motion.div>
 
               {/* Trust Reviews Badge Row */}
@@ -670,181 +686,8 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
         </div>
       </section>
 
-      {/* ── SECTION 4: REQUIRED DOCUMENTS CHECKLIST ── */}
-      <section id="documents" className="py-16 md:py-24 bg-white border-b border-slate-100">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
-          <div className="grid grid-cols-1 lg:grid-cols-[52%_48%] gap-12 lg:gap-16 items-center">
-            
-            {/* Left Column: Content + Interactive Checklist */}
-            <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 bg-rose-50 border border-rose-100 rounded-full px-4 py-2">
-                <CheckCircle2 className="w-3.5 h-3.5 text-rose-600" />
-                <span className="text-rose-700 text-[10px] font-bold tracking-widest uppercase">Required Documents</span>
-              </div>
-              <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                What Lenders Need to See
-              </h2>
-              <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed">
-                To prove your income and financial position, lenders usually ask for:
-              </p>
+      <RoadmapSection colorTheme="rose" />
 
-              {/* Progress Bar Container */}
-              <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 space-y-3">
-                <div className="flex justify-between text-xs font-bold uppercase tracking-wider text-slate-500">
-                  <span>Document Readiness</span>
-                  <span className={`font-black ${checklistProgress === 100 ? "text-rose-600 animate-pulse" : "text-slate-700"}`}>
-                    {checklistProgress}% Complete
-                  </span>
-                </div>
-                <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-rose-600 rounded-full transition-all duration-500"
-                    style={{ width: `${checklistProgress}%` }}
-                  />
-                </div>
-              </div>
-
-              {/* Checklist Items */}
-              <div className="grid grid-cols-1 gap-2.5">
-                {docChecklist.map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => toggleChecklist(item.id)}
-                    className={`flex items-center justify-between p-3.5 rounded-xl border text-left transition-all ${
-                      item.checked
-                        ? "bg-rose-50/50 border-[#E11D48]/30 text-slate-700 shadow-sm"
-                        : "bg-white border-slate-200 hover:border-slate-300 text-slate-500"
-                    }`}
-                  >
-                    <span className="text-[13px] font-semibold pr-4 leading-tight">{item.label}</span>
-                    <div className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 ${
-                      item.checked
-                        ? "bg-[#E11D48] border-[#E11D48] text-white"
-                        : "border-slate-300 bg-white"
-                    }`}>
-                      {item.checked && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Right Column: Key Details Card */}
-            <div className="bg-slate-50 border border-slate-200/80 rounded-3xl p-6 md:p-8 space-y-6">
-              <h3 className="text-[#0B1F3A] text-[18px] sm:text-[20px] font-black" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                Why Documents Matter
-              </h3>
-              <p className="text-slate-500 text-[13.5px] sm:text-[14.5px] leading-relaxed">
-                Personal and business tax returns for the last 1–2 years, profit and loss statements, bank statements, evidence of business registration and licenses, details of any debts or expenses related to your business. Providing these documents helps lenders understand your income and the health of your business.
-              </p>
-              <div className="bg-white rounded-2xl p-5 border border-slate-100 flex gap-4">
-                <div className="w-9 h-9 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center shrink-0">
-                  <AlertCircle className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="text-[13.5px] font-bold text-[#0B1F3A]">Verification Confidence</h4>
-                  <p className="text-slate-600 text-[12px] leading-relaxed mt-1">
-                    Having your business accounts fully organized speeds up pre-approvals and ensures underwriters apply regular prime rates.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* ── SECTION 5: LOW-DOC VS FULL-DOC COMPARISON ── */}
-      <section id="low-doc-vs-full-doc" className="py-16 md:py-24 bg-slate-50 border-b border-slate-100">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-2 bg-rose-50 border border-rose-100 rounded-full px-4 py-2 mb-4">
-              <Percent className="w-3.5 h-3.5 text-rose-600" />
-              <span className="text-[10px] font-bold tracking-widest uppercase text-rose-700">Loan Types Explained</span>
-            </div>
-            <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-tight mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-              Low-Doc vs Full-Doc Loans Explained
-            </h2>
-            <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed">
-              We can help you decide which option is best for your situation.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {/* Full-Doc Card */}
-            <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 md:p-8 flex flex-col justify-between">
-              <div className="space-y-6">
-                <div className="flex justify-between items-start">
-                  <div className="space-y-1">
-                    <h3 className="text-[#0B1F3A] text-[18px] sm:text-[20px] font-black" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                      Full-Doc Loans
-                    </h3>
-                    <span className="inline-flex text-[10px] font-bold tracking-wide uppercase px-2 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded">
-                      Standard Verification
-                    </span>
-                  </div>
-                  <div className="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                    <Check className="w-5.5 h-5.5" strokeWidth={2.5} />
-                  </div>
-                </div>
-                <p className="text-slate-500 text-[13px] sm:text-[13.5px] leading-relaxed">
-                  Full-Doc Loans require all the usual documents such as tax returns, financial statements, and bank statements. These loans usually have better interest rates and terms.
-                </p>
-                <ul className="space-y-3 pt-2">
-                  {[
-                    "Get access to the lowest market interest rates",
-                    "No lender restrictions on borrowing up to 90% LVR",
-                    "Flexible offset account & credit facilities",
-                    "Simplified assessment if profit trends upwards"
-                  ].map((feat, idx) => (
-                    <li key={idx} className="flex gap-2.5 items-start text-[12.5px] text-slate-600">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                      <span>{feat}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {/* Low-Doc Card */}
-            <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 md:p-8 flex flex-col justify-between">
-              <div className="space-y-6">
-                <div className="flex justify-between items-start">
-                  <div className="space-y-1">
-                    <h3 className="text-[#0B1F3A] text-[18px] sm:text-[20px] font-black" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                      Low-Doc Loans
-                    </h3>
-                    <span className="inline-flex text-[10px] font-bold tracking-wide uppercase px-2 py-0.5 bg-amber-50 text-amber-700 border border-amber-100 rounded">
-                      Alternative Docs
-                    </span>
-                  </div>
-                  <div className="w-10 h-10 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center">
-                    <AlertCircle className="w-5.5 h-5.5" />
-                  </div>
-                </div>
-                <p className="text-slate-500 text-[13px] sm:text-[13.5px] leading-relaxed">
-                  Low-Doc Loans require less documentation but may come with higher interest rates and fees because lenders take on more risk. These loans are often used by self-employed people who can’t provide full financial documentation.
-                </p>
-                <ul className="space-y-3 pt-2">
-                  {[
-                    "Verify income using last 6 months of BAS",
-                    "Verify income using accountant letter declarations",
-                    "Or verify with 6 months business bank statements",
-                    "LVR capped at 80% with most lenders"
-                  ].map((feat, idx) => (
-                    <li key={idx} className="flex gap-2.5 items-start text-[12.5px] text-slate-600">
-                      <CheckCircle2 className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                      <span>{feat}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── SECTION 6: LIVE INTERACTIVE CALCULATOR (COMPACT STYLED) ── */}
       <section id="calculator-section" className="py-16 md:py-24 bg-slate-50 border-b border-slate-100 relative overflow-hidden">
         <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-rose-50 rounded-full blur-[100px] opacity-60 pointer-events-none" />
         <div className="absolute left-[-200px] bottom-[-200px] w-[500px] h-[500px] bg-rose-500/5 rounded-full blur-[120px] pointer-events-none" />
@@ -1106,6 +949,185 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
           </div>
         </div>
       </section>
+
+      {/* ── SECTION 4: REQUIRED DOCUMENTS CHECKLIST ── */}
+      <section id="documents" className="py-16 md:py-24 bg-white border-b border-slate-100">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+          <div className="grid grid-cols-1 lg:grid-cols-[52%_48%] gap-12 lg:gap-16 items-center">
+            
+            {/* Left Column: Content + Interactive Checklist */}
+            <div className="space-y-6">
+              <div className="inline-flex items-center gap-2 bg-rose-50 border border-rose-100 rounded-full px-4 py-2">
+                <CheckCircle2 className="w-3.5 h-3.5 text-rose-600" />
+                <span className="text-rose-700 text-[10px] font-bold tracking-widest uppercase">Required Documents</span>
+              </div>
+              <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                What Lenders Need to See
+              </h2>
+              <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed">
+                To prove your income and financial position, lenders usually ask for:
+              </p>
+
+              {/* Progress Bar Container */}
+              <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 space-y-3">
+                <div className="flex justify-between text-xs font-bold uppercase tracking-wider text-slate-500">
+                  <span>Document Readiness</span>
+                  <span className={`font-black ${checklistProgress === 100 ? "text-rose-600 animate-pulse" : "text-slate-700"}`}>
+                    {checklistProgress}% Complete
+                  </span>
+                </div>
+                <div className="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-rose-600 rounded-full transition-all duration-500"
+                    style={{ width: `${checklistProgress}%` }}
+                  />
+                </div>
+              </div>
+
+              {/* Checklist Items */}
+              <div className="grid grid-cols-1 gap-2.5">
+                {docChecklist.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => toggleChecklist(item.id)}
+                    className={`flex items-center justify-between p-3.5 rounded-xl border text-left transition-all ${
+                      item.checked
+                        ? "bg-rose-50/50 border-[#E11D48]/30 text-slate-700 shadow-sm"
+                        : "bg-white border-slate-200 hover:border-slate-300 text-slate-500"
+                    }`}
+                  >
+                    <span className="text-[13px] font-semibold pr-4 leading-tight">{item.label}</span>
+                    <div className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 ${
+                      item.checked
+                        ? "bg-[#E11D48] border-[#E11D48] text-white"
+                        : "border-slate-300 bg-white"
+                    }`}>
+                      {item.checked && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Right Column: Key Details Card */}
+            <div className="bg-slate-50 border border-slate-200/80 rounded-3xl p-6 md:p-8 space-y-6">
+              <h3 className="text-[#0B1F3A] text-[18px] sm:text-[20px] font-black" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                Why Documents Matter
+              </h3>
+              <p className="text-slate-500 text-[13.5px] sm:text-[14.5px] leading-relaxed">
+                Personal and business tax returns for the last 1–2 years, profit and loss statements, bank statements, evidence of business registration and licenses, details of any debts or expenses related to your business. Providing these documents helps lenders understand your income and the health of your business.
+              </p>
+              <div className="bg-white rounded-2xl p-5 border border-slate-100 flex gap-4">
+                <div className="w-9 h-9 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center shrink-0">
+                  <AlertCircle className="w-5 h-5" />
+                </div>
+                <div>
+                  <h4 className="text-[13.5px] font-bold text-[#0B1F3A]">Verification Confidence</h4>
+                  <p className="text-slate-600 text-[12px] leading-relaxed mt-1">
+                    Having your business accounts fully organized speeds up pre-approvals and ensures underwriters apply regular prime rates.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ── SECTION 5: LOW-DOC VS FULL-DOC COMPARISON ── */}
+      <section id="low-doc-vs-full-doc" className="py-16 md:py-24 bg-slate-50 border-b border-slate-100">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="inline-flex items-center gap-2 bg-rose-50 border border-rose-100 rounded-full px-4 py-2 mb-4">
+              <Percent className="w-3.5 h-3.5 text-rose-600" />
+              <span className="text-[10px] font-bold tracking-widest uppercase text-rose-700">Loan Types Explained</span>
+            </div>
+            <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-tight mb-6" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+              Low-Doc vs Full-Doc Loans Explained
+            </h2>
+            <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed">
+              We can help you decide which option is best for your situation.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {/* Full-Doc Card */}
+            <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 md:p-8 flex flex-col justify-between">
+              <div className="space-y-6">
+                <div className="flex justify-between items-start">
+                  <div className="space-y-1">
+                    <h3 className="text-[#0B1F3A] text-[18px] sm:text-[20px] font-black" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                      Full-Doc Loans
+                    </h3>
+                    <span className="inline-flex text-[10px] font-bold tracking-wide uppercase px-2 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded">
+                      Standard Verification
+                    </span>
+                  </div>
+                  <div className="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                    <Check className="w-5.5 h-5.5" strokeWidth={2.5} />
+                  </div>
+                </div>
+                <p className="text-slate-500 text-[13px] sm:text-[13.5px] leading-relaxed">
+                  Full-Doc Loans require all the usual documents such as tax returns, financial statements, and bank statements. These loans usually have better interest rates and terms.
+                </p>
+                <ul className="space-y-3 pt-2">
+                  {[
+                    "Get access to the lowest market interest rates",
+                    "No lender restrictions on borrowing up to 90% LVR",
+                    "Flexible offset account & credit facilities",
+                    "Simplified assessment if profit trends upwards"
+                  ].map((feat, idx) => (
+                    <li key={idx} className="flex gap-2.5 items-start text-[12.5px] text-slate-600">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <span>{feat}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Low-Doc Card */}
+            <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 md:p-8 flex flex-col justify-between">
+              <div className="space-y-6">
+                <div className="flex justify-between items-start">
+                  <div className="space-y-1">
+                    <h3 className="text-[#0B1F3A] text-[18px] sm:text-[20px] font-black" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                      Low-Doc Loans
+                    </h3>
+                    <span className="inline-flex text-[10px] font-bold tracking-wide uppercase px-2 py-0.5 bg-amber-50 text-amber-700 border border-amber-100 rounded">
+                      Alternative Docs
+                    </span>
+                  </div>
+                  <div className="w-10 h-10 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center">
+                    <AlertCircle className="w-5.5 h-5.5" />
+                  </div>
+                </div>
+                <p className="text-slate-500 text-[13px] sm:text-[13.5px] leading-relaxed">
+                  Low-Doc Loans require less documentation but may come with higher interest rates and fees because lenders take on more risk. These loans are often used by self-employed people who can’t provide full financial documentation.
+                </p>
+                <ul className="space-y-3 pt-2">
+                  {[
+                    "Verify income using last 6 months of BAS",
+                    "Verify income using accountant letter declarations",
+                    "Or verify with 6 months business bank statements",
+                    "LVR capped at 80% with most lenders"
+                  ].map((feat, idx) => (
+                    <li key={idx} className="flex gap-2.5 items-start text-[12.5px] text-slate-600">
+                      <CheckCircle2 className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                      <span>{feat}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── SECTION 6: LIVE INTERACTIVE CALCULATOR (COMPACT STYLED) ── */}
+      
+      
+      
 
       {/* ── SECTION 7: TIPS FOR APPROVAL ── */}
       <section id="approval-tips" className="py-16 md:py-24 bg-slate-50 border-b border-slate-100 relative">

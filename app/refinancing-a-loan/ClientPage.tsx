@@ -34,6 +34,7 @@ import {
   Landmark
 } from "lucide-react";
 import { SiteHeader } from "../components/SiteHeader";
+import { RoadmapSection } from "../components/RoadmapSection";
 import { SiteFooter } from "../components/SiteFooter";
 import { TestimonialSection } from "../components/TestimonialSection";
 import { BlogSection } from "../components/BlogSection";
@@ -111,20 +112,17 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
   const titleText = pageHeroSettings?.hero_title || "Refinancing a Loan";
   const subtextText = pageHeroSettings?.hero_subtext || "Refinancing your home loan is one of the smartest ways to save money, lower your repayments, or get better features from your mortgage.";
   const imageSrc = pageHeroSettings?.hero_image || "/images/refinance_family_clean.png";
-  const btn1Text = pageHeroSettings?.hero_btn1_text || "Book Free Consultation";
-  const btn1Link = pageHeroSettings?.hero_btn1_link || "#contact";
-  const btn2Text = pageHeroSettings?.hero_btn2_text || "Try Savings Calculator";
-  const btn2Link = pageHeroSettings?.hero_btn2_link || "#calculator-section";
+  const btn1Text = pageHeroSettings?.hero_btn1_text || "Get Started";
+  const btn1Link = pageHeroSettings?.hero_btn1_link || "#calculator-section";
+  const btn2Text = pageHeroSettings?.hero_btn2_text || "Free Strategy Call";
+  const btn2Link = pageHeroSettings?.hero_btn2_link || "#contact";
 
   // ── STATE VARIABLES FOR INTERACTIVE UX ──
   const [activeNav, setActiveNav] = useState("overview");
   const [navSticky, setNavSticky] = useState(false);
   const navSentinelRef = useRef<HTMLDivElement>(null);
 
-  // Dynamic Scroll Progress state for Roadmap Steps
-  const roadmapSectionRef = useRef<HTMLDivElement>(null);
-  const [activeStepIndex, setActiveStepIndex] = useState(0);
-  const [mobileActiveStepIndex, setMobileActiveStepIndex] = useState(0);
+
 
   // Refinance Savings Calculator State
   const [loanBalance, setLoanBalance] = useState(600000);
@@ -195,25 +193,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Scroll spy Roadmap effect
-  useEffect(() => {
-    const handleScroll = () => {
-      const el = roadmapSectionRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const sectionHeight = el.offsetHeight;
-      const viewportHeight = window.innerHeight;
-      const scrolledIntoSection = -rect.top;
-      const scrollableRun = sectionHeight - viewportHeight;
-      if (scrollableRun <= 0) return;
-      const progress = Math.max(0, Math.min(1, scrolledIntoSection / scrollableRun));
-      const idx = Math.min(3, Math.floor(progress * 4)); // 4 steps (0 to 3)
-      setActiveStepIndex(idx);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  
 
   // Sticky Navigation Spy
   useEffect(() => {
@@ -274,60 +254,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
     }
   ];
 
-  const roadmapSteps = [
-    {
-      title: "Research Loan Options",
-      phase: "Phase 1: Market Analysis",
-      tagline: "We scan 40+ lenders to find a better deal",
-      desc: "We analyze your current loan structure and compare it against our direct network of 40+ lenders. We locate lower interest rates, cash back offers, and favorable policies tailored to your scenario.",
-      highlightsRow: [{ label: "Compare 40+ Lenders" }, { label: "Identify Cash Back Deals" }, { label: "Custom Cost Audit" }],
-      evaluate: [
-        { label: "Current Rate Buffer", icon: Percent, color: "bg-purple-50 text-purple-600" },
-        { label: "Property Valuation", icon: HomeIcon, color: "bg-blue-50 text-blue-600" }
-      ],
-      img: "/images/hero_slide_4_purple.png",
-      floatingText: "Scanning Market..."
-    },
-    {
-      title: "Choose Your Loan",
-      phase: "Phase 2: Product Matching",
-      tagline: "Select features like offset accounts & redraws",
-      desc: "We present a shortlist of recommendations. We don't just look at the lowest rate — we weigh ongoing fees, break costs, and features like offset accounts so you make a smart, informed choice.",
-      highlightsRow: [{ label: "Offset & Redraw Check" }, { label: "Break Fee Evaluation" }, { label: "Tailored Structures" }],
-      evaluate: [
-        { label: "LVR Calculations", icon: Calculator, color: "bg-emerald-50 text-emerald-600" },
-        { label: "Account Setup Fees", icon: CreditCard, color: "bg-amber-50 text-amber-600" }
-      ],
-      img: "/images/hero_slide_2_green.png",
-      floatingText: "Shortlisting Deals..."
-    },
-    {
-      title: "Paperwork and Process",
-      phase: "Phase 3: Smooth Transition",
-      tagline: "We manage the transition from your old bank",
-      desc: "Our brokers handle the entire application process, including getting your property valued and managing the discharge paperwork with your current lender. We keep things completely stress-free.",
-      highlightsRow: [{ label: "Discharge Form Handled" }, { label: "Lender Negotiations" }, { label: "Fast Tracking Application" }],
-      evaluate: [
-        { label: "Lender Buffers", icon: ShieldCheck, color: "bg-indigo-50 text-indigo-600" },
-        { label: "Title Registration", icon: Landmark, color: "bg-rose-50 text-rose-600" }
-      ],
-      img: "/images/hero_slide_5_rose.png",
-      floatingText: "Handling Paperwork..."
-    },
-    {
-      title: "Start Saving",
-      phase: "Phase 4: Settlement",
-      tagline: "Repayments drop and cash flow increases",
-      desc: "Settlement completes. Your new loan officially begins, your old loan is discharged, and you start saving interest and repayments immediately. Use your extra cash to pay off principal faster!",
-      highlightsRow: [{ label: "Lower Repayments Live" }, { label: "Equity Released" }, { label: "Interest Charges Cut" }],
-      evaluate: [
-        { label: "Savings Realized", icon: Coins, color: "bg-emerald-50 text-emerald-600" },
-        { label: "Broker Review", icon: UserCheck, color: "bg-purple-50 text-purple-600" }
-      ],
-      img: "/images/hero_slide_3_yellow.png",
-      floatingText: "Savings Activated!"
-    }
-  ];
+  
 
   const costsBreakdown = [
     {
@@ -1223,324 +1150,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
 
       {/* ── SECTION 6: HOW REFINANCING WORKS (ROADMAP SECTION) ── */}
       <div id="roadmap">
-        
-        {/* DESKTOP VERSION: STICKY DYNAMIC SCROLL REVEAL (lg and up) */}
-        <section 
-          ref={roadmapSectionRef} 
-          className="hidden lg:block relative bg-slate-50/50 border-b border-slate-100" 
-          style={{ minHeight: "450vh" }}
-        >
-          <div className="sticky w-full flex items-center" style={{ zIndex: 5, top: "80px", height: "calc(100vh - 80px)", padding: "40px 0" }}>
-            
-            <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
-              <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[600px] h-[600px] bg-purple-50/40 rounded-full blur-3xl" />
-            </div>
-
-            <div className="relative max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12" style={{ zIndex: 1 }}>
-
-              {/* LEFT: Heading + Large Step Tracker */}
-              <div className="flex flex-col justify-center">
-                <div className="inline-flex items-center gap-2 bg-[#F5F3FF] border border-[#7C3AED]/15 rounded-full px-4 py-2 mb-5 w-fit">
-                  <span className="w-2 h-2 rounded-full bg-[#7C3AED]" />
-                  <span className="text-[#7C3AED] text-[11px] font-black tracking-widest uppercase">
-                    The Process Timeline
-                  </span>
-                </div>
-
-                <h2 className="text-[#0B1F3A] text-[26px] sm:text-[34px] lg:text-[40px] font-extrabold leading-[1.05] mb-5" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                  Four Steps To Refinance <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7C3AED] to-[#A78BFA]">Your Home Loan</span>
-                </h2>
-                
-                <p className="text-slate-500 text-[14.5px] leading-relaxed mb-8 max-w-md">
-                  Scroll down to watch our step-by-step refinancing process unfold. We manage everything between your old bank and new lender.
-                </p>
-
-                {/* STEP TRACKER PROGRESS */}
-                <div className="relative">
-                  <div
-                    className="absolute pointer-events-none"
-                    style={{ left: "21px", top: "22px", bottom: "22px", width: "2px" }}
-                  >
-                    <div className="absolute inset-0 bg-[#E2E8F0]" />
-                    <div
-                      className="absolute top-0 left-0 w-full transition-all duration-500"
-                      style={{
-                        height: `${(activeStepIndex / 3) * 100}%`,
-                        background: "linear-gradient(to bottom, #7C3AED, #10B981, #EC4899, #F59E0B)"
-                      }}
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    {roadmapSteps.map((step, idx) => {
-                      const isActive = activeStepIndex === idx;
-                      const isPast = activeStepIndex > idx;
-
-                      const colors = [
-                        { accent: "#7C3AED", lightBg: "#F5F3FF", border: "#DDD6FE" },
-                        { accent: "#7C3AED", lightBg: "#F5F3FF", border: "#DDD6FE" },
-                        { accent: "#7C3AED", lightBg: "#F5F3FF", border: "#DDD6FE" },
-                        { accent: "#7C3AED", lightBg: "#F5F3FF", border: "#DDD6FE" }
-                      ][idx];
-
-                      return (
-                        <div
-                          key={idx}
-                          className="flex items-center gap-3.5 py-2.5 px-3 rounded-xl transition-all duration-500"
-                          style={{
-                            background: isActive ? colors.lightBg : "transparent",
-                            border: `1px solid ${isActive ? colors.border : "transparent"}`,
-                            boxShadow: isActive ? "0 10px 25px -5px rgba(11,31,58,0.05)" : "none",
-                            opacity: isActive || isPast ? 1 : 0.35,
-                            transform: isActive ? "translateX(4px)" : "translateX(0)",
-                          }}
-                        >
-                          <div
-                            className="shrink-0 flex items-center justify-center rounded-xl transition-all duration-500"
-                            style={{
-                              width: "44px",
-                              height: "44px",
-                              background: isActive ? colors.accent : isPast ? colors.lightBg : "#F8FAFC",
-                              border: `2px solid ${isActive ? colors.accent : isPast ? colors.border : "#E2E8F0"}`,
-                              color: isActive ? "#ffffff" : isPast ? colors.accent : "#94A3B8",
-                            }}
-                          >
-                            {/* Render step index inside instead of icon */}
-                            <span className="text-[14px] font-black">{idx + 1}</span>
-                          </div>
-
-                          <div className="flex flex-col min-w-0 flex-1">
-                            <span
-                              className="text-[10px] font-black uppercase tracking-widest mb-0.5"
-                              style={{ color: isActive ? colors.accent : isPast ? colors.accent : "#94A3B8" }}
-                            >
-                              Step {idx + 1}
-                            </span>
-                            <span
-                              className="text-[14px] leading-tight font-bold"
-                              style={{
-                                color: isActive ? "#0B1F3A" : isPast ? "#475569" : "#94A3B8",
-                                fontFamily: "var(--font-montserrat), sans-serif",
-                              }}
-                            >
-                              {step.title}
-                            </span>
-                            {isActive && (
-                              <span className="text-[11.5px] text-slate-500 font-normal leading-tight mt-0.5">
-                                {step.tagline}
-                              </span>
-                            )}
-                          </div>
-
-                          {isActive && (
-                            <div
-                              className="ml-auto shrink-0 w-6 h-6 rounded-full flex items-center justify-center"
-                              style={{ background: colors.accent }}
-                            >
-                              <ChevronRight className="w-3.5 h-3.5 text-white" />
-                            </div>
-                          )}
-                          {isPast && !isActive && (
-                            <div className="ml-auto shrink-0">
-                              <CheckCircle2 style={{ width: "18px", height: "18px", color: colors.accent }} />
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-
-              {/* RIGHT: Animated Card Panel */}
-              <div className="w-full flex flex-col justify-center">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeStepIndex}
-                    initial={{ opacity: 0, y: 14 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -14 }}
-                    transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
-                    className="rounded-2xl overflow-hidden border border-slate-200/80 shadow-[0_20px_50px_rgba(11,31,58,0.08)] flex flex-col"
-                    style={{ background: "#FFFFFF" }}
-                  >
-                    <div className="px-6 pt-5 pb-4" style={{ background: "#F8FAFC", borderBottom: "1px solid #F1F5F9" }}>
-                      <span
-                        className="inline-block text-[9px] tracking-widest font-black uppercase px-2.5 py-1 rounded-full mb-2.5 border bg-[#F5F3FF] text-[#7C3AED] border-[#DDD6FE]"
-                      >
-                        {roadmapSteps[activeStepIndex].phase}
-                      </span>
-                      <h3
-                        className="text-[20px] sm:text-[22px] font-extrabold text-[#0B1F3A] leading-snug mb-1.5"
-                        style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
-                      >
-                        {roadmapSteps[activeStepIndex].title}
-                      </h3>
-                      <p className="text-slate-500 text-[12.5px] leading-relaxed">
-                        {roadmapSteps[activeStepIndex].desc}
-                      </p>
-                    </div>
-
-                    <div className="grid grid-cols-2">
-                      {/* Highlights */}
-                      <div className="px-5 py-4 border-r border-slate-100">
-                        <h4 className="text-[9px] font-black uppercase tracking-wider text-slate-400 mb-2.5">Highlights</h4>
-                        <div className="space-y-2">
-                          {roadmapSteps[activeStepIndex].highlightsRow.map((h, i) => (
-                            <div key={i} className="flex items-center gap-2">
-                              <div className="w-4 h-4 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
-                                <Check className="w-2.5 h-2.5 text-emerald-500 stroke-[3px]" />
-                              </div>
-                              <span className="text-[#0B1F3A] text-[12px] font-semibold leading-tight">{h.label}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Evaluates */}
-                      <div className="px-5 py-4">
-                        <h4 className="text-[9px] font-black uppercase tracking-wider text-slate-400 mb-2.5">We Evaluate</h4>
-                        <div className="space-y-2">
-                          {roadmapSteps[activeStepIndex].evaluate.map((ev, i) => {
-                            const EvalIcon = ev.icon;
-                            return (
-                              <div key={i} className="flex items-center gap-2">
-                                <div className={`w-6 h-6 rounded-lg ${ev.color} flex items-center justify-center shrink-0`}>
-                                  <EvalIcon className="w-3 h-3" />
-                                </div>
-                                <span className="text-[#0B1F3A] text-[12px] font-semibold leading-tight">{ev.label}</span>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Image visual strip */}
-                    <div className="relative h-44 md:h-48 w-full overflow-hidden" style={{ borderTop: "1px solid #F1F5F9" }}>
-                      <Image
-                        src={roadmapSteps[activeStepIndex].img}
-                        alt={roadmapSteps[activeStepIndex].title}
-                        fill
-                        className="object-cover object-center"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/40 to-transparent" />
-                      <div className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-sm border border-slate-100 rounded-xl px-3 py-1.5 flex items-center gap-2 shadow-md">
-                        <div className="w-6 h-6 rounded-full bg-[#F5F3FF] flex items-center justify-center text-[#7C3AED]">
-                          <HomeIcon className="w-3 h-3" />
-                        </div>
-                        <span className="text-[#0B1F3A] text-[10.5px] font-bold">{roadmapSteps[activeStepIndex].floatingText}</span>
-                      </div>
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-
-            </div>
-          </div>
-        </section>
-
-        {/* MOBILE VERSION: VERTICAL ROADMAP ACCORDION */}
-        <section className="lg:hidden py-14 px-6 bg-slate-50/50 border-b border-slate-100 relative overflow-hidden">
-          <div className="max-w-md mx-auto relative z-10">
-            <div className="inline-flex items-center gap-2 bg-[#F5F3FF] border border-[#7C3AED]/15 rounded-full px-3.5 py-1.5 mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#7C3AED]" />
-              <span className="text-[#7C3AED] text-[9.5px] font-black tracking-widest uppercase">
-                The Process Timeline
-              </span>
-            </div>
-
-            <h2 className="text-[#0B1F3A] text-[22px] font-extrabold leading-tight mb-3" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-              Four Steps To Refinance <span className="text-[#7C3AED]">Your Loan</span>
-            </h2>
-            
-            <p className="text-slate-500 text-xs leading-relaxed mb-6">
-              Tap each step to view the processing actions, highlights, and guidelines.
-            </p>
-
-            <div className="space-y-3">
-              {roadmapSteps.map((step, idx) => {
-                const isMobileActive = mobileActiveStepIndex === idx;
-                const colors = [
-                  { accent: "#7C3AED", lightBg: "#F5F3FF", border: "#DDD6FE" },
-                  { accent: "#7C3AED", lightBg: "#F5F3FF", border: "#DDD6FE" },
-                  { accent: "#7C3AED", lightBg: "#F5F3FF", border: "#DDD6FE" },
-                  { accent: "#7C3AED", lightBg: "#F5F3FF", border: "#DDD6FE" }
-                ][idx];
-
-                return (
-                  <div key={idx} className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden transition-all duration-300">
-                    <button
-                      type="button"
-                      onClick={() => setMobileActiveStepIndex(idx)}
-                      className="w-full flex items-center gap-3 p-3 text-left transition-colors hover:bg-slate-50 focus:outline-none"
-                    >
-                      <div
-                        className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 font-black text-sm"
-                        style={{
-                          background: isMobileActive ? colors.accent : colors.lightBg,
-                          border: `1.5px solid ${isMobileActive ? colors.accent : colors.border}`,
-                          color: isMobileActive ? "#ffffff" : colors.accent
-                        }}
-                      >
-                        {idx + 1}
-                      </div>
-
-                      <div className="flex-1 min-w-0">
-                        <span className="text-[8.5px] font-black uppercase tracking-wider block mb-0.5" style={{ color: colors.accent }}>
-                          Step {idx + 1} • {step.phase}
-                        </span>
-                        <h3 className="text-slate-800 text-[13.5px] font-bold leading-none">{step.title}</h3>
-                      </div>
-
-                      <div className={`transition-transform duration-300 ${isMobileActive ? "rotate-90 text-[#7C3AED]" : "rotate-0 text-slate-400"}`}>
-                        <ChevronRight className="w-4 h-4" />
-                      </div>
-                    </button>
-
-                    {isMobileActive && (
-                      <div className="border-t border-slate-100 bg-slate-50/30">
-                        <div className="p-4 space-y-4">
-                          <p className="text-slate-500 text-xs leading-relaxed">{step.desc}</p>
-                          <div className="grid grid-cols-2 gap-3 pt-1">
-                            <div className="bg-white p-2.5 rounded-lg border border-slate-100 shadow-sm">
-                              <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-2">Highlights</span>
-                              <div className="space-y-1.5">
-                                {step.highlightsRow.map((h, i) => (
-                                  <div key={i} className="flex items-center gap-1.5">
-                                    <Check className="w-2.5 h-2.5 text-emerald-500 shrink-0 stroke-[3px]" />
-                                    <span className="text-slate-700 text-[10.5px] font-semibold truncate leading-none">{h.label}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                            <div className="bg-white p-2.5 rounded-lg border border-slate-100 shadow-sm">
-                              <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-2">We Evaluate</span>
-                              <div className="space-y-1.5">
-                                {step.evaluate.map((ev, i) => {
-                                  const EvalIcon = ev.icon;
-                                  return (
-                                    <div key={i} className="flex items-center gap-1.5">
-                                      <div className={`w-3.5 h-3.5 rounded ${ev.color} flex items-center justify-center shrink-0`}>
-                                        <EvalIcon className="w-2 h-2 text-current" />
-                                      </div>
-                                      <span className="text-slate-700 text-[10.5px] font-semibold truncate leading-none">{ev.label}</span>
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
+        <RoadmapSection colorTheme="purple" />
       </div>
 
       {/* ── SECTION 7: COSTS OF REFINANCING ── */}
@@ -1909,7 +1519,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                           <input
                             type="tel"
                             name="phone"
-                            placeholder="0450 000 000"
+                            placeholder=""
                             className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-purple-500 focus:bg-white transition-all shadow-inner"
                             required
                           />
@@ -2139,7 +1749,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                         required
                         value={leadPhone}
                         onChange={(e) => setLeadPhone(e.target.value)}
-                        placeholder="0450 000 000"
+                        placeholder=""
                         className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-purple-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>

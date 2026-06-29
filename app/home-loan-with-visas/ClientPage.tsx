@@ -34,6 +34,7 @@ import {
   Globe,
   Ban
 } from "lucide-react";
+import { RoadmapSection } from "../components/RoadmapSection";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { TestimonialSection } from "../components/TestimonialSection";
@@ -95,6 +96,43 @@ export interface PageHeroSettings {
 
 export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
   const { openModal } = useOnboardingModal();
+
+  const handleBtnClick = (e: React.MouseEvent, text: string, link: string) => {
+    const textLower = text.toLowerCase();
+    const isModalTrigger =
+      !link ||
+      link === "#" ||
+      link === "#contact" ||
+      link === "#callback" ||
+      link === "#onboarding" ||
+      (!link.startsWith("#") && (
+        textLower.includes("book") ||
+        textLower.includes("call") ||
+        textLower.includes("consult") ||
+        textLower.includes("apply")
+      ));
+
+    if (isModalTrigger) {
+      e.preventDefault();
+      openModal();
+    } else if (link.startsWith("#")) {
+      e.preventDefault();
+      const targetId = link.substring(1);
+      let el = document.getElementById(targetId);
+      if (!el && (targetId.includes("calc") || targetId.includes("borrow") || targetId.includes("option") || targetId.includes("eligibility"))) {
+        el = document.getElementById("calculator") || 
+             document.getElementById("calculator-section") || 
+             document.getElementById("borrowing") || 
+             document.getElementById("borrowing-capacity") ||
+             document.getElementById("options") ||
+             document.getElementById("eligibility") ||
+             document.getElementById("calculator-tool");
+      }
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
   const [navSticky, setNavSticky] = useState(false);
   const [activeNav, setActiveNav] = useState("overview");
   const navSentinelRef = useRef<HTMLDivElement>(null);
@@ -170,11 +208,12 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
     const sectionIds = [
       "overview",
       "mechanics",
+      "roadmap",
+      "calculator-section",
       "benefits-risks",
       "eligibility",
       "foreign-ban",
       "steps",
-      "calculator-section",
       "faqs",
       "contact"
     ];
@@ -251,11 +290,12 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
   const navItems = [
     { id: "overview", label: "Overview", icon: HomeIcon },
     { id: "mechanics", label: "How It Works", icon: Landmark },
+    { id: "roadmap", label: "Roadmap", icon: Calendar },
+    { id: "calculator-section", label: "Calculator", icon: Calculator },
     { id: "benefits-risks", label: "Benefits & Risks", icon: Sparkles },
     { id: "eligibility", label: "Eligible Visas", icon: UserCheck },
     { id: "foreign-ban", label: "Foreign Ban Notice", icon: Ban },
     { id: "steps", label: "Application Steps", icon: Clock },
-    { id: "calculator-section", label: "Calculator", icon: Calculator },
     { id: "faqs", label: "FAQs", icon: HelpCircle },
     { id: "contact", label: "Enquire Now", icon: ArrowRight }
   ];
@@ -348,44 +388,20 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
 
               {/* CTAs */}
               <motion.div variants={premiumFadeUp} className="flex flex-wrap items-center gap-4">
-                {(!btn1Link || btn1Link === "#" || btn1Link === "#contact" || btn1Link === "#callback") ? (
-                  <button
-                    type="button"
-                    onClick={openModal}
-                    className="inline-flex items-center justify-center gap-2 bg-amber-550 hover:bg-amber-600 text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-amber-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap cursor-pointer border-0"
-                  >
-                    {btn1Text} <ArrowRight className="w-4 h-4" />
-                  </button>
-                ) : (
-                  <Link
-                    href={btn1Link}
-                    className="inline-flex items-center justify-center gap-2 bg-amber-550 hover:bg-amber-600 text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-amber-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap"
-                  >
-                    {btn1Text} <ArrowRight className="w-4 h-4" />
-                  </Link>
-                )}
-                {(btn2Link === "#contact" || btn2Link === "#callback") ? (
-                  <button
-                    type="button"
-                    onClick={openModal}
-                    className="inline-flex items-center justify-center gap-2 border-2 border-amber-600 text-amber-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-amber-600 hover:text-white text-center w-full sm:w-auto whitespace-nowrap cursor-pointer border-0 bg-transparent"
-                  >
-                    {btn2Text}
-                  </button>
-                ) : (
-                  <a
-                    href={btn2Link}
-                    onClick={(e) => {
-                      if (btn2Link.startsWith("#")) {
-                        e.preventDefault();
-                        document.getElementById(btn2Link.substring(1))?.scrollIntoView({ behavior: "smooth" });
-                      }
-                    }}
-                    className="inline-flex items-center justify-center gap-2 border-2 border-amber-600 text-amber-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-amber-600 hover:text-white text-center w-full sm:w-auto whitespace-nowrap"
-                  >
-                    {btn2Text}
-                  </a>
-                )}
+                <a
+                  href={btn1Link}
+                  onClick={(e) => handleBtnClick(e, btn1Text, btn1Link)}
+                  className="inline-flex items-center justify-center gap-2 bg-amber-550 hover:bg-amber-600 text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg shadow-amber-500/15 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap cursor-pointer"
+                >
+                  {btn1Text} <ArrowRight className="w-4 h-4" />
+                </a>
+                <a
+                  href={btn2Link}
+                  onClick={(e) => handleBtnClick(e, btn2Text, btn2Link)}
+                  className="inline-flex items-center justify-center gap-2 border-2 border-amber-600 text-amber-700 bg-white font-bold text-[13.5px] sm:text-[14px] py-3 px-7 rounded-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-amber-600 hover:text-white text-center w-full sm:w-auto whitespace-nowrap cursor-pointer bg-transparent"
+                >
+                  {btn2Text}
+                </a>
               </motion.div>
 
               {/* Trust Reviews Badge Row */}
@@ -651,6 +667,230 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
         </div>
       </section>
 
+      <RoadmapSection colorTheme="amber" />
+
+      <section id="calculator-section" className="py-16 md:py-24 bg-slate-50 border-b border-slate-100 relative">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-[33%_67%] gap-8 lg:gap-12 items-center">
+            
+            {/* Left Column */}
+            <div>
+              <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-full px-4 py-2 mb-6">
+                <Calculator className="w-3.5 h-3.5 text-amber-600" />
+                <span className="text-amber-705 text-[10px] font-bold tracking-widest uppercase">Lending Modeler</span>
+              </div>
+              <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.1] mb-4" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                Expat &amp; Visa Loan <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-yellow-500">Deposit Modeler</span>
+              </h2>
+              <p className="text-slate-550 text-[14.5px] sm:text-[15.5px] leading-relaxed mb-6">
+                Calculate your required LVR deposit threshold and estimate potential FIRB fees based on visa residency status.
+              </p>
+
+              <div className="bg-white border border-slate-200/80 rounded-xl p-5 space-y-4 max-w-md shadow-sm">
+                <div className="flex gap-4 items-start">
+                  <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100">
+                    <Globe className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-[#0B1F3A] text-[14px] font-semibold leading-tight mb-1">Foreign Income Conversions</h4>
+                    <p className="text-slate-500 text-[12.5px] leading-relaxed">Banks typically apply a 20% haircut to foreign incomes for security margin.</p>
+                  </div>
+                </div>
+
+                <hr className="border-slate-200" />
+
+                <div className="flex gap-4 items-start">
+                  <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100">
+                    <ShieldCheck className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-[#0B1F3A] text-[14px] font-semibold leading-tight mb-1">FIRB Submission Tracking</h4>
+                    <p className="text-slate-500 text-[12.5px] leading-relaxed">We coordinate directly with legal counsel to manage FIRB documentation.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column: Live Interactive Calculator Widget */}
+            <div className="relative w-full">
+              <div className="bg-white border border-slate-200/80 rounded-[24px] shadow-xl shadow-slate-100 overflow-hidden grid grid-cols-1 md:grid-cols-[54%_46%]">
+                
+                {/* Inputs (54%) */}
+                <div className="p-4 sm:p-6 space-y-4">
+                  <div className="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-1">
+                    <span className="text-slate-900 text-xs font-black uppercase tracking-wider">1. Financial Inputs</span>
+                    <span className="text-[9px] text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full font-bold uppercase">Inputs</span>
+                  </div>
+
+                  {/* Visa Status Select */}
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-black uppercase tracking-wider text-slate-400">Visa / Residency Status</label>
+                    <select
+                      value={residencyStatus}
+                      onChange={(e) => setResidencyStatus(e.target.value as "expat" | "temporary-visa" | "foreign-citizen")}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-bold focus:outline-none focus:border-amber-500"
+                    >
+                      <option value="expat">Australian Expat (Living Abroad)</option>
+                      <option value="temporary-visa">Temporary Visa Holder (482, 485, etc.)</option>
+                      <option value="foreign-citizen">Foreign Citizen (Living Abroad)</option>
+                    </select>
+                  </div>
+
+                  {/* Income Source Select */}
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-black uppercase tracking-wider text-slate-400">Primary Income Source</label>
+                    <select
+                      value={incomeSource}
+                      onChange={(e) => setIncomeSource(e.target.value as "aud" | "foreign")}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-bold focus:outline-none focus:border-amber-500"
+                    >
+                      <option value="aud">Australian Dollars (AUD)</option>
+                      <option value="foreign">Foreign Currency (USD, GBP, EUR, etc.)</option>
+                    </select>
+                  </div>
+
+                  {/* Saved Deposit */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                      <span>Saved Deposit Savings</span>
+                      <span className="text-slate-900 font-black text-[13px]">${depositSaved.toLocaleString()}</span>
+                    </div>
+                    <input
+                      type="range"
+                      min={50000}
+                      max={600000}
+                      step={10000}
+                      value={depositSaved}
+                      onChange={(e) => setDepositSaved(Number(e.target.value))}
+                      className="w-full accent-amber-600 cursor-pointer h-1 bg-slate-100 rounded-lg appearance-none"
+                    />
+                    <div className="flex justify-between text-[9px] text-slate-400 font-medium">
+                      <span>$50,000</span>
+                      <span>$600,000</span>
+                    </div>
+                  </div>
+
+                  {/* Purchase Price */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                      <span>Estimated Purchase Price</span>
+                      <span className="text-slate-900 font-black text-[13px]">${purchasePrice.toLocaleString()}</span>
+                    </div>
+                    <input
+                      type="range"
+                      min={300000}
+                      max={1800000}
+                      step={20000}
+                      value={purchasePrice}
+                      onChange={(e) => setPurchasePrice(Number(e.target.value))}
+                      className="w-full accent-amber-600 cursor-pointer h-1 bg-slate-100 rounded-lg appearance-none"
+                    />
+                    <div className="flex justify-between text-[9px] text-slate-400 font-medium">
+                      <span>$300,000</span>
+                      <span>$1.8M</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Outputs (46%) */}
+                <div className="bg-gradient-to-b from-[#0B1F3A] to-[#040C1A] text-white p-4 sm:p-6 flex flex-col justify-between relative">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
+                      <span className="text-[10px] font-black uppercase tracking-wider text-amber-400">Lending Results</span>
+                      <span className="text-[9px] bg-amber-500/10 text-amber-300 border border-amber-500/20 px-2 py-0.5 rounded-full font-bold">LVR: {lvrValue}%</span>
+                    </div>
+
+                    <div>
+                      <span className="text-[9px] text-white/40 uppercase tracking-widest block mb-0.5">EST. FIRB APPLICATION FEE</span>
+                      <div className="space-y-1">
+                        <span className="text-[24px] sm:text-[30px] font-black text-amber-400 leading-none">
+                          {estimatedFirbFee > 0 ? `$${estimatedFirbFee.toLocaleString()}` : "Fee Waived"}
+                        </span>
+                        <span className="text-[10px] text-amber-300 font-extrabold uppercase block tracking-wider">
+                          {residencyStatus === "expat" ? "✓ Citizen Expat Exemption" : "FIRB Approval Required"}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div>
+                      <span className="text-[9px] text-white/40 uppercase tracking-widest block mb-0.5">Deposit Validation</span>
+                      {isDepositSufficient ? (
+                        <span className="text-[13px] font-bold text-emerald-400 leading-none block">
+                          ✓ Saved Deposit Meets Min. {minRequiredDepositPct}% Rule
+                        </span>
+                      ) : (
+                        <span className="text-[13px] font-bold text-rose-400 leading-none block">
+                          Deposit Below Min. {minRequiredDepositPct}% Target
+                        </span>
+                      )}
+                    </div>
+
+                    <div>
+                      <span className="text-[9px] text-white/40 uppercase tracking-widest block mb-0.5">Est. Monthly Repayments</span>
+                      <span className="text-[22px] font-black text-white leading-none">${Math.round(monthlyRepayment).toLocaleString()}/mo</span>
+                      <span className="text-[9px] text-white/60 block mt-1">
+                        calculated at {applicableRate.toFixed(2)}% interest rate margin
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="mt-6">
+                    {!calcSubmitted ? (
+                      <form onSubmit={handleCalcLeadSubmit} className="space-y-2">
+                        <div className="grid grid-cols-2 gap-1.5">
+                          <input
+                            type="text"
+                            required
+                            placeholder="Name"
+                            value={calcLeadName}
+                            onChange={(e) => setCalcLeadName(e.target.value)}
+                            className="bg-white/5 border border-white/15 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-white/40 focus:outline-none focus:border-amber-500 focus:bg-white/10"
+                          />
+                          <input
+                            type="text"
+                            required
+                            placeholder="Phone"
+                            value={calcLeadPhone}
+                            onChange={(e) => setCalcLeadPhone(e.target.value)}
+                            className="bg-white/5 border border-white/15 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-white/40 focus:outline-none focus:border-amber-500 focus:bg-white/10"
+                          />
+                        </div>
+                        <input
+                          type="email"
+                          required
+                          placeholder="Email"
+                          value={calcLeadEmail}
+                          onChange={(e) => setCalcLeadEmail(e.target.value)}
+                          className="w-full bg-white/5 border border-white/15 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-white/40 focus:outline-none focus:border-amber-500 focus:bg-white/10"
+                        />
+                        <button
+                          type="submit"
+                          disabled={calcSubmitting}
+                          className="w-full inline-flex items-center justify-center gap-1 rounded-lg bg-gradient-to-r from-amber-550 to-yellow-500 hover:from-amber-600 hover:to-yellow-550 text-white font-bold text-[12px] py-2.5 transition-all cursor-pointer shadow-lg shadow-amber-500/10"
+                        >
+                          {calcSubmitting ? "Submitting..." : "Get Detailed Lenders Report"}
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </button>
+                      </form>
+                    ) : (
+                      <div className="bg-amber-950/40 border border-amber-500/30 rounded-xl p-4 text-center space-y-1">
+                        <CheckCircle2 className="w-6 h-6 text-amber-400 mx-auto" />
+                        <h4 className="text-[13px] font-extrabold text-amber-400">Calculation Saved!</h4>
+                        <p className="text-[10px] text-white/70 leading-relaxed">
+                          We will review your calculation and contact you to complete the application.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
       {/* ── SECTION 3: WHO CAN QUALIFY (ELIGIBLE VISAS & REQUIREMENTS) ── */}
       <section id="eligibility" className="py-16 md:py-24 bg-white border-b border-slate-100">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
@@ -877,227 +1117,9 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
       </section>
 
       {/* ── SECTION 7: LIVE VISA CALCULATOR ── */}
-      <section id="calculator-section" className="py-16 md:py-24 bg-slate-50 border-b border-slate-100 relative">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-[33%_67%] gap-8 lg:gap-12 items-center">
-            
-            {/* Left Column */}
-            <div>
-              <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-full px-4 py-2 mb-6">
-                <Calculator className="w-3.5 h-3.5 text-amber-600" />
-                <span className="text-amber-705 text-[10px] font-bold tracking-widest uppercase">Lending Modeler</span>
-              </div>
-              <h2 className="text-[#0B1F3A] text-[22px] sm:text-[30px] lg:text-[36px] font-extrabold leading-[1.1] mb-4" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                Expat &amp; Visa Loan <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-yellow-500">Deposit Modeler</span>
-              </h2>
-              <p className="text-slate-550 text-[14.5px] sm:text-[15.5px] leading-relaxed mb-6">
-                Calculate your required LVR deposit threshold and estimate potential FIRB fees based on visa residency status.
-              </p>
-
-              <div className="bg-white border border-slate-200/80 rounded-xl p-5 space-y-4 max-w-md shadow-sm">
-                <div className="flex gap-4 items-start">
-                  <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100">
-                    <Globe className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-[#0B1F3A] text-[14px] font-semibold leading-tight mb-1">Foreign Income Conversions</h4>
-                    <p className="text-slate-500 text-[12.5px] leading-relaxed">Banks typically apply a 20% haircut to foreign incomes for security margin.</p>
-                  </div>
-                </div>
-
-                <hr className="border-slate-200" />
-
-                <div className="flex gap-4 items-start">
-                  <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100">
-                    <ShieldCheck className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-[#0B1F3A] text-[14px] font-semibold leading-tight mb-1">FIRB Submission Tracking</h4>
-                    <p className="text-slate-500 text-[12.5px] leading-relaxed">We coordinate directly with legal counsel to manage FIRB documentation.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column: Live Interactive Calculator Widget */}
-            <div className="relative w-full">
-              <div className="bg-white border border-slate-200/80 rounded-[24px] shadow-xl shadow-slate-100 overflow-hidden grid grid-cols-1 md:grid-cols-[54%_46%]">
-                
-                {/* Inputs (54%) */}
-                <div className="p-4 sm:p-6 space-y-4">
-                  <div className="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-1">
-                    <span className="text-slate-900 text-xs font-black uppercase tracking-wider">1. Financial Inputs</span>
-                    <span className="text-[9px] text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full font-bold uppercase">Inputs</span>
-                  </div>
-
-                  {/* Visa Status Select */}
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-slate-400">Visa / Residency Status</label>
-                    <select
-                      value={residencyStatus}
-                      onChange={(e) => setResidencyStatus(e.target.value as "expat" | "temporary-visa" | "foreign-citizen")}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-bold focus:outline-none focus:border-amber-500"
-                    >
-                      <option value="expat">Australian Expat (Living Abroad)</option>
-                      <option value="temporary-visa">Temporary Visa Holder (482, 485, etc.)</option>
-                      <option value="foreign-citizen">Foreign Citizen (Living Abroad)</option>
-                    </select>
-                  </div>
-
-                  {/* Income Source Select */}
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-slate-400">Primary Income Source</label>
-                    <select
-                      value={incomeSource}
-                      onChange={(e) => setIncomeSource(e.target.value as "aud" | "foreign")}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 font-bold focus:outline-none focus:border-amber-500"
-                    >
-                      <option value="aud">Australian Dollars (AUD)</option>
-                      <option value="foreign">Foreign Currency (USD, GBP, EUR, etc.)</option>
-                    </select>
-                  </div>
-
-                  {/* Saved Deposit */}
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                      <span>Saved Deposit Savings</span>
-                      <span className="text-slate-900 font-black text-[13px]">${depositSaved.toLocaleString()}</span>
-                    </div>
-                    <input
-                      type="range"
-                      min={50000}
-                      max={600000}
-                      step={10000}
-                      value={depositSaved}
-                      onChange={(e) => setDepositSaved(Number(e.target.value))}
-                      className="w-full accent-amber-600 cursor-pointer h-1 bg-slate-100 rounded-lg appearance-none"
-                    />
-                    <div className="flex justify-between text-[9px] text-slate-400 font-medium">
-                      <span>$50,000</span>
-                      <span>$600,000</span>
-                    </div>
-                  </div>
-
-                  {/* Purchase Price */}
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                      <span>Estimated Purchase Price</span>
-                      <span className="text-slate-900 font-black text-[13px]">${purchasePrice.toLocaleString()}</span>
-                    </div>
-                    <input
-                      type="range"
-                      min={300000}
-                      max={1800000}
-                      step={20000}
-                      value={purchasePrice}
-                      onChange={(e) => setPurchasePrice(Number(e.target.value))}
-                      className="w-full accent-amber-600 cursor-pointer h-1 bg-slate-100 rounded-lg appearance-none"
-                    />
-                    <div className="flex justify-between text-[9px] text-slate-400 font-medium">
-                      <span>$300,000</span>
-                      <span>$1.8M</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Outputs (46%) */}
-                <div className="bg-gradient-to-b from-[#0B1F3A] to-[#040C1A] text-white p-4 sm:p-6 flex flex-col justify-between relative">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
-                      <span className="text-[10px] font-black uppercase tracking-wider text-amber-400">Lending Results</span>
-                      <span className="text-[9px] bg-amber-500/10 text-amber-300 border border-amber-500/20 px-2 py-0.5 rounded-full font-bold">LVR: {lvrValue}%</span>
-                    </div>
-
-                    <div>
-                      <span className="text-[9px] text-white/40 uppercase tracking-widest block mb-0.5">EST. FIRB APPLICATION FEE</span>
-                      <div className="space-y-1">
-                        <span className="text-[24px] sm:text-[30px] font-black text-amber-400 leading-none">
-                          {estimatedFirbFee > 0 ? `$${estimatedFirbFee.toLocaleString()}` : "Fee Waived"}
-                        </span>
-                        <span className="text-[10px] text-amber-300 font-extrabold uppercase block tracking-wider">
-                          {residencyStatus === "expat" ? "✓ Citizen Expat Exemption" : "FIRB Approval Required"}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div>
-                      <span className="text-[9px] text-white/40 uppercase tracking-widest block mb-0.5">Deposit Validation</span>
-                      {isDepositSufficient ? (
-                        <span className="text-[13px] font-bold text-emerald-400 leading-none block">
-                          ✓ Saved Deposit Meets Min. {minRequiredDepositPct}% Rule
-                        </span>
-                      ) : (
-                        <span className="text-[13px] font-bold text-rose-400 leading-none block">
-                          Deposit Below Min. {minRequiredDepositPct}% Target
-                        </span>
-                      )}
-                    </div>
-
-                    <div>
-                      <span className="text-[9px] text-white/40 uppercase tracking-widest block mb-0.5">Est. Monthly Repayments</span>
-                      <span className="text-[22px] font-black text-white leading-none">${Math.round(monthlyRepayment).toLocaleString()}/mo</span>
-                      <span className="text-[9px] text-white/60 block mt-1">
-                        calculated at {applicableRate.toFixed(2)}% interest rate margin
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="mt-6">
-                    {!calcSubmitted ? (
-                      <form onSubmit={handleCalcLeadSubmit} className="space-y-2">
-                        <div className="grid grid-cols-2 gap-1.5">
-                          <input
-                            type="text"
-                            required
-                            placeholder="Name"
-                            value={calcLeadName}
-                            onChange={(e) => setCalcLeadName(e.target.value)}
-                            className="bg-white/5 border border-white/15 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-white/40 focus:outline-none focus:border-amber-500 focus:bg-white/10"
-                          />
-                          <input
-                            type="text"
-                            required
-                            placeholder="Phone"
-                            value={calcLeadPhone}
-                            onChange={(e) => setCalcLeadPhone(e.target.value)}
-                            className="bg-white/5 border border-white/15 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-white/40 focus:outline-none focus:border-amber-500 focus:bg-white/10"
-                          />
-                        </div>
-                        <input
-                          type="email"
-                          required
-                          placeholder="Email"
-                          value={calcLeadEmail}
-                          onChange={(e) => setCalcLeadEmail(e.target.value)}
-                          className="w-full bg-white/5 border border-white/15 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-white/40 focus:outline-none focus:border-amber-500 focus:bg-white/10"
-                        />
-                        <button
-                          type="submit"
-                          disabled={calcSubmitting}
-                          className="w-full inline-flex items-center justify-center gap-1 rounded-lg bg-gradient-to-r from-amber-550 to-yellow-500 hover:from-amber-600 hover:to-yellow-550 text-white font-bold text-[12px] py-2.5 transition-all cursor-pointer shadow-lg shadow-amber-500/10"
-                        >
-                          {calcSubmitting ? "Submitting..." : "Get Detailed Lenders Report"}
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </button>
-                      </form>
-                    ) : (
-                      <div className="bg-amber-950/40 border border-amber-500/30 rounded-xl p-4 text-center space-y-1">
-                        <CheckCircle2 className="w-6 h-6 text-amber-400 mx-auto" />
-                        <h4 className="text-[13px] font-extrabold text-amber-400">Calculation Saved!</h4>
-                        <p className="text-[10px] text-white/70 leading-relaxed">
-                          We will review your calculation and contact you to complete the application.
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
+      
+      
+      
 
       {/* ── SECTION 8: FAQS ACCORDION ── */}
       <section id="faqs" className="py-16 md:py-24 bg-white border-b border-slate-100">
@@ -1290,7 +1312,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                         required
                         value={formData.phone}
                         onChange={handleInputChange}
-                        placeholder="0400 000 000"
+                        placeholder=""
                         className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:bg-white transition-all shadow-inner"
                       />
                     </div>
