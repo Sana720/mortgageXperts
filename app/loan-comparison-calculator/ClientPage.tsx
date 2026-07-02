@@ -538,7 +538,7 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             
             {/* Left Info Column */}
-            <div className="lg:col-span-5 space-y-6 no-print">
+            <div className="lg:col-span-5 space-y-6 no-print order-2 lg:order-1">
               <span className="text-[10px] font-black uppercase tracking-widest text-rose-600 bg-rose-50 border border-rose-100/60 px-3.5 py-1.5 rounded-full w-fit block font-bold">
                 Home Loan Analysis
               </span>
@@ -570,7 +570,7 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
             </div>
 
             {/* Right Interactive Tool Column */}
-            <div className="lg:col-span-7">
+            <div className="lg:col-span-7 order-1 lg:order-2">
               <div className="w-full bg-white rounded-3xl p-8 md:p-10 border border-slate-200 shadow-xl relative overflow-hidden flex flex-col transition-all duration-300">
                 <div className={`absolute top-0 right-0 w-32 h-32 bg-rose-50 rounded-bl-full opacity-50 pointer-events-none`} />
                 

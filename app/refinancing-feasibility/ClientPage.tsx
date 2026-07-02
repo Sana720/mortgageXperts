@@ -324,7 +324,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             
             {/* Left Column: Rich Mortgage Context / Content */}
-            <div className="lg:col-span-6 space-y-6 no-print">
+            <div className="lg:col-span-6 space-y-6 no-print order-2 lg:order-1">
               <span className="text-[10px] font-black uppercase tracking-widest text-violet-800 bg-violet-50 border border-violet-100/60 px-3.5 py-1.5 rounded-full w-fit block shadow-sm font-bold">
                 Calculations & Insights
               </span>
@@ -385,7 +385,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
             </div>
 
             {/* Right Column: Wizard Form (Structured like Repayment / Borrowing) */}
-            <div className="lg:col-span-6 flex justify-end no-print">
+            <div className="lg:col-span-6 flex justify-end no-print order-1 lg:order-2">
               <div className="w-full max-w-[500px] bg-white rounded-3xl p-8 md:p-10 border border-slate-200 shadow-xl relative overflow-hidden flex flex-col transition-all duration-300 relative overflow-hidden">
                 {/* Signature Benchmark Corner Decoration */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-violet-50 rounded-bl-full opacity-50 pointer-events-none" />

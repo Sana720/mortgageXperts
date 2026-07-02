@@ -58,7 +58,7 @@ export function MortgageMateForm({
   const [app2Email, setApp2Email] = useState("");
   const [app2Phone, setApp2Phone] = useState("");
 
-  const [contactMethod, setContactMethod] = useState("");
+  const [employmentStatus, setEmploymentStatus] = useState<string[]>([]);
 
   // Form State - Phase 2: Property & Financial Details
   const [loanPurpose, setLoanPurpose] = useState("");
@@ -71,7 +71,7 @@ export function MortgageMateForm({
   const [state, setState] = useState("NSW"); // default state option
 
   const totalSteps = 12;
-  const hasInlineButton = [2, 3, 5, 7, 8, 10, 12].includes(step);
+  const hasInlineButton = true;
 
   // Dashboard redirect and progress timer
   useEffect(() => {
@@ -184,7 +184,7 @@ export function MortgageMateForm({
       state: state || "NSW",
       details: JSON.stringify({
         numApplicants,
-        contactMethod,
+        employmentStatus: employmentStatus.join(", "),
         creditHistory,
         comments,
         applicant1: { name: fullName, email, phone },
@@ -223,7 +223,7 @@ export function MortgageMateForm({
       const isPhoneValid = app2Phone.replace(/\D/g, "").length === 10;
       return app2Name.trim().length > 0 && isPhoneValid && emailRegex.test(app2Email.trim());
     }
-    if (step === 4) return contactMethod !== "";
+    if (step === 4) return employmentStatus.length > 0;
     if (step === 5) return true; // Interstitial
     if (step === 6) return loanPurpose !== "";
     if (step === 7) {
@@ -249,7 +249,7 @@ export function MortgageMateForm({
       case 1: return "Knowing if this is a single or joint application is crucial for assessing borrowing capacity.";
       case 2: return "We will send the tailored strategy and assessment summary directly to you.";
       case 3: return "Second applicant details help us calculate joint income and assessment rates.";
-      case 4: return "We respect your time. Let us know the best way for Aakash to reach out.";
+      case 4: return "Please select all that apply to you and, if applicable, your partner.";
       case 6: return "Knowing your goal helps us filter down to the most relevant lending structures.";
       case 7: return loanPurpose === "REFINANCE_A_LOAN" 
         ? "This helps us calculate your Loan-to-Value Ratio (LVR) to unlock better interest rates." 
@@ -768,7 +768,7 @@ export function MortgageMateForm({
                         <div className="relative">
                           <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                           <input type="tel"
-                            placeholder=""
+                            placeholder="04XX XXX XXX"
                             value={phone}
                             onChange={(e) => handlePhoneChange(e.target.value)}
                             onKeyDown={handleKeyDown}
@@ -794,18 +794,6 @@ export function MortgageMateForm({
                           <p className="text-rose-500 text-[10px] font-bold mt-1">Please enter a valid email address.</p>
                         )}
                       </div>
-                      <button
-                        type="button"
-                        onClick={handleNext}
-                        disabled={!isStepValid()}
-                        className={`w-full flex items-center justify-center gap-1.5 px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer ${
-                          isStepValid()
-                            ? "bg-[#10A3EB] hover:bg-[#0e92d3] text-white"
-                            : "bg-slate-100 text-slate-400 cursor-not-allowed"
-                        }`}
-                      >
-                        Next Question <ArrowRight className="w-3.5 h-3.5" />
-                      </button>
                     </div>
                   )}
 
@@ -829,7 +817,7 @@ export function MortgageMateForm({
                         <div className="relative">
                           <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                           <input type="tel"
-                            placeholder=""
+                            placeholder="04XX XXX XXX"
                             value={app2Phone}
                             onChange={(e) => handleApp2PhoneChange(e.target.value)}
                             onKeyDown={handleKeyDown}
@@ -855,39 +843,31 @@ export function MortgageMateForm({
                           <p className="text-rose-500 text-[10px] font-bold mt-1">Please enter a valid email address.</p>
                         )}
                       </div>
-                      <button
-                        type="button"
-                        onClick={handleNext}
-                        disabled={!isStepValid()}
-                        className={`w-full flex items-center justify-center gap-1.5 px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer ${
-                          isStepValid()
-                            ? "bg-[#10A3EB] hover:bg-[#0e92d3] text-white"
-                            : "bg-slate-100 text-slate-400 cursor-not-allowed"
-                        }`}
-                      >
-                        Next Question <ArrowRight className="w-3.5 h-3.5" />
-                      </button>
                     </div>
                   )}
 
-                  {/* STEP 4: Best Contact Method */}
+                  {/* STEP 4: Employment Status */}
                   {step === 4 && (
                     <div className="space-y-3">
-                      <label className="text-[13.5px] font-extrabold text-[#0B1F3A] block">What is the best way to contact you?</label>
+                      <label className="text-[13.5px] font-extrabold text-[#0B1F3A] block">What best describes your employment status?</label>
                       <div className="grid grid-cols-1 gap-3">
                         {[
-                          { value: "PHONE", label: "Phone Call (Voice)" },
-                          { value: "TEXT", label: "Text Message (SMS)" }
+                          { value: "FULL_TIME", label: "Full-time" },
+                          { value: "PART_TIME", label: "Part-time" },
+                          { value: "CASUAL", label: "Casual" }
                         ].map((obj) => (
                           <button
                             type="button"
                             key={obj.value}
                             onClick={() => {
-                              setContactMethod(obj.value);
-                              setStep(5);
+                              setEmploymentStatus(prev =>
+                                prev.includes(obj.value)
+                                  ? prev.filter(v => v !== obj.value)
+                                  : [...prev, obj.value]
+                              );
                             }}
-                            className={`w-full rounded-2xl border-0 py-3 px-6 text-center font-bold text-[13.5px] transition-all duration-300 cursor-pointer ${
-                              contactMethod === obj.value
+                            className={`w-full rounded-2xl border-0 py-3.5 px-6 text-center font-bold text-[13.5px] transition-all duration-300 cursor-pointer ${
+                              employmentStatus.includes(obj.value)
                                 ? "bg-sky-50 text-[#10A3EB] shadow-[0_4px_12px_rgba(16,163,235,0.12)] ring-2 ring-[#10A3EB] scale-[1.01]"
                                 : "bg-white text-slate-700 shadow-[0_4px_12px_rgba(148,163,184,0.08)] hover:-translate-y-0.5 hover:shadow-[0_8px_18px_rgba(148,163,184,0.16)]"
                             }`}
@@ -935,7 +915,6 @@ export function MortgageMateForm({
                             key={obj.value}
                             onClick={() => {
                               setLoanPurpose(obj.value);
-                              setStep(7);
                             }}
                             className={`w-full rounded-2xl border-0 py-3 px-6 text-center font-bold text-[13.5px] transition-all duration-300 cursor-pointer ${
                               loanPurpose === obj.value
@@ -970,18 +949,6 @@ export function MortgageMateForm({
                           autoFocus
                         />
                       </div>
-                      <button
-                        type="button"
-                        onClick={handleNext}
-                        disabled={!isStepValid()}
-                        className={`w-full flex items-center justify-center gap-1.5 px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer ${
-                          isStepValid()
-                            ? "bg-[#10A3EB] hover:bg-[#0e92d3] text-white"
-                            : "bg-slate-100 text-slate-400 cursor-not-allowed"
-                        }`}
-                      >
-                        Next Question <ArrowRight className="w-3.5 h-3.5" />
-                      </button>
                     </div>
                   )}
 
@@ -1001,18 +968,6 @@ export function MortgageMateForm({
                           autoFocus
                         />
                       </div>
-                      <button
-                        type="button"
-                        onClick={handleNext}
-                        disabled={!isStepValid()}
-                        className={`w-full flex items-center justify-center gap-1.5 px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer ${
-                          isStepValid()
-                            ? "bg-[#10A3EB] hover:bg-[#0e92d3] text-white"
-                            : "bg-slate-100 text-slate-400 cursor-not-allowed"
-                        }`}
-                      >
-                        Next Question <ArrowRight className="w-3.5 h-3.5" />
-                      </button>
                     </div>
                   )}
 
@@ -1032,11 +987,6 @@ export function MortgageMateForm({
                             key={obj.value}
                             onClick={() => {
                               setDepositFunds(obj.value);
-                              if (obj.value === "YES" || obj.value === "YES_AND_GUARANTOR") {
-                                setStep(10);
-                              } else {
-                                setStep(11);
-                              }
                             }}
                             className={`w-full rounded-2xl border-0 py-3 px-6 text-center font-bold text-[13.5px] transition-all duration-300 cursor-pointer ${
                               depositFunds === obj.value
@@ -1067,18 +1017,6 @@ export function MortgageMateForm({
                           autoFocus
                         />
                       </div>
-                      <button
-                        type="button"
-                        onClick={handleNext}
-                        disabled={!isStepValid()}
-                        className={`w-full flex items-center justify-center gap-1.5 px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer ${
-                          isStepValid()
-                            ? "bg-[#10A3EB] hover:bg-[#0e92d3] text-white"
-                            : "bg-slate-100 text-slate-400 cursor-not-allowed"
-                        }`}
-                      >
-                        Next Question <ArrowRight className="w-3.5 h-3.5" />
-                      </button>
                     </div>
                   )}
 
@@ -1098,7 +1036,6 @@ export function MortgageMateForm({
                             key={obj.value}
                             onClick={() => {
                               setCreditHistory(obj.value);
-                              setStep(12);
                             }}
                             className={`w-full rounded-2xl border-0 py-3 px-6 text-center font-bold text-[13.5px] transition-all duration-300 cursor-pointer ${
                               creditHistory === obj.value
@@ -1148,24 +1085,12 @@ export function MortgageMateForm({
                         />
                       </div>
 
-                      <button
-                        type="button"
-                        onClick={handleSubmit}
-                        disabled={!isStepValid() || submitting}
-                        className={`w-full flex items-center justify-center gap-1.5 px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer ${
-                          isStepValid() && !submitting
-                            ? "bg-[#10A3EB] hover:bg-[#0e92d3] text-white"
-                            : "bg-slate-100 text-slate-400 cursor-not-allowed"
-                        }`}
-                      >
-                        {submitting ? "Submitting..." : "Submit Profile"} <Check className="w-3.5 h-3.5" />
-                      </button>
                     </div>
                   )}
 
                   {/* Helpful Hint Box (Just below the field) */}
-                  {step > 0 && step !== 5 && step !== 12 && getHelpfulHint(step) !== "" && (
-                    <div className="mt-4 rounded-xl overflow-hidden border border-[#10A3EB]/30 shadow-sm">
+                  {step > 0 && step !== 5 && getHelpfulHint(step) !== "" && (
+                    <div className="mt-4 rounded-xl overflow-hidden border border-[#10A3EB]/30 shadow-sm animate-fade-in">
                       <div className="bg-[#10A3EB] px-3 py-1.5 flex items-center gap-1.5 relative">
                         <div className="absolute -bottom-1.5 left-6 w-3 h-3 bg-[#10A3EB] rotate-45 transform" />
                         <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1177,6 +1102,38 @@ export function MortgageMateForm({
                         {getHelpfulHint(step)}
                       </div>
                     </div>
+                  )}
+
+                  {/* Unified Inline Next Button */}
+                  {step !== 5 && step !== 12 && (
+                    <button
+                      type="button"
+                      onClick={handleNext}
+                      disabled={!isStepValid()}
+                      className={`w-full flex items-center justify-center gap-1.5 px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer mt-4 ${
+                        isStepValid()
+                          ? "bg-[#10A3EB] hover:bg-[#0e92d3] text-white hover:scale-[1.01]"
+                          : "bg-slate-100 text-slate-400 cursor-not-allowed"
+                      }`}
+                    >
+                      Next Question <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+
+                  {/* Unified Inline Submit Button */}
+                  {step === 12 && (
+                    <button
+                      type="button"
+                      onClick={handleSubmit}
+                      disabled={!isStepValid() || submitting}
+                      className={`w-full flex items-center justify-center gap-1.5 px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer mt-4 ${
+                        isStepValid() && !submitting
+                          ? "bg-[#10A3EB] hover:bg-[#0e92d3] text-white hover:scale-[1.01]"
+                          : "bg-slate-100 text-slate-400 cursor-not-allowed"
+                      }`}
+                    >
+                      {submitting ? "Submitting..." : "Submit Profile"} <Check className="w-3.5 h-3.5" />
+                    </button>
                   )}
                 </motion.div>
               </AnimatePresence>
