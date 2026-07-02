@@ -208,7 +208,7 @@ export default function AdminPage() {
     excerpt: "",
     content: "",
     coverImage: "",
-    category: "",
+    category: "Blog",
     published: false
   });
 
@@ -806,7 +806,7 @@ export default function AdminPage() {
       excerpt: "",
       content: "",
       coverImage: "/images/logo.png",
-      category: "First Home Buyer",
+      category: "Blog",
       published: true
     });
     setBlogModalOpen(true);
@@ -2855,14 +2855,15 @@ export default function AdminPage() {
 
                 <div>
                   <label className="text-[9.5px] font-extrabold uppercase tracking-wider block mb-1">Category</label>
-                  <input
-                    type="text"
+                  <select
                     value={blogForm.category}
                     onChange={e => setBlogForm(prev => ({ ...prev, category: e.target.value }))}
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white"
-                    placeholder="First Home Buyer"
                     required
-                  />
+                  >
+                    <option value="Blog">Blog (Standard Article)</option>
+                    <option value="News & Insights">News & Insights (Company updates & announcements)</option>
+                  </select>
                 </div>
 
                 <div className="col-span-2">
