@@ -5,25 +5,34 @@ import { SiteHeader } from '@/app/components/SiteHeader';
 import { SiteFooter } from '@/app/components/SiteFooter';
 import { SubPageHero } from '@/app/components/SubPageHero';
 import { Download, CheckCircle2 } from 'lucide-react';
+import { PageHeroSettings } from '@/lib/pageLoader';
 
-export default function FreeResource1Client() {
+interface ClientPageProps {
+  settings?: Record<string, string>;
+  pageHeroSettings?: PageHeroSettings;
+  pageContent?: string;
+}
+
+export default function FreeResource1Client({ settings = {}, pageHeroSettings, pageContent }: ClientPageProps) {
+  const finalHeroSettings = pageHeroSettings || {
+    hero_badge: "Free Resource",
+    hero_title: "Step by Step First Home Guide",
+    hero_subtext: "A visual roadmap detailing the exact steps to buy your first home in Australia without the stress.",
+    hero_image: "/images/hero.png",
+    hero_btn1_text: "Download PDF",
+    hero_btn1_link: "/assets/first-home-buyers-step-by-step-guide.pdf",
+    hero_btn2_text: "Free Strategy Call",
+    hero_btn2_link: "/best-nepali-investment-mortgage-broker-perth"
+  };
+
   return (
     <div className="bg-[#F0F4FA] min-h-screen font-sans flex flex-col">
-      <SiteHeader isSticky={false} />
+      <SiteHeader isSticky={false} settings={settings} />
 
       <SubPageHero
         pageTitle="First Home Buyers Step by Step Guide"
         themeColor="blue"
-        pageHeroSettings={{
-          hero_badge: "Free Resource",
-          hero_title: "Step by Step First Home Guide",
-          hero_subtext: "A visual roadmap detailing the exact steps to buy your first home in Australia without the stress.",
-          hero_image: "/images/hero.png",
-          hero_btn1_text: "Download PDF",
-          hero_btn1_link: "/assets/first-home-buyers-step-by-step-guide.pdf",
-          hero_btn2_text: "Free Strategy Call",
-          hero_btn2_link: "/best-nepali-investment-mortgage-broker-perth"
-        }}
+        pageHeroSettings={finalHeroSettings}
       />
 
       <section className="py-16 md:py-24 max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 w-full">
@@ -38,8 +47,7 @@ export default function FreeResource1Client() {
             </h2>
             
             <p className="text-[15px] sm:text-[16px] text-slate-600 leading-relaxed mb-8">
-              We've created a simple, step-by-step visual roadmap so you know exactly what to do, 
-              when to do it, and who to speak to when buying your first home.
+              {pageContent || "We've created a simple, step-by-step visual roadmap so you know exactly what to do, when to do it, and who to speak to when buying your first home."}
             </p>
 
             <div className="bg-white rounded-3xl p-8 md:p-10 border border-slate-200 shadow-xl relative overflow-hidden">
@@ -49,7 +57,7 @@ export default function FreeResource1Client() {
                 className="text-[22px] font-bold text-[#0B1F3A] mb-6 relative z-10"
                 style={{ fontFamily: "var(--font-montserrat, sans-serif)" }}
               >
-                What you'll learn:
+                What you&apos;ll learn:
               </h3>
               
               <ul className="space-y-5 mb-8 relative z-10">
@@ -68,13 +76,13 @@ export default function FreeResource1Client() {
               </ul>
 
               <a 
-                href="/assets/first-home-buyers-step-by-step-guide.pdf" 
+                href={finalHeroSettings.hero_btn1_link || "/assets/first-home-buyers-step-by-step-guide.pdf"} 
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center w-full bg-[#2563EB] hover:bg-blue-700 text-white px-8 py-4 rounded-full font-bold text-[15px] transition-all duration-300 shadow-lg shadow-blue-500/20 relative z-10"
+                className="inline-flex items-center justify-center w-full bg-[#2563EB] hover:bg-blue-705 text-white px-8 py-4 rounded-full font-bold text-[15px] transition-all duration-300 shadow-lg shadow-blue-500/20 relative z-10"
               >
                 <Download className="w-5 h-5 mr-2" />
-                Download PDF Roadmap
+                {finalHeroSettings.hero_btn1_text || "Download PDF Roadmap"}
               </a>
             </div>
           </div>
@@ -96,7 +104,7 @@ export default function FreeResource1Client() {
         </div>
       </section>
 
-      <SiteFooter />
+      <SiteFooter settings={settings} />
     </div>
   );
 }

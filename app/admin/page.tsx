@@ -163,7 +163,11 @@ export default function AdminPage() {
     { value: "/about-us-nepali-mortgage-broker-in-australia", label: "About Us Page (/about-us-nepali-mortgage-broker-in-australia)" },
     { value: "/our-team", label: "Our Team Page (/our-team)" },
     { value: "/first-home-guide", label: "First Home Guide (/first-home-guide)" },
+    { value: "/refinancing-guide", label: "Refinancing Guide (/refinancing-guide)" },
+    { value: "/property-investment-guide", label: "Property Investment Guide (/property-investment-guide)" },
     { value: "/free-resources", label: "Free Resources (/free-resources)" },
+    { value: "/free-resources/first-home-buyers-step-by-step-guide", label: "First Home Buyers Step by Step Guide (/free-resources/first-home-buyers-step-by-step-guide)" },
+    { value: "/free-resources/step-by-step-home-buying-process", label: "Step By Step Home Buying Process (/free-resources/step-by-step-home-buying-process)" },
     { value: "/resources/property-reports", label: "Property Reports Hub (/resources/property-reports)" },
     { value: "/resources/property-reports/canning-vale-wa", label: "Property Report — Canning Vale WA (/resources/property-reports/canning-vale-wa)" },
     { value: "/resources/property-reports/baldivis-wa", label: "Property Report — Baldivis WA (/resources/property-reports/baldivis-wa)" },
@@ -357,6 +361,62 @@ export default function AdminPage() {
       const data = await res.json();
       if (res.ok && data.url) {
         setBlogForm(prev => ({ ...prev, coverImage: data.url }));
+      } else {
+        alert(data.error || "Upload failed");
+      }
+    } catch {
+      alert("Error uploading file");
+    }
+  };
+
+  const handlePageButtonFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, btnNum: 1 | 2) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        setPageEditSettings((prev: any) => {
+          if (!prev) return prev;
+          if (btnNum === 1) {
+            return { ...prev, hero_btn1_link: data.url };
+          } else {
+            return { ...prev, hero_btn2_link: data.url };
+          }
+        });
+      } else {
+        alert(data.error || "Upload failed");
+      }
+    } catch {
+      alert("Error uploading file");
+    }
+  };
+
+  const handleCurrentPageButtonFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, btnNum: 1 | 2) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        setCurrentPageSettings((prev: any) => {
+          if (!prev) return prev;
+          if (btnNum === 1) {
+            return { ...prev, hero_btn1_link: data.url };
+          } else {
+            return { ...prev, hero_btn2_link: data.url };
+          }
+        });
       } else {
         alert(data.error || "Upload failed");
       }
@@ -1881,16 +1941,22 @@ export default function AdminPage() {
                               type="text"
                               value={pageEditSettings.hero_btn1_text || ""}
                               onChange={e => setPageEditSettings((prev: any) => ({ ...prev, hero_btn1_text: e.target.value }))}
-                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all mb-1"
                               placeholder="Button text"
                             />
-                            <input
-                              type="text"
-                              value={pageEditSettings.hero_btn1_link || ""}
-                              onChange={e => setPageEditSettings((prev: any) => ({ ...prev, hero_btn1_link: e.target.value }))}
-                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
-                              placeholder="Link or #anchor"
-                            />
+                            <div className="flex gap-1.5">
+                              <input
+                                type="text"
+                                value={pageEditSettings.hero_btn1_link || ""}
+                                onChange={e => setPageEditSettings((prev: any) => ({ ...prev, hero_btn1_link: e.target.value }))}
+                                className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                                placeholder="Link, #anchor or uploaded file"
+                              />
+                              <label className="bg-slate-100 hover:bg-slate-200 border border-slate-200 cursor-pointer text-slate-700 text-[10px] font-bold px-2.5 py-2 rounded-xl transition-all shrink-0 flex items-center justify-center">
+                                Upload
+                                <input type="file" onChange={e => handlePageButtonFileUpload(e, 1)} className="hidden" />
+                              </label>
+                            </div>
                           </div>
                           <div className="space-y-2">
                             <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block">Secondary Button</label>
@@ -1898,16 +1964,22 @@ export default function AdminPage() {
                               type="text"
                               value={pageEditSettings.hero_btn2_text || ""}
                               onChange={e => setPageEditSettings((prev: any) => ({ ...prev, hero_btn2_text: e.target.value }))}
-                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all mb-1"
                               placeholder="Button text"
                             />
-                            <input
-                              type="text"
-                              value={pageEditSettings.hero_btn2_link || ""}
-                              onChange={e => setPageEditSettings((prev: any) => ({ ...prev, hero_btn2_link: e.target.value }))}
-                              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
-                              placeholder="Link or #anchor"
-                            />
+                            <div className="flex gap-1.5">
+                              <input
+                                type="text"
+                                value={pageEditSettings.hero_btn2_link || ""}
+                                onChange={e => setPageEditSettings((prev: any) => ({ ...prev, hero_btn2_link: e.target.value }))}
+                                className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                                placeholder="Link, #anchor or uploaded file"
+                              />
+                              <label className="bg-slate-100 hover:bg-slate-200 border border-slate-200 cursor-pointer text-slate-700 text-[10px] font-bold px-2.5 py-2 rounded-xl transition-all shrink-0 flex items-center justify-center">
+                                Upload
+                                <input type="file" onChange={e => handlePageButtonFileUpload(e, 2)} className="hidden" />
+                              </label>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -2198,13 +2270,19 @@ export default function AdminPage() {
 
                         <div>
                           <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">Primary Button Link</label>
-                          <input
-                            type="text"
-                            value={currentPageSettings.hero_btn1_link || ""}
-                            onChange={e => setCurrentPageSettings((prev: any) => ({ ...prev, hero_btn1_link: e.target.value }))}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
-                            placeholder="#calculator"
-                          />
+                          <div className="flex gap-2">
+                            <input
+                              type="text"
+                              value={currentPageSettings.hero_btn1_link || ""}
+                              onChange={e => setCurrentPageSettings((prev: any) => ({ ...prev, hero_btn1_link: e.target.value }))}
+                              className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                              placeholder="#calculator"
+                            />
+                            <label className="bg-slate-100 hover:bg-slate-200 border border-slate-200 cursor-pointer text-slate-700 text-[10px] font-bold px-4 py-3 rounded-xl transition-all shrink-0 flex items-center justify-center">
+                              Upload
+                              <input type="file" onChange={e => handleCurrentPageButtonFileUpload(e, 1)} className="hidden" />
+                            </label>
+                          </div>
                         </div>
 
                         <div>
@@ -2220,13 +2298,19 @@ export default function AdminPage() {
 
                         <div>
                           <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">Secondary Button Link</label>
-                          <input
-                            type="text"
-                            value={currentPageSettings.hero_btn2_link || ""}
-                            onChange={e => setCurrentPageSettings((prev: any) => ({ ...prev, hero_btn2_link: e.target.value }))}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
-                            placeholder="#callback"
-                          />
+                          <div className="flex gap-2">
+                            <input
+                              type="text"
+                              value={currentPageSettings.hero_btn2_link || ""}
+                              onChange={e => setCurrentPageSettings((prev: any) => ({ ...prev, hero_btn2_link: e.target.value }))}
+                              className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                              placeholder="#callback"
+                            />
+                            <label className="bg-slate-100 hover:bg-slate-200 border border-slate-200 cursor-pointer text-slate-700 text-[10px] font-bold px-4 py-3 rounded-xl transition-all shrink-0 flex items-center justify-center">
+                              Upload
+                              <input type="file" onChange={e => handleCurrentPageButtonFileUpload(e, 2)} className="hidden" />
+                            </label>
+                          </div>
                         </div>
                       </div>
                     </>
