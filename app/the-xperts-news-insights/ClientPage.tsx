@@ -6,10 +6,16 @@ import { SiteFooter } from '@/app/components/SiteFooter';
 import { SubPageHero } from '@/app/components/SubPageHero';
 import Link from 'next/link';
 import { ArrowRight, Calendar, User, Newspaper } from 'lucide-react';
-import { getPostsByCategory } from '@/app/lib/blogData';
+import { getPostsByCategory, BlogPost } from '@/app/lib/blogData';
 
-export default function NewsInsightsClient() {
-  const posts = getPostsByCategory('News & Insights');
+interface NewsInsightsClientProps {
+  initialPosts?: BlogPost[];
+}
+
+export default function NewsInsightsClient({ initialPosts }: NewsInsightsClientProps) {
+  const posts = initialPosts
+    ? initialPosts.filter((p) => p.category === 'News & Insights')
+    : getPostsByCategory('News & Insights');
 
   return (
     <div className="bg-[#F0F4FA] min-h-screen font-sans flex flex-col">

@@ -6,10 +6,16 @@ import { SiteFooter } from '@/app/components/SiteFooter';
 import { SubPageHero } from '@/app/components/SubPageHero';
 import Link from 'next/link';
 import { ArrowRight, Calendar, User, Newspaper } from 'lucide-react';
-import { getPostsByCategory } from '@/app/lib/blogData';
+import { getPostsByCategory, BlogPost } from '@/app/lib/blogData';
 
-export default function BlogClient() {
-  const posts = getPostsByCategory('Blog');
+interface BlogClientProps {
+  initialPosts?: BlogPost[];
+}
+
+export default function BlogClient({ initialPosts }: BlogClientProps) {
+  const posts = initialPosts
+    ? initialPosts.filter((p) => p.category === 'Blog')
+    : getPostsByCategory('Blog');
 
   return (
     <div className="bg-[#F0F4FA] min-h-screen font-sans flex flex-col">
