@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { MapPin, Mail, Phone, Globe, Building2, ChevronRight } from "lucide-react";
 import { SubPageHero } from "@/app/components/SubPageHero";
 import { SiteHeader } from "@/app/components/SiteHeader";
@@ -11,6 +11,38 @@ interface ClientPageProps {
 }
 
 export function ClientPage({ settings }: ClientPageProps) {
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !email || !phone) return;
+    setSubmitting(true);
+    try {
+      await fetch("/api/enquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "contact",
+          name: `${name} ${surname}`.trim(),
+          email,
+          phone,
+          message,
+        }),
+      });
+      setSubmitted(true);
+    } catch (err) {
+      console.error("Failed to submit contact enquiry:", err);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <div className="bg-[#F0F4FA] min-h-screen font-sans flex flex-col">
       <SiteHeader isSticky={false} settings={settings} />
@@ -60,7 +92,7 @@ export function ClientPage({ settings }: ClientPageProps) {
 
             {/* Office Cards */}
             <div className="space-y-6">
-              {/* Perth Office */}
+              {/* Perth Head Office */}
               <div className="bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden group hover:border-blue-200 transition-colors">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-50 to-transparent rounded-bl-full -z-10 group-hover:scale-110 transition-transform duration-500"></div>
                 <div className="flex items-center gap-4 mb-6">
@@ -130,64 +162,98 @@ export function ClientPage({ settings }: ClientPageProps) {
                 <p className="text-slate-500 text-[15px]">Fill out the form below and one of our expert brokers will get back to you shortly.</p>
               </div>
 
-              <form className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-[13px] font-bold text-[#0B1F3A] uppercase tracking-wide">Name</label>
-                    <input 
-                      type="text" 
-                      className="w-full h-14 px-4 rounded-xl border-2 border-slate-100 bg-slate-50 focus:bg-white focus:border-[#2563EB] focus:ring-4 focus:ring-blue-500/10 transition-all text-[15px] font-medium outline-none" 
-                      placeholder="John" 
-                    />
+              {submitted ? (
+                <div className="text-center py-12 space-y-4">
+                  <div className="w-16 h-16 rounded-full bg-emerald-100 border border-emerald-200 flex items-center justify-center mx-auto text-emerald-600">
+                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                    </svg>
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-[13px] font-bold text-[#0B1F3A] uppercase tracking-wide">Surname</label>
-                    <input 
-                      type="text" 
-                      className="w-full h-14 px-4 rounded-xl border-2 border-slate-100 bg-slate-50 focus:bg-white focus:border-[#2563EB] focus:ring-4 focus:ring-blue-500/10 transition-all text-[15px] font-medium outline-none" 
-                      placeholder="Doe" 
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-[13px] font-bold text-[#0B1F3A] uppercase tracking-wide">Email</label>
-                  <input 
-                    type="email" 
-                    className="w-full h-14 px-4 rounded-xl border-2 border-slate-100 bg-slate-50 focus:bg-white focus:border-[#2563EB] focus:ring-4 focus:ring-blue-500/10 transition-all text-[15px] font-medium outline-none" 
-                    placeholder="john.doe@example.com" 
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-[13px] font-bold text-[#0B1F3A] uppercase tracking-wide">Phone</label>
-                  <input 
-                    type="tel" 
-                    className="w-full h-14 px-4 rounded-xl border-2 border-slate-100 bg-slate-50 focus:bg-white focus:border-[#2563EB] focus:ring-4 focus:ring-blue-500/10 transition-all text-[15px] font-medium outline-none" 
-                    placeholder="+61 400 000 000" 
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-[13px] font-bold text-[#0B1F3A] uppercase tracking-wide">Your Message</label>
-                  <textarea 
-                    className="w-full h-32 px-4 py-4 rounded-xl border-2 border-slate-100 bg-slate-50 focus:bg-white focus:border-[#2563EB] focus:ring-4 focus:ring-blue-500/10 transition-all text-[15px] font-medium outline-none resize-none" 
-                    placeholder="Type your query or question here..." 
-                  />
-                </div>
-
-                <div className="pt-2">
-                  <button 
-                    type="submit" 
-                    className="w-full h-14 bg-[#2563EB] hover:bg-[#1d4ed8] text-white rounded-xl font-bold text-[16px] transition-all shadow-lg shadow-blue-500/30 flex items-center justify-center gap-2 group"
-                  >
-                    Submit <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </button>
-                  <p className="text-[12px] text-slate-500 text-center mt-4 leading-relaxed max-w-md mx-auto">
-                    By clicking ‘Submit ’, you agree to our Privacy Collection Notice and consent to being contacted by one of Mortgage Xpert’s brokers.
+                  <h3 className="text-2xl font-bold text-[#0B1F3A]">Enquiry Received!</h3>
+                  <p className="text-slate-500 text-[15px] max-w-sm mx-auto leading-relaxed">
+                    Thank you for reaching out. One of our expert brokers will get back to you shortly.
                   </p>
                 </div>
-              </form>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-[13px] font-bold text-[#0B1F3A] uppercase tracking-wide">Name</label>
+                      <input 
+                        type="text" 
+                        required
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        disabled={submitting}
+                        className="w-full h-14 px-4 rounded-xl border-2 border-slate-100 bg-slate-50 focus:bg-white focus:border-[#2563EB] focus:ring-4 focus:ring-blue-500/10 transition-all text-[15px] font-medium outline-none" 
+                        placeholder="John" 
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[13px] font-bold text-[#0B1F3A] uppercase tracking-wide">Surname</label>
+                      <input 
+                        type="text" 
+                        required
+                        value={surname}
+                        onChange={(e) => setSurname(e.target.value)}
+                        disabled={submitting}
+                        className="w-full h-14 px-4 rounded-xl border-2 border-slate-100 bg-slate-50 focus:bg-white focus:border-[#2563EB] focus:ring-4 focus:ring-blue-500/10 transition-all text-[15px] font-medium outline-none" 
+                        placeholder="Doe" 
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[13px] font-bold text-[#0B1F3A] uppercase tracking-wide">Email</label>
+                    <input 
+                      type="email" 
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      disabled={submitting}
+                      className="w-full h-14 px-4 rounded-xl border-2 border-slate-100 bg-slate-50 focus:bg-white focus:border-[#2563EB] focus:ring-4 focus:ring-blue-500/10 transition-all text-[15px] font-medium outline-none" 
+                      placeholder="john.doe@example.com" 
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[13px] font-bold text-[#0B1F3A] uppercase tracking-wide">Phone</label>
+                    <input 
+                      type="tel" 
+                      required
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      disabled={submitting}
+                      className="w-full h-14 px-4 rounded-xl border-2 border-slate-100 bg-slate-50 focus:bg-white focus:border-[#2563EB] focus:ring-4 focus:ring-blue-500/10 transition-all text-[15px] font-medium outline-none" 
+                      placeholder="+61 400 000 000" 
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[13px] font-bold text-[#0B1F3A] uppercase tracking-wide">Your Message</label>
+                    <textarea 
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      disabled={submitting}
+                      className="w-full h-32 px-4 py-4 rounded-xl border-2 border-slate-100 bg-slate-50 focus:bg-white focus:border-[#2563EB] focus:ring-4 focus:ring-blue-500/10 transition-all text-[15px] font-medium outline-none resize-none" 
+                      placeholder="Type your query or question here..." 
+                    />
+                  </div>
+
+                  <div className="pt-2">
+                    <button 
+                      type="submit" 
+                      disabled={submitting}
+                      className="w-full h-14 bg-[#2563EB] hover:bg-[#1d4ed8] text-white rounded-xl font-bold text-[16px] transition-all shadow-lg shadow-blue-500/30 flex items-center justify-center gap-2 group disabled:opacity-50"
+                    >
+                      {submitting ? "Sending..." : "Submit"} <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </button>
+                    <p className="text-[12px] text-slate-500 text-center mt-4 leading-relaxed max-w-md mx-auto">
+                      By clicking ‘Submit ’, you agree to our Privacy Collection Notice and consent to being contacted by one of Mortgage Xpert’s brokers.
+                    </p>
+                  </div>
+                </form>
+              )}
             </div>
           </div>
 

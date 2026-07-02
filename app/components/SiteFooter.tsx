@@ -69,6 +69,7 @@ const YoutubeIcon = () => (
 export function SiteFooter({ settings = {} }: { settings?: Record<string, string> }) {
   const { openModal } = useOnboardingModal();
   const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
   const phoneVal = settings.header_phone || "0450 240 757";
   const emailVal = settings.support_email || "mortgage@mortgagexperts.com.au";
@@ -205,7 +206,7 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
                   <FooterNavLink href="/refinancing-a-loan">Refinancing a Loan</FooterNavLink>
                   <FooterNavLink href="/investing-in-property-nepali-mortgage-broker">Investing in Property</FooterNavLink>
                   <FooterNavLink href="/home-guarantee-scheme">Home Guarantee Scheme</FooterNavLink>
-                  <FooterNavLink href="/no-deposit-home-loans">No Deposit Home Loans</FooterNavLink>
+                  <FooterNavLink href="/no-deposit-home-loans-in-australia">No Deposit Home Loans</FooterNavLink>
                 </div>
                 <FooterColumnCta href="/nepali-mortgage-broker-in-australia">Explore solutions</FooterColumnCta>
               </div>
@@ -303,10 +304,32 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
                   />
                   <button
                     type="button"
-                    className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-lg bg-[#2563EB] px-4 py-2 text-[12px] font-bold text-white hover:bg-[#1d4ed8] transition-colors inline-flex items-center gap-1"
+                    disabled={newsletterStatus === "submitting" || newsletterStatus === "success"}
+                    onClick={async () => {
+                      if (!newsletterEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newsletterEmail)) return;
+                      setNewsletterStatus("submitting");
+                      try {
+                        await fetch("/api/enquiry", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({
+                            type: "newsletter",
+                            name: "Newsletter Subscriber",
+                            email: newsletterEmail,
+                            phone: "",
+                            message: "Newsletter subscription request"
+                          })
+                        });
+                        setNewsletterStatus("success");
+                        setNewsletterEmail("");
+                      } catch {
+                        setNewsletterStatus("error");
+                      }
+                    }}
+                    className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-lg bg-[#2563EB] px-4 py-2 text-[12px] font-bold text-white hover:bg-[#1d4ed8] transition-colors inline-flex items-center gap-1 disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    Subscribe
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    {newsletterStatus === "submitting" ? "Sending..." : newsletterStatus === "success" ? "Subscribed ✓" : "Subscribe"}
+                    {newsletterStatus !== "success" && <ArrowRight className="w-3.5 h-3.5" />}
                   </button>
                 </div>
               </div>
@@ -344,7 +367,7 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
               <svg className="w-4 h-4 text-[#2563EB] shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
                 <path d="M12 2C8.5 2 5.5 4 4 7c-1.2 2.2-1 5 .5 7.2.8 1.1 2 2.5 3.5 4.3.9 1.1 1.8 2.2 2.5 3.2.4.6.9 1.3 1 1.3s.6-.7 1-1.3c.7-1 1.6-2.1 2.5-3.2 1.5-1.8 2.7-3.2 3.5-4.3 1.5-2.2 1.7-5 .5-7.2C18.5 4 15.5 2 12 2zm0 5.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5z" />
               </svg>
-              <span>Australian Credit Licence 00000</span>
+              <span>Australian Credit Licence 389087</span>
             </div>
           </Reveal>
         </div>

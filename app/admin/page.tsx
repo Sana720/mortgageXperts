@@ -85,6 +85,8 @@ export default function AdminPage() {
   // Data States
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
   const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry | null>(null);
+  const [enquiriesLoading, setEnquiriesLoading] = useState(false);
+  const [enquiriesError, setEnquiriesError] = useState<string | null>(null);
   const [settings, setSettings] = useState<SettingsMap>({});
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
@@ -134,16 +136,25 @@ export default function AdminPage() {
     { value: "/investing-in-property-nepali-mortgage-broker", label: "Investing in Property (/investing-in-property-nepali-mortgage-broker)" },
     { value: "/loan-repayment-calculator", label: "Loan Repayment Calculator (/loan-repayment-calculator)" },
     { value: "/loan-comparison-calculator", label: "Loan Comparison Calculator (/loan-comparison-calculator)" },
+    { value: "/borrowing-power-calculator", label: "Borrowing Power Calculator (/borrowing-power-calculator)" },
     { value: "/rent-yield-calculators", label: "Rent Yield Calculator (/rent-yield-calculators)" },
     { value: "/equity-calculator", label: "Equity Calculator (/equity-calculator)" },
     { value: "/stamp-duty-calculator", label: "ACT Stamp Duty Calculator (/stamp-duty-calculator)" },
     { value: "/stamp-duty-calculator/stamp-duty-calculator", label: "ACT Stamp Duty Calculator (Duplicate) (/stamp-duty-calculator/stamp-duty-calculator)" },
     { value: "/stamp-duty-calculator/stamp-duty-in-nsw", label: "NSW Stamp Duty Calculator (/stamp-duty-calculator/stamp-duty-in-nsw)" },
+    { value: "/stamp-duty-calculator/stamp-duty-in-qld", label: "QLD Stamp Duty Calculator (/stamp-duty-calculator/stamp-duty-in-qld)" },
+    { value: "/stamp-duty-calculator/stamp-duty-in-vic", label: "VIC Stamp Duty Calculator (/stamp-duty-calculator/stamp-duty-in-vic)" },
+    { value: "/stamp-duty-calculator/stamp-duty-in-wa", label: "WA Stamp Duty Calculator (/stamp-duty-calculator/stamp-duty-in-wa)" },
+    { value: "/stamp-duty-calculator/stamp-duty-in-sa", label: "SA Stamp Duty Calculator (/stamp-duty-calculator/stamp-duty-in-sa)" },
+    { value: "/stamp-duty-calculator/stamp-duty-in-nt", label: "NT Stamp Duty Calculator (/stamp-duty-calculator/stamp-duty-in-nt)" },
+    { value: "/stamp-duty-calculator/stamp-duty-in-tas", label: "TAS Stamp Duty Calculator (/stamp-duty-calculator/stamp-duty-in-tas)" },
     { value: "/deposit-calculator", label: "Deposit Calculator (/deposit-calculator)" },
     { value: "/extra-repayment-calculator", label: "Extra Repayment Calculator (/extra-repayment-calculator)" },
     { value: "/lmi-calculator", label: "LMI Calculator (/lmi-calculator)" },
     { value: "/cash-rate-change-calculator", label: "Cash Rate Change Calculator (/cash-rate-change-calculator)" },
     { value: "/ytd-calculator", label: "YTD Calculator (/ytd-calculator)" },
+    { value: "/refinancing-feasibility", label: "Refinancing Feasibility Calculator (/refinancing-feasibility)" },
+    { value: "/mortgage-mate", label: "Mortgage Mate (/mortgage-mate)" },
     { value: "/branches/adelaide", label: "Adelaide Branch (/branches/adelaide)" },
     { value: "/branches/brisbane", label: "Brisbane Branch (/branches/brisbane)" },
     { value: "/branches/melbourne", label: "Melbourne Branch (/branches/melbourne)" },
@@ -404,9 +415,23 @@ export default function AdminPage() {
   const fetchTabContents = async () => {
     try {
       if (activeTab === "enquiries") {
+        setEnquiriesLoading(true);
+        setEnquiriesError(null);
         const res = await fetch("/api/admin/enquiries");
-        const data = await res.json();
-        setEnquiries(Array.isArray(data) ? data : []);
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          setEnquiriesError(
+            res.status === 401
+              ? "Session expired — please log out and log back in."
+              : errData?.error || `Server error (${res.status}). Check DB connection.`
+          );
+          setEnquiries([]);
+        } else {
+          const data = await res.json();
+          setEnquiries(Array.isArray(data) ? data : []);
+          setEnquiriesError(null);
+        }
+        setEnquiriesLoading(false);
       } else if (activeTab === "settings") {
         const res = await fetch("/api/admin/settings");
         const data = await res.json();
@@ -426,6 +451,10 @@ export default function AdminPage() {
       }
     } catch (err) {
       console.error("Error loading tab content:", err);
+      if (activeTab === "enquiries") {
+        setEnquiriesError("Network error — could not reach the server. Is the dev server running?");
+        setEnquiriesLoading(false);
+      }
     }
   };
 
@@ -1178,7 +1207,26 @@ export default function AdminPage() {
           {/* ── TAB 1: ENQUIRIES PANEL ── */}
           {activeTab === "enquiries" && (
             <div className="bg-white border border-slate-200/70 rounded-2xl overflow-hidden shadow-sm">
-              {enquiries.length === 0 ? (
+              {enquiriesLoading ? (
+                <div className="p-12 text-center text-slate-400 space-y-3 flex flex-col items-center">
+                  <div className="w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
+                  <p className="text-xs font-semibold">Loading enquiries...</p>
+                </div>
+              ) : enquiriesError ? (
+                <div className="p-10 flex flex-col items-center text-center space-y-4">
+                  <AlertCircle className="w-10 h-10 text-rose-400" />
+                  <div className="space-y-1">
+                    <h3 className="font-bold text-slate-800">Could Not Load Enquiries</h3>
+                    <p className="text-xs text-rose-600 font-medium max-w-md">{enquiriesError}</p>
+                  </div>
+                  <button
+                    onClick={() => fetchTabContents()}
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all flex items-center gap-1.5"
+                  >
+                    Retry
+                  </button>
+                </div>
+              ) : enquiries.length === 0 ? (
                 <div className="p-12 text-center text-slate-400 space-y-2">
                   <Users className="w-10 h-10 mx-auto text-slate-300" />
                   <h3 className="font-bold text-slate-700">No Enquiries Received Yet</h3>

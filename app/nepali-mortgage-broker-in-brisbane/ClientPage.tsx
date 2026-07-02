@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { Shield, Target, Users, CheckCircle, MapPin, Mail, Phone, Clock } from "lucide-react";
 import { SubPageHero } from "@/app/components/SubPageHero";
@@ -13,6 +13,38 @@ interface ClientPageProps {
 }
 
 export function ClientPage({ settings }: ClientPageProps) {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!firstName || !email || !phone) return;
+    setSubmitting(true);
+    try {
+      await fetch("/api/enquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "contact",
+          name: `${firstName} ${lastName}`.trim(),
+          email,
+          phone,
+          message,
+        }),
+      });
+      setSubmitted(true);
+    } catch (err) {
+      console.error("Failed to submit contact enquiry:", err);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <div className="bg-[#F0F4FA] min-h-screen font-sans flex flex-col">
       <SiteHeader isSticky={false} settings={settings} />
@@ -242,33 +274,89 @@ export function ClientPage({ settings }: ClientPageProps) {
             {/* Enquiry Form (Right) */}
             <div className="w-full bg-white rounded-3xl shadow-[0_12px_40px_rgba(15,23,42,0.06)] border border-slate-100 p-6 sm:p-10">
               <h3 className="text-[24px] font-bold text-[#0B1F3A] mb-6">Send us a message</h3>
-              <form className="space-y-5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <div className="space-y-1.5">
-                    <label className="text-[12px] font-bold text-slate-700">First Name</label>
-                    <input type="text" className="w-full h-12 px-4 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all text-[14px]" placeholder="John" />
+              {submitted ? (
+                <div className="text-center py-12 space-y-4">
+                  <div className="w-16 h-16 rounded-full bg-emerald-100 border border-emerald-200 flex items-center justify-center mx-auto text-emerald-600">
+                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-bold text-[#0B1F3A]">Enquiry Received!</h3>
+                  <p className="text-slate-500 text-[15px] max-w-sm mx-auto leading-relaxed">
+                    Thank you for reaching out. One of our expert brokers will get back to you shortly.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div className="space-y-1.5">
+                      <label className="text-[12px] font-bold text-slate-700">First Name</label>
+                      <input 
+                        type="text" 
+                        required
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        disabled={submitting}
+                        className="w-full h-12 px-4 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all text-[14px]" 
+                        placeholder="John" 
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-[12px] font-bold text-slate-700">Last Name</label>
+                      <input 
+                        type="text" 
+                        required
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        disabled={submitting}
+                        className="w-full h-12 px-4 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all text-[14px]" 
+                        placeholder="Doe" 
+                      />
+                    </div>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-[12px] font-bold text-slate-700">Last Name</label>
-                    <input type="text" className="w-full h-12 px-4 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all text-[14px]" placeholder="Doe" />
+                    <label className="text-[12px] font-bold text-slate-700">Email Address</label>
+                    <input 
+                      type="email" 
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      disabled={submitting}
+                      className="w-full h-12 px-4 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all text-[14px]" 
+                      placeholder="john@example.com" 
+                    />
                   </div>
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-[12px] font-bold text-slate-700">Email Address</label>
-                  <input type="email" className="w-full h-12 px-4 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all text-[14px]" placeholder="john@example.com" />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-[12px] font-bold text-slate-700">Phone Number</label>
-                  <input type="tel" className="w-full h-12 px-4 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all text-[14px]" placeholder="0400 000 000" />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-[12px] font-bold text-slate-700">How can we help?</label>
-                  <textarea className="w-full h-24 px-4 py-3 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all text-[14px] resize-none" placeholder="Tell us about your property goals..." />
-                </div>
-                <button type="submit" className="w-full h-12 bg-[#2563EB] hover:bg-[#1d4ed8] text-white rounded-xl font-bold text-[14px] transition-all shadow-md shadow-blue-200 mt-2">
-                  Submit Enquiry
-                </button>
-              </form>
+                  <div className="space-y-1.5">
+                    <label className="text-[12px] font-bold text-slate-700">Phone Number</label>
+                    <input 
+                      type="tel" 
+                      required
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      disabled={submitting}
+                      className="w-full h-12 px-4 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all text-[14px]" 
+                      placeholder="0400 000 000" 
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-[12px] font-bold text-slate-700">How can we help?</label>
+                    <textarea 
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      disabled={submitting}
+                      className="w-full h-24 px-4 py-3 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all text-[14px] resize-none" 
+                      placeholder="Tell us about your property goals..." 
+                    />
+                  </div>
+                  <button 
+                    type="submit" 
+                    disabled={submitting}
+                    className="w-full h-12 bg-[#2563EB] hover:bg-[#1d4ed8] text-white rounded-xl font-bold text-[14px] transition-all shadow-md shadow-blue-200 mt-2 disabled:opacity-50"
+                  >
+                    {submitting ? "Sending..." : "Submit Enquiry"}
+                  </button>
+                </form>
+              )}
             </div>
           </div>
         </div>

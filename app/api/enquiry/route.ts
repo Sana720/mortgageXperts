@@ -20,9 +20,18 @@ export async function POST(request: Request) {
     const { type, name, email, phone, savings, income, state, message, details } = body;
 
     // 2. Input Validation
-    if (!name || !email || !phone) {
-      return NextResponse.json({ error: 'Missing required fields (name, email, phone)' }, { status: 400 });
+    if (type === 'newsletter') {
+      if (!email) {
+        return NextResponse.json({ error: 'Missing required field (email)' }, { status: 400 });
+      }
+    } else {
+      if (!name || !email || !phone) {
+        return NextResponse.json({ error: 'Missing required fields (name, email, phone)' }, { status: 400 });
+      }
     }
+
+    const resolvedName = name || (type === 'newsletter' ? 'Newsletter Subscriber' : '');
+    const resolvedPhone = phone || '';
 
     const id = crypto.randomUUID();
     await executeQuery(
@@ -30,9 +39,9 @@ export async function POST(request: Request) {
       [
         id,
         type || 'callback',
-        name,
+        resolvedName,
         email,
-        phone,
+        resolvedPhone,
         savings || null,
         income || null,
         state || null,
