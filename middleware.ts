@@ -14,12 +14,18 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Allow public unauthenticated GET access for blogs and testimonials APIs
+  const isPublicGetApi =
+    request.method === 'GET' &&
+    (pathname === '/api/admin/blogs' || pathname === '/api/admin/testimonials');
+
   // Protect all /admin/* paths (but not /admin itself — that renders the login UI)
   // Also protect /api/admin/* routes (belt-and-suspenders alongside per-route auth)
   const isAdminSubPath =
     pathname.startsWith('/admin/') ||
     (pathname.startsWith('/api/admin/') &&
-      !pathname.startsWith('/api/admin/auth')); // allow auth endpoint to work unauthenticated
+      !pathname.startsWith('/api/admin/auth') &&
+      !isPublicGetApi); // allow auth and public GET endpoints to work unauthenticated
 
   if (isAdminSubPath) {
     const session = request.cookies.get('admin_session');
