@@ -31,6 +31,8 @@ import {
 } from "lucide-react";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
+import { RepaymentCalculatorSection } from "../components/RepaymentCalculatorSection";
+import { RoadmapSection } from "../components/RoadmapSection";
 import { TestimonialSection } from "../components/TestimonialSection";
 import { MortgageMateForm } from "../components/MortgageMateForm";
 
@@ -387,6 +389,12 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
           </div>
         </div>
       </section>
+
+      {/* Five Steps to Your First Home — exact same section used across the site */}
+      <RoadmapSection colorTheme="blue" />
+
+      {/* Repayment Calculator */}
+      <RepaymentCalculatorSection />
 
       {/* Video Trust Section */}
       <section className="bg-slate-50 py-16 lg:py-24 border-y border-slate-100">

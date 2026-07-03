@@ -159,14 +159,17 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
               <span className="hidden sm:inline tracking-wide">Locations: NSW | VIC | QLD | SA | WA | TAS | ACT | NT</span>
               <span className="sm:hidden text-[10.5px]">Locations: NSW | VIC | QLD | SA...</span>
             </div>
-            <div className="hidden md:flex items-center gap-2.5 border-l border-white/10 pl-6 group">
+            <button
+              onClick={openModal}
+              className="hidden md:flex items-center gap-2.5 border-l border-white/10 pl-6 group cursor-pointer"
+            >
               <div className="w-5 h-5 rounded-full bg-[#38BDF8]/10 flex items-center justify-center group-hover:bg-[#38BDF8]/20 transition-colors">
                 <Mail className="w-3.5 h-3.5 text-[#38BDF8]" />
               </div>
-              <a href={`mailto:${emailVal}`} className="hover:text-white transition-colors tracking-wide">
+              <span className="hover:text-white transition-colors tracking-wide">
                 {emailVal}
-              </a>
-            </div>
+              </span>
+            </button>
           </div>
           <div className="flex items-center gap-2.5">
             <a href={fbVal} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-6 h-6 rounded-full flex items-center justify-center bg-white/5 hover:bg-[#1877F2] text-white/70 hover:text-white transition-all duration-300 hover:scale-110">
@@ -393,13 +396,14 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                 <Phone className="w-4.5 h-4.5" strokeWidth={2.5} />
               </a>
               {/* Email Icon Button */}
-              <a
-                href={`mailto:${emailVal}`}
-                className="w-10 h-10 rounded-full bg-[#FF6B00] flex items-center justify-center text-white hover:bg-[#E05E00] hover:scale-105 active:scale-95 transition-all duration-300 shadow-md shadow-orange-500/20"
-                aria-label="Email Us"
+              <button
+                type="button"
+                onClick={openModal}
+                className="w-10 h-10 rounded-full bg-[#FF6B00] flex items-center justify-center text-white hover:bg-[#E05E00] hover:scale-105 active:scale-95 transition-all duration-300 shadow-md shadow-orange-500/20 cursor-pointer"
+                aria-label="Open Enquiry Form"
               >
                 <Mail className="w-4.5 h-4.5" strokeWidth={2.5} />
-              </a>
+              </button>
             </div>
             {/* Mobile hamburger */}
             <button
