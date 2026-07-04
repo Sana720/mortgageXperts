@@ -51,7 +51,7 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
           ]
         }}
       />
-      <style jsx global>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         .ck-editor-container .ck-editor__editable_inline {
           min-height: 400px;
           border-bottom-left-radius: 0.75rem !important;
@@ -71,7 +71,7 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
           border-color: #3b82f6 !important;
           box-shadow: inset 0 0 0 1px #3b82f6 !important;
         }
-      `}</style>
+      `}} />
     </div>
   );
 }

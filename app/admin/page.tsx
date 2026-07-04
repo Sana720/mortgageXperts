@@ -34,6 +34,11 @@ import {
   Mail,
   Download
 } from "lucide-react";
+import dynamic from "next/dynamic";
+
+const RichTextEditor = dynamic(() => import("../components/RichTextEditor"), {
+  ssr: false,
+});
 
 
 type Enquiry = {
@@ -2910,13 +2915,9 @@ export default function AdminPage() {
 
                 <div className="col-span-2">
                   <label className="text-[9.5px] font-extrabold uppercase tracking-wider block mb-1">Detailed Content (HTML/Markdown)</label>
-                  <textarea
-                    rows={10}
+                  <RichTextEditor
                     value={blogForm.content}
-                    onChange={e => setBlogForm(prev => ({ ...prev, content: e.target.value }))}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-mono text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white leading-relaxed"
-                    placeholder="Write the full content description of the guide here..."
-                    required
+                    onChange={val => setBlogForm(prev => ({ ...prev, content: val }))}
                   />
                 </div>
 
