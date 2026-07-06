@@ -92,6 +92,7 @@ const tables = [
       bio TEXT NOT NULL,
       image VARCHAR(255) NOT NULL,
       orderIndex INT DEFAULT 0,
+      branch VARCHAR(255) DEFAULT NULL,
       createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   )`,
   `CREATE TABLE IF NOT EXISTS admins (
@@ -203,6 +204,7 @@ export async function initializeTables() {
       await pool.execute(sql);
     }
     await migrateEnquiriesMessageColumn();
+    await migrateTeamMembersBranchColumn();
     await migrateHomepageSlideLinks();
     await migrateFirstHomeBuyerLinks();
     await migrateRefinancingLinks();
@@ -227,6 +229,20 @@ export async function migrateEnquiriesMessageColumn() {
     }
   } catch (error) {
     console.error("Migration: Failed to add 'message' column to 'enquiries':", error);
+  }
+}
+
+/** One-time fix: Add missing branch column to team_members table if not present */
+export async function migrateTeamMembersBranchColumn() {
+  try {
+    const [columns]: any = await pool.execute("SHOW COLUMNS FROM team_members LIKE 'branch'");
+    if (columns.length === 0) {
+      console.log("Migrating database: Adding 'branch' column to 'team_members' table...");
+      await pool.execute("ALTER TABLE team_members ADD COLUMN branch VARCHAR(255) DEFAULT NULL AFTER orderIndex");
+      console.log("'branch' column successfully added to 'team_members' table.");
+    }
+  } catch (error) {
+    console.error("Migration: Failed to add 'branch' column to 'team_members':", error);
   }
 }
 
@@ -370,7 +386,7 @@ export async function migrateVisaHomeLoanRow() {
     if (Array.isArray(source) && source.length > 0) {
       const s = source[0];
       await executeQuery(
-        `INSERT INTO page_meta_hero 
+        `INSERT IGNORE INTO page_meta_hero 
         (page_path, meta_title, meta_description, meta_keywords, hero_badge, hero_title, hero_subtext, hero_image, hero_btn1_text, hero_btn1_link, hero_btn2_text, hero_btn2_link, slides) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
@@ -392,7 +408,7 @@ export async function migrateVisaHomeLoanRow() {
       console.log('Seeded /home-loan-with-visas row from /non-resident-home-loans in DB.');
     } else {
       await executeQuery(
-        `INSERT INTO page_meta_hero 
+        `INSERT IGNORE INTO page_meta_hero 
         (page_path, meta_title, meta_description, meta_keywords, hero_badge, hero_title, hero_subtext, hero_image, hero_btn1_text, hero_btn1_link, hero_btn2_text, hero_btn2_link, slides) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
