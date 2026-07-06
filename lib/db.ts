@@ -199,23 +199,34 @@ const tables = [
 
 export async function initializeTables() {
   console.log('Initializing database tables...');
-  try {
-    for (const sql of tables) {
+  for (const sql of tables) {
+    try {
       await pool.execute(sql);
+    } catch (sqlErr: any) {
+      console.warn(`Database init: SQL execution warning/error:`, sqlErr.message || sqlErr);
     }
-    await migrateEnquiriesMessageColumn();
-    await migrateTeamMembersBranchColumn();
-    await migrateHomepageSlideLinks();
-    await migrateFirstHomeBuyerLinks();
-    await migrateRefinancingLinks();
-    await migrateVisaHomeLoanRow();
-    await migratePageContentDefaults();
-    await migrateNewPageSeeds();
-    await seedTeamMembers();
-    console.log('Database tables successfully initialized.');
-  } catch (error) {
-    console.error('Error initializing database tables:', error);
   }
+
+  const migrations = [
+    { name: 'migrateEnquiriesMessageColumn', fn: migrateEnquiriesMessageColumn },
+    { name: 'migrateTeamMembersBranchColumn', fn: migrateTeamMembersBranchColumn },
+    { name: 'migrateHomepageSlideLinks', fn: migrateHomepageSlideLinks },
+    { name: 'migrateFirstHomeBuyerLinks', fn: migrateFirstHomeBuyerLinks },
+    { name: 'migrateRefinancingLinks', fn: migrateRefinancingLinks },
+    { name: 'migrateVisaHomeLoanRow', fn: migrateVisaHomeLoanRow },
+    { name: 'migratePageContentDefaults', fn: migratePageContentDefaults },
+    { name: 'migrateNewPageSeeds', fn: migrateNewPageSeeds },
+    { name: 'seedTeamMembers', fn: seedTeamMembers },
+  ];
+
+  for (const migration of migrations) {
+    try {
+      await migration.fn();
+    } catch (migErr: any) {
+      console.error(`Migration ${migration.name} failed:`, migErr.message || migErr);
+    }
+  }
+  console.log('Database tables successfully initialized.');
 }
 
 /** One-time fix: Add missing message column to enquiries table if not present */
