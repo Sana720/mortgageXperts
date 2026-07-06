@@ -9,16 +9,39 @@ const adminPasswordHash = crypto
   .update(process.env.ADMIN_PASSWORD || 'admin123')
   .digest('hex');
 
-const poolConnectionConfig = {
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'mortgage_xperts',
-  port: parseInt(process.env.DB_PORT || '3306'),
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-};
+let poolConnectionConfig: any;
+
+if (process.env.DATABASE_URL) {
+  try {
+    const dbUrl = new URL(process.env.DATABASE_URL);
+    poolConnectionConfig = {
+      host: dbUrl.hostname,
+      user: dbUrl.username,
+      password: decodeURIComponent(dbUrl.password),
+      database: dbUrl.pathname.startsWith('/') ? dbUrl.pathname.substring(1) : dbUrl.pathname,
+      port: dbUrl.port ? parseInt(dbUrl.port) : 3306,
+      ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : undefined,
+      waitForConnections: true,
+      connectionLimit: parseInt(process.env.DB_CONNECTION_LIMIT || '5'),
+      queueLimit: 0,
+    };
+  } catch (urlError) {
+    console.error('Failed to parse DATABASE_URL, using connection string directly:', urlError);
+    poolConnectionConfig = process.env.DATABASE_URL;
+  }
+} else {
+  poolConnectionConfig = {
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '',
+    database: process.env.DB_NAME || 'mortgage_xperts',
+    port: parseInt(process.env.DB_PORT || '3306'),
+    ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : undefined,
+    waitForConnections: true,
+    connectionLimit: parseInt(process.env.DB_CONNECTION_LIMIT || '10'),
+    queueLimit: 0,
+  };
+}
 
 const globalForPool = globalThis as unknown as {
   pool: mysql.Pool | undefined;
