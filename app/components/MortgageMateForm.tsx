@@ -972,6 +972,7 @@ export function MortgageMateForm({
                       <div className="relative">
                         <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                         <input type="text"
+                          inputMode="numeric"
                           placeholder="e.g. 750,000"
                           value={propertyWorth}
                           onChange={(e) => handleCurrencyChange(e.target.value, setPropertyWorth)}
@@ -991,6 +992,7 @@ export function MortgageMateForm({
                       <div className="relative">
                         <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                         <input type="text"
+                          inputMode="numeric"
                           placeholder="e.g. 600,000"
                           value={loanAmount}
                           onChange={(e) => handleCurrencyChange(e.target.value, setLoanAmount)}
@@ -1040,6 +1042,7 @@ export function MortgageMateForm({
                       <div className="relative">
                         <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                         <input type="text"
+                          inputMode="numeric"
                           placeholder="e.g. 80,000"
                           value={amountOfSavings}
                           onChange={(e) => handleCurrencyChange(e.target.value, setAmountOfSavings)}
