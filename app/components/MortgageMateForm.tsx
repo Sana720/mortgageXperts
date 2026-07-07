@@ -605,7 +605,7 @@ export function MortgageMateForm({
                   </div>
                 </div>
                 <p className="text-[10px] text-slate-500 font-semibold leading-tight mt-0.5">
-                  <strong className="text-slate-800 font-bold">4.9</strong>/5 ProductReview
+                  <strong className="text-slate-800 font-bold">4.9</strong>/5 (850+ Reviews)
                 </p>
               </div>
 
@@ -619,7 +619,7 @@ export function MortgageMateForm({
                   </div>
                 </div>
                 <p className="text-[10px] text-slate-500 font-semibold leading-tight mt-0.5">
-                  <strong className="text-slate-800 font-bold">4.8</strong>/5 Facebook
+                  <strong className="text-slate-800 font-bold">4.9</strong>/5 (120+ Reviews)
                 </p>
               </div>
 
@@ -633,7 +633,7 @@ export function MortgageMateForm({
                   </div>
                 </div>
                 <p className="text-[10px] text-slate-500 font-semibold leading-tight mt-0.5">
-                  <strong className="text-slate-800 font-bold">4.8</strong>/5 Google
+                  <strong className="text-slate-800 font-bold">4.9</strong>/5 (230+ Reviews)
                 </p>
               </div>
             </div>
