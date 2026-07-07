@@ -1646,16 +1646,11 @@ export default function ClientHomePage({ settings = {}, pageHeroSettings }: Clie
                 <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#10A3EB]">Credibility & Accreditations</span>
               </div>
               
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {[
                   { title: "St.George Flame Broker", desc: "Top-tier lending privileges", color: "bg-red-500" },
                   { title: "Westpac Platinum Broker", desc: "Elite priority channel", color: "bg-red-600" },
-                  { title: "ANZ Key Partner", desc: "Direct priority escalations", color: "bg-blue-600" },
-                  { title: "NAB Professional Partner", desc: "Advanced support access", color: "bg-[#D12B2F]" },
-                  { title: "Macquarie Premium Partner", desc: "Streamlined fast-track processing", color: "bg-slate-800" },
-                  { title: "Bankwest Gold Broker", desc: "Priority verification & review", color: "bg-[#EDAC1A]" },
-                  { title: "Suncorp Priority Partner", desc: "Dedicated package privileges", color: "bg-emerald-600" },
-                  { title: "Liberty Preferred Broker", desc: "Custom loan program access", color: "bg-purple-600" }
+                  { title: "CBA Elite Partner", desc: "Premium priority access", color: "bg-yellow-450" }
                 ].map((badge, idx) => (
                   <div 
                     key={idx} 

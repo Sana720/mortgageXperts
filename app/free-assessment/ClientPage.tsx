@@ -611,16 +611,11 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
               <h4 className="text-[#0B1F3A] text-lg font-black mt-1 font-montserrat">Premium Broker Status</h4>
             </div>
             
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {[
                 { title: "St.George Flame Broker", desc: "Top-tier lending privileges", color: "bg-red-500", lightBg: "bg-red-50/40" },
                 { title: "Westpac Platinum Broker", desc: "Elite priority channel", color: "bg-red-600", lightBg: "bg-red-50/20" },
-                { title: "ANZ Key Partner", desc: "Direct priority escalations", color: "bg-blue-600", lightBg: "bg-blue-50/40" },
-                { title: "NAB Professional Partner", desc: "Advanced support access", color: "bg-[#D12B2F]", lightBg: "bg-red-50/30" },
-                { title: "Macquarie Premium Partner", desc: "Streamlined fast-track processing", color: "bg-slate-800", lightBg: "bg-slate-50" },
-                { title: "Bankwest Gold Broker", desc: "Priority verification & review", color: "bg-[#EDAC1A]", lightBg: "bg-amber-50/30" },
-                { title: "Suncorp Priority Partner", desc: "Dedicated package privileges", color: "bg-emerald-600", lightBg: "bg-emerald-50/30" },
-                { title: "Liberty Preferred Broker", desc: "Custom loan program access", color: "bg-purple-600", lightBg: "bg-purple-50/30" }
+                { title: "CBA Elite Partner", desc: "Premium priority access", color: "bg-yellow-450", lightBg: "bg-amber-50/30" }
               ].map((badge, idx) => (
                 <div 
                   key={idx} 
