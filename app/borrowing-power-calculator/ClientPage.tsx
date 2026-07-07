@@ -285,7 +285,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings, pageConten
     hero_badge: "Borrowing Capacity Assessment",
     hero_title: "How Much Can I Borrow?",
     hero_subtext: "Find out your estimated borrowing capacity and loan range. Use our interactive estimator to evaluate your property search goals.",
-    hero_image: "/images/borrowing_hero.png",
+    hero_image: "/images/repayment_hero.png",
     hero_btn1_text: "Estimate Now",
     hero_btn1_link: "#calculator-tool",
     hero_btn2_text: "Talk to an Expert",

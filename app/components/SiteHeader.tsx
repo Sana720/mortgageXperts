@@ -53,7 +53,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
   const [isMobileAboutUsOpen, setIsMobileAboutUsOpen] = useState(false);
 
   const phoneVal = settings.header_phone || "0450 240 757";
-  const emailVal = settings.support_email || "mortgage@mortgagexperts.com.au";
+  const emailVal = settings.support_email || "mortgage@mortgageexpert.com.au";
   const logoVal = settings.logo_url || "/images/logo.png";
   const fbVal = settings.facebook_url || "https://www.facebook.com/MortgageXperts.au/";
   const igVal = settings.instagram_url || "https://www.instagram.com/mortgagexperts.au/#";
@@ -189,7 +189,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
       </div>
 
       {/* ── MAIN HEADER ── */}
-      <header className={`bg-white border-b border-slate-100 z-50 shadow-sm ${isSticky ? "sticky top-0" : "relative"}`}>
+      <header className="bg-white border-b border-slate-100 z-50 shadow-sm sticky top-0">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-2 lg:py-3 flex items-center justify-between gap-6">
 
           {/* Logo */}
@@ -209,8 +209,8 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
             
             {/* Home Dropdown */}
             <div className="relative group py-2">
-              <Link href="/" className="flex items-center gap-1 hover:text-[#2563EB] transition-colors pb-0.5 focus:outline-none whitespace-nowrap">
-                Home <ChevronDown className="w-3.5 h-3.5 mt-0.5 transition-transform duration-200 group-hover:rotate-180" />
+              <Link href="/" className="flex items-center gap-1 hover:text-[#10A3EB] transition-colors pb-0.5 focus:outline-none whitespace-nowrap">
+                Home Loans <ChevronDown className="w-3.5 h-3.5 mt-0.5 transition-transform duration-200 group-hover:rotate-180" />
               </Link>
               <div className="absolute top-full left-0 pt-2.5 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 <div className="bg-white border border-slate-100 rounded-xl shadow-xl py-2 max-h-[400px] overflow-y-auto">
@@ -218,7 +218,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                     <Link
                       key={item.name}
                       href={item.href}
-                      className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold"
+                      className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-sky-50/70 hover:text-[#10A3EB] transition-all font-semibold"
                     >
                       {item.name}
                     </Link>
@@ -229,7 +229,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
             
             {/* Calculators Dropdown */}
             <div className="relative group py-2">
-              <button className="flex items-center gap-1 hover:text-[#2563EB] transition-colors focus:outline-none whitespace-nowrap">
+              <button className="flex items-center gap-1 hover:text-[#10A3EB] transition-colors focus:outline-none whitespace-nowrap">
                 Calculators <ChevronDown className="w-3.5 h-3.5 mt-0.5 transition-transform duration-200 group-hover:rotate-180" />
               </button>
               <div className="absolute top-full left-0 pt-2.5 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
@@ -238,9 +238,9 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                     if (item.submenu) {
                       return (
                         <div key={item.name} className="relative group/sub">
-                          <button className="w-full flex items-center justify-between px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold text-left">
+                          <button className="w-full flex items-center justify-between px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-sky-50/70 hover:text-[#10A3EB] transition-all font-semibold text-left">
                             <span>{item.name}</span>
-                            <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover/sub:text-[#2563EB]" />
+                            <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover/sub:text-[#10A3EB]" />
                           </button>
                           <div className="absolute left-full top-0 pl-1 w-64 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200 z-50">
                             <div className="bg-white border border-slate-100 rounded-xl shadow-xl py-2">
@@ -248,7 +248,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                                 <Link
                                   key={subItem.name}
                                   href={subItem.href}
-                                  className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold"
+                                  className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-sky-50/70 hover:text-[#10A3EB] transition-all font-semibold"
                                 >
                                   {subItem.name}
                                 </Link>
@@ -262,7 +262,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                       <Link
                         key={item.name}
                         href={item.href}
-                        className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold"
+                        className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-sky-50/70 hover:text-[#10A3EB] transition-all font-semibold"
                       >
                         {item.name}
                       </Link>
@@ -274,7 +274,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
 
             {/* Resources Dropdown */}
             <div className="relative group py-2">
-              <button className="flex items-center gap-1 hover:text-[#2563EB] transition-colors focus:outline-none whitespace-nowrap">
+              <button className="flex items-center gap-1 hover:text-[#10A3EB] transition-colors focus:outline-none whitespace-nowrap">
                 Resources <ChevronDown className="w-3.5 h-3.5 mt-0.5 transition-transform duration-200 group-hover:rotate-180" />
               </button>
               <div className="absolute top-full left-0 pt-2.5 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
@@ -283,9 +283,9 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                     if (item.submenu) {
                       return (
                         <div key={item.name} className="relative group/sub">
-                          <button className="w-full flex items-center justify-between px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold text-left">
+                          <button className="w-full flex items-center justify-between px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-sky-50/70 hover:text-[#10A3EB] transition-all font-semibold text-left">
                             <span>{item.name}</span>
-                            <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover/sub:text-[#2563EB]" />
+                            <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover/sub:text-[#10A3EB]" />
                           </button>
                           <div className="absolute left-full top-0 pl-1 w-64 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200 z-50">
                             <div className="bg-white border border-slate-100 rounded-xl shadow-xl py-2">
@@ -293,7 +293,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                                 <Link
                                   key={subItem.name}
                                   href={subItem.href}
-                                  className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold"
+                                  className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-sky-50/70 hover:text-[#10A3EB] transition-all font-semibold"
                                 >
                                   {subItem.name}
                                 </Link>
@@ -307,7 +307,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                       <Link
                         key={item.name}
                         href={item.href}
-                        className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold"
+                        className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-sky-50/70 hover:text-[#10A3EB] transition-all font-semibold"
                       >
                         {item.name}
                       </Link>
@@ -318,11 +318,11 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
             </div>
 
             {/* Mortgage Mate (Direct Link) */}
-            <Link href="/mortgage-mate" className="hover:text-[#2563EB] transition-colors pb-0.5 whitespace-nowrap">Mortgage Mate</Link>
+            <Link href="/free-assessment" className="hover:text-[#10A3EB] transition-colors pb-0.5 whitespace-nowrap">Mortgage Mate</Link>
 
             {/* About Us Dropdown */}
             <div className="relative group py-2">
-              <Link href="/about-us-nepali-mortgage-broker-in-australia" className="flex items-center gap-1 hover:text-[#2563EB] transition-colors pb-0.5 focus:outline-none whitespace-nowrap">
+              <Link href="/about-us-nepali-mortgage-broker-in-australia" className="flex items-center gap-1 hover:text-[#10A3EB] transition-colors pb-0.5 focus:outline-none whitespace-nowrap">
                 About Us <ChevronDown className="w-3.5 h-3.5 mt-0.5 transition-transform duration-200 group-hover:rotate-180" />
               </Link>
               <div className="absolute top-full left-0 pt-2.5 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
@@ -331,7 +331,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                     <Link
                       key={item.name}
                       href={item.href}
-                      className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold"
+                      className="block px-4 py-2 text-[13px] text-[#0B1F3A] hover:bg-sky-50/70 hover:text-[#10A3EB] transition-all font-semibold"
                     >
                       {item.name}
                     </Link>
@@ -341,12 +341,12 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
             </div>
 
             {/* Contact (Direct Link) */}
-            <Link href="/best-nepali-investment-mortgage-broker-perth" className="hover:text-[#2563EB] transition-colors pb-0.5 whitespace-nowrap">Contact</Link>
+            <Link href="/best-nepali-investment-mortgage-broker-perth" className="hover:text-[#10A3EB] transition-colors pb-0.5 whitespace-nowrap">Contact</Link>
 
             {/* Our Branches Dropdown */}
             <div className="relative group py-2">
-              <button className="flex items-center gap-1 text-[#2563EB] hover:text-[#1d4ed8] transition-colors focus:outline-none font-bold whitespace-nowrap">
-                Our Branches <ChevronDown className="w-3.5 h-3.5 mt-0.5 transition-transform duration-200 group-hover:rotate-180" />
+              <button className="flex items-center gap-1 text-[#10A3EB] hover:text-[#0e92d3] transition-colors focus:outline-none font-bold whitespace-nowrap">
+                Branches <ChevronDown className="w-3.5 h-3.5 mt-0.5 transition-transform duration-200 group-hover:rotate-180" />
               </button>
               <div className="absolute top-full right-0 pt-2.5 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 <div className="bg-white border border-slate-100 rounded-xl shadow-xl py-2 overflow-hidden">
@@ -357,10 +357,10 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                     <Link
                       key={item.name}
                       href={item.href}
-                      className="flex items-center justify-between px-4 py-2.5 text-[13px] text-[#0B1F3A] hover:bg-blue-50/70 hover:text-[#2563EB] transition-all font-semibold group/item"
+                      className="flex items-center justify-between px-4 py-2.5 text-[13px] text-[#0B1F3A] hover:bg-sky-50/70 hover:text-[#10A3EB] transition-all font-semibold group/item"
                     >
                       <span>{item.name}</span>
-                      <span className="text-[10px] font-black text-slate-400 group-hover/item:text-[#2563EB] transition-colors">{item.state}</span>
+                      <span className="text-[10px] font-black text-slate-400 group-hover/item:text-[#10A3EB] transition-colors">{item.state}</span>
                     </Link>
                   ))}
                 </div>
@@ -370,18 +370,18 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
 
           {/* Right Actions */}
           <div className="flex items-center gap-2.5 sm:gap-4 shrink-0">
-            <button className="hidden xl:flex items-center text-[#0B1F3A] hover:text-[#2563EB] transition-colors">
+            <button className="hidden xl:flex items-center text-[#0B1F3A] hover:text-[#10A3EB] transition-colors">
               <Search className="w-5 h-5" />
             </button>
             <div className="hidden xl:flex items-center gap-1.5 text-[13.5px]">
-              <Phone className="w-4 h-4 text-[#2563EB] shrink-0" />
+              <Phone className="w-4 h-4 text-[#10A3EB] shrink-0" />
               <span className="text-slate-500 font-medium">Call:</span>
               <span className="font-bold text-[#0B1F3A]">{phoneVal}</span>
             </div>
             {/* Desktop Button */}
             <button
               onClick={openModal}
-              className="hidden xl:flex bg-[#2563EB] text-white text-[13px] font-bold py-2.5 px-5 rounded-full items-center gap-1.5 hover:bg-[#1d4ed8] transition-all duration-300 shadow-md shadow-blue-200 whitespace-nowrap cursor-pointer"
+              className="hidden xl:flex bg-[#10A3EB] text-white text-[13px] font-bold py-2.5 px-5 rounded-full items-center gap-1.5 hover:bg-[#0e92d3] transition-all duration-300 shadow-md shadow-sky-200 whitespace-nowrap cursor-pointer"
             >
               Book Free Consultation <ArrowRight className="w-4 h-4" />
             </button>
@@ -390,7 +390,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
               {/* Call Icon Button */}
               <a
                 href={`tel:${phoneVal.replace(/\s+/g, "")}`}
-                className="w-10 h-10 rounded-full border-2 border-[#0EA5E9] bg-[#F0F9FF] flex items-center justify-center text-[#0EA5E9] hover:bg-[#E0F2FE] hover:scale-105 active:scale-95 transition-all duration-300 shadow-sm"
+                className="w-10 h-10 rounded-full border-2 border-[#10A3EB] bg-[#F0F9FF] flex items-center justify-center text-[#10A3EB] hover:bg-[#E0F2FE] hover:scale-105 active:scale-95 transition-all duration-300 shadow-sm"
                 aria-label="Call Us"
               >
                 <Phone className="w-4.5 h-4.5" strokeWidth={2.5} />
@@ -411,9 +411,9 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
               className="xl:hidden flex flex-col gap-1.5 p-2 z-50 relative focus:outline-none cursor-pointer"
               aria-label="Toggle Menu"
             >
-              <span className={`w-5.5 h-0.5 block transition-transform duration-300 ${isMobileMenuOpen ? "rotate-45 translate-y-2 bg-[#0B1F3A]" : "bg-[#0EA5E9] xl:bg-[#0B1F3A]"}`} />
-              <span className={`w-5.5 h-0.5 block transition-opacity duration-300 ${isMobileMenuOpen ? "opacity-0" : "bg-[#0EA5E9] xl:bg-[#0B1F3A]"}`} />
-              <span className={`w-5.5 h-0.5 block transition-transform duration-300 ${isMobileMenuOpen ? "-rotate-45 -translate-y-2 bg-[#0B1F3A]" : "bg-[#0EA5E9] xl:bg-[#0B1F3A]"}`} />
+              <span className={`w-5.5 h-0.5 block transition-transform duration-300 ${isMobileMenuOpen ? "rotate-45 translate-y-2 bg-[#0B1F3A]" : "bg-[#10A3EB] xl:bg-[#0B1F3A]"}`} />
+              <span className={`w-5.5 h-0.5 block transition-opacity duration-300 ${isMobileMenuOpen ? "opacity-0" : "bg-[#10A3EB] xl:bg-[#0B1F3A]"}`} />
+              <span className={`w-5.5 h-0.5 block transition-transform duration-300 ${isMobileMenuOpen ? "-rotate-45 -translate-y-2 bg-[#0B1F3A]" : "bg-[#10A3EB] xl:bg-[#0B1F3A]"}`} />
             </button>
           </div>
         </div>
@@ -459,8 +459,8 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                 {/* Home Dropdown/Block */}
                 <div className="border-b border-slate-50 pb-2 flex flex-col gap-1.5">
                   <div className="flex items-center justify-between w-full">
-                    <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">
-                      Home
+                    <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#10A3EB] transition-colors">
+                      Home Loans
                     </Link>
                     <button
                       onClick={() => setIsMobileHomeLoansOpen(!isMobileHomeLoansOpen)}
@@ -477,7 +477,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                           key={item.name}
                           href={item.href}
                           onClick={() => setIsMobileMenuOpen(false)}
-                          className="hover:text-[#2563EB] transition-colors"
+                          className="hover:text-[#10A3EB] transition-colors"
                         >
                           {item.name}
                         </Link>
@@ -512,7 +512,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                               <div className="flex items-center justify-between w-full">
                                 <button
                                   onClick={() => setIsMobileStampDutyOpen(!isMobileStampDutyOpen)}
-                                  className="hover:text-[#2563EB] transition-colors cursor-pointer text-left font-semibold text-[13.5px]"
+                                  className="hover:text-[#10A3EB] transition-colors cursor-pointer text-left font-semibold text-[13.5px]"
                                 >
                                   {item.name}
                                 </button>
@@ -531,7 +531,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                                       key={subItem.name}
                                       href={subItem.href}
                                       onClick={() => setIsMobileMenuOpen(false)}
-                                      className="hover:text-[#2563EB] transition-colors py-1 font-semibold"
+                                      className="hover:text-[#10A3EB] transition-colors py-1 font-semibold"
                                     >
                                       {subItem.name}
                                     </Link>
@@ -546,7 +546,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                             key={item.name}
                             href={item.href}
                             onClick={() => setIsMobileMenuOpen(false)}
-                            className="hover:text-[#2563EB] transition-colors pl-1 font-semibold"
+                            className="hover:text-[#10A3EB] transition-colors pl-1 font-semibold"
                           >
                             {item.name}
                           </Link>
@@ -560,28 +560,28 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                 <div className="border-b border-slate-50 pb-2 flex flex-col gap-1.5">
                   <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Resources</span>
                   <div className="pl-2 flex flex-col gap-2.5 text-[13.5px] font-medium text-slate-600">
-                    <Link href="/resources/property-reports" onClick={() => setIsMobileMenuOpen(false)} className="font-semibold hover:text-[#2563EB] transition-colors">
+                    <Link href="/resources/property-reports" onClick={() => setIsMobileMenuOpen(false)} className="font-semibold hover:text-[#10A3EB] transition-colors">
                       Property Reports
                     </Link>
                     <div className="pl-3 flex flex-col gap-2 text-[12.5px] text-slate-500">
-                      <Link href="/resources/property-reports/canning-vale-wa" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">↳ Canning Vale, WA</Link>
-                      <Link href="/resources/property-reports/baldivis-wa" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">↳ Baldivis, WA</Link>
-                      <Link href="/resources/property-reports/box-hill-vic" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">↳ Box Hill, VIC</Link>
+                      <Link href="/resources/property-reports/canning-vale-wa" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#10A3EB] transition-colors">↳ Canning Vale, WA</Link>
+                      <Link href="/resources/property-reports/baldivis-wa" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#10A3EB] transition-colors">↳ Baldivis, WA</Link>
+                      <Link href="/resources/property-reports/box-hill-vic" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#10A3EB] transition-colors">↳ Box Hill, VIC</Link>
                     </div>
-                    <Link href="/the-xperts-news-insights" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">News & Insights</Link>
-                    <Link href="/first-home-guide" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">First Home Guide</Link>
+                    <Link href="/the-xperts-news-insights" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#10A3EB] transition-colors">News & Insights</Link>
+                    <Link href="/first-home-guide" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#10A3EB] transition-colors">First Home Guide</Link>
                   </div>
                 </div>
 
                 {/* Mortgage Mate */}
-                <Link href="/mortgage-mate" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors pb-2 border-b border-slate-50">
+                <Link href="/free-assessment" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#10A3EB] transition-colors pb-2 border-b border-slate-50">
                   Mortgage Mate
                 </Link>
 
                 {/* About Us Dropdown/Block */}
                 <div className="border-b border-slate-50 pb-2 flex flex-col gap-1.5">
                   <div className="flex items-center justify-between w-full">
-                    <Link href="/about-us-nepali-mortgage-broker-in-australia" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors">
+                    <Link href="/about-us-nepali-mortgage-broker-in-australia" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#10A3EB] transition-colors">
                       About Us
                     </Link>
                     <button
@@ -599,7 +599,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                           key={item.name}
                           href={item.href}
                           onClick={() => setIsMobileMenuOpen(false)}
-                          className="hover:text-[#2563EB] transition-colors"
+                          className="hover:text-[#10A3EB] transition-colors"
                         >
                           {item.name}
                         </Link>
@@ -608,7 +608,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                   )}
                 </div>
 
-                <Link href="/best-nepali-investment-mortgage-broker-perth" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#2563EB] transition-colors pb-2 border-b border-slate-50">
+                <Link href="/best-nepali-investment-mortgage-broker-perth" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#10A3EB] transition-colors pb-2 border-b border-slate-50">
                   Contact
                 </Link>
 
@@ -618,7 +618,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                     onClick={() => setIsMobileXpertsRangeOpen(!isMobileXpertsRangeOpen)}
                     className="flex items-center justify-between w-full text-left focus:outline-none"
                   >
-                    <span className="text-[10px] text-[#2563EB] font-bold uppercase tracking-wider block">Our Branches</span>
+                    <span className="text-[10px] text-[#10A3EB] font-bold uppercase tracking-wider block">Branches</span>
                     <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${isMobileXpertsRangeOpen ? "rotate-180" : ""}`} />
                   </button>
                   {isMobileXpertsRangeOpen && (
@@ -628,7 +628,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                           key={item.name}
                           href={item.href}
                           onClick={() => setIsMobileMenuOpen(false)}
-                          className="flex items-center justify-between hover:text-[#2563EB] transition-colors py-0.5"
+                          className="flex items-center justify-between hover:text-[#10A3EB] transition-colors py-0.5"
                         >
                           <span>{item.name}</span>
                           <span className="text-[10px] font-bold text-slate-400 ml-2">{item.state}</span>
@@ -642,11 +642,11 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
               {/* Bottom Section: Contact & Socials */}
               <div className="mt-auto pt-6 border-t border-slate-100 shrink-0 flex flex-col gap-4">
                 <div className="flex flex-col gap-2.5">
-                  <a href={`tel:${phoneVal.replace(/\s+/g, "")}`} className="flex items-center gap-2 text-[13px] font-semibold text-slate-600 hover:text-[#2563EB] transition-colors">
-                    <Phone className="w-4 h-4 text-[#2563EB] shrink-0" /> {phoneVal}
+                  <a href={`tel:${phoneVal.replace(/\s+/g, "")}`} className="flex items-center gap-2 text-[13px] font-semibold text-slate-600 hover:text-[#10A3EB] transition-colors">
+                    <Phone className="w-4 h-4 text-[#10A3EB] shrink-0" /> {phoneVal}
                   </a>
-                  <a href={`mailto:${emailVal}`} className="flex items-center gap-2 text-[13px] font-semibold text-slate-600 hover:text-[#2563EB] transition-colors break-all">
-                    <Mail className="w-4 h-4 text-[#2563EB] shrink-0" /> {emailVal}
+                  <a href={`mailto:${emailVal}`} className="flex items-center gap-2 text-[13px] font-semibold text-slate-600 hover:text-[#10A3EB] transition-colors break-all">
+                    <Mail className="w-4 h-4 text-[#10A3EB] shrink-0" /> {emailVal}
                   </a>
                 </div>
 
@@ -678,7 +678,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                     setIsMobileMenuOpen(false);
                     openModal();
                   }}
-                  className="bg-[#2563EB] text-white text-[13.5px] font-bold py-3 px-5 rounded-full flex items-center justify-center gap-1.5 hover:bg-[#1d4ed8] transition-colors shadow-md shadow-blue-100 text-center cursor-pointer"
+                  className="bg-[#10A3EB] text-white text-[13.5px] font-bold py-3 px-5 rounded-full flex items-center justify-center gap-1.5 hover:bg-[#0e92d3] transition-colors shadow-md shadow-sky-100 text-center cursor-pointer"
                 >
                   Book Free Consultation <ArrowRight className="w-4 h-4" />
                 </button>

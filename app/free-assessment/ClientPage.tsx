@@ -36,6 +36,8 @@ import { RoadmapSection } from "../components/RoadmapSection";
 import { TestimonialSection } from "../components/TestimonialSection";
 import { MortgageMateForm } from "../components/MortgageMateForm";
 
+import { useOnboardingModal } from "@/app/components/OnboardingModalContext";
+
 import { 
   EASE_OUT, 
   VIEWPORT_LOOSE, 
@@ -61,6 +63,7 @@ const MIDDLE_FINANCE_REDIRECT_URL = "https://app.middle.finance/ref/6aa0e26a-6c6
 
 
 export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
+  const { openModal } = useOnboardingModal();
   const router = useRouter();
   const [step, setStep] = useState(0);
 
@@ -73,18 +76,18 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
   const strategySteps = [
     {
       icon: FileText,
-      title: "1. Complete Assessment",
-      desc: "Answer the same key questions a broker needs before checking lender fit."
+      title: "1. Borrowing Power Assessment",
+      desc: "Analyze your borrowing potential in minutes using our intelligent mortgage matching tool."
     },
     {
       icon: CalendarCheck,
-      title: "2. Strategy Call",
-      desc: "Aakash reviews your goal, deposit, income and timing before giving next-step guidance."
+      title: "2. Strategic Consultation",
+      desc: "Receive personalized, face-to-face guidance from our mortgage experts to maps out your home ownership roadmap."
     },
     {
       icon: ShieldCheck,
-      title: "3. Middle Finance Profile",
-      desc: "After this lead form, you are redirected to securely complete your detailed financial profile."
+      title: "3. Tailored Lender Solutions",
+      desc: "Get matched with optimal home loan solutions customized specifically for your scenario."
     }
   ];
 
@@ -112,7 +115,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
       title: "Health Professionals",
       tag: "LMI Waiver",
       href: "/home-loan-for-doctors",
-      image: "/images/hero_slide_2_green.png",
+      image: "/images/Healthcare Professionals.png",
       accent: "from-emerald-600 to-teal-500",
       summary: "Up to 95% LVR with zero LMI and discounted rates tailored for medical practitioners and healthcare staff.",
       points: ["LMI waiver up to 95%", "Discounted rates", "Fast approvals"]
@@ -121,7 +124,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
       title: "First Home Buyers",
       tag: "Start Here",
       href: "/first-home-guide",
-      image: "/images/First Home Buyers.png",
+      image: "/images/first_home_family_modern.png",
       accent: "from-blue-600 to-sky-500",
       summary: "Deposit, grants, lender options and pre-approval guidance in one simple path.",
       points: ["Low deposit options", "Grant checks", "Pre-approval plan"]
@@ -130,7 +133,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
       title: "Investment Loans",
       tag: "Grow Wealth",
       href: "/property-investment-guide",
-      image: "/images/Investment Loans.png",
+      image: "/images/sleek_modern_home_keys.png",
       accent: "from-violet-600 to-indigo-500",
       summary: "Structure your next property purchase with borrowing power and strategy in mind.",
       points: ["Equity strategy", "Rental income", "Portfolio planning"]
@@ -139,7 +142,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
       title: "Refinancing",
       tag: "Save Smarter",
       href: "/refinancing-guide",
-      image: "/images/Refinancing.png",
+      image: "/images/refinance_family_clean.png",
       accent: "from-rose-600 to-pink-500",
       summary: "Check whether your current loan is still competitive before rates move again.",
       points: ["Rate comparison", "Cashflow review", "Switching costs"]
@@ -182,7 +185,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
                 <div className="flex flex-row items-center gap-3 sm:gap-5 pt-2">
                   <button
                     type="button"
-                    onClick={() => router.push("/mortgage-mate/assessment")}
+                    onClick={() => router.push("/free-assessment/assessment")}
                     className="bg-[#10A3EB] hover:bg-[#0e92d3] text-white font-extrabold uppercase text-[11px] sm:text-[13.5px] tracking-wider py-3 px-5 sm:py-4 sm:px-8 rounded-full flex items-center justify-center gap-2 shadow-md shadow-sky-500/10 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer whitespace-nowrap"
                   >
                     LET&apos;S START <ArrowRight className="w-3.5 h-3.5 sm:w-4.5 sm:h-4.5 stroke-[2.5]" />
@@ -216,7 +219,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
                       </div>
                     </div>
                     <p className="text-[10px] sm:text-[11.5px] text-slate-500 font-medium leading-tight mt-1">
-                      <strong className="text-slate-800 font-bold">4.9</strong> out of 2,000+ reviews
+                      <strong className="text-slate-800 font-bold">4.9</strong> out of 850+ reviews
                     </p>
                   </div>
 
@@ -235,7 +238,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
                       </div>
                     </div>
                     <p className="text-[10px] sm:text-[11.5px] text-slate-500 font-medium leading-tight mt-1">
-                      <strong className="text-slate-800 font-bold">4.8</strong> out of 430+ reviews
+                      <strong className="text-slate-800 font-bold">4.9</strong> out of 120+ reviews
                     </p>
                   </div>
 
@@ -257,7 +260,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
                       </div>
                     </div>
                     <p className="text-[10px] sm:text-[11.5px] text-slate-500 font-medium leading-tight mt-1">
-                      <strong className="text-slate-800 font-bold">4.8</strong> out of 1,000+ reviews
+                      <strong className="text-slate-800 font-bold">4.9</strong> out of 230+ reviews
                     </p>
                   </div>
                 </div>
@@ -338,7 +341,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
                     <div className="w-4.5 h-4.5 rounded-full bg-blue-50 flex items-center justify-center text-[#10A3EB] shrink-0">
                       <ShieldCheck className="w-3 h-3 text-[#10A3EB]" />
                     </div>
-                    <span className="text-[10px] text-slate-600 font-bold">MFAA Member</span>
+                    <span className="text-[10px] text-slate-600 font-bold">FBA Member</span>
                   </div>
                   
                   <div className="flex items-center gap-1.5">
@@ -355,36 +358,59 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
         </div>
       </main>
 
-      {/* Strategy Call & Assessment */}
+      {/* Strategy Call & Assessment / Video Integration */}
       <section className="bg-white py-12 md:py-16 border-y border-slate-100">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-4">
-              <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-full px-3 py-1 mb-4">
-                <CalendarCheck className="w-3.5 h-3.5 text-[#2563EB]" />
-                <span className="text-[10px] text-[#2563EB] font-extrabold uppercase tracking-widest">Proven Lead Flow</span>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Mobile First: Video Element */}
+            <div className="order-first lg:order-last w-full flex flex-col items-center gap-6">
+              <div className="w-full aspect-video rounded-3xl overflow-hidden shadow-2xl border-4 border-white relative group">
+                <iframe
+                  src={videoUrl}
+                  title="Mortgage Xperts Overview"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="w-full h-full absolute inset-0"
+                />
               </div>
-              <h2 className="text-[#0B1F3A] text-[26px] md:text-[34px] font-extrabold leading-tight">
-                Strategy call first. Full application after trust is built.
-              </h2>
-              <p className="text-slate-500 text-[14px] leading-relaxed mt-3 font-medium">
-                The page now asks for only the details needed to qualify the enquiry, then moves serious clients into the Middle Finance secure profile.
-              </p>
+              <button
+                type="button"
+                onClick={openModal}
+                className="bg-[#10A3EB] hover:bg-[#0e92d3] text-white font-extrabold uppercase text-[12px] sm:text-[13px] tracking-wider py-4 px-8 rounded-full flex items-center justify-center gap-2 shadow-lg shadow-sky-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer whitespace-nowrap"
+              >
+                BOOK FREE CONSULTATION <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+              </button>
             </div>
 
-            <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-              {strategySteps.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <div key={item.title} className="bg-slate-50 border border-slate-200 rounded-2xl p-5 shadow-sm">
-                    <div className="w-10 h-10 rounded-xl bg-white border border-blue-100 text-[#2563EB] flex items-center justify-center mb-4">
-                      <Icon className="w-5 h-5" />
+            {/* Content Side */}
+            <div className="text-left w-full">
+              <div className="inline-flex items-center gap-2 bg-sky-50 border border-sky-100 rounded-full px-3 py-1 mb-4">
+                <CalendarCheck className="w-3.5 h-3.5 text-[#10A3EB]" />
+                <span className="text-[10px] text-[#10A3EB] font-extrabold uppercase tracking-widest">Strategy Call</span>
+              </div>
+              <h2 className="text-[#0B1F3A] text-[26px] md:text-[34px] font-extrabold leading-tight">
+                Unlock your borrowing potential. Tailored solutions built around you.
+              </h2>
+              <p className="text-slate-500 text-[14px] leading-relaxed mt-3 font-medium mb-8">
+                Discover your maximum borrowing capacity in real-time, schedule a strategy consultation, and access custom lender selections suited for your specific property goals.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {strategySteps.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <div key={item.title} className="bg-slate-50 border border-slate-200 rounded-2xl p-5 shadow-sm h-full flex flex-col justify-between">
+                      <div>
+                        <div className="w-10 h-10 rounded-xl bg-white border border-sky-100 text-[#10A3EB] flex items-center justify-center mb-4">
+                          <Icon className="w-5 h-5" />
+                        </div>
+                        <h3 className="text-[#0B1F3A] text-[15px] font-extrabold leading-tight">{item.title}</h3>
+                      </div>
+                      <p className="text-slate-500 text-[12.5px] leading-relaxed mt-2 font-medium">{item.desc}</p>
                     </div>
-                    <h3 className="text-[#0B1F3A] text-[15px] font-extrabold leading-tight">{item.title}</h3>
-                    <p className="text-slate-500 text-[12.5px] leading-relaxed mt-2 font-medium">{item.desc}</p>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
@@ -395,31 +421,6 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
 
       {/* Repayment Calculator */}
       <RepaymentCalculatorSection />
-
-      {/* Video Trust Section */}
-      <section className="bg-slate-50 py-16 lg:py-24 border-y border-slate-100">
-        <div className="max-w-[1000px] mx-auto px-6 md:px-10 lg:px-16 text-center">
-          <div className="inline-flex items-center gap-2 bg-blue-100 border border-blue-200 rounded-full px-4 py-1.5 mb-6">
-            <PlayCircle className="w-4 h-4 text-[#2563EB]" />
-            <span className="text-[11px] text-[#2563EB] font-extrabold uppercase tracking-widest">Why Choose Us</span>
-          </div>
-          <h2 className="text-[#0B1F3A] text-[28px] md:text-[38px] font-extrabold leading-tight mb-6">
-            Hear directly from our founder, <span className="text-[#2563EB]">Aakash KC</span>
-          </h2>
-          <p className="text-slate-500 text-[15px] max-w-2xl mx-auto leading-relaxed font-medium mb-10">
-            At Mortgage Xperts, we believe in complete transparency. Watch this quick overview to see exactly how we can help you structure your loan to maximize savings and protect your family&apos;s financial future.
-          </p>
-          <div className="w-full aspect-video rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
-            <iframe
-              src={videoUrl}
-              title="Mortgage Xperts Overview"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="w-full h-full"
-            />
-          </div>
-        </div>
-      </section>
 
       {/* Mortgage Mate Flyer Stack */}
       <section className="bg-[#0B1F3A] py-14 md:py-18 overflow-hidden relative">
@@ -439,12 +440,13 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
               </p>
             </div>
 
-            <a
-              href="#lead-form"
-              className="inline-flex items-center justify-center gap-2 bg-white text-[#0B1F3A] hover:bg-sky-50 px-5 py-3 rounded-xl text-[12px] font-extrabold uppercase tracking-wide shadow-lg shadow-blue-950/20 transition-all w-full sm:w-auto"
+            <button
+              type="button"
+              onClick={openModal}
+              className="inline-flex items-center justify-center gap-2 bg-[#10A3EB] hover:bg-[#0e92d3] text-white px-5 py-3 rounded-xl text-[12px] font-extrabold uppercase tracking-wide shadow-lg shadow-blue-950/20 transition-all w-full sm:w-auto cursor-pointer"
             >
               Start Free Assessment <ArrowRight className="w-4 h-4" />
-            </a>
+            </button>
           </div>
 
           <motion.div
@@ -473,7 +475,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/65 via-transparent to-transparent" />
                   <div className="absolute left-4 bottom-4 inline-flex items-center gap-1.5 bg-white text-[#0B1F3A] rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider shadow-sm">
-                    <Star className="w-3 h-3 text-[#2563EB] fill-[#2563EB]" />
+                    <Star className="w-3 h-3 text-[#F97316] fill-[#F97316]" />
                     {flyer.tag}
                   </div>
                 </div>
@@ -497,8 +499,8 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
                     ))}
                   </div>
 
-                  <div className="mt-auto pt-2 flex items-center justify-between text-[#2563EB] text-[12px] font-extrabold uppercase tracking-wide">
-                    View flyer
+                  <div className="mt-auto pt-2 flex items-center justify-between text-[#10A3EB] text-[12px] font-extrabold uppercase tracking-wide">
+                    Learn more
                     <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </div>
                 </div>
@@ -514,11 +516,11 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <div className="lg:col-span-5 bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xl shadow-slate-200/40">
-              <div className="relative h-64 bg-blue-50">
+              <div className="relative h-64 bg-sky-50">
                 <Image src="/images/family_couch_laptop.png" fill alt="Free mortgage guide" className="object-cover object-center" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/75 via-[#0B1F3A]/10 to-transparent" />
                 <div className="absolute left-5 right-5 bottom-5">
-                  <div className="inline-flex items-center gap-1.5 bg-white text-[#2563EB] rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider mb-2">
+                  <div className="inline-flex items-center gap-1.5 bg-white text-[#10A3EB] rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider mb-2">
                     <Download className="w-3 h-3" />
                     Free Download Guide
                   </div>
@@ -531,19 +533,20 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
                 <p className="text-slate-500 text-[13px] leading-relaxed font-medium">
                   Use the guide to understand deposit, borrowing power, documents and lender-fit basics. For a personalised version, complete the assessment above.
                 </p>
-                <a
-                  href="#lead-form"
-                  className="mt-5 inline-flex items-center justify-center gap-2 w-full bg-[#2563EB] hover:bg-[#1d4ed8] text-white px-5 py-3 rounded-xl text-[12px] font-extrabold uppercase tracking-wide transition-all"
+                <button
+                  type="button"
+                  onClick={openModal}
+                  className="mt-5 inline-flex items-center justify-center gap-2 w-full bg-[#10A3EB] hover:bg-[#0e92d3] text-white px-5 py-3 rounded-xl text-[12px] font-extrabold uppercase tracking-wide transition-all cursor-pointer"
                 >
                   Get My Personal Assessment <ArrowRight className="w-4 h-4" />
-                </a>
+                </button>
               </div>
             </div>
 
             <div className="lg:col-span-7">
               <div className="inline-flex items-center gap-2 bg-white border border-slate-200 rounded-full px-3 py-1 mb-4 shadow-sm">
-                <HelpCircle className="w-3.5 h-3.5 text-[#2563EB]" />
-                <span className="text-[10px] text-[#2563EB] font-extrabold uppercase tracking-widest">Mortgage Mate FAQs</span>
+                <HelpCircle className="w-3.5 h-3.5 text-[#10A3EB]" />
+                <span className="text-[10px] text-[#10A3EB] font-extrabold uppercase tracking-widest">Mortgage Mate FAQs</span>
               </div>
               <h2 className="text-[#0B1F3A] text-[26px] md:text-[34px] font-extrabold leading-tight mb-5">
                 Questions people ask before giving their details.
@@ -551,9 +554,9 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
               <div className="space-y-3">
                 {leadFaqs.map((faq) => (
                   <details key={faq.q} className="group bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
-                    <summary className="cursor-pointer list-none flex items-center justify-between gap-4 text-[#0B1F3A] text-[14px] font-extrabold">
+                     <summary className="cursor-pointer list-none flex items-center justify-between gap-4 text-[#0B1F3A] text-[14px] font-extrabold">
                       <span>{faq.q}</span>
-                      <span className="w-7 h-7 rounded-full bg-blue-50 text-[#2563EB] flex items-center justify-center text-base shrink-0 group-open:rotate-45 transition-transform">+</span>
+                      <span className="w-7 h-7 rounded-full bg-sky-50 text-[#10A3EB] flex items-center justify-center text-base shrink-0 group-open:rotate-45 transition-transform">+</span>
                     </summary>
                     <p className="text-slate-500 text-[12.5px] leading-relaxed mt-3 font-medium">
                       {faq.a}
@@ -566,11 +569,12 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
         </div>
       </section>
 
-      <section className="bg-white border-t border-b border-slate-100 py-6 overflow-hidden">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+      <section className="bg-slate-50/50 border-t border-b border-slate-100 py-10 overflow-hidden">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 flex flex-col gap-8">
+          {/* Logo Marquee Row */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="shrink-0 md:border-r border-slate-200 pr-6 border-b md:border-b-0 pb-3 md:pb-0 w-full md:w-auto text-center md:text-left flex md:block justify-center bg-white z-10">
-              <p className="text-[11px] font-bold text-[#0B1F3A] uppercase tracking-wider">
+            <div className="shrink-0 md:border-r border-slate-200 pr-6 w-full md:w-auto text-center md:text-left flex md:block justify-center bg-transparent z-10">
+              <p className="text-[11px] font-black text-[#0B1F3A] uppercase tracking-wider">
                 OUR PANEL OF 40+ LEADING LENDERS
               </p>
             </div>
@@ -598,11 +602,43 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
                 ))}
               </div>
             </div>
+          </div>
 
-            {/* Partnership Badge */}
-            <div className="shrink-0 flex items-center gap-2.5 bg-[#FDFBF7] border border-[#EBE6DD] rounded-xl px-3 py-1.5 shadow-sm">
-              <FlameIcon />
-              <span className="text-[#0B1F3A] font-bold text-[11.5px] tracking-wide whitespace-nowrap">St.George Flame Broker</span>
+          {/* Partnership Badges (Clean Premium Redesign) */}
+          <div className="border-t border-slate-200/60 pt-6">
+            <div className="text-center md:text-left mb-4">
+              <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#10A3EB]">Credibility & Accreditations</span>
+              <h4 className="text-[#0B1F3A] text-lg font-black mt-1 font-montserrat">Premium Broker Status</h4>
+            </div>
+            
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+              {[
+                { title: "St.George Flame Broker", desc: "Top-tier lending privileges", color: "bg-red-500", lightBg: "bg-red-50/40" },
+                { title: "Westpac Platinum Broker", desc: "Elite priority channel", color: "bg-red-600", lightBg: "bg-red-50/20" },
+                { title: "ANZ Key Partner", desc: "Direct priority escalations", color: "bg-blue-600", lightBg: "bg-blue-50/40" },
+                { title: "NAB Professional Partner", desc: "Advanced support access", color: "bg-[#D12B2F]", lightBg: "bg-red-50/30" },
+                { title: "Macquarie Premium Partner", desc: "Streamlined fast-track processing", color: "bg-slate-800", lightBg: "bg-slate-50" },
+                { title: "Bankwest Gold Broker", desc: "Priority verification & review", color: "bg-[#EDAC1A]", lightBg: "bg-amber-50/30" },
+                { title: "Suncorp Priority Partner", desc: "Dedicated package privileges", color: "bg-emerald-600", lightBg: "bg-emerald-50/30" },
+                { title: "Liberty Preferred Broker", desc: "Custom loan program access", color: "bg-purple-600", lightBg: "bg-purple-50/30" }
+              ].map((badge, idx) => (
+                <div 
+                  key={idx} 
+                  className={`flex items-center gap-3 p-3.5 rounded-xl border border-slate-100/80 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.02)]`}
+                >
+                  <div className="relative shrink-0 flex items-center justify-center">
+                    {idx === 0 ? (
+                      <FlameIcon />
+                    ) : (
+                      <span className={`w-2.5 h-2.5 rounded-full ${badge.color}`} />
+                    )}
+                  </div>
+                  <div className="flex flex-col text-left">
+                    <span className="text-[#0B1F3A] font-extrabold text-[12px] leading-snug">{badge.title}</span>
+                    <span className="text-slate-400 text-[10px] font-medium leading-none mt-0.5">{badge.desc}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -619,8 +655,8 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
             variants={fadeInUp}
             className="inline-flex items-center gap-2 bg-white border border-slate-200 rounded-full px-4 py-1.5 mb-4 shadow-sm"
           >
-            <Star className="w-3.5 h-3.5 text-[#2563EB] fill-[#2563EB]" />
-            <span className="text-[#2563EB] text-[11px] font-extrabold tracking-widest uppercase">
+            <Star className="w-3.5 h-3.5 text-[#10A3EB] fill-[#10A3EB]" />
+            <span className="text-[#10A3EB] text-[11px] font-extrabold tracking-widest uppercase">
               Award-Winning Excellence
             </span>
           </motion.div>
@@ -635,7 +671,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
             style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
           >
             Proven Track Record. <br />
-            <span className="text-[#2563EB]">Recognised For Excellence.</span>
+            <span className="text-[#10A3EB]">Recognised For Excellence.</span>
           </motion.h2>
 
           {/* Description */}
@@ -698,7 +734,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
                 {/* Image Container */}
                 <div className="relative w-24 h-24 xs:w-28 xs:h-28 sm:w-36 sm:h-36 flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-105 self-center">
                   <Image
-                    src={award.img}
+                     src={award.img}
                     alt={award.title}
                     fill
                     className="object-contain"
@@ -711,7 +747,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
                   <h3 className="text-[#0B1F3A] font-extrabold text-[12px] sm:text-[14px] leading-tight mb-1" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
                     {award.title}
                   </h3>
-                  <div className="text-[#2563EB] font-bold text-[11px] sm:text-[11.5px] mb-1">
+                  <div className="text-[#10A3EB] font-bold text-[11px] sm:text-[11.5px] mb-1">
                     {award.subtitle}
                   </div>
                   <p className="text-slate-550 text-[10.5px] font-semibold leading-snug">
@@ -727,7 +763,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
       {/* ── CLIENT TESTIMONIALS ── */}
       <TestimonialSection 
         badgeText="Client Success"
-        titleText={<>Loved by <span className="text-[#2563EB]">1,200+ Australian Families</span></>}
+        titleText={<>Loved by <span className="text-[#10A3EB]">1,200+ Australian Families</span></>}
         subtitleText="Read first-hand experiences from our mortgage clients who successfully purchased their dream home or investment properties."
         backgroundClass="bg-white"
       />

@@ -2168,7 +2168,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
 
                       <div className="pt-2">
                         <Link
-                          href="/mortgage-mate"
+                          href="/free-assessment"
                           className="w-full text-center bg-[#2563EB] hover:bg-[#1d4ed8] text-white text-[11px] font-black uppercase py-3 rounded-xl transition-all block"
                         >
                           Check Full Profile & Reviews

@@ -39,15 +39,15 @@ interface RoadmapSectionProps {
 
 const THEMES = {
   blue: {
-    accent: "#2563EB",
-    from: "from-[#2563EB]",
+    accent: "#10A3EB",
+    from: "from-[#10A3EB]",
     to: "to-[#38BDF8]",
     bgLight: "bg-[#EAF3FF]",
-    borderLight: "border-[#2563EB]/15",
-    textAccent: "text-[#2563EB]",
-    bgAccent: "bg-[#2563EB]",
+    borderLight: "border-[#10A3EB]/15",
+    textAccent: "text-[#10A3EB]",
+    bgAccent: "bg-[#10A3EB]",
     glowBg: "bg-blue-50/40",
-    badge: "bg-blue-50 text-blue-600 border-blue-200"
+    badge: "bg-blue-50 text-sky-600 border-sky-200"
   },
   green: {
     accent: "#16A34A",
@@ -150,8 +150,8 @@ export function RoadmapSection({
       const scrolledIntoSection = -rect.top;
       const scrollableRun = sectionHeight - viewportHeight;
       if (scrollableRun <= 0) return;
-      const progress = Math.max(0, Math.min(1, scrolledIntoSection / scrollableRun));
-      const idx = Math.min(4, Math.floor(progress * 5));
+      const progress = Math.max(0, Math.min(0.999, scrolledIntoSection / scrollableRun));
+      const idx = Math.floor(progress * 6);
       setActiveStepIndex(idx);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -162,18 +162,45 @@ export function RoadmapSection({
   const roadmapSteps = [
     {
       num: "01",
-      img: "/images/step_1.png",
+      img: "/images/doctor_hero.png",
       phase: "PHASE 01",
+      title: "Strategic Call",
+      tagline: "Build a roadmap",
+      desc: "Connect for a brief strategy session where we discuss your home-ownership goals, timeline, income, and how to structure your path forward.",
+      highlight: "Tailored strategic timeline.",
+      floatingText: "Strategy First. Clear Guidance.",
+      accentClass: "from-[#10A3EB] to-[#0e92d3]",
+      glowColor: "rgba(16,163,235,0.12)",
+      bgGradient: "from-[#0A2540] to-[#004899]",
+      icon: Users,
+      colorClass: "bg-sky-50 text-[#10A3EB]",
+      highlightsRow: [
+        { label: "1-on-1 Consultation" },
+        { label: "Goal Setting" },
+        { label: "Timeline Review" },
+        { label: "Clear Next Steps" }
+      ],
+      evaluate: [
+        { label: "Financial Goals", icon: TrendingUp, color: "bg-emerald-50 text-emerald-600" },
+        { label: "Borrowing Target", icon: Wallet, color: "bg-rose-50 text-rose-600" },
+        { label: "Initial Budget", icon: Coins, color: "bg-amber-50 text-amber-600" },
+        { label: "Deposit Strategy", icon: PiggyBank, color: "bg-blue-50 text-blue-600" }
+      ]
+    },
+    {
+      num: "02",
+      img: "/images/step_1.png",
+      phase: "PHASE 02",
       title: "Borrowing Power",
       tagline: "Know your limit",
       desc: "We analyze your income, expenses, and existing debts to calculate your exact borrowing limits across 40+ Australian lenders.",
       highlight: "Overcomes HECS debt parameters.",
       floatingText: "Know Your Limit. Buy With Confidence.",
-      accentClass: "from-[#2563EB] to-[#1D4ED8]",
-      glowColor: "rgba(37,99,235,0.12)",
+      accentClass: "from-[#10B981] to-[#059669]",
+      glowColor: "rgba(16,185,129,0.12)",
       bgGradient: "from-[#0A2540] to-[#004899]",
       icon: Calculator,
-      colorClass: "bg-blue-50 text-blue-600",
+      colorClass: "bg-emerald-50 text-emerald-600",
       highlightsRow: [
         { label: "Personalised Assessment" },
         { label: "40+ Lenders Compared" },
@@ -188,19 +215,19 @@ export function RoadmapSection({
       ]
     },
     {
-      num: "02",
+      num: "03",
       img: "/images/step_2.png",
-      phase: "PHASE 02",
+      phase: "PHASE 03",
       title: "Deposit Planning",
       tagline: "Leverage schemes",
       desc: "Explore government 5% schemes to waive expensive Lenders Mortgage Insurance (LMI) and buy with a lower upfront deposit.",
       highlight: "Save up to $15,000+ in fees.",
       floatingText: "Minimize Upfront Cost. Save Up to $25k.",
-      accentClass: "from-[#10B981] to-[#059669]",
-      glowColor: "rgba(16,185,129,0.12)",
+      accentClass: "from-[#8B5CF6] to-[#7C3AED]",
+      glowColor: "rgba(139,92,246,0.12)",
       bgGradient: "from-[#062F24] to-[#094E3A]",
       icon: PiggyBank,
-      colorClass: "bg-emerald-50 text-emerald-600",
+      colorClass: "bg-purple-50 text-purple-600",
       highlightsRow: [
         { label: "LMI Waiver Analysis" },
         { label: "Grant Matching" },
@@ -215,19 +242,19 @@ export function RoadmapSection({
       ]
     },
     {
-      num: "03",
+      num: "04",
       img: "/images/step_3.png",
-      phase: "PHASE 03",
+      phase: "PHASE 04",
       title: "Find Property",
       tagline: "Shop with budget",
       desc: "With a pre-approved budget in hand, search for your ideal home confidently. We provide complimentary property reports.",
       highlight: "Free property data validation.",
       floatingText: "Shop Confidently. Lock in Pre-Approval.",
-      accentClass: "from-[#8B5CF6] to-[#7C3AED]",
-      glowColor: "rgba(139,92,246,0.12)",
+      accentClass: "from-[#F59E0B] to-[#D97706]",
+      glowColor: "rgba(245,158,11,0.12)",
       bgGradient: "from-[#1F1A3A] to-[#3B1547]",
       icon: Search,
-      colorClass: "bg-purple-50 text-purple-600",
+      colorClass: "bg-amber-50 text-amber-600",
       highlightsRow: [
         { label: "Pre-Approved Status" },
         { label: "Complimentary Valuation" },
@@ -242,19 +269,19 @@ export function RoadmapSection({
       ]
     },
     {
-      num: "04",
+      num: "05",
       img: "/images/step_4.png",
-      phase: "PHASE 04",
+      phase: "PHASE 05",
       title: "Loan Approval",
       tagline: "Formal confirmation",
       desc: "We package and submit your loan application to your chosen lender, managing communications until formal approval is secured.",
       highlight: "Fast-tracked expert channel submission.",
       floatingText: "Stress-Free Processing. Fast-Tracked.",
-      accentClass: "from-[#F59E0B] to-[#D97706]",
-      glowColor: "rgba(245,158,11,0.12)",
+      accentClass: "from-[#EC4899] to-[#DB2777]",
+      glowColor: "rgba(236,72,153,0.12)",
       bgGradient: "from-[#3B1E0A] to-[#542103]",
       icon: ShieldCheck,
-      colorClass: "bg-amber-50 text-amber-600",
+      colorClass: "bg-pink-50 text-pink-600",
       highlightsRow: [
         { label: "Compliance Review" },
         { label: "Fast Submission" },
@@ -269,19 +296,19 @@ export function RoadmapSection({
       ]
     },
     {
-      num: "05",
+      num: "06",
       img: "/images/step_5.png",
-      phase: "PHASE 05",
+      phase: "PHASE 06",
       title: "Settlement",
       tagline: "Collect your keys",
       desc: "Your solicitor coordinates with the lender to transfer funds to the vendor. The property is officially yours—keys in hand!",
       highlight: "Celebrate your home-ownership!",
       floatingText: "Keys Transferred. Welcome Home!",
-      accentClass: "from-[#EC4899] to-[#DB2777]",
-      glowColor: "rgba(236,72,153,0.12)",
+      accentClass: "from-[#14B8A6] to-[#0D9488]",
+      glowColor: "rgba(20,184,166,0.12)",
       bgGradient: "from-[#3D0A25] to-[#540733]",
       icon: Gift,
-      colorClass: "bg-pink-50 text-pink-600",
+      colorClass: "bg-teal-50 text-teal-600",
       highlightsRow: [
         { label: "Legal Alignment" },
         { label: "Fund Clearance" },
@@ -299,7 +326,7 @@ export function RoadmapSection({
 
   const defaultTitle = title || (
     <>
-      Five Steps To Your <span className={`text-transparent bg-clip-text bg-gradient-to-r ${t.from} ${t.to}`}>First Home Keys</span>
+      Six Steps To Your <span className={`text-transparent bg-clip-text bg-gradient-to-r ${t.from} ${t.to}`}>First Home Keys</span>
     </>
   );
 
@@ -309,7 +336,7 @@ export function RoadmapSection({
       <section
         ref={roadmapSectionRef}
         className="hidden lg:block relative bg-slate-50/50 border-b border-slate-100"
-        style={{ minHeight: "550vh" }}
+        style={{ minHeight: "650vh" }}
       >
         <div className="sticky w-full flex items-center" style={{ zIndex: 5, top: "64px", height: "calc(100vh - 64px)", padding: "40px 0" }}>
           <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
@@ -344,8 +371,8 @@ export function RoadmapSection({
                   <div
                     className="absolute top-0 left-0 w-full transition-all duration-500"
                     style={{
-                      height: `${(activeStepIndex / 4) * 100}%`,
-                      background: `linear-gradient(to bottom, ${t.accent}, #10B981, #8B5CF6, #F59E0B, #EC4899)`
+                      height: `${(activeStepIndex / 5) * 100}%`,
+                      background: `linear-gradient(to bottom, ${t.accent}, #10B981, #8B5CF6, #F59E0B, #EC4899, #14B8A6)`
                     }}
                   />
                 </div>
@@ -357,11 +384,12 @@ export function RoadmapSection({
                     const StepIcon = step.icon;
 
                     const colors = [
-                      { accent: t.accent, lightBg: t.bgLight, border: "rgba(0,0,0,0.1)" },
+                      { accent: t.accent, lightBg: "#EAF3FF", border: "#D8E7FF" },
                       { accent: "#10B981", lightBg: "#ECFDF5", border: "#A7F3D0" },
                       { accent: "#8B5CF6", lightBg: "#EDE9FE", border: "#DDD6FE" },
                       { accent: "#F59E0B", lightBg: "#FFFBEB", border: "#FDE68A" },
-                      { accent: "#EC4899", lightBg: "#FDF2F8", border: "#FBCFE8" }
+                      { accent: "#EC4899", lightBg: "#FDF2F8", border: "#FBCFE8" },
+                      { accent: "#14B8A6", lightBg: "#E6FDFB", border: "#B2F5EA" }
                     ][idx];
 
                     return (
@@ -370,7 +398,7 @@ export function RoadmapSection({
                         className="flex items-center gap-3.5 py-2.5 px-3 rounded-xl transition-all duration-500"
                         style={{
                           background: isActive ? colors.lightBg : "transparent",
-                          border: `1px solid ${isActive ? (idx === 0 ? "rgba(0,0,0,0.06)" : colors.border) : "transparent"}`,
+                          border: `1px solid ${isActive ? colors.border : "transparent"}`,
                           boxShadow: isActive ? "0 10px 25px -5px rgba(11,31,58,0.05), 0 8px 10px -6px rgba(11,31,58,0.05)" : "none",
                           opacity: isActive || isPast ? 1 : 0.35,
                           transform: isActive ? "translateX(4px)" : "translateX(0)"
@@ -382,7 +410,7 @@ export function RoadmapSection({
                             width: "44px",
                             height: "44px",
                             background: isActive ? colors.accent : isPast ? colors.lightBg : "#F8FAFC",
-                            border: `2px solid ${isActive ? colors.accent : isPast ? (idx === 0 ? "rgba(0,0,0,0.1)" : colors.border) : "#E2E8F0"}`,
+                            border: `2px solid ${isActive ? colors.accent : isPast ? colors.border : "#E2E8F0"}`,
                             boxShadow: isActive ? `0 6px 16px ${colors.accent}28` : "none",
                             color: isActive ? "#ffffff" : isPast ? colors.accent : "#94A3B8"
                           }}
@@ -543,7 +571,8 @@ export function RoadmapSection({
                 { accent: "#10B981", lightBg: "#ECFDF5", border: "#A7F3D0" },
                 { accent: "#8B5CF6", lightBg: "#EDE9FE", border: "#DDD6FE" },
                 { accent: "#F59E0B", lightBg: "#FFFBEB", border: "#FDE68A" },
-                { accent: "#EC4899", lightBg: "#FDF2F8", border: "#FBCFE8" }
+                { accent: "#EC4899", lightBg: "#FDF2F8", border: "#FBCFE8" },
+                { accent: "#14B8A6", lightBg: "#E6FDFB", border: "#B2F5EA" }
               ][idx];
 
               return (
@@ -564,7 +593,7 @@ export function RoadmapSection({
                         color: isMobileActive ? "#ffffff" : colors.accent
                       }}
                     >
-                      <StepIcon className="w-4 h-4 stroke-[2.2]" />
+                      <StepIcon style={{ width: "16px", height: "16px", strokeWidth: 2.2 }} />
                     </div>
 
                     <div className="flex-1 min-w-0">

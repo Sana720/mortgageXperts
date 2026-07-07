@@ -90,9 +90,9 @@ export function BlogSection({
 
   const defaultHealthcare = {
     id: "default-h",
-    title: "Doctor Buys First Home With Zero LMI",
+    title: "Nurse Buys First Home With Zero LMI",
     slug: "doctor-buys-first-home-zero-lmi",
-    excerpt: "A junior doctor with HECS debt thought LMI was unavoidable. We matched them to the right lender, waived LMI entirely and got them into their first home 6 months earlier than expected.",
+    excerpt: "A registered nurse with HECS debt thought LMI was unavoidable. We matched them to the right lender, waived LMI entirely and got them into their first home 6 months earlier than expected.",
     coverImage: "/images/Healthcare Professionals.png",
     category: "Healthcare Professional"
   };
@@ -126,7 +126,7 @@ export function BlogSection({
   const healthcareOverlay = healthcare.slug === "doctor-buys-first-home-zero-lmi" ? {
     icon: <Shield className="w-4 h-4" />,
     bold: "Approved Fast",
-    sub: "Junior Doctor"
+    sub: "Registered Nurse"
   } : {
     icon: <Shield className="w-4 h-4" />,
     bold: "LMI Waived",

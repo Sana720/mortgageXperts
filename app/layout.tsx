@@ -16,6 +16,7 @@ const montserrat = Montserrat({
 
 import { loadPageData } from "@/lib/pageLoader";
 import { OnboardingModalProvider } from "@/app/components/OnboardingModalContext";
+import { WhatsAppWidget } from "@/app/components/WhatsAppWidget";
 
 export async function generateMetadata(): Promise<Metadata> {
   let titleVal = "Mortgage Xperts - Australia | Leading Nepali Mortgage Brokerage Firm";
@@ -103,6 +104,7 @@ export default function RootLayout({
       <body className="antialiased">
         <OnboardingModalProvider>
           {children}
+          <WhatsAppWidget />
         </OnboardingModalProvider>
       </body>
     </html>

@@ -13,7 +13,7 @@ export default function MortgageMateAssessmentPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleClose = () => {
-    router.push("/mortgage-mate");
+    router.push("/free-assessment");
   };
 
   return (

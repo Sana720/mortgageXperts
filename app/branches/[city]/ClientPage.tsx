@@ -495,7 +495,7 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
             {/* Accreditation / Trust Badges */}
             <div className="grid grid-cols-2 gap-4">
               {[
-                { icon: <Award className="w-5 h-5" />, title: "MFAA Accredited", desc: "Member of Mortgage & Finance Association of Australia" },
+                { icon: <Award className="w-5 h-5" />, title: "FBA Accredited", desc: "Member of Finance Brokers Association of Australasia" },
                 { icon: <Shield className="w-5 h-5" />, title: "ASIC Licensed", desc: "Australian Credit Licence — fully regulated broker" },
                 { icon: <TrendingUp className="w-5 h-5" />, title: "40+ Lenders", desc: `Access to 40+ lenders for ${cityData.city} borrowers` },
                 { icon: <Clock className="w-5 h-5" />, title: "Fast Pre-Approvals", desc: "Same-day assessment and 48hr pre-approval turnaround" },

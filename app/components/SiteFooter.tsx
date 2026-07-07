@@ -24,7 +24,7 @@ import { Stagger, StaggerItem, Reveal, VIEWPORT, EASE_OUT } from "@/lib/motion";
 function FooterNavLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <Link href={href} className="flex items-center gap-1.5 text-[12.5px] text-slate-300 hover:text-white transition-colors leading-snug">
-      <ChevronRight className="w-3.5 h-3.5 text-[#2563EB] shrink-0" strokeWidth={2.5} />
+      <ChevronRight className="w-3.5 h-3.5 text-[#10A3EB] shrink-0" strokeWidth={2.5} />
       <span>{children}</span>
     </Link>
   );
@@ -72,7 +72,7 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
   const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
   const phoneVal = settings.header_phone || "0450 240 757";
-  const emailVal = settings.support_email || "mortgage@mortgagexperts.com.au";
+  const emailVal = settings.support_email || "mortgage@mortgageexpert.com.au";
   const addressVal = settings.footer_address || "Level 20, 1 Market St, Sydney NSW 2000";
   const logoVal = settings.logo_url || "/images/logo.png";
   const fbVal = settings.facebook_url || "https://www.facebook.com/MortgageXperts.au/";
@@ -93,33 +93,33 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
         >
           <div className="flex items-start sm:items-center gap-4 flex-1 min-w-0">
             <div className="w-12 h-12 rounded-full bg-[#EAF3FF] border border-[#D8E7FF] flex items-center justify-center shrink-0">
-              <HomeIcon className="w-6 h-6 text-[#2563EB]" />
+              <HomeIcon className="w-6 h-6 text-[#10A3EB]" />
             </div>
             <p
               className="text-[18px] sm:text-[20px] lg:text-[22px] font-extrabold text-[#0B1F3A] leading-snug"
               style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
             >
-              Specialists in <span className="text-[#2563EB]">Healthcare</span> &amp; <span className="text-[#2563EB]">Investment</span> lending across Australia.
+              Specialists in <span className="text-[#10A3EB]">Healthcare</span> &amp; <span className="text-[#10A3EB]">Investment</span> lending across Australia.
             </p>
           </div>
 
           <div className="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-0 shrink-0">
             <div className="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-0">
               <div className="flex items-start gap-3 sm:px-6 lg:border-l lg:border-slate-200">
-                <MessageCircle className="w-5 h-5 text-[#2563EB] shrink-0 mt-0.5" />
+                <MessageCircle className="w-5 h-5 text-[#10A3EB] shrink-0 mt-0.5" />
                 <div>
                   <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Speak to an Expert</div>
-                  <a href={`tel:${phoneVal.replace(/\s+/g, "")}`} className="text-[16px] font-extrabold text-[#2563EB] hover:underline">
+                  <a href={`tel:${phoneVal.replace(/\s+/g, "")}`} className="text-[16px] font-extrabold text-[#10A3EB] hover:underline">
                     {phoneVal}
                   </a>
                   <div className="text-[11px] text-slate-400 mt-0.5">Mon - Fri 8am - 6pm AEST</div>
                 </div>
               </div>
               <div className="flex items-start gap-3 sm:px-6 sm:border-l sm:border-slate-200">
-                <Mail className="w-5 h-5 text-[#2563EB] shrink-0 mt-0.5" />
+                <Mail className="w-5 h-5 text-[#10A3EB] shrink-0 mt-0.5" />
                 <div>
                   <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Email Us</div>
-                  <a href={`mailto:${emailVal}`} className="text-[14px] sm:text-[15px] font-extrabold text-[#2563EB] hover:underline break-all">
+                  <a href={`mailto:${emailVal}`} className="text-[14px] sm:text-[15px] font-extrabold text-[#10A3EB] hover:underline break-all">
                     {emailVal}
                   </a>
                   <div className="text-[11px] text-slate-400 mt-0.5">We reply within 24 hours</div>
@@ -129,7 +129,7 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
             <button
               type="button"
               onClick={openModal}
-              className="cursor-pointer border-0 inline-flex items-center justify-center gap-2 rounded-xl bg-[#2563EB] text-white font-bold text-[13px] px-6 py-3.5 hover:bg-[#1d4ed8] transition-colors shadow-md shadow-blue-200 whitespace-nowrap lg:ml-6"
+              className="cursor-pointer border-0 inline-flex items-center justify-center gap-2 rounded-xl bg-[#10A3EB] text-white font-bold text-[13px] px-6 py-3.5 hover:bg-[#0e92d3] transition-colors shadow-md shadow-sky-200 whitespace-nowrap lg:ml-6"
             >
               Book a Free Consultation
               <ArrowRight className="w-4 h-4" />
@@ -247,7 +247,7 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
 
               <div>
                 <div className="flex items-center gap-2 mb-4">
-                  <MapPin className="w-4 h-4 text-[#2563EB]" />
+                  <MapPin className="w-4 h-4 text-[#10A3EB]" />
                   <h4 className="text-[13px] font-extrabold text-white">Locations</h4>
                 </div>
                 <div className="flex flex-col gap-2.5">
@@ -262,13 +262,13 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
 
               <div>
                 <div className="flex items-center gap-2 mb-4">
-                  <Shield className="w-4 h-4 text-[#2563EB]" />
+                  <Shield className="w-4 h-4 text-[#10A3EB]" />
                   <h4 className="text-[13px] font-extrabold text-white">About Us</h4>
                 </div>
                 <div className="flex flex-col gap-2.5">
                   <FooterNavLink href="/about-us-nepali-mortgage-broker-in-australia">About Mortgage Xperts</FooterNavLink>
                   <FooterNavLink href="#">Our Lenders</FooterNavLink>
-                  <FooterNavLink href="/mortgage-mate">Reviews</FooterNavLink>
+                  <FooterNavLink href="/free-assessment">Reviews</FooterNavLink>
                   <FooterNavLink href="#">Careers</FooterNavLink>
                   <FooterNavLink href="/best-nepali-investment-mortgage-broker-perth">Contact Us</FooterNavLink>
                 </div>
@@ -281,10 +281,10 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
             <div className="flex flex-col xl:flex-row xl:items-center gap-6">
               <div className="flex items-start gap-4 flex-1 min-w-0">
                 <div className="relative shrink-0">
-                  <div className="w-11 h-11 rounded-full bg-[#2563EB]/20 border border-[#2563EB]/30 flex items-center justify-center">
+                  <div className="w-11 h-11 rounded-full bg-[#10A3EB]/20 border border-[#10A3EB]/30 flex items-center justify-center">
                     <Mail className="w-5 h-5 text-[#38BDF8]" />
                   </div>
-                  <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-[#2563EB] border-2 border-[#0a1628]" />
+                  <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-[#10A3EB] border-2 border-[#0a1628]" />
                 </div>
                 <p className="text-[14px] sm:text-[15px] text-slate-300 leading-relaxed">
                   Stay ahead with the latest{" "}
@@ -300,7 +300,7 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
                     value={newsletterEmail}
                     onChange={(e) => setNewsletterEmail(e.target.value)}
                     placeholder="Enter your email address"
-                    className="w-full rounded-xl border border-white/20 bg-[#000b1e] py-3.5 pl-11 pr-[120px] text-[13px] text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/40"
+                    className="w-full rounded-xl border border-white/20 bg-[#000b1e] py-3.5 pl-11 pr-[120px] text-[13px] text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#10A3EB]/40"
                   />
                   <button
                     type="button"
@@ -326,7 +326,7 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
                         setNewsletterStatus("error");
                       }
                     }}
-                    className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-lg bg-[#2563EB] px-4 py-2 text-[12px] font-bold text-white hover:bg-[#1d4ed8] transition-colors inline-flex items-center gap-1 disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-lg bg-[#10A3EB] px-4 py-2 text-[12px] font-bold text-white hover:bg-[#0e92d3] transition-colors inline-flex items-center gap-1 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
                   >
                     {newsletterStatus === "submitting" ? "Sending..." : newsletterStatus === "success" ? "Subscribed ✓" : "Subscribe"}
                     {newsletterStatus !== "success" && <ArrowRight className="w-3.5 h-3.5" />}
@@ -336,11 +336,11 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
 
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 text-[11px] text-slate-400 xl:shrink-0">
                 <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
-                  <Shield className="w-3.5 h-3.5 text-[#2563EB] shrink-0" />
+                  <Shield className="w-3.5 h-3.5 text-[#10A3EB] shrink-0" />
                   No spam. Ever. Unsubscribe anytime.
                 </span>
                 <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
-                  <Lock className="w-3.5 h-3.5 text-[#2563EB] shrink-0" />
+                  <Lock className="w-3.5 h-3.5 text-[#10A3EB] shrink-0" />
                   Your privacy is our priority.
                 </span>
               </div>
@@ -364,7 +364,7 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
               </div>
             </div>
             <div className="flex items-center gap-2 text-slate-400 shrink-0">
-              <svg className="w-4 h-4 text-[#2563EB] shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+              <svg className="w-4 h-4 text-[#10A3EB] shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
                 <path d="M12 2C8.5 2 5.5 4 4 7c-1.2 2.2-1 5 .5 7.2.8 1.1 2 2.5 3.5 4.3.9 1.1 1.8 2.2 2.5 3.2.4.6.9 1.3 1 1.3s.6-.7 1-1.3c.7-1 1.6-2.1 2.5-3.2 1.5-1.8 2.7-3.2 3.5-4.3 1.5-2.2 1.7-5 .5-7.2C18.5 4 15.5 2 12 2zm0 5.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5z" />
               </svg>
               <span>Australian Credit Licence 389087</span>

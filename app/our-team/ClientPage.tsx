@@ -64,7 +64,7 @@ export default function OurTeamClient({ initialTeamMembers = [] }: { initialTeam
               </div>
               
               {/* Card Body */}
-              <div className="relative p-6 md:p-8 pt-16 flex flex-col flex-grow">
+              <div className="relative p-6 md:p-8 pt-20 flex flex-col flex-grow">
                 {/* Overlapping Avatar */}
                 <div className="absolute -top-12 left-6 md:left-8 w-24 h-24 rounded-full border-4 border-white shadow-md overflow-hidden bg-white z-10 group-hover:scale-105 transition-transform duration-300">
                   {member.image.includes('ui-avatars') ? (
@@ -81,7 +81,7 @@ export default function OurTeamClient({ initialTeamMembers = [] }: { initialTeam
                 </div>
 
                 <h3 
-                  className="text-[20px] font-bold text-[#0B1F3A] mb-1"
+                  className="text-[20px] font-bold text-[#0B1F3A] mb-1 mt-6"
                   style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
                 >
                   {member.name}

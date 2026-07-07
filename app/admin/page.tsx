@@ -52,6 +52,7 @@ type Enquiry = {
   state?: string;
   status: string;
   message?: string;
+  details?: string;
   createdAt: string;
 };
 
@@ -159,7 +160,7 @@ export default function AdminPage() {
     { value: "/cash-rate-change-calculator", label: "Cash Rate Change Calculator (/cash-rate-change-calculator)" },
     { value: "/ytd-calculator", label: "YTD Calculator (/ytd-calculator)" },
     { value: "/refinancing-feasibility", label: "Refinancing Feasibility Calculator (/refinancing-feasibility)" },
-    { value: "/mortgage-mate", label: "Mortgage Mate (/mortgage-mate)" },
+    { value: "/free-assessment", label: "Mortgage Mate (/free-assessment)" },
     { value: "/branches/adelaide", label: "Adelaide Branch (/branches/adelaide)" },
     { value: "/branches/brisbane", label: "Brisbane Branch (/branches/brisbane)" },
     { value: "/branches/melbourne", label: "Melbourne Branch (/branches/melbourne)" },
@@ -3216,15 +3217,20 @@ export default function AdminPage() {
 
       {/* ── CLIENT DETAILS MODAL ── */}
       {selectedEnquiry && (() => {
-        const parseJSON = (str: string | undefined) => {
-          if (!str) return null;
+        const parseJSON = () => {
           try {
-            return JSON.parse(str);
-          } catch (e) {
-            return null;
-          }
+            if (selectedEnquiry.message && selectedEnquiry.message.trim().startsWith('{')) {
+              return JSON.parse(selectedEnquiry.message);
+            }
+          } catch (e) {}
+          try {
+            if (selectedEnquiry.details && selectedEnquiry.details.trim().startsWith('{')) {
+              return JSON.parse(selectedEnquiry.details);
+            }
+          } catch (e) {}
+          return null;
         };
-        const detailsObj = parseJSON(selectedEnquiry.message);
+        const detailsObj = parseJSON();
         return (
           <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto animate-fade-in">
             <div className="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-100 overflow-hidden flex flex-col my-8">
@@ -3410,7 +3416,7 @@ export default function AdminPage() {
                   </div>
                 ) : (
                   // Fallback for regular message details
-                  selectedEnquiry.message && (
+                  selectedEnquiry.message && !selectedEnquiry.message.trim().startsWith('{') && (
                     <div className="border-t border-slate-100 pt-5 space-y-3">
                       <h4 className="text-slate-900 text-xs font-extrabold uppercase tracking-widest flex items-center gap-2">
                         <span className="w-1.5 h-1.5 rounded-full bg-blue-600" />

@@ -48,7 +48,7 @@ export function MortgageMateForm({
   const [dashboardProgress, setDashboardProgress] = useState(0);
 
   // Form State - Phase 1: Personal Details
-  const [numApplicants, setNumApplicants] = useState<"single" | "joint" | "">("");
+  const [numApplicants, setNumApplicants] = useState<"single" | "joint" | "">("single");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -58,17 +58,17 @@ export function MortgageMateForm({
   const [app2Email, setApp2Email] = useState("");
   const [app2Phone, setApp2Phone] = useState("");
 
-  const [employmentStatus, setEmploymentStatus] = useState<string[]>([]);
+  const [employmentStatus, setEmploymentStatus] = useState<string[]>(["FULL_TIME"]);
 
   // Form State - Phase 2: Property & Financial Details
-  const [loanPurpose, setLoanPurpose] = useState("");
+  const [loanPurpose, setLoanPurpose] = useState("BUY_A_PROPERTY");
   const [propertyWorth, setPropertyWorth] = useState(""); // price / value / combined cost
   const [loanAmount, setLoanAmount] = useState("");
-  const [depositFunds, setDepositFunds] = useState("");
+  const [depositFunds, setDepositFunds] = useState("YES");
   const [amountOfSavings, setAmountOfSavings] = useState("");
-  const [creditHistory, setCreditHistory] = useState("");
+  const [creditHistory, setCreditHistory] = useState("ITS_PERFECT");
   const [comments, setComments] = useState("");
-  const [state, setState] = useState("NSW"); // default state option
+  const [state, setState] = useState<string | null>(null); // null by default, user inputs at step 12
 
   const totalSteps = 12;
   const hasInlineButton = true;
@@ -126,16 +126,49 @@ export function MortgageMateForm({
     }
   };
 
+  const submitPartialDetails = async () => {
+    if (!fullName || !email || !phone) return;
+    if (numApplicants === "joint" && (!app2Name || !app2Email || !app2Phone)) return;
+
+    const payload = {
+      type: "mortgage_mate",
+      name: numApplicants === "joint" ? `${fullName} & ${app2Name} (Partial)` : `${fullName} (Partial)`,
+      email: numApplicants === "joint" ? `${email} / ${app2Email}` : email,
+      phone: numApplicants === "joint" ? `${phone} / ${app2Phone}` : phone,
+      savings: "Partial Submission",
+      income: "Partial Submission",
+      state: state || null,
+      details: JSON.stringify({
+        numApplicants,
+        partial: true,
+        applicant1: { name: fullName, email, phone },
+        applicant2: numApplicants === "joint" ? { name: app2Name, email: app2Email, phone: app2Phone } : null
+      })
+    };
+
+    try {
+      await fetch("/api/enquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+    } catch (err) {
+      console.error("Failed to submit partial details:", err);
+    }
+  };
+
   const handleNext = () => {
     if (step === 1) {
       setStep(2);
     } else if (step === 2) {
       if (numApplicants === "single") {
+        submitPartialDetails();
         setStep(4);
       } else {
         setStep(3);
       }
     } else if (step === 3) {
+      submitPartialDetails();
       setStep(4);
     } else if (step === 9) {
       if (depositFunds === "YES" || depositFunds === "YES_AND_GUARANTOR") {
@@ -258,7 +291,7 @@ export function MortgageMateForm({
       case 9: return "Understanding your deposit source helps us determine if you qualify for LMI waivers or grants.";
       case 10: return "A clear view of your savings helps us negotiate the best possible rate discounts.";
       case 11: return "Different lenders have different policies. This helps us match you with the right one.";
-      case 12: return "Any extra context helps Aakash provide a more accurate and comprehensive strategy.";
+      case 12: return "Any extra context helps Mortgage Xperts provide a more accurate and comprehensive strategy.";
       default: return "";
     }
   };
@@ -476,11 +509,11 @@ export function MortgageMateForm({
             {dashboardProgress >= 100 ? (
               <div className="space-y-3 mt-6 pt-4 border-t border-slate-100 text-left text-xs font-semibold text-slate-650">
                 <p className="leading-relaxed">
-                  Aakash has been notified of your assessment details and will reach out to you within 1 business hour.
+                  Aakash has been notified of your assessment details and will reach out to you within 1 business day.
                 </p>
                 <div className="bg-slate-50 rounded-xl p-3 border border-slate-100 space-y-1.5 font-bold text-slate-800 text-[11px]">
                   <div>📞 Mobile: <a href="tel:0450240757" className="text-[#2563EB] hover:underline font-bold">0450 240 757</a></div>
-                  <div>✉️ Email: <a href="mailto:info@mortgagexperts.com.au" className="text-[#2563EB] hover:underline font-bold font-montserrat">info@mortgagexperts.com.au</a></div>
+                  <div>✉️ Email: <a href="mailto:mortgage@mortgageexpert.com.au" className="text-[#2563EB] hover:underline font-bold font-montserrat">mortgage@mortgageexpert.com.au</a></div>
                 </div>
               </div>
             ) : (
@@ -535,7 +568,7 @@ export function MortgageMateForm({
               </div>
               <div className="text-left">
                 <h4 className="text-[#0B1F3A] text-xs font-bold leading-none">Aakash KC</h4>
-                <p className="text-[#10A3EB] text-[9.5px] font-bold mt-0.5">Principal Advisor & MFAA Member</p>
+                <p className="text-[#10A3EB] text-[9.5px] font-bold mt-0.5">Principal Advisor & FBA Member</p>
               </div>
             </div>
 
@@ -670,7 +703,7 @@ export function MortgageMateForm({
                 <div className="flex items-center justify-between pt-0.5">
                   <div className="flex items-center gap-1">
                     <ShieldCheck className="w-2.5 h-2.5 text-[#10A3EB]" />
-                    <span className="text-[8px] text-slate-500 font-bold">MFAA Member</span>
+                    <span className="text-[8px] text-slate-500 font-bold">FBA Member</span>
                   </div>
                   
                   <div className="flex items-center gap-1">
@@ -731,7 +764,6 @@ export function MortgageMateForm({
                             key={obj.value}
                             onClick={() => {
                               setNumApplicants(obj.value as "single" | "joint");
-                              setStep(2);
                             }}
                             className={`w-full rounded-2xl border-0 py-3.5 px-6 text-center font-bold text-[13.5px] transition-all duration-300 cursor-pointer ${
                               numApplicants === obj.value

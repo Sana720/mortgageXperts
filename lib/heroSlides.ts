@@ -142,7 +142,7 @@ const SLIDE_CONTENT_FALLBACKS: Pick<
     title: "Exclusive Mortgage Benefits for Health Professionals",
     subtext:
       "Get up to 95% LVR with zero Lenders Mortgage Insurance (LMI) and discounted interest rates tailored for medical practitioners and healthcare staff.",
-    image: "/images/hero_slide_2_green.png",
+    image: "/images/Healthcare Professionals.png",
     btnText1: "Get Started",
     btnLink1: "/home-loan-for-doctors",
     btnText2: "Free Strategy Call",

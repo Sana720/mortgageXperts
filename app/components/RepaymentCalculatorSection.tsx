@@ -12,6 +12,8 @@ import {
   ChevronRight,
 } from "lucide-react";
 
+import { useOnboardingModal } from "@/app/components/OnboardingModalContext";
+
 interface CalcResults {
   monthly: number;
   weekly: number;
@@ -106,6 +108,7 @@ function calculate(
 }
 
 export function RepaymentCalculatorSection() {
+  const { openModal } = useOnboardingModal();
   const [loanAmount, setLoanAmount] = useState(750000);
   const [interestRate, setInterestRate] = useState(6.19);
   const [loanTerm, setLoanTerm] = useState(30);
@@ -364,7 +367,7 @@ export function RepaymentCalculatorSection() {
                 <span className="text-slate-600">Balance Over Time</span>
                 <div className="flex gap-3">
                   <span className="text-slate-400">● Scheduled</span>
-                  <span className="text-[#2563EB]">● With Extra</span>
+                  <span className="text-[#10A3EB]">● With Extra</span>
                 </div>
               </div>
               <div className="relative w-full">
@@ -382,11 +385,11 @@ export function RepaymentCalculatorSection() {
                       <stop offset="100%" stopColor="#94A3B8" stopOpacity="0" />
                     </linearGradient>
                     <linearGradient id="mmExtGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#2563EB" stopOpacity="0.15" />
-                      <stop offset="100%" stopColor="#2563EB" stopOpacity="0" />
+                      <stop offset="0%" stopColor="#10A3EB" stopOpacity="0.15" />
+                      <stop offset="100%" stopColor="#10A3EB" stopOpacity="0" />
                     </linearGradient>
                   </defs>
-
+ 
                   {/* Grid lines */}
                   {[0, 0.25, 0.5, 0.75, 1].map((r) => {
                     const y = chart.PT + r * (chart.H - chart.PT - chart.PB);
@@ -400,7 +403,7 @@ export function RepaymentCalculatorSection() {
                       </g>
                     );
                   })}
-
+ 
                   {/* X-axis */}
                   {Array.from({ length: Math.ceil(loanTerm / 5) + 1 }).map((_, i) => {
                     const yr = i * 5;
@@ -412,17 +415,17 @@ export function RepaymentCalculatorSection() {
                       </text>
                     );
                   })}
-
+ 
                   <path d={chart.schArea} fill="url(#mmSchGrad)" />
                   <path d={chart.extArea} fill="url(#mmExtGrad)" />
                   <path d={`M ${chart.schPts}`} fill="none" stroke="#94A3B8" strokeWidth="1.5" strokeLinecap="round" />
-                  <path d={`M ${chart.extPts}`} fill="none" stroke="#2563EB" strokeWidth="2.0" strokeLinecap="round" />
-
+                  <path d={`M ${chart.extPts}`} fill="none" stroke="#10A3EB" strokeWidth="2.0" strokeLinecap="round" />
+ 
                   {hoveredIdx !== null && (
                     <g>
                       <line x1={chart.gx(hoveredIdx)} y1={chart.PT} x2={chart.gx(hoveredIdx)} y2={chart.H - chart.PB} stroke="#94A3B8" strokeWidth="1" strokeDasharray="4,4" />
                       <circle cx={chart.gx(hoveredIdx)} cy={chart.gy(chart.sch[hoveredIdx])} r="4" fill="#94A3B8" stroke="#fff" strokeWidth="1.5" />
-                      <circle cx={chart.gx(hoveredIdx)} cy={chart.gy(chart.ext[hoveredIdx])} r="5" fill="#2563EB" stroke="#fff" strokeWidth="2" />
+                      <circle cx={chart.gx(hoveredIdx)} cy={chart.gy(chart.ext[hoveredIdx])} r="5" fill="#10A3EB" stroke="#fff" strokeWidth="2" />
                     </g>
                   )}
                 </svg>
@@ -455,12 +458,13 @@ export function RepaymentCalculatorSection() {
 
             {/* CTA */}
             <div className="flex flex-col sm:flex-row gap-3 pt-1">
-              <Link
-                href="/mortgage-mate/assessment"
-                className="flex-1 bg-[#2563EB] hover:bg-[#1d4ed8] text-white font-extrabold text-[12px] uppercase tracking-wider py-3 px-5 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20 transition-all hover:scale-[1.02]"
+              <button
+                type="button"
+                onClick={openModal}
+                className="flex-1 bg-[#10A3EB] hover:bg-[#0e92d3] text-white font-extrabold text-[12px] uppercase tracking-wider py-3 px-5 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-sky-500/20 transition-all hover:scale-[1.02] cursor-pointer"
               >
                 Get Expert Advice <ArrowRight className="w-4 h-4" />
-              </Link>
+              </button>
               <Link
                 href="/loan-repayment-calculator"
                 className="flex-1 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-[#0B1F3A] font-extrabold text-[12px] uppercase tracking-wider py-3 px-5 rounded-xl flex items-center justify-center gap-2 transition-all"

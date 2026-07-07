@@ -490,9 +490,9 @@ function SuccessStoriesSection({ settings = {} }: { settings?: Record<string, st
 
   const defaultHealthcare = {
     id: "default-h",
-    title: "Doctor Buys First Home With Zero LMI",
+    title: "Nurse Buys First Home With Zero LMI",
     slug: "doctor-buys-first-home-zero-lmi",
-    excerpt: "A junior doctor with HECS debt thought LMI was unavoidable. We matched them to the right lender, waived LMI entirely and got them into their first home 6 months earlier than expected.",
+    excerpt: "A registered nurse with HECS debt thought LMI was unavoidable. We matched them to the right lender, waived LMI entirely and got them into their first home 6 months earlier than expected.",
     coverImage: "/images/Healthcare Professionals.png",
     category: "Healthcare Professional"
   };
@@ -526,7 +526,7 @@ function SuccessStoriesSection({ settings = {} }: { settings?: Record<string, st
   const healthcareOverlay = healthcare.slug === "doctor-buys-first-home-zero-lmi" ? {
     icon: <Shield className="w-4 h-4" />,
     bold: "Approved Fast",
-    sub: "Junior Doctor"
+    sub: "Registered Nurse"
   } : {
     icon: <Shield className="w-4 h-4" />,
     bold: "LMI Waived",
@@ -1639,25 +1639,41 @@ export default function ClientHomePage({ settings = {}, pageHeroSettings }: Clie
               </div>
             </div>
 
-            {/* Subtle Horizontal Divider */}
-            <div className="h-px bg-slate-100 w-full" />
-
-            {/* Bottom Row: Elite Bank Broker Status Badges */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-1 w-full">
-              <div className="flex items-center gap-2 shrink-0">
-                <Shield className="w-4 h-4 text-[#2563EB]" />
-                <span className="text-[11.5px] font-bold text-[#0B1F3A] uppercase tracking-wider">
-                  Premium Bank Partnerships
-                </span>
+            {/* Partnership Badges (Clean Premium Redesign) */}
+            <div className="border-t border-slate-200/60 pt-6">
+              <div className="text-center md:text-left mb-4 flex items-center gap-2">
+                <Shield className="w-4 h-4 text-[#10A3EB]" />
+                <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#10A3EB]">Credibility & Accreditations</span>
               </div>
               
-              {/* Partnership Badge */}
-              <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-                {/* St.George Flame */}
-                <div className="inline-flex items-center gap-1.5 bg-[#FDFBF7] border border-[#EBE6DD] rounded-xl px-2.5 py-1.5 sm:px-4 sm:py-2 shadow-[0_2px_8px_rgba(0,0,0,0.01)] transition-all duration-300 hover:scale-[1.02] hover:shadow-sm">
-                  <FlameIcon />
-                  <span className="text-[#0B1F3A] font-bold text-[11px] sm:text-[12.5px] tracking-wide whitespace-nowrap">St.George Flame</span>
-                </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                {[
+                  { title: "St.George Flame Broker", desc: "Top-tier lending privileges", color: "bg-red-500" },
+                  { title: "Westpac Platinum Broker", desc: "Elite priority channel", color: "bg-red-600" },
+                  { title: "ANZ Key Partner", desc: "Direct priority escalations", color: "bg-blue-600" },
+                  { title: "NAB Professional Partner", desc: "Advanced support access", color: "bg-[#D12B2F]" },
+                  { title: "Macquarie Premium Partner", desc: "Streamlined fast-track processing", color: "bg-slate-800" },
+                  { title: "Bankwest Gold Broker", desc: "Priority verification & review", color: "bg-[#EDAC1A]" },
+                  { title: "Suncorp Priority Partner", desc: "Dedicated package privileges", color: "bg-emerald-600" },
+                  { title: "Liberty Preferred Broker", desc: "Custom loan program access", color: "bg-purple-600" }
+                ].map((badge, idx) => (
+                  <div 
+                    key={idx} 
+                    className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100/80 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.02)]"
+                  >
+                    <div className="relative shrink-0 flex items-center justify-center">
+                      {idx === 0 ? (
+                        <FlameIcon />
+                      ) : (
+                        <span className={`w-2.5 h-2.5 rounded-full ${badge.color}`} />
+                      )}
+                    </div>
+                    <div className="flex flex-col text-left">
+                      <span className="text-[#0B1F3A] font-extrabold text-[12px] leading-snug">{badge.title}</span>
+                      <span className="text-slate-400 text-[10px] font-medium leading-none mt-0.5">{badge.desc}</span>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </motion.div>
