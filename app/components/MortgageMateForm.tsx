@@ -568,7 +568,7 @@ export function MortgageMateForm({
               </div>
               <div className="text-left">
                 <h4 className="text-[#0B1F3A] text-xs font-bold leading-none">Aakash KC</h4>
-                <p className="text-[#10A3EB] text-[9.5px] font-bold mt-0.5">Principal Advisor & FBA Member</p>
+                <p className="text-[#10A3EB] text-[9.5px] font-bold mt-0.5">Principal Advisor & FBAA Member</p>
               </div>
             </div>
 
@@ -703,7 +703,7 @@ export function MortgageMateForm({
                 <div className="flex items-center justify-between pt-0.5">
                   <div className="flex items-center gap-1">
                     <ShieldCheck className="w-2.5 h-2.5 text-[#10A3EB]" />
-                    <span className="text-[8px] text-slate-500 font-bold">FBA Member</span>
+                    <span className="text-[8px] text-slate-500 font-bold">FBAA Member</span>
                   </div>
                   
                   <div className="flex items-center gap-1">

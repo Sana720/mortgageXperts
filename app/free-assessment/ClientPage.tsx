@@ -341,7 +341,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
                     <div className="w-4.5 h-4.5 rounded-full bg-blue-50 flex items-center justify-center text-[#10A3EB] shrink-0">
                       <ShieldCheck className="w-3 h-3 text-[#10A3EB]" />
                     </div>
-                    <span className="text-[10px] text-slate-600 font-bold">FBA Member</span>
+                    <span className="text-[10px] text-slate-600 font-bold">FBAA Member</span>
                   </div>
                   
                   <div className="flex items-center gap-1.5">
