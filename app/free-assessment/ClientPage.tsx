@@ -615,7 +615,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
               {[
                 { title: "St.George Flame Broker", desc: "Top-tier lending privileges", color: "bg-red-500", lightBg: "bg-red-50/40" },
                 { title: "Westpac Platinum Broker", desc: "Elite priority channel", color: "bg-red-600", lightBg: "bg-red-50/20" },
-                { title: "CBA Elite Partner", desc: "Premium priority access", color: "bg-yellow-450", lightBg: "bg-amber-50/30" }
+                { title: "CBA Elite Partner", desc: "Premium priority access", color: "bg-yellow-400", lightBg: "bg-amber-50/30" }
               ].map((badge, idx) => (
                 <div 
                   key={idx} 

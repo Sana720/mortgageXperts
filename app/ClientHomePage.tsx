@@ -1650,7 +1650,7 @@ export default function ClientHomePage({ settings = {}, pageHeroSettings }: Clie
                 {[
                   { title: "St.George Flame Broker", desc: "Top-tier lending privileges", color: "bg-red-500" },
                   { title: "Westpac Platinum Broker", desc: "Elite priority channel", color: "bg-red-600" },
-                  { title: "CBA Elite Partner", desc: "Premium priority access", color: "bg-yellow-450" }
+                  { title: "CBA Elite Partner", desc: "Premium priority access", color: "bg-yellow-400" }
                 ].map((badge, idx) => (
                   <div 
                     key={idx} 
