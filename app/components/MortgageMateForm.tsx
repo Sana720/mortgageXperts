@@ -48,7 +48,7 @@ export function MortgageMateForm({
   const [dashboardProgress, setDashboardProgress] = useState(0);
 
   // Form State - Phase 1: Personal Details
-  const [numApplicants, setNumApplicants] = useState<"single" | "joint" | "">("single");
+  const [numApplicants, setNumApplicants] = useState<"single" | "joint" | "">("joint");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -756,8 +756,8 @@ export function MortgageMateForm({
                       <label className="text-[13.5px] font-extrabold text-[#0B1F3A] block">How many applicants are there?</label>
                       <div className="grid grid-cols-1 gap-3">
                         {[
-                          { value: "single", label: "Single Applicant" },
-                          { value: "joint", label: "Joint Applicants (2 Applicants)" }
+                          { value: "joint", label: "Joint Applicants (2 Applicants)" },
+                          { value: "single", label: "Single Applicant" }
                         ].map((obj) => (
                           <button
                             type="button"
