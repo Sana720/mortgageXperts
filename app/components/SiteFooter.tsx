@@ -353,11 +353,16 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
               <span>© 2026 Mortgage Xperts. All Rights Reserved.</span>
               <span className="hidden sm:inline text-white/20">·</span>
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                {["Privacy Policy", "Terms & Conditions", "Credit Guide", "Disclaimer"].map((item, i) => (
-                  <span key={item} className="flex items-center gap-3">
+                {[
+                  { name: "Privacy Policy", href: "/privacy-policy" },
+                  { name: "Terms & Conditions", href: "/terms-and-conditions" },
+                  { name: "Credit Guide", href: "/credit-guide" },
+                  { name: "Disclaimer", href: "/disclaimer" }
+                ].map((item, i) => (
+                  <span key={item.name} className="flex items-center gap-3">
                     {i > 0 && <span className="text-white/20 hidden sm:inline">·</span>}
-                    <Link href="#" className="hover:text-white transition-colors">
-                      {item}
+                    <Link href={item.href} className="hover:text-white transition-colors">
+                      {item.name}
                     </Link>
                   </span>
                 ))}
