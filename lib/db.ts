@@ -193,7 +193,22 @@ const tables = [
   ('/stamp-duty-calculator/stamp-duty-in-nt', 'NT Stamp Duty Calculator | Calculate Government Fees | Mortgage Xperts', 'Calculate Northern Territory stamp duty, registration fees, and mortgage registration costs. Check HomeGrown Territory Grant options and first home buyer benefits.', 'NT stamp duty calculator, stamp duty calculator NT, first home buyer concession NT, Northern Territory stamp duty rates', 'Government Fees Modeler', 'NT Stamp Duty Calculator', 'Model stamp duty and registration fees in the Northern Territory. Check if you qualify for the HomeGrown Territory Grant and stamp duty concessions.', '/images/hero.png', 'Start Calculations', '#calculator-tool', 'Talk to a Broker', '#enquiry-form', '[]'),
   ('/stamp-duty-calculator/stamp-duty-in-tas', 'TAS Stamp Duty Calculator | Calculate Stamp Duty | Mortgage Xperts', 'Calculate Tasmania stamp duty, registration fees, and mortgage registration costs. Learn about TAS first home buyer concessions and duty exemptions.', 'TAS stamp duty calculator, stamp duty calculator TAS, first home buyer concession TAS, Tasmania stamp duty rates', 'Government Fees Modeler', 'TAS Stamp Duty Calculator', 'Model stamp duty fees and first home buyer concessions in Tasmania. Check eligibility for duty exemptions and the $30,000 First Home Owner Grant.', '/images/hero.png', 'Start Calculations', '#calculator-tool', 'Talk to a Broker', '#enquiry-form', '[]'),
   ('/refinancing-feasibility', 'Refinancing Feasibility Calculator | Mortgage Xperts', 'Calculate whether refinancing your home loan makes financial sense. Compare your current loan with a new rate and see your break-even point.', 'refinancing calculator, should I refinance, refinancing feasibility, break-even refinancing, refinance home loan Australia', 'Refinancing Decision Tool', 'Refinancing Feasibility Calculator', 'Model the true cost of switching lenders and see your break-even point. Enter your current loan details and new rate to find out if refinancing is the right move.', '/images/hero.png', 'Calculate Feasibility', '#calculator-tool', 'Talk to a Broker', '#enquiry-form', '[]'),
-  ('/mortgage-mate', 'Mortgage Mate | Get a Personalised Home Loan Assessment | Mortgage Xperts', 'Start your personalised mortgage journey with Mortgage Mate — our guided assessment tool that matches your profile with the right lender in minutes.', 'mortgage mate, personalised mortgage assessment, home loan assessment tool, find the right mortgage, mortgage matching Australia', 'Your Mortgage Journey Starts Here', 'Mortgage Mate — Personalised Home Loan Assessment', 'Complete our guided assessment and get matched with the right lender for your situation. Mortgage Mate analyses your profile, goals and finances to deliver a tailored lending strategy.', '/images/hero.png', 'Start Assessment', '#mortgage-mate-form', 'Learn More', '#how-it-works', '[]')`
+  ('/mortgage-mate', 'Mortgage Mate | Get a Personalised Home Loan Assessment | Mortgage Xperts', 'Start your personalised mortgage journey with Mortgage Mate — our guided assessment tool that matches your profile with the right lender in minutes.', 'mortgage mate, personalised mortgage assessment, home loan assessment tool, find the right mortgage, mortgage matching Australia', 'Your Mortgage Journey Starts Here', 'Mortgage Mate — Personalised Home Loan Assessment', 'Complete our guided assessment and get matched with the right lender for your situation. Mortgage Mate analyses your profile, goals and finances to deliver a tailored lending strategy.', '/images/hero.png', 'Start Assessment', '#mortgage-mate-form', 'Learn More', '#how-it-works', '[]')`,
+  `CREATE TABLE IF NOT EXISTS blog_categories (
+      id VARCHAR(191) PRIMARY KEY,
+      name VARCHAR(255) UNIQUE NOT NULL,
+      createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )`,
+  `INSERT IGNORE INTO blog_categories (id, name) VALUES 
+  ('1', 'Blog'),
+  ('2', 'News & Insights'),
+  ('3', 'Refinancing'),
+  ('4', 'Buying a Home'),
+  ('5', 'Property Investment'),
+  ('6', 'Market Updates'),
+  ('7', 'Featured Story'),
+  ('8', 'Refinance Story'),
+  ('9', 'Healthcare Professional')`
 ];
 
 

@@ -57,7 +57,16 @@ export default function BlogClient({ initialPosts }: BlogClientProps) {
   }, [rawPosts]);
 
   // List of unique categories for filters
-  const categories = ['All', 'Buying a Home', 'Property Investment', 'Refinancing', 'Market Updates'];
+  const categories = useMemo(() => {
+    const cats = new Set<string>();
+    cats.add('All');
+    enhancedPosts.forEach(post => {
+      if (post.subCategory) {
+        cats.add(post.subCategory);
+      }
+    });
+    return Array.from(cats);
+  }, [enhancedPosts]);
 
   // Filter posts based on tab and search query
   const filteredPosts = useMemo(() => {

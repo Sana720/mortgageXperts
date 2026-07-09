@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
 import {
   LayoutDashboard,
@@ -217,6 +217,12 @@ export default function AdminPage() {
     category: "Blog",
     published: false
   });
+
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
+  const [blogSubTab, setBlogSubTab] = useState<"posts" | "categories">("posts");
+  const [categoryInputText, setCategoryInputText] = useState("");
+  const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null);
+  const [editingCategoryText, setEditingCategoryText] = useState("");
 
   const [testimonialModalOpen, setTestimonialModalOpen] = useState(false);
   const [editingTestimonial, setEditingTestimonial] = useState<Testimonial | null>(null);
@@ -506,6 +512,10 @@ export default function AdminPage() {
         const res = await fetch("/api/admin/blogs");
         const data = await res.json();
         setBlogs(Array.isArray(data) ? data : []);
+
+        const catRes = await fetch("/api/admin/categories");
+        const catData = await catRes.json();
+        setCategories(Array.isArray(catData) ? catData : []);
       } else if (activeTab === "testimonials") {
         const res = await fetch("/api/admin/testimonials");
         const data = await res.json();
@@ -749,6 +759,64 @@ export default function AdminPage() {
       }
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const handleAddCategory = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!categoryInputText.trim()) return;
+    try {
+      const res = await fetch("/api/admin/categories", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: categoryInputText.trim() })
+      });
+      if (res.ok) {
+        setCategoryInputText("");
+        fetchTabContents();
+      } else {
+        const data = await res.json();
+        alert(data.error || "Failed to create category");
+      }
+    } catch {
+      alert("Error creating category");
+    }
+  };
+
+  const handleUpdateCategory = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingCategoryId || !editingCategoryText.trim()) return;
+    try {
+      const res = await fetch("/api/admin/categories", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: editingCategoryId, name: editingCategoryText.trim() })
+      });
+      if (res.ok) {
+        setEditingCategoryId(null);
+        setEditingCategoryText("");
+        fetchTabContents();
+      } else {
+        const data = await res.json();
+        alert(data.error || "Failed to rename category");
+      }
+    } catch {
+      alert("Error renaming category");
+    }
+  };
+
+  const handleDeleteCategory = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this category? Any blog posts under this category will be reset to 'Blog'.")) return;
+    try {
+      const res = await fetch(`/api/admin/categories?id=${id}`, { method: "DELETE" });
+      if (res.ok) {
+        fetchTabContents();
+      } else {
+        const data = await res.json();
+        alert(data.error || "Failed to delete category");
+      }
+    } catch {
+      alert("Error deleting category");
     }
   };
 
@@ -1241,7 +1309,7 @@ export default function AdminPage() {
           {activeTab === "blogs" && (
             <button
               onClick={handleNewBlog}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5 self-start shadow-sm shadow-blue-500/10 hover:scale-[1.02] active:scale-[0.98]"
+              className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5 shadow-sm shadow-blue-500/10 hover:scale-[1.02] active:scale-[0.98]"
             >
               <Plus className="w-4 h-4" />
               <span>Create Blog</span>
@@ -1250,7 +1318,7 @@ export default function AdminPage() {
           {activeTab === "testimonials" && (
             <button
               onClick={handleNewTestimonial}
-              className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5 self-start shadow-sm shadow-blue-500/10 hover:scale-[1.02] active:scale-[0.98]"
+              className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5 shadow-sm shadow-blue-500/10 hover:scale-[1.02] active:scale-[0.98]"
             >
               <Plus className="w-4 h-4" />
               <span>New Testimonial</span>
@@ -1259,7 +1327,7 @@ export default function AdminPage() {
           {activeTab === "enquiries" && enquiries.length > 0 && (
             <button
               onClick={handleExportCSV}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5 self-start shadow-sm shadow-emerald-500/10 hover:scale-[1.02] active:scale-[0.98]"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5 shadow-sm shadow-emerald-500/10 hover:scale-[1.02] active:scale-[0.98]"
             >
               <Download className="w-4 h-4" />
               <span>Export Leads (CSV)</span>
@@ -2628,70 +2696,204 @@ export default function AdminPage() {
 
           {/* ── TAB 4: BLOGS MANAGER ── */}
           {activeTab === "blogs" && (
-            <div className="space-y-4">
-              {blogs.length === 0 ? (
-                <div className="bg-white border border-slate-200/70 rounded-2xl p-12 text-center text-slate-400 space-y-4 flex flex-col items-center justify-center">
-                  <FileText className="w-10 h-10 text-slate-300" />
-                  <div className="space-y-1">
-                    <h3 className="font-bold text-slate-700">No Published Blogs Found</h3>
-                    <p className="text-xs">Create your first educational resource guide to display on the website.</p>
-                  </div>
-                  <button
-                    onClick={handleNewBlog}
-                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all flex items-center gap-1.5 shadow-sm shadow-blue-500/10 hover:scale-[1.02] active:scale-[0.98]"
-                  >
-                    <Plus className="w-4 h-4" />
-                    <span>Create First Blog</span>
-                  </button>
+            <div className="space-y-6">
+              {/* Blog Sub Navigation Menu */}
+              <div className="flex border-b border-slate-200">
+                <button
+                  onClick={() => setBlogSubTab("posts")}
+                  className={`px-4 py-2 text-xs font-bold -mb-px border-b-2 transition-all ${
+                    blogSubTab === "posts"
+                      ? "border-blue-600 text-blue-600"
+                      : "border-transparent text-slate-500 hover:text-slate-700"
+                  }`}
+                >
+                  Manage Posts
+                </button>
+                <button
+                  onClick={() => setBlogSubTab("categories")}
+                  className={`px-4 py-2 text-xs font-bold -mb-px border-b-2 transition-all ${
+                    blogSubTab === "categories"
+                      ? "border-blue-600 text-blue-600"
+                      : "border-transparent text-slate-500 hover:text-slate-700"
+                  }`}
+                >
+                  Manage Categories
+                </button>
+              </div>
+
+              {blogSubTab === "posts" && (
+                <div className="space-y-4">
+                  {blogs.length === 0 ? (
+                    <div className="bg-white border border-slate-200/70 rounded-2xl p-12 text-center text-slate-400 space-y-4 flex flex-col items-center justify-center">
+                      <FileText className="w-10 h-10 text-slate-300" />
+                      <div className="space-y-1">
+                        <h3 className="font-bold text-slate-700">No Published Blogs Found</h3>
+                        <p className="text-xs">Create your first educational resource guide to display on the website.</p>
+                      </div>
+                      <button
+                        onClick={handleNewBlog}
+                        className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all flex items-center gap-1.5 shadow-sm shadow-blue-500/10 hover:scale-[1.02] active:scale-[0.98]"
+                      >
+                        <Plus className="w-4 h-4" />
+                        <span>Create First Blog</span>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {blogs.map(blog => (
+                        <article key={blog.id} className="bg-white border border-slate-200/70 rounded-2xl overflow-hidden flex flex-col justify-between shadow-sm hover:border-slate-300 transition-all">
+                          <div>
+                            <div className="relative aspect-[16/10] bg-slate-100">
+                              {blog.coverImage ? (
+                                <img src={blog.coverImage} alt={blog.title} className="w-full h-full object-cover" />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center text-slate-400 font-extrabold text-xs">NO COVER IMAGE</div>
+                              )}
+                              <span className="absolute top-3 left-3 text-[9px] font-extrabold uppercase tracking-wide bg-white/90 backdrop-blur border border-slate-100 px-2.5 py-1 rounded-lg text-blue-600 shadow-sm">
+                                {blog.category}
+                              </span>
+                            </div>
+                            
+                            <div className="p-5 space-y-2">
+                              <h4 className="text-slate-900 text-sm font-extrabold line-clamp-2 leading-snug">{blog.title}</h4>
+                              <p className="text-slate-500 text-xs line-clamp-3 leading-relaxed font-medium">{blog.excerpt}</p>
+                            </div>
+                          </div>
+
+                          <div className="p-5 border-t border-slate-100 flex items-center justify-between">
+                            <span className={`text-[9px] font-extrabold uppercase px-2.5 py-1 rounded-full border ${
+                              blog.published === 1
+                                ? "bg-emerald-50 text-emerald-600 border-emerald-100"
+                                : "bg-slate-100 text-slate-500 border-slate-200"
+                            }`}>
+                              {blog.published === 1 ? "Active / Live" : "Draft"}
+                            </span>
+
+                            <div className="flex items-center gap-1.5">
+                              <button
+                                onClick={() => handleEditBlog(blog)}
+                                className="text-slate-500 hover:text-blue-600 p-1.5 hover:bg-slate-50 rounded-lg transition-all"
+                              >
+                                <Edit className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => handleDeleteBlog(blog.id)}
+                                className="text-slate-500 hover:text-rose-600 p-1.5 hover:bg-rose-50 rounded-lg transition-all"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </div>
+                        </article>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {blogs.map(blog => (
-                    <article key={blog.id} className="bg-white border border-slate-200/70 rounded-2xl overflow-hidden flex flex-col justify-between shadow-sm hover:border-slate-300 transition-all">
-                      <div>
-                        <div className="relative aspect-[16/10] bg-slate-100">
-                          {blog.coverImage ? (
-                            <img src={blog.coverImage} alt={blog.title} className="w-full h-full object-cover" />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center text-slate-400 font-extrabold text-xs">NO COVER IMAGE</div>
-                          )}
-                          <span className="absolute top-3 left-3 text-[9px] font-extrabold uppercase tracking-wide bg-white/90 backdrop-blur border border-slate-100 px-2.5 py-1 rounded-lg text-blue-600 shadow-sm">
-                            {blog.category}
-                          </span>
-                        </div>
-                        
-                        <div className="p-5 space-y-2">
-                          <h4 className="text-slate-900 text-sm font-extrabold line-clamp-2 leading-snug">{blog.title}</h4>
-                          <p className="text-slate-500 text-xs line-clamp-3 leading-relaxed font-medium">{blog.excerpt}</p>
-                        </div>
-                      </div>
+              )}
 
-                      <div className="p-5 border-t border-slate-100 flex items-center justify-between">
-                        <span className={`text-[9px] font-extrabold uppercase px-2.5 py-1 rounded-full border ${
-                          blog.published === 1
-                            ? "bg-emerald-50 text-emerald-600 border-emerald-100"
-                            : "bg-slate-100 text-slate-500 border-slate-200"
-                        }`}>
-                          {blog.published === 1 ? "Active / Live" : "Draft"}
-                        </span>
+              {blogSubTab === "categories" && (
+                <div className="space-y-6">
+                  {/* Category Inline Create Form */}
+                  <form onSubmit={handleAddCategory} className="bg-white border border-slate-200/70 rounded-2xl p-5 shadow-sm space-y-4">
+                    <h3 className="text-slate-900 text-sm font-extrabold">Add New Category</h3>
+                    <div className="flex gap-3 max-w-md">
+                      <input
+                        type="text"
+                        placeholder="e.g. Home Loans, First Home Buyers"
+                        value={categoryInputText}
+                        onChange={e => setCategoryInputText(e.target.value)}
+                        className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white"
+                        required
+                      />
+                      <button
+                        type="submit"
+                        className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all shadow-sm shadow-blue-500/10 hover:scale-[1.02] active:scale-[0.98] shrink-0"
+                      >
+                        Add Category
+                      </button>
+                    </div>
+                  </form>
 
-                        <div className="flex items-center gap-1.5">
-                          <button
-                            onClick={() => handleEditBlog(blog)}
-                            className="text-slate-500 hover:text-blue-600 p-1.5 hover:bg-slate-50 rounded-lg transition-all"
-                          >
-                            <Edit className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={() => handleDeleteBlog(blog.id)}
-                            className="text-slate-500 hover:text-rose-600 p-1.5 hover:bg-rose-50 rounded-lg transition-all"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </div>
-                    </article>
-                  ))}
+                  {/* Categories List Table */}
+                  <div className="bg-white border border-slate-200/70 rounded-2xl shadow-sm overflow-hidden">
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left border-collapse">
+                        <thead>
+                          <tr className="bg-slate-50/75 border-b border-slate-100">
+                            <th className="px-6 py-4 text-[9.5px] font-black text-slate-500 uppercase tracking-wider font-extrabold">Category Name</th>
+                            <th className="px-6 py-4 text-[9.5px] font-black text-slate-500 uppercase tracking-wider text-right font-extrabold">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100">
+                          {categories.map(cat => {
+                            const isDefault = ['Blog', 'News & Insights'].includes(cat.name);
+                            return (
+                              <tr key={cat.id} className="hover:bg-slate-50/40 transition-all">
+                                <td className="px-6 py-4">
+                                  {editingCategoryId === cat.id ? (
+                                    <form onSubmit={handleUpdateCategory} className="flex gap-2 max-w-sm">
+                                      <input
+                                        type="text"
+                                        value={editingCategoryText}
+                                        onChange={e => setEditingCategoryText(e.target.value)}
+                                        className="flex-1 bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500"
+                                        required
+                                      />
+                                      <button
+                                        type="submit"
+                                        className="bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold px-3 py-1 rounded-lg transition-all"
+                                      >
+                                        Save
+                                      </button>
+                                      <button
+                                        type="button"
+                                        onClick={() => setEditingCategoryId(null)}
+                                        className="bg-slate-200 hover:bg-slate-300 text-slate-700 text-[10px] font-bold px-3 py-1 rounded-lg transition-all"
+                                      >
+                                        Cancel
+                                      </button>
+                                    </form>
+                                  ) : (
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-slate-800 text-xs font-bold">{cat.name}</span>
+                                      {isDefault && (
+                                        <span className="text-[9px] font-extrabold uppercase bg-slate-100 text-slate-500 px-2 py-0.5 rounded border border-slate-200/50">
+                                          Default System Tab
+                                        </span>
+                                      )}
+                                    </div>
+                                  )}
+                                </td>
+                                <td className="px-6 py-4 text-right">
+                                  {!isDefault && !editingCategoryId && (
+                                    <div className="flex items-center justify-end gap-2">
+                                      <button
+                                        onClick={() => {
+                                          setEditingCategoryId(cat.id);
+                                          setEditingCategoryText(cat.name);
+                                        }}
+                                        className="text-slate-500 hover:text-blue-600 p-1.5 hover:bg-slate-50 rounded-lg transition-all"
+                                        title="Rename Category"
+                                      >
+                                        <Edit className="w-3.5 h-3.5" />
+                                      </button>
+                                      <button
+                                        onClick={() => handleDeleteCategory(cat.id)}
+                                        className="text-slate-500 hover:text-rose-600 p-1.5 hover:bg-rose-50 rounded-lg transition-all"
+                                        title="Delete Category"
+                                      >
+                                        <Trash2 className="w-3.5 h-3.5" />
+                                      </button>
+                                    </div>
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
@@ -2867,8 +3069,11 @@ export default function AdminPage() {
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white"
                     required
                   >
-                    <option value="Blog">Blog (Standard Article)</option>
-                    <option value="News & Insights">News & Insights (Company updates & announcements)</option>
+                    {categories.map(cat => (
+                      <option key={cat.id} value={cat.name}>
+                        {cat.name} {cat.name === "Blog" ? "(Standard Article)" : cat.name === "News & Insights" ? "(Company updates & announcements)" : ""}
+                      </option>
+                    ))}
                   </select>
                 </div>
 

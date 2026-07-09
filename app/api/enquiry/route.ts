@@ -1,11 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from 'next/server';
 import { executeQuery } from '@/lib/db';
+import { getClientIp, isRateLimited } from '@/lib/rateLimiter';
 import crypto from 'crypto';
 import nodemailer from 'nodemailer';
 
 export async function POST(request: Request) {
   try {
+    const ip = getClientIp(request.headers);
+    if (isRateLimited(ip, 10, 1000 * 60 * 60)) { // 10 attempts per hour
+      return NextResponse.json({ error: 'Too many submissions. Please try again later.' }, { status: 429 });
+    }
+
     // 1. Basic Security: Block direct API access (Open API protection)
     // Most legitimate browser requests will include either an Origin or Referer header.
     const origin = request.headers.get('origin');
@@ -63,22 +69,27 @@ export async function POST(request: Request) {
       console.error('Failed to retrieve SMTP settings from DB:', dbErr);
     }
 
+    const smtpHost = process.env.SMTP_HOST || settings.smtp_host;
+    const smtpPort = process.env.SMTP_PORT || settings.smtp_port;
+    const smtpUser = process.env.SMTP_USER || settings.smtp_user;
+    const smtpPass = process.env.SMTP_PASS || settings.smtp_pass;
+
     // If SMTP credentials are configured, send the notification email
-    if (settings.smtp_host && settings.smtp_user && settings.smtp_pass) {
+    if (smtpHost && smtpUser && smtpPass) {
       try {
         const transporter = nodemailer.createTransport({
-          host: settings.smtp_host,
-          port: parseInt(settings.smtp_port) || 587,
-          secure: parseInt(settings.smtp_port) === 465,
+          host: smtpHost,
+          port: parseInt(smtpPort) || 587,
+          secure: parseInt(smtpPort) === 465,
           auth: {
-            user: settings.smtp_user,  // SMTP sender credential (imageoptimizer account)
-            pass: settings.smtp_pass,
+            user: smtpUser,  // SMTP sender credential
+            pass: smtpPass,
           },
         });
 
         // Notification is sent TO the mortgage business email, FROM the SMTP sender
-        const recipientEmail = settings.support_email || 'mortgage@mortgageexpert.com.au';
-        const senderLabel = `"Mortgage Xperts Notifications" <${settings.smtp_user}>`;
+        const recipientEmail = settings.support_email || 'mortgage@mortgagexperts.com.au';
+        const senderLabel = `"Mortgage Xperts Notifications" <${smtpUser}>`;
 
         const mailSubject = `New ${type === 'calculator' ? 'Calculator Lead' : 'Callback Enquiry'}: ${name}`;
         const mailText = `You have received a new lead submission on Mortgage Xperts.
