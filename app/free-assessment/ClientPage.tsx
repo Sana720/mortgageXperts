@@ -175,10 +175,10 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
 
                 <div className="space-y-4">
                   <h1 className="text-[#0B1F3A] text-[25px] sm:text-[40px] lg:text-[46px] font-extrabold leading-[1.15] sm:leading-[1.1] tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                    Complete the form and get a reply from us <span className="text-[#10A3EB]">within 24 hours</span>.
+                    Complete your profile today to receive a personalised response from us <span className="text-[#10A3EB]">within 24 hours</span>.
                   </h1>
                   <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] font-medium leading-relaxed max-w-xl">
-                    The information provided is for assessment purposes only. <span className="font-bold text-slate-800">No enquiry is made on your credit file.</span>
+                    Explore your borrowing options securely. <span className="font-bold text-slate-800">This assessment will not create an enquiry or impact your credit file.</span>
                   </p>
                 </div>
 
@@ -197,7 +197,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
                     </div>
                     <div className="flex flex-col">
                       <span className="text-[8px] sm:text-[9px] text-slate-400 font-extrabold tracking-wider uppercase leading-none">COMPLETION</span>
-                      <span className="text-[11px] sm:text-[13px] text-slate-700 font-extrabold mt-0.5">2 minutes</span>
+                      <span className="text-[11px] sm:text-[13px] text-slate-700 font-extrabold mt-0.5">60 seconds</span>
                     </div>
                   </div>
                 </div>

@@ -554,10 +554,10 @@ export function MortgageMateForm({
 
               {/* Title & Paragraph */}
               <h2 className="text-[#0B1F3A] text-xl sm:text-2xl font-extrabold tracking-tight leading-snug font-montserrat">
-                Complete the form and get a reply from us <span className="text-[#10A3EB]">within 24 hours</span>.
+                Complete your profile today to receive a personalised response from us <span className="text-[#10A3EB]">within 24 hours</span>.
               </h2>
               <p className="text-slate-500 text-[12.5px] font-medium leading-relaxed">
-                The information provided is for assessment purposes only. <span className="font-bold text-slate-800">No enquiry is made on your credit file.</span>
+                Explore your borrowing options securely. <span className="font-bold text-slate-800">This assessment will not create an enquiry or impact your credit file.</span>
               </p>
             </div>
 
@@ -588,7 +588,7 @@ export function MortgageMateForm({
                 <Clock className="w-3.5 h-3.5 text-[#10A3EB]" />
                 <div className="flex flex-col text-left">
                   <span className="text-[7.5px] text-slate-400 font-extrabold tracking-wider uppercase leading-none">COMPLETION</span>
-                  <span className="text-[11px] text-slate-700 font-extrabold mt-0.5">2 minutes</span>
+                  <span className="text-[11px] text-slate-700 font-extrabold mt-0.5">60 seconds</span>
                 </div>
               </div>
             </div>
