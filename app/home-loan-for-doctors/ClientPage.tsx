@@ -92,7 +92,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
+export function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageSections }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string; pageSections?: string[] }) {
   const { openModal } = useOnboardingModal();
 
   const handleBtnClick = (e: React.MouseEvent, text: string, link: string) => {
@@ -554,7 +554,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 Home Loans for <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-teal-500">Doctors &amp; Medical Professionals</span>
               </h2>
               <p className="text-slate-550 text-[14.5px] sm:text-[15.5px] leading-relaxed">
-                Doctors and medical professionals, whether you’re a full-time salaried doctor, a casual medical practitioner, or self-employed running your own practice under an Australian Business Number (ABN), often have access to special home loan benefits. Lenders recognise the stable income, high earning potential, and lower risk profile of medical careers and provide tailored home loan options to reflect this.
+                {pageSections?.[0] || `Doctors and medical professionals, whether you’re a full-time salaried doctor, a casual medical practitioner, or self-employed running your own practice under an Australian Business Number (ABN), often have access to special home loan benefits. Lenders recognise the stable income, high earning potential, and lower risk profile of medical careers and provide tailored home loan options to reflect this.`}
               </p>
               <div className="flex flex-wrap gap-6 pt-2">
                 <div className="flex items-center gap-2.5">
@@ -614,7 +614,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
               Benefits of Home Loans <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-teal-500">for Doctors</span>
             </h2>
             <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed">
-              {pageContent || "Medical careers represent the lowest risk class for Australian banks. Enjoy these premium loan package enhancements:"}
+              {pageSections?.[1] || `Medical careers represent the lowest risk class for Australian banks. Enjoy these premium loan package enhancements:`}
             </p>
           </div>
 
@@ -683,7 +683,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 Doctors LMI &amp; Rate <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-teal-500">Savings Estimator</span>
               </h2>
               <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed mb-6">
-                Calculate your borrowing capacity, waived Lenders Mortgage Insurance, and rate cuts with medical professional discounts.
+                {pageSections?.[5] || `Calculate your borrowing capacity, waived Lenders Mortgage Insurance, and rate cuts with medical professional discounts.`}
               </p>
 
               <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-4 max-w-md shadow-sm">
@@ -938,7 +938,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 LMI Waiver Offers <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-teal-500">for Doctors</span>
               </h2>
               <p className="text-slate-500 text-[14.5px] leading-relaxed">
-                Lenders Mortgage Insurance (LMI) is a one-off insurance premium required if your deposit is below 20% of the property price. Many lenders waive LMI for doctors who meet criteria like being registered with a recognised medical board, having a stable income, and earning over $120,000 per year.
+                {pageSections?.[2] || `Lenders Mortgage Insurance (LMI) is a one-off insurance premium required if your deposit is below 20% of the property price. Many lenders waive LMI for doctors who meet criteria like being registered with a recognised medical board, having a stable income, and earning over $120,000 per year.`}
               </p>
             </div>
 
@@ -947,7 +947,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
               <div className="absolute top-0 left-0 w-full h-1.5 bg-sky-500" />
               <h3 className="text-[#0B1F3A] text-[18px] font-black mb-4">Upfront Savings Example</h3>
               <p className="text-slate-550 text-[13.5px] leading-relaxed mb-4">
-                If you&apos;re buying a $700,000 home with a 5% deposit ($35,000), an LMI waiver could save you between $10,000 and $15,000 or more in upfront fees.
+                {pageSections?.[3] || `If you&apos;re buying a $700,000 home with a 5% deposit ($35,000), an LMI waiver could save you between $10,000 and $15,000 or more in upfront fees.`}
               </p>
               <div className="text-xs font-black text-sky-700 bg-sky-50 rounded-xl p-3 inline-block">
                 ✓ Typically saves doctors $12,500 – $22,000 on average properties
@@ -1015,7 +1015,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
               Deposit Requirements &amp; Flexible Loan Features
             </h2>
             <p className="text-slate-500 text-[14.5px] leading-relaxed">
-              While standard home loans generally require a 20% deposit, doctors may be able to buy with as little as 5–10% deposit thanks to LMI waivers.
+              {pageSections?.[4] || `While standard home loans generally require a 20% deposit, doctors may be able to buy with as little as 5–10% deposit thanks to LMI waivers.`}
             </p>
           </div>
 
@@ -1302,7 +1302,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 Enquire About <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-teal-500">Doctor Home Loans</span>
               </h2>
               <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed">
-                Connect with our medical home loan brokers to verify your LMI waiver status and compare special discounted interest rates.
+                {pageSections?.[6] || `Connect with our medical home loan brokers to verify your LMI waiver status and compare special discounted interest rates.`}
               </p>
 
               <div className="space-y-4 pt-4">

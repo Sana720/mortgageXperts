@@ -36,7 +36,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export default function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
+export default function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageSections }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string; pageSections?: string[] }) {
   // Wizard steps
   const [currentStep, setCurrentStep] = useState(1);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
@@ -303,7 +303,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings, pageConten
               </h2>
               <div className="w-12 h-[3px] bg-teal-600 rounded-full" />
               <p className="text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium">
-                {pageContent || "Rental yield is a key metric used by smart property investors to evaluate the cash flow performance of real estate. Use this calculator to compare gross and net yields for any Australian property."}
+                {pageSections?.[0] || pageContent || `Rental yield is a key metric used by smart property investors to evaluate the cash flow performance of real estate. Use this calculator to compare gross and net yields for any Australian property.`}
               </p>
 
               <div className="space-y-4 pt-4">
@@ -682,7 +682,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings, pageConten
               Frequently Asked <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-500">Questions</span>
             </h2>
             <p className="text-slate-500 text-[12.5px] font-medium mt-2">
-              Everything you need to know about calculating and understanding rental yields.
+              {pageSections?.[2] || `Everything you need to know about calculating and understanding rental yields.`}
             </p>
           </div>
 
@@ -741,7 +741,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings, pageConten
               </h2>
               <div className="w-12 h-[3px] bg-teal-500 rounded-full" />
               <p className="text-slate-300 text-[14px] leading-relaxed max-w-xl">
-                Structuring an investment loan requires careful planning of borrowing limits, interest-only terms, and offset accounts. Submit a callback request and one of our bilingual mortgage experts will guide you to secure the best loan strategy.
+                {pageSections?.[3] || `Structuring an investment loan requires careful planning of borrowing limits, interest-only terms, and offset accounts. Submit a callback request and one of our bilingual mortgage experts will guide you to secure the best loan strategy.`}
               </p>
               
               <div className="flex items-center gap-4 bg-white/5 border border-white/10 p-4 rounded-2xl w-fit">

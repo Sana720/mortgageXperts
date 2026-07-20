@@ -107,7 +107,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
+export function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageSections }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string; pageSections?: string[] }) {
   const { openModal } = useOnboardingModal();
 
   const handleBtnClick = (e: React.MouseEvent, text: string, link: string) => {
@@ -609,7 +609,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 {pageContent || "Saving for a full 20% deposit in Australia's current market can take years, all while property values and rents continue to rise. Fortunately, you don't necessarily need a massive cash stockpile to purchase your home."}
               </p>
               <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed">
-                By utilizing family guarantor loans, First Home Buyer government schemes, and alternative assessment criteria, you can secure a mortgage with a deposit as low as 5%—or even 0% in cash out-of-pocket. Our specialists guide you through all routes to minimize up-front cash requirements and completely waive or reduce Lenders Mortgage Insurance (LMI).
+                {pageSections?.[1] || `By utilizing family guarantor loans, First Home Buyer government schemes, and alternative assessment criteria, you can secure a mortgage with a deposit as low as 5%—or even 0% in cash out-of-pocket. Our specialists guide you through all routes to minimize up-front cash requirements and completely waive or reduce Lenders Mortgage Insurance (LMI).`}
               </p>
               <div className="flex flex-wrap gap-6 pt-2">
                 <div className="flex items-center gap-2.5">
@@ -755,7 +755,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
               <div>
                 <h4 className="text-[15px] font-extrabold text-[#0B1F3A]">Rental History Alternative</h4>
                 <p className="text-slate-600 text-[13px] mt-0.5 leading-relaxed">
-                  Have a great history of paying rent? Some specialty lenders now accept a 12-month lease ledger as alternative proof of genuine savings for 5% deposit loans.
+                  {pageSections?.[2] || `Have a great history of paying rent? Some specialty lenders now accept a 12-month lease ledger as alternative proof of genuine savings for 5% deposit loans.`}
                 </p>
               </div>
             </div>
@@ -787,7 +787,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 Low &amp; No Deposit <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-cyan-600">Savings Calculator</span>
               </h2>
               <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed mb-6 max-w-lg">
-                Compare guarantor support, government schemes, and standard loans to calculate cash deposit and LMI savings.
+                {pageSections?.[3] || `Compare guarantor support, government schemes, and standard loans to calculate cash deposit and LMI savings.`}
               </p>
 
               {/* Glass Card List */}
@@ -798,7 +798,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                   </div>
                   <div>
                     <h4 className="text-[#0B1F3A] text-[14px] font-semibold leading-tight mb-1">Zero Deposit Strategy</h4>
-                    <p className="text-slate-500 text-[13px] leading-relaxed">Using parental guarantor support allows you to bypass deposit requirements entirely and avoid LMI fees.</p>
+                    <p className="text-slate-500 text-[13px] leading-relaxed">{pageSections?.[4] || `Using parental guarantor support allows you to bypass deposit requirements entirely and avoid LMI fees.`}</p>
                   </div>
                 </div>
 
@@ -810,7 +810,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                   </div>
                   <div>
                     <h4 className="text-[#0B1F3A] text-[14px] font-semibold leading-tight mb-1">First Home Guarantee</h4>
-                    <p className="text-slate-500 text-[13px] leading-relaxed">Pay only 5% deposit and get government backing to avoid Lenders Mortgage Insurance.</p>
+                    <p className="text-slate-500 text-[13px] leading-relaxed">{pageSections?.[5] || `Pay only 5% deposit and get government backing to avoid Lenders Mortgage Insurance.`}</p>
                   </div>
                 </div>
               </div>
@@ -1149,12 +1149,12 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 Frequently Asked <span className="text-[#0D9488]">Questions</span>
               </h2>
               <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed">
-                Here are quick answers to common questions about guarantor loans, government low-deposit schemes, and using alternative genuine savings.
+                {pageSections?.[6] || `Here are quick answers to common questions about guarantor loans, government low-deposit schemes, and using alternative genuine savings.`}
               </p>
               <div className="mt-8 bg-slate-50 border border-slate-200/60 rounded-3xl p-6 space-y-4">
                 <h4 className="text-[15px] font-extrabold text-[#0B1F3A]">Have a unique situation?</h4>
                 <p className="text-slate-400 text-xs leading-relaxed">
-                  Every borrower’s financial position and parental equity situation are unique. Our accredited mortgage specialists can sit down with you to design a custom lending structure.
+                  {pageSections?.[7] || `Every borrower’s financial position and parental equity situation are unique. Our accredited mortgage specialists can sit down with you to design a custom lending structure.`}
                 </p>
                 <button type="button" onClick={openModal} className="cursor-pointer border-0 inline-flex items-center gap-1.5 rounded-xl bg-[#0B1F3A] hover:bg-slate-800 text-white text-[12.5px] font-bold px-5 py-3 transition-colors cursor-pointer">
                   Consult a Specialist

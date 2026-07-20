@@ -41,7 +41,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export default function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
+export default function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageSections }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string; pageSections?: string[] }) {
   // Wizard steps
   const [currentStep, setCurrentStep] = useState(1);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
@@ -323,7 +323,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings, pageConten
               </h2>
               <div className="w-12 h-[3px] bg-orange-600 rounded-full" />
               <p className="text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium">
-                {pageContent || "Annualising Year-to-Date (YTD) income is the standard method used by Australian banks to assess casual, part-time, and self-employed applicants. Use this tool to predict your lender-assessable income."}
+                {pageSections?.[0] || pageContent || `Annualising Year-to-Date (YTD) income is the standard method used by Australian banks to assess casual, part-time, and self-employed applicants. Use this tool to predict your lender-assessable income.`}
               </p>
 
               <div className="space-y-4 pt-4">

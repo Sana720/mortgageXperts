@@ -106,7 +106,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
+export function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageSections }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string; pageSections?: string[] }) {
   const { openModal } = useOnboardingModal();
   const badgeText = pageHeroSettings?.hero_badge || "Smart Refinance Strategies";
   const titleText = pageHeroSettings?.hero_title || "Refinancing a Loan";
@@ -831,7 +831,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
               Why Do Homeowners Choose To Refinance?
             </h2>
             <p className="text-slate-500 text-[14.5px] leading-relaxed max-w-xl mx-auto">
-              Refinancing can save you thousands over the life of your loan. We help you compare your current loan with better options from a range of lenders so you can make an informed choice.
+              {pageSections?.[1] || `Refinancing can save you thousands over the life of your loan. We help you compare your current loan with better options from a range of lenders so you can make an informed choice.`}
             </p>
           </div>
 
@@ -1168,7 +1168,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
               What Does It Cost To Refinance?
             </h2>
             <p className="text-slate-500 text-[14px] sm:text-[15px] max-w-2xl mx-auto leading-relaxed">
-              Refinancing can come with some setup and settlement costs. We work with you to work out the total costs upfront and compare them against your repayments savings to make sure it is a profitable move.
+              {pageSections?.[2] || `Refinancing can come with some setup and settlement costs. We work with you to work out the total costs upfront and compare them against your repayments savings to make sure it is a profitable move.`}
             </p>
           </div>
 
@@ -1224,7 +1224,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
               Common Refinancing Mistakes To Avoid
             </h2>
             <p className="text-slate-500 text-[14.5px] leading-relaxed max-w-xl mx-auto">
-              Refinancing can save you thousands – but only if you avoid these common traps. We help you look at the full picture, not just the advertised interest rate.
+              {pageSections?.[3] || `Refinancing can save you thousands – but only if you avoid these common traps. We help you look at the full picture, not just the advertised interest rate.`}
             </p>
           </div>
 
@@ -1280,7 +1280,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 Refinance Readiness <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7C3AED] to-[#A78BFA]">Checklist</span>
               </h2>
               <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed mb-8 max-w-lg">
-                Are you financially ready to switch lenders and secure a better deal? Tap the checklist options below to assess your current refinancing readiness.
+                {pageSections?.[4] || `Are you financially ready to switch lenders and secure a better deal? Tap the checklist options below to assess your current refinancing readiness.`}
               </p>
               
               {/* Progress Card */}
@@ -1426,7 +1426,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 Request a <span className="text-[#7C3AED]">Savings Callback</span>
               </h2>
               <p className="text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed mb-6">
-                Fill out your details below and a senior finance expert will contact you within 2 business hours. We&apos;ll look at your current rates, calculate genuine potential savings, and identify banks offering cash back deals.
+                {pageSections?.[5] || `Fill out your details below and a senior finance expert will contact you within 2 business hours. We&apos;ll look at your current rates, calculate genuine potential savings, and identify banks offering cash back deals.`}
               </p>
               <div className="space-y-4">
                 {[
@@ -1584,7 +1584,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                       <div className="space-y-2">
                         <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400 block">About Aakash</span>
                         <p className="text-slate-600 text-[11.5px] leading-relaxed italic">
-                          &ldquo;Aakash founded Mortgage Xperts to support the community in Australia with professional, transparent home loan advice. Having helped over 500+ families refinance and secure rates, he is dedicated to maximizing your financial freedom.&rdquo;
+                          {pageSections?.[6] || `&ldquo;Aakash founded Mortgage Xperts to support the community in Australia with professional, transparent home loan advice. Having helped over 500+ families refinance and secure rates, he is dedicated to maximizing your financial freedom.&rdquo;`}
                         </p>
                       </div>
 
@@ -1874,7 +1874,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                       <div className="space-y-1.5">
                         <span className="text-[8.5px] font-bold uppercase tracking-wider text-slate-400 block">About Aakash</span>
                         <p className="text-slate-600 text-[11px] leading-relaxed italic">
-                          &ldquo;Aakash KC is the founder of Mortgage Xperts. He guides the Nepalese community in Australia to find tailored lending structures, negotiate lower interest rates, and skip LMI fees.&rdquo;
+                          {pageSections?.[7] || `&ldquo;Aakash KC is the founder of Mortgage Xperts. He guides the Nepalese community in Australia to find tailored lending structures, negotiate lower interest rates, and skip LMI fees.&rdquo;`}
                         </p>
                       </div>
 

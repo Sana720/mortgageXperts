@@ -94,7 +94,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
+export function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageSections }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string; pageSections?: string[] }) {
   const { openModal } = useOnboardingModal();
 
   const handleBtnClick = (e: React.MouseEvent, text: string, link: string) => {
@@ -549,7 +549,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 What Exactly Is a <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-yellow-500">Non-Resident Home Loan?</span>
               </h2>
               <p className="text-slate-550 text-[14.5px] sm:text-[15.5px] leading-relaxed">
-                {pageContent || "A non-resident home loan is designed for people living overseas or those who don’t hold Australian citizenship or permanent residency. This includes foreign nationals, temporary visa holders, and Australians living abroad. Since lenders view non-residents as higher-risk borrowers, they apply stricter criteria, including more documentation and often larger deposits than regular home loans."}
+                {pageSections?.[0] || pageContent || `A non-resident home loan is designed for people living overseas or those who don’t hold Australian citizenship or permanent residency. This includes foreign nationals, temporary visa holders, and Australians living abroad. Since lenders view non-residents as higher-risk borrowers, they apply stricter criteria, including more documentation and often larger deposits than regular home loans.`}
               </p>
               <div className="flex flex-wrap gap-6 pt-2">
                 <div className="flex items-center gap-2.5">
@@ -683,7 +683,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 Expat &amp; Visa Loan <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-yellow-500">Deposit Modeler</span>
               </h2>
               <p className="text-slate-550 text-[14.5px] sm:text-[15.5px] leading-relaxed mb-6">
-                Calculate your required LVR deposit threshold and estimate potential FIRB fees based on visa residency status.
+                {pageSections?.[4] || `Calculate your required LVR deposit threshold and estimate potential FIRB fees based on visa residency status.`}
               </p>
 
               <div className="bg-white border border-slate-200/80 rounded-xl p-5 space-y-4 max-w-md shadow-sm">
@@ -974,7 +974,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
               </div>
 
               <p className="text-slate-600 text-[13.5px] leading-relaxed mb-8">
-                The Australian Government has introduced a two-year ban on foreign persons purchasing established (previously owned) residential properties. This ban applies from 1 April 2025 to 31 March 2027 and aims to improve housing affordability.
+                {pageSections?.[1] || `The Australian Government has introduced a two-year ban on foreign persons purchasing established (previously owned) residential properties. This ban applies from 1 April 2025 to 31 March 2027 and aims to improve housing affordability.`}
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 border-t border-amber-100/80">
@@ -1028,7 +1028,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
               How to Get Started: Applying for a Non-Resident Home Loan
             </h2>
             <p className="text-slate-500 text-[14.5px] leading-relaxed">
-              Buying property in Australia as a Nepali non-resident or temporary visa holder can be complex, but the process becomes much simpler with the right guidance.
+              {pageSections?.[2] || `Buying property in Australia as a Nepali non-resident or temporary visa holder can be complex, but the process becomes much simpler with the right guidance.`}
             </p>
           </div>
 
@@ -1104,7 +1104,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
             <div className="bg-slate-50 border border-slate-200 rounded-[32px] p-6 sm:p-8 space-y-6">
               <h4 className="text-[#0B1F3A] font-extrabold text-[16px]">Expat &amp; Temporary Resident Support</h4>
               <p className="text-slate-550 text-xs sm:text-[13px] leading-relaxed">
-                Connect with our accredited multi-lingual brokers today. We verify your visa class policies, review overseas credit criteria, and ensure FIRB submissions are filed correctly.
+                {pageSections?.[3] || `Connect with our accredited multi-lingual brokers today. We verify your visa class policies, review overseas credit criteria, and ensure FIRB submissions are filed correctly.`}
               </p>
               <button type="button" onClick={openModal} className="cursor-pointer border-0 inline-flex items-center justify-center gap-1.5 w-full rounded-xl bg-gradient-to-r from-amber-550 to-yellow-500 hover:from-amber-600 hover:to-yellow-550 text-white text-[13.5px] font-bold py-3.5 shadow-lg shadow-amber-500/10 transition-colors cursor-pointer">
                 Connect with an Expat Broker
@@ -1144,7 +1144,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-550 to-yellow-500" />
                 <h4 className="text-[16px] font-extrabold text-[#0B1F3A]">Buying property from abroad?</h4>
                 <p className="text-slate-500 text-xs sm:text-[12.5px] leading-relaxed">
-                  We provide end-to-end support for digital ID verification, overseas contract notarisation, and coordinating with Australian legal conveyancers.
+                  {pageSections?.[5] || `We provide end-to-end support for digital ID verification, overseas contract notarisation, and coordinating with Australian legal conveyancers.`}
                 </p>
                 
                 {/* Specialists Avatars */}
@@ -1241,7 +1241,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 Enquire About <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-yellow-500">Non-Resident Home Loans</span>
               </h2>
               <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed">
-                Connect with our accredited multi-lingual mortgage brokers to check your non-resident and temporary resident visa options.
+                {pageSections?.[6] || `Connect with our accredited multi-lingual mortgage brokers to check your non-resident and temporary resident visa options.`}
               </p>
 
               <div className="space-y-4 pt-4">

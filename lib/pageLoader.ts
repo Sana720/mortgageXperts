@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { executeQuery, migrateHomepageSlideLinks, migrateFirstHomeBuyerLinks, migrateVisaHomeLoanRow } from '@/lib/db';
 import type { Metadata } from 'next';
 
@@ -21,6 +22,8 @@ export interface PageHeroSettings {
 
 export interface PageData {
   pageContent?: string;
+  pageSections?: string[];
+  pageData?: Record<string, any>;
   settings: GlobalSettings;
   pageHeroSettings: PageHeroSettings | undefined;
 }
@@ -47,6 +50,9 @@ export async function loadPageData(pagePath: string): Promise<PageData> {
   const settings: GlobalSettings = {};
   let pageHeroSettings: PageHeroSettings | undefined = undefined;
   let pageContent: string | undefined = undefined;
+  let pageSections: string[] | undefined = undefined;
+
+  let pageData: Record<string, any> | undefined = undefined;
 
   try {
         const [settingsRows, pageRows, contentRows] = await Promise.all([
@@ -74,13 +80,27 @@ export async function loadPageData(pagePath: string): Promise<PageData> {
     }
     
     if (Array.isArray(contentRows) && contentRows.length > 0) {
-      pageContent = contentRows[0].content;
+      const rawContent = contentRows[0].content;
+      pageContent = rawContent;
+      
+      try {
+        if (rawContent && (rawContent.startsWith('[') || rawContent.startsWith('{'))) {
+          const parsed = JSON.parse(rawContent);
+          if (Array.isArray(parsed)) {
+            pageSections = parsed;
+          } else if (typeof parsed === 'object' && parsed !== null) {
+            pageData = parsed;
+          }
+        }
+      } catch (e) {
+        // Ignore parse error, it's just a regular string
+      }
     }
   } catch (error) {
     console.error(`[loadPageData] Failed to load data for "${pagePath}":`, error);
   }
 
-  return { settings, pageHeroSettings, pageContent };
+  return { settings, pageHeroSettings, pageContent, pageSections, pageData };
 }
 
 /**

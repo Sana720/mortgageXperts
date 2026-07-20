@@ -41,7 +41,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export default function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
+export default function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageSections }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string; pageSections?: string[] }) {
   // Wizard steps
   const [currentStep, setCurrentStep] = useState(1);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
@@ -335,7 +335,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings, pageConten
               </h2>
               <div className="w-12 h-[3px] bg-emerald-600 rounded-full" />
               <p className="text-slate-550 text-[14.2px] leading-relaxed max-w-xl font-medium">
-                {pageContent || "Calculate how compound interest and regular savings grow your home deposit over time. Build a realistic plan to unlock home ownership and compare savings frequencies."}
+                {pageSections?.[0] || pageContent || `Calculate how compound interest and regular savings grow your home deposit over time. Build a realistic plan to unlock home ownership and compare savings frequencies.`}
               </p>
 
               <div className="space-y-4 pt-4">
@@ -728,7 +728,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings, pageConten
               </h2>
               <div className="w-12 h-[3px] bg-emerald-500 rounded-full" />
               <p className="text-slate-300 text-[14.2px] leading-relaxed max-w-xl">
-                Saving a deposit is only the first step. Let our expert mortgage brokers find government grants, first home schemes, and competitive interest rates tailored to your financial situation.
+                {pageSections?.[1] || `Saving a deposit is only the first step. Let our expert mortgage brokers find government grants, first home schemes, and competitive interest rates tailored to your financial situation.`}
               </p>
               
               <div className="flex items-center gap-4 bg-white/5 border border-white/10 p-4 rounded-2xl w-fit">

@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
-  const { settings, pageHeroSettings, pageContent } = await loadPageData(PAGE_PATH);
+  const { settings, pageHeroSettings, pageContent, pageSections } = await loadPageData(PAGE_PATH);
 
   const jsonLd = buildJsonLd(
     "Buying a First Home - Nepali Mortgage Brokerage",
@@ -48,7 +48,7 @@ export default async function Page() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ClientPage settings={settings} pageHeroSettings={pageHeroSettings} pageContent={pageContent} />
+      <ClientPage settings={settings} pageHeroSettings={pageHeroSettings} pageContent={pageContent} pageSections={pageSections} />
     </>
   );
 }

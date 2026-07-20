@@ -88,7 +88,7 @@ export async function POST(request: Request) {
         });
 
         // Notification is sent TO the mortgage business email, FROM the SMTP sender
-        const recipientEmail = settings.support_email || 'mortgage@mortgagexperts.com.au';
+        const recipientEmail = settings.support_email || 'mortgagexperts.au@gmail.com';
         const senderLabel = `"Mortgage Xperts Notifications" <${smtpUser}>`;
 
         const mailSubject = `New ${type === 'calculator' ? 'Calculator Lead' : 'Callback Enquiry'}: ${name}`;

@@ -154,7 +154,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
+export function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageSections }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string; pageSections?: string[] }) {
   const { openModal } = useOnboardingModal();
 
   const badgeText = pageHeroSettings?.hero_badge || "First Home Buyer Specialists";
@@ -989,7 +989,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                   </div>
                   <div>
                     <h4 className="text-[#0B1F3A] text-[14px] font-semibold leading-tight mb-1">Servicing Calculations</h4>
-                    <p className="text-slate-500 text-[13px] leading-relaxed">We map your exact profiles across 30+ Australian lenders to unlock maximum capacity.</p>
+                    <p className="text-slate-500 text-[13px] leading-relaxed">{pageSections?.[1] || `We map your exact profiles across 30+ Australian lenders to unlock maximum capacity.`}</p>
                   </div>
                 </div>
               </motion.div>
@@ -1334,7 +1334,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#10B981] to-[#059669]">5% Deposit</span>
               </motion.h2>
               <motion.p variants={premiumFadeUp} className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed mb-8 max-w-lg">
-                Is it smarter to wait years to save 20% to avoid Lenders Mortgage Insurance, or buy immediately with a 5% deposit using government schemes? Let&apos;s evaluate the strategic trade-offs.
+                {pageSections?.[2] || `Is it smarter to wait years to save 20% to avoid Lenders Mortgage Insurance, or buy immediately with a 5% deposit using government schemes? Let&apos;s evaluate the strategic trade-offs.`}
               </motion.p>
               
               {/* Twin tab toggle */}
@@ -1391,7 +1391,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                         5% Deposit Scheme Advantages
                       </h3>
                       <p className="text-slate-500 text-[14px] leading-relaxed max-w-md">
-                        Leveraging government incentives allows you to purchase immediately, bypassing rising house price inflation while saving substantial LMI costs.
+                        {pageSections?.[3] || `Leveraging government incentives allows you to purchase immediately, bypassing rising house price inflation while saving substantial LMI costs.`}
                       </p>
                       <div className="space-y-4 pt-4 border-t border-slate-100">
                         {[
@@ -1425,7 +1425,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                         20% Deposit Advantages
                       </h3>
                       <p className="text-slate-500 text-[14px] leading-relaxed max-w-md">
-                        Ideal for structured wealth positions, a larger deposit lowers overall monthly repayments and provides immediate equity buffer cushions.
+                        {pageSections?.[4] || `Ideal for structured wealth positions, a larger deposit lowers overall monthly repayments and provides immediate equity buffer cushions.`}
                       </p>
                       <div className="space-y-4 pt-4 border-t border-slate-100">
                         {[
@@ -2162,7 +2162,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                       <div className="space-y-2">
                         <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400 block">His Story & Mission</span>
                         <p className="text-slate-600 text-[11.5px] leading-relaxed italic">
-                          &ldquo;Aakash founded Mortgage Xperts to provide the Nepalese community in Australia with transparent, client-first mortgage advice. Having arrived as an immigrant himself, he understands the dream of home ownership. He has helped over 500+ families secure low-deposit approvals and max borrowing capacity.&rdquo;
+                          {pageSections?.[5] || `&ldquo;Aakash founded Mortgage Xperts to provide the Nepalese community in Australia with transparent, client-first mortgage advice. Having arrived as an immigrant himself, he understands the dream of home ownership. He has helped over 500+ families secure low-deposit approvals and max borrowing capacity.&rdquo;`}
                         </p>
                       </div>
 
@@ -2448,7 +2448,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                       <div className="space-y-1.5">
                         <span className="text-[8.5px] font-bold uppercase tracking-wider text-slate-400 block">His Story & Mission</span>
                         <p className="text-slate-600 text-[11px] leading-relaxed italic">
-                          &ldquo;Aakash founded Mortgage Xperts to provide the Nepalese community in Australia with transparent, client-first mortgage advice. Having arrived as an immigrant himself, he understands the dream of home ownership. He has helped over 500+ families secure low-deposit approvals.&rdquo;
+                          {pageSections?.[6] || `&ldquo;Aakash founded Mortgage Xperts to provide the Nepalese community in Australia with transparent, client-first mortgage advice. Having arrived as an immigrant himself, he understands the dream of home ownership. He has helped over 500+ families secure low-deposit approvals.&rdquo;`}
                         </p>
                       </div>
 

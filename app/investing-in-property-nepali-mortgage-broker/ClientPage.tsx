@@ -99,7 +99,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
+export function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageSections }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string; pageSections?: string[] }) {
   const { openModal } = useOnboardingModal();
 
   const handleBtnClick = (e: React.MouseEvent, text: string, link: string) => {
@@ -638,7 +638,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 Build Long-Term Wealth Through <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-yellow-600">Property Investment</span>
               </h2>
               <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed">
-                {pageContent || "Investing in property is one of the most effective ways for Australians to grow their wealth over time. When structured properly, a property portfolio provides double-sided growth: long-term asset value appreciation alongside consistent rental cash flows."}
+                {pageSections?.[0] || pageContent || `Investing in property is one of the most effective ways for Australians to grow their wealth over time. When structured properly, a property portfolio provides double-sided growth: long-term asset value appreciation alongside consistent rental cash flows.`}
               </p>
               <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed">
                 However, entering the market successfully requires a detailed lending strategy. Factors such as borrowing capacities, tax depreciation, gearing outcomes, and lender rate structures will determine your net return. At Mortgage Xperts, we specialize in building flexible debt structures tailored specifically for property investors.
@@ -721,7 +721,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
               Why Do Australians Choose <span className="text-[#CA8A04]">Property Investments</span>?
             </h2>
             <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed">
-              Unlike volatile shares, real estate is a tangible asset class providing double-value security: value growth along with rental income.
+              {pageSections?.[1] || `Unlike volatile shares, real estate is a tangible asset class providing double-value security: value growth along with rental income.`}
             </p>
           </div>
 
@@ -792,7 +792,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
               Rental Yield &amp; <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-yellow-600">Cash Flow Calculator</span>
             </h2>
             <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed">
-              Model your rental yields, deposits, interest repayments, and monthly cash flow to evaluate property feasibility.
+              {pageSections?.[3] || `Model your rental yields, deposits, interest repayments, and monthly cash flow to evaluate property feasibility.`}
             </p>
           </div>
 
@@ -1018,7 +1018,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
               Choosing the Right <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-yellow-600">Property Type</span>
             </h2>
             <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed">
-              Not all investment assets perform similarly. Your choice depends directly on your borrowing capability and capital strategy.
+              {pageSections?.[2] || `Not all investment assets perform similarly. Your choice depends directly on your borrowing capability and capital strategy.`}
             </p>
           </div>
 
@@ -1159,7 +1159,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 Property Investment <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-yellow-600">Readiness Audit</span>
               </h2>
               <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed mb-8 max-w-lg">
-                Are you financially positioned to start building or expanding your property portfolio? Review the requirements below and assess your current investment readiness.
+                {pageSections?.[4] || `Are you financially positioned to start building or expanding your property portfolio? Review the requirements below and assess your current investment readiness.`}
               </p>
               
               {/* Progress Card */}
@@ -1312,7 +1312,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 Request an Investment <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-yellow-600">Strategy Session</span>
               </h2>
               <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed">
-                Connect with our brokers to review your borrowing potential, structure your loan, and set up your investment portfolio path.
+                {pageSections?.[5] || `Connect with our brokers to review your borrowing potential, structure your loan, and set up your investment portfolio path.`}
               </p>
               
               <div className="border-t border-slate-100 pt-6 space-y-4">
@@ -1468,7 +1468,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
               Ready to Accelerate Your <span className="text-amber-400">Property Investment Journey</span>?
             </h2>
             <p className="text-slate-450 text-[13.5px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium">
-              We look past generic rates to structure your loans for optimal tax outcomes, maximum equity leverage, and minimal deposit costs.
+              {pageSections?.[6] || `We look past generic rates to structure your loans for optimal tax outcomes, maximum equity leverage, and minimal deposit costs.`}
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 shrink-0 items-stretch sm:items-center">

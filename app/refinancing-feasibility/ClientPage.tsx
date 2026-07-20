@@ -40,7 +40,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export default function ClientPage({ settings = {}, pageHeroSettings }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings }) {
+export default function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageSections }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string; pageSections?: string[] }) {
   // Wizard Steps
   const [currentStep, setCurrentStep] = useState(1);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
@@ -333,7 +333,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings }: { settin
               </h2>
               <div className="w-12 h-[3px] bg-violet-600 rounded-full" />
               <p className="text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium">
-                Refinancing should save you more than it costs. Our calculator compares your current mortgage repayments with a lower interest rate, subtracting upfront setup costs to define your break-even period.
+                {pageSections?.[0] || `Refinancing should save you more than it costs. Our calculator compares your current mortgage repayments with a lower interest rate, subtracting upfront setup costs to define your break-even period.`}
               </p>
 
               <div className="space-y-4 pt-4">

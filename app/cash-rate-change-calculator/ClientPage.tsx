@@ -60,11 +60,13 @@ const faqs = [
 export default function ClientPage({
   settings = {},
   pageHeroSettings,
-  pageContent
+  pageContent,
+  pageSections
 }: {
   settings?: Record<string, string>;
   pageHeroSettings?: PageHeroSettings;
   pageContent?: string;
+  pageSections?: string[];
 }) {
   // Wizard steps
   const [currentStep, setCurrentStep] = useState(1);
@@ -307,7 +309,7 @@ export default function ClientPage({
               </h2>
               <div className="w-12 h-[3px] bg-rose-600 rounded-full" />
               <p className="text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium">
-                {pageContent || "Whenever the Reserve Bank of Australia (RBA) adjusts the official cash rate, lenders typically pass this change onto variable rate home loans. Use this calculator to model how much your repayment will rise or fall."}
+                {pageSections?.[0] || pageContent || `Whenever the Reserve Bank of Australia (RBA) adjusts the official cash rate, lenders typically pass this change onto variable rate home loans. Use this calculator to model how much your repayment will rise or fall.`}
               </p>
 
               <div className="space-y-4 pt-4">
@@ -699,7 +701,7 @@ export default function ClientPage({
               </h2>
               <div className="w-12 h-[3px] bg-rose-500 rounded-full" />
               <p className="text-slate-350 text-[14px] leading-relaxed max-w-xl">
-                Refinancing or renegotiating with your bank is the easiest way to combat RBA rate increases. Submit your scenario, and we will audit your loan against 30+ lenders to locate stamp duty concessions, cashback rewards, or lower rates.
+                {pageSections?.[2] || `Refinancing or renegotiating with your bank is the easiest way to combat RBA rate increases. Submit your scenario, and we will audit your loan against 30+ lenders to locate stamp duty concessions, cashback rewards, or lower rates.`}
               </p>
               
               <div className="flex items-center gap-4 bg-white/5 border border-white/10 p-4 rounded-2xl w-fit">

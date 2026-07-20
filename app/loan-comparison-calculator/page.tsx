@@ -5,7 +5,7 @@ import { loadPageData, buildPageMetadata, buildJsonLd } from "@/lib/pageLoader";
 const PAGE_PATH = "/loan-comparison-calculator";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { settings, pageHeroSettings, pageContent } = await loadPageData(PAGE_PATH);
+  const { settings, pageHeroSettings, pageContent, pageSections } = await loadPageData(PAGE_PATH);
   return buildPageMetadata(PAGE_PATH, pageHeroSettings, settings, {
     title: "Loan Comparison Calculator | Compare Home Loans | Mortgage Xperts",
     description:
@@ -21,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
-  const { settings, pageHeroSettings, pageContent } = await loadPageData(PAGE_PATH);
+  const { settings, pageHeroSettings, pageContent, pageSections } = await loadPageData(PAGE_PATH);
 
   const jsonLd = buildJsonLd(
     "Loan Comparison Calculator - Mortgage Xperts",
@@ -44,7 +44,7 @@ export default async function Page() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ClientPage settings={settings} pageHeroSettings={pageHeroSettings} pageContent={pageContent} />
+      <ClientPage settings={settings} pageHeroSettings={pageHeroSettings} pageContent={pageContent} pageSections={pageSections} />
     </>
   );
 }

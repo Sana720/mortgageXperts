@@ -41,7 +41,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export default function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
+export default function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageSections }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string; pageSections?: string[] }) {
   // Wizard steps
   const [currentStep, setCurrentStep] = useState(1);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
@@ -634,7 +634,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings, pageConten
           <div>
             <h3 className="font-extrabold text-[#0B1F3A] mb-1">Calculation Details:</h3>
             <p className="text-slate-550"><span className="font-bold">Date:</span> {new Date().toLocaleDateString("en-AU")}</p>
-            <p className="text-slate-550"><span className="font-bold">Type:</span> Lenders Mortgage Insurance (LMI) Assessment</p>
+            <p className="text-slate-550">{pageSections?.[1] || `<span className="font-bold">Type:</span> Lenders Mortgage Insurance (LMI) Assessment`}</p>
           </div>
         </div>
 

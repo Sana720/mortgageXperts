@@ -45,7 +45,7 @@ export default function ClientPage({
   settings?: Record<string, string>;
   pageHeroSettings?: PageHeroSettings;
   defaultState?: string;
-  pageContent?: string;
+  pageContent?: string; pageSections?: string[];
 }) {
   // Wizard steps
   const [currentStep, setCurrentStep] = useState(1);

@@ -97,7 +97,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
+export function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageSections }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string; pageSections?: string[] }) {
   const { openModal } = useOnboardingModal();
 
   const handleBtnClick = (e: React.MouseEvent, text: string, link: string) => {
@@ -629,7 +629,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 Buying a home can be tricky and sometimes you need a lot of money saved up to start. The Home Guarantee Scheme is like a helpful friend that lets you buy a home sooner by making the deposit smaller.
               </p>
               <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed">
-                {pageContent || "If saving for a 20% deposit has felt like a never-ending struggle, you’re not alone. That’s why the First Home Guarantee (FHBG), backed by the Australian Government and administered by Housing Australia, could be your breakthrough into the property market. Under the guarantee, the government steps in to guarantee the difference between your 5% deposit and the standard 20% deposit."}
+                {pageSections?.[0] || pageContent || `If saving for a 20% deposit has felt like a never-ending struggle, you’re not alone. That’s why the First Home Guarantee (FHBG), backed by the Australian Government and administered by Housing Australia, could be your breakthrough into the property market. Under the guarantee, the government steps in to guarantee the difference between your 5% deposit and the standard 20% deposit.`}
               </p>
               <div className="flex flex-wrap gap-6 pt-2">
                 <div className="flex items-center gap-2.5">
@@ -709,7 +709,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
               What&apos;s the Big Benefit of the FHBG?
             </h2>
             <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed">
-              Skip years of renting and saving. Leverage the government guarantee to purchase your home safely and cost-effectively today.
+              {pageSections?.[1] || `Skip years of renting and saving. Leverage the government guarantee to purchase your home safely and cost-effectively today.`}
             </p>
           </div>
 
@@ -770,7 +770,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
               <div>
                 <h4 className="text-[15px] font-extrabold text-[#0B1F3A]">Did you know?</h4>
                 <p className="text-slate-600 text-[13px] mt-0.5 leading-relaxed">
-                  Lenders Mortgage Insurance (LMI) can cost anywhere from $10,000 to $30,000+, depending on your loan size. With the First Home Guarantee, that money stays back in your pocket.
+                  {pageSections?.[2] || `Lenders Mortgage Insurance (LMI) can cost anywhere from $10,000 to $30,000+, depending on your loan size. With the First Home Guarantee, that money stays back in your pocket.`}
                 </p>
               </div>
             </div>
@@ -798,7 +798,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
               LMI Savings &amp; <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600">First Home Guarantee Calculator</span>
             </h2>
             <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed">
-              Calculate your required deposit and see how much Lenders Mortgage Insurance (LMI) you avoid paying under the scheme.
+              {pageSections?.[3] || `Calculate your required deposit and see how much Lenders Mortgage Insurance (LMI) you avoid paying under the scheme.`}
             </p>
           </div>
 

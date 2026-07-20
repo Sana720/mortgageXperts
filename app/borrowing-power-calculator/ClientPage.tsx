@@ -41,7 +41,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export default function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: unknown }) {
+export default function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageSections }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: unknown; pageSections?: string[] }) {
   // Wizard Steps
   const [currentStep, setCurrentStep] = useState(1);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
@@ -846,7 +846,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings, pageConten
                   </div>
                   <h3 className="text-xl font-bold font-montserrat text-[#0B1F3A]">Enquiry Submitted Successfully</h3>
                   <p className="text-slate-500 text-xs max-w-sm mx-auto leading-relaxed">
-                    Thank you. An investment loan strategist from Mortgage Xperts will call you shortly to discuss your borrowing options.
+                    {pageSections?.[0] || `Thank you. An investment loan strategist from Mortgage Xperts will call you shortly to discuss your borrowing options.`}
                   </p>
                 </div>
               ) : (

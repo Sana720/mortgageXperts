@@ -94,7 +94,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
+export function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageSections }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string; pageSections?: string[] }) {
   const { openModal } = useOnboardingModal();
 
   const handleBtnClick = (e: React.MouseEvent, text: string, link: string) => {
@@ -639,7 +639,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 Nurses LMI &amp; Rate <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">Savings Estimator</span>
               </h2>
               <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed mb-6">
-                Calculate how much you can borrow as a nurse or midwife, including interest rate discounts and Lenders Mortgage Insurance waivers.
+                {pageSections?.[4] || `Calculate how much you can borrow as a nurse or midwife, including interest rate discounts and Lenders Mortgage Insurance waivers.`}
               </p>
 
               <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-4 max-w-md shadow-sm">
@@ -883,7 +883,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
               <div className="absolute top-0 left-0 w-full h-1.5 bg-emerald-600" />
               <h3 className="text-[#0B1F3A] text-[18px] font-black mb-4">Waived LMI up to 90% LVR</h3>
               <p className="text-slate-550 text-[13.5px] leading-relaxed">
-                If you have a deposit of 10% (instead of the standard 20%), you might still avoid paying LMI altogether, saving you thousands in upfront bank fees.
+                {pageSections?.[1] || `If you have a deposit of 10% (instead of the standard 20%), you might still avoid paying LMI altogether, saving you thousands in upfront bank fees.`}
               </p>
             </div>
 
@@ -924,7 +924,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 <div>
                   <h4 className="text-[14px] font-extrabold text-[#0B1F3A]">Flexible Policy Application</h4>
                   <p className="text-slate-600 text-[12.5px] leading-relaxed mt-0.5">
-                    Nurses may be eligible for LMI waivers through specialized medical lending packages, or through government-backed schemes.
+                    {pageSections?.[2] || `Nurses may be eligible for LMI waivers through specialized medical lending packages, or through government-backed schemes.`}
                   </p>
                 </div>
               </div>
@@ -983,7 +983,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
               Using Government Grants <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">&amp; Schemes</span>
             </h2>
             <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed">
-              In addition to lender benefits, you may be eligible for government grants and schemes designed to support first-home buyers and essential workers:
+              {pageSections?.[3] || `In addition to lender benefits, you may be eligible for government grants and schemes designed to support first-home buyers and essential workers:`}
             </p>
           </div>
 
@@ -1037,7 +1037,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 Home Loan Documentation <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">for Nurses</span>
               </h2>
               <p className="text-slate-505 text-[14.5px] sm:text-[15.5px] leading-relaxed mb-8">
-                To access exclusive rate cuts and LMI waivers, lenders will require proof of your qualifications and registration. Track your readiness using our checklist below.
+                {pageSections?.[5] || `To access exclusive rate cuts and LMI waivers, lenders will require proof of your qualifications and registration. Track your readiness using our checklist below.`}
               </p>
 
               {/* Progress Card */}
@@ -1112,7 +1112,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-600 to-teal-500" />
                 <h4 className="text-[16px] font-extrabold text-[#0B1F3A]">Have a unique shift structure?</h4>
                 <p className="text-slate-500 text-xs sm:text-[12.5px] leading-relaxed">
-                  Different lenders assess shift allowances, overtime, and casual contracts differently. Our specialists can review your payslips to maximize assessed income.
+                  {pageSections?.[6] || `Different lenders assess shift allowances, overtime, and casual contracts differently. Our specialists can review your payslips to maximize assessed income.`}
                 </p>
                 
                 {/* Specialists Avatars */}

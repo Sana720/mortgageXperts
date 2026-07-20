@@ -84,7 +84,7 @@ const GoogleIcon = () => (
   </svg>
 );
 
-export default function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
+export default function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageSections }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string; pageSections?: string[] }) {
   const { openModal } = useOnboardingModal();
   // Step form state: 1 = Enter Details, 2 = Results Dashboard
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -547,7 +547,7 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
               </h2>
               <div className="w-12 h-[3px] bg-[#E11D48] rounded-full" />
               <p className="text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium">
-                {pageContent || "Evaluating different interest rates, loan terms, and repayment frequencies enables you to pick the best home loan product. Analyze Loan 1 and Loan 2 directly to review payment differences and total interest savings."}
+                {pageSections?.[0] || pageContent || `Evaluating different interest rates, loan terms, and repayment frequencies enables you to pick the best home loan product. Analyze Loan 1 and Loan 2 directly to review payment differences and total interest savings.`}
               </p>
 
               <div className="space-y-4 pt-4">
@@ -1266,7 +1266,7 @@ Cheaper option: ${results.cheaperLoan} with $${Math.abs(results.paymentsSaved).t
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-rose-500 to-pink-500" />
                 <h4 className="text-[16px] font-extrabold text-[#0B1F3A]">Want to compare specific lender products?</h4>
                 <p className="text-slate-500 text-xs sm:text-[12.5px] leading-relaxed">
-                  Different banks offer varying interest rates, offset structures, and fees. Our experienced mortgage brokers compare products across 30+ lenders to locate the best home loan for your financial setup.
+                  {pageSections?.[1] || `Different banks offer varying interest rates, offset structures, and fees. Our experienced mortgage brokers compare products across 30+ lenders to locate the best home loan for your financial setup.`}
                 </p>
                 <div className="pt-2">
                   <button type="button" onClick={openModal} className="cursor-pointer border-0 inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white text-[13px] font-bold px-6 py-3 shadow-lg shadow-rose-500/10 transition-all duration-300">

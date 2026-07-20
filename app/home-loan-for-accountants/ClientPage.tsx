@@ -92,7 +92,7 @@ export interface PageHeroSettings {
   hero_btn2_link?: string;
 }
 
-export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
+export function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageSections }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string; pageSections?: string[] }) {
   const { openModal } = useOnboardingModal();
 
   const handleBtnClick = (e: React.MouseEvent, text: string, link: string) => {
@@ -552,7 +552,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 Home Loans for <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-600">Accountants &amp; Finance Experts</span>
               </h2>
               <p className="text-slate-550 text-[14px] sm:text-[15px] leading-relaxed">
-                {pageContent || "Accountants often have access to special home loan offers because lenders recognise their stable income, financial knowledge, and responsible money management. These benefits can include waived Lenders Mortgage Insurance (LMI), special interest rates, and flexible lending policies."}
+                {pageSections?.[0] || pageContent || `Accountants often have access to special home loan offers because lenders recognise their stable income, financial knowledge, and responsible money management. These benefits can include waived Lenders Mortgage Insurance (LMI), special interest rates, and flexible lending policies.`}
               </p>
               <div className="flex flex-wrap gap-6 pt-2">
                 <div className="flex items-center gap-2.5">
@@ -588,7 +588,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 <div>
                   <h4 className="text-[13.5px] font-bold text-[#0B1F3A]">Jane&apos;s Case Study</h4>
                   <p className="text-slate-550 text-[11.5px] leading-relaxed mt-0.5">
-                    Jane is a CPA-registered accountant earning $130,000 a year as a salaried employee. Because of her stable job and professional registration, her lender offers her a home loan with a discounted interest rate and waived LMI, even though her deposit is just 10%.
+                    {pageSections?.[1] || `Jane is a CPA-registered accountant earning $130,000 a year as a salaried employee. Because of her stable job and professional registration, her lender offers her a home loan with a discounted interest rate and waived LMI, even though her deposit is just 10%.`}
                   </p>
                 </div>
               </div>
@@ -679,7 +679,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 Accountants LMI &amp; Rate <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-500">Savings Estimator</span>
               </h2>
               <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed mb-6">
-                Calculate your potential interest rate cuts and check if you meet the professional LMI waiver thresholds.
+                {pageSections?.[8] || `Calculate your potential interest rate cuts and check if you meet the professional LMI waiver thresholds.`}
               </p>
 
               <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-4 max-w-md shadow-sm">
@@ -689,7 +689,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                   </div>
                   <div>
                     <h4 className="text-[#0B1F3A] text-[14px] font-semibold leading-tight mb-1">CPA Professional LMI Waiver</h4>
-                    <p className="text-slate-500 text-[12.5px] leading-relaxed">Avoid paying expensive LMI up to 90% LVR if you meet registration criteria.</p>
+                    <p className="text-slate-500 text-[12.5px] leading-relaxed">{pageSections?.[9] || `Avoid paying expensive LMI up to 90% LVR if you meet registration criteria.`}</p>
                   </div>
                 </div>
 
@@ -933,7 +933,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 LMI Waivers &amp; Discounts <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-500">for Accountants</span>
               </h2>
               <p className="text-slate-500 text-[14.5px] leading-relaxed">
-                Normally, if your deposit is less than 20%, you pay Lenders Mortgage Insurance (LMI), which protects the lender if you can’t repay the loan. However, accountants registered with bodies like CPA Australia and earning over $120,000 can sometimes avoid LMI even with deposits as low as 10%.
+                {pageSections?.[2] || `Normally, if your deposit is less than 20%, you pay Lenders Mortgage Insurance (LMI), which protects the lender if you can’t repay the loan. However, accountants registered with bodies like CPA Australia and earning over $120,000 can sometimes avoid LMI even with deposits as low as 10%.`}
               </p>
             </div>
 
@@ -942,7 +942,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
               <div className="absolute top-0 left-0 w-full h-1.5 bg-violet-600" />
               <h3 className="text-[#0B1F3A] text-[18px] font-black mb-4">Mark&apos;s Savings Story</h3>
               <p className="text-slate-550 text-[13.5px] leading-relaxed mb-4">
-                Mark is a self-employed accountant registered with CPA Australia. He wants to buy a $700,000 home. Normally, a 10% deposit ($70,000) would require LMI, but Mark qualifies for an LMI waiver because of his registration and income.
+                {pageSections?.[3] || `Mark is a self-employed accountant registered with CPA Australia. He wants to buy a $700,000 home. Normally, a 10% deposit ($70,000) would require LMI, but Mark qualifies for an LMI waiver because of his registration and income.`}
               </p>
               <div className="text-xs font-black text-violet-700 bg-violet-50 rounded-xl p-3 inline-block">
                 ✓ Saved Mark over $16,500 in upfront fees
@@ -1017,7 +1017,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                   </div>
                 </div>
                 <p className="text-slate-500 text-[13px] sm:text-[13.5px] leading-relaxed">
-                  Provide business tax returns and financials. Some lenders offer flexible low-doc loans based on accountant-declared figures.
+                  {pageSections?.[4] || `Provide business tax returns and financials. Some lenders offer flexible low-doc loans based on accountant-declared figures.`}
                 </p>
                 <ul className="space-y-3 pt-2">
                   {["1-Year financials accepted", "Flexible depreciation add-backs", "Business offset products"].map((feat, idx) => (
@@ -1074,7 +1074,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 <div>
                   <h4 className="text-[14px] font-extrabold text-[#0B1F3A]">Emily&apos;s Scenario</h4>
                   <p className="text-slate-600 text-[12.5px] leading-relaxed mt-0.5">
-                    Emily, a CPA-registered accountant earning $125,000, wants to buy a $600,000 home. With a 10% deposit of $60,000 and strong financials, she qualifies to borrow the remaining $540,000 without paying LMI. Her stable income also helps her get a loan amount that comfortably fits her budget.
+                    {pageSections?.[5] || `Emily, a CPA-registered accountant earning $125,000, wants to buy a $600,000 home. With a 10% deposit of $60,000 and strong financials, she qualifies to borrow the remaining $540,000 without paying LMI. Her stable income also helps her get a loan amount that comfortably fits her budget.`}
                   </p>
                 </div>
               </div>
@@ -1133,7 +1133,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
               Working with a Mortgage Broker to Maximise Benefits
             </h2>
             <p className="text-slate-500 text-[14.5px] leading-relaxed">
-              Mortgage brokers understand lender offers for accountants and can help you secure the best package.
+              {pageSections?.[6] || `Mortgage brokers understand lender offers for accountants and can help you secure the best package.`}
             </p>
           </div>
 
@@ -1177,7 +1177,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
               <div>
                 <h4 className="text-[15px] font-extrabold text-[#0B1F3A]">Tom&apos;s Discovery</h4>
                 <p className="text-slate-600 text-[13px] mt-0.5 leading-relaxed">
-                  Tom is a self-employed accountant who didn’t know about LMI waivers. A mortgage broker helped him find a lender offering this benefit, saving him thousands. The broker also helped Tom gather his documents, making the process smooth and successful.
+                  {pageSections?.[7] || `Tom is a self-employed accountant who didn’t know about LMI waivers. A mortgage broker helped him find a lender offering this benefit, saving him thousands. The broker also helped Tom gather his documents, making the process smooth and successful.`}
                 </p>
               </div>
             </div>
@@ -1208,7 +1208,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 Got Questions? <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-500">We Have Answers</span>
               </h2>
               <p className="text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-sm">
-                Everything you need to know about the home loan process for accountants and finance professionals.
+                {pageSections?.[10] || `Everything you need to know about the home loan process for accountants and finance professionals.`}
               </p>
 
               {/* Specialist Contact Card */}
@@ -1216,7 +1216,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { s
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-violet-600 to-indigo-500" />
                 <h4 className="text-[16px] font-extrabold text-[#0B1F3A]">Have a unique corporate structure?</h4>
                 <p className="text-slate-500 text-xs sm:text-[12.5px] leading-relaxed">
-                  Different lenders assess partner distributions, trust income, and casual corporate contracts differently. Our specialists can review your structure to maximize assessed income.
+                  {pageSections?.[11] || `Different lenders assess partner distributions, trust income, and casual corporate contracts differently. Our specialists can review your structure to maximize assessed income.`}
                 </p>
                 
                 {/* Specialists Avatars */}

@@ -256,11 +256,11 @@ export async function generateMetadata({
   params: Promise<{ city: string }>;
 }): Promise<Metadata> {
   const { city } = await params;
-  const data = cityDataMap[city];
-  if (!data) return { title: "Branch Not Found" };
-
   const pagePath = `/branches/${city}`;
-  const { settings, pageHeroSettings, pageContent } = await loadPageData(pagePath);
+  const { settings, pageHeroSettings, pageContent, pageData } = await loadPageData(pagePath);
+  
+  const data = (pageData as CityData) || cityDataMap[city];
+  if (!data) return { title: "Branch Not Found" };
 
   return buildPageMetadata(pagePath, pageHeroSettings, settings, {
     title: `Mortgage Xperts ${data.city} | Home Loans in ${data.state}`,
@@ -287,14 +287,14 @@ export default async function BranchPage({
   params: Promise<{ city: string }>;
 }) {
   const { city } = await params;
-  const cityData = cityDataMap[city];
+  const pagePath = `/branches/${city}`;
+  const { settings, pageHeroSettings, pageContent, pageData } = await loadPageData(pagePath);
+  
+  const cityData = (pageData as CityData) || cityDataMap[city];
 
   if (!cityData) {
     notFound();
   }
-
-  const pagePath = `/branches/${city}`;
-  const { settings, pageHeroSettings, pageContent } = await loadPageData(pagePath);
 
   // Fetch branch-specific team lead from DB (editable via admin)
   type DbMember = { name: string; role: string; image: string; bio: string; phone: string };

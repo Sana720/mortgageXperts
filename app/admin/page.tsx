@@ -3,6 +3,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useMemo } from "react";
+import { JsonEditor } from "@/components/JsonEditor";
 import Image from "next/image";
 import {
   LayoutDashboard,
@@ -102,7 +103,7 @@ export default function AdminPage() {
   const [editingPagePath, setEditingPagePath] = useState<string | null>(null);
   const [pagesManagerSearch, setPagesManagerSearch] = useState("");
   const [pageEditSettings, setPageEditSettings] = useState<any>(null);
-  const [pageEditContent, setPageEditContent] = useState("");
+  const [pageEditData, setPageEditData] = useState<any>(null);
   const [pageEditSaving, setPageEditSaving] = useState(false);
   const [pageEditToast, setPageEditToast] = useState<{ type: "success" | "error"; msg: string } | null>(null);
   
@@ -549,7 +550,17 @@ export default function AdminPage() {
     fetch(`/api/admin/page-content?page_path=${encodeURIComponent(editingPagePath)}`)
       .then(r => r.json())
       .then(data => {
-        setPageEditContent(data?.content || "");
+        const rawContent = data?.content || "";
+        try {
+          if (rawContent && (rawContent.startsWith("[") || rawContent.startsWith("{"))) {
+            const parsed = JSON.parse(rawContent);
+            setPageEditData(parsed);
+            return;
+          }
+        } catch (e) {
+          // ignore
+        }
+        setPageEditData(rawContent ? [rawContent] : []);
       });
   }, [editingPagePath]);
 
@@ -566,11 +577,11 @@ export default function AdminPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...pageEditSettings, page_path: editingPagePath })
       });
-      // Save intro paragraph content
+      // Save sections content
       const contentRes = await fetch("/api/admin/page-content", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ page_path: editingPagePath, content: pageEditContent })
+        body: JSON.stringify({ page_path: editingPagePath, content: JSON.stringify(pageEditData) })
       });
       if (settingsRes.ok && contentRes.ok) {
         setPageEditToast({ type: "success", msg: "Page saved successfully! Changes are now live." });
@@ -1833,7 +1844,7 @@ export default function AdminPage() {
                         <div
                           key={page.value}
                           className={`flex items-center justify-between gap-3 px-4 py-3.5 hover:bg-slate-50/80 transition-all cursor-pointer group ${editingPagePath === page.value ? "bg-blue-50/60 border-l-2 border-blue-600" : ""}`}
-                          onClick={() => { setEditingPagePath(page.value); setPageEditSettings(null); setPageEditContent(""); }}
+                          onClick={() => { setEditingPagePath(page.value); setPageEditSettings(null); setPageEditData(null); }}
                         >
                           <div className="min-w-0 flex-1">
                             <div className="text-[11px] font-bold text-slate-800 truncate">{page.label.split(" (/")[0]}</div>
@@ -1851,7 +1862,7 @@ export default function AdminPage() {
                               <ExternalLink className="w-3 h-3" />
                             </a>
                             <button
-                              onClick={(e) => { e.stopPropagation(); setEditingPagePath(page.value); setPageEditSettings(null); setPageEditContent(""); }}
+                              onClick={(e) => { e.stopPropagation(); setEditingPagePath(page.value); setPageEditSettings(null); setPageEditData(null); }}
                               className="px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 text-[11px] font-black uppercase tracking-wider rounded-lg transition-all"
                             >
                               Edit
@@ -2058,23 +2069,34 @@ export default function AdminPage() {
                         </div>
                       </div>
 
-                      {/* Page Intro Paragraph Card */}
-                      <div className="bg-white border border-slate-200/70 rounded-2xl p-6 shadow-sm space-y-4">
-                        <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                          <FileText className="w-4 h-4 text-emerald-600 shrink-0" />
+                      {/* DYNAMIC JSON EDITOR */}
+                      <div className="bg-white border border-slate-200/70 rounded-2xl p-6 shadow-sm mb-4">
+                        <div className="flex items-center justify-between mb-4">
                           <div>
-                            <h2 className="text-base font-black text-slate-800 tracking-tight uppercase" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>Page Intro Paragraph</h2>
-                            <p className="text-[11px] text-slate-400 font-medium mt-0.5">This paragraph appears as a custom content block on the page, giving you full control over the intro text shown to visitors.</p>
+                            <h3 className="text-slate-800 font-extrabold text-sm uppercase tracking-wider flex items-center gap-2">
+                              <FileText className="w-4 h-4 text-emerald-500" />
+                              Page Content & Data
+                            </h3>
+                            <p className="text-[11px] text-slate-500 mt-1">Edit the pre-filled structural data and text sections across the page.</p>
                           </div>
                         </div>
-                        <textarea
-                          rows={5}
-                          value={pageEditContent}
-                          onChange={e => setPageEditContent(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all leading-relaxed"
-                          placeholder="Enter an intro paragraph for this page. This will be displayed in the page's intro/overview section..."
-                        />
-                        <p className="text-[11px] text-slate-400">Supports plain text. Keep it concise and informative (2–4 sentences recommended).</p>
+
+                        {pageEditData === null || (Array.isArray(pageEditData) && pageEditData.length === 0) ? (
+                          <div className="text-center py-8">
+                            <p className="text-[12px] text-slate-400 italic mb-3">No content or data configured for this page yet.</p>
+                            <button
+                              type="button"
+                              onClick={() => setPageEditData([""])}
+                              className="text-[11px] font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-xl transition-all"
+                            >
+                              + Initialize Content
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="bg-slate-50/50 p-4 rounded-xl border border-slate-100">
+                            <JsonEditor data={pageEditData} onChange={setPageEditData} name="Page Content" />
+                          </div>
+                        )}
                       </div>
                       
                       {/* Toast Notification */}

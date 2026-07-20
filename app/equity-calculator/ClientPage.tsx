@@ -56,7 +56,7 @@ const faqs = [
   }
 ];
 
-export default function ClientPage({ settings = {}, pageHeroSettings, pageContent }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string }) {
+export default function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageSections }: { settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string; pageSections?: string[] }) {
   // Wizard steps
   const [currentStep, setCurrentStep] = useState(1);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
@@ -241,7 +241,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings, pageConten
               </h2>
               <div className="w-12 h-[3px] bg-violet-600 rounded-full" />
               <p className="text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium font-inter">
-                {pageContent || "Your home is one of your greatest assets. Over time, principal repayments and market growth build equity. Use this calculator to figure out your usable equity to buy an investment property, renovate, or consolidate debts."}
+                {pageSections?.[0] || pageContent || `Your home is one of your greatest assets. Over time, principal repayments and market growth build equity. Use this calculator to figure out your usable equity to buy an investment property, renovate, or consolidate debts.`}
               </p>
             </div>
 
@@ -505,7 +505,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings, pageConten
               Frequently Asked <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-fuchsia-500">Questions</span>
             </h2>
             <p className="text-slate-500 text-[12.5px] font-medium mt-2">
-              Everything you need to know about home equity, usable limits, and leveraging property.
+              {pageSections?.[2] || `Everything you need to know about home equity, usable limits, and leveraging property.`}
             </p>
           </div>
 
@@ -564,7 +564,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings, pageConten
               </h2>
               <div className="w-12 h-[3px] bg-violet-500 rounded-full" />
               <p className="text-slate-300 text-[14px] leading-relaxed max-w-xl">
-                Unlocking equity requires careful valuation checks, loan restructuring, and choosing the right lender policy. Submit a callback request and one of our bilingual mortgage brokers will guide you through the cash-out or top-up process.
+                {pageSections?.[3] || `Unlocking equity requires careful valuation checks, loan restructuring, and choosing the right lender policy. Submit a callback request and one of our bilingual mortgage brokers will guide you through the cash-out or top-up process.`}
               </p>
               
               <div className="flex items-center gap-4 bg-white/5 border border-white/10 p-4 rounded-2xl w-fit">
