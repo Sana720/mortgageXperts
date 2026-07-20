@@ -4,8 +4,14 @@ import { executeQuery } from "@/lib/db";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Mortgage Mate | Mortgage Xperts",
-  description: "Get a customized mortgage strategy from Aakash KC and find your best loan options.",
+  title: "Free Mortgage Assessment | Top Mortgage Broker in Australia",
+  description: "Get a free mortgage assessment from Australia's trusted mortgage experts. Specializing in tailored home loan strategies, with dedicated services for the Nepalese community across Sydney, Melbourne, and Australia.",
+  keywords: "mortgage broker Australia, best home loan broker, Nepali mortgage broker Australia, free mortgage assessment, refinance home loan, Nepalese mortgage experts Sydney, home loan strategy",
+  openGraph: {
+    title: "Free Mortgage Assessment | Mortgage Xperts",
+    description: "Get a customized mortgage strategy from Australia's trusted mortgage experts. Explore your borrowing options securely today.",
+    type: "website",
+  }
 };
 
 export default async function MortgageMateServerPage() {

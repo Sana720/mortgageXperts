@@ -14,7 +14,7 @@ const montserrat = Montserrat({
   display: "swap",
 });
 
-import { loadPageData } from "@/lib/pageLoader";
+import { loadPageData, buildJsonLd } from "@/lib/pageLoader";
 import { OnboardingModalProvider } from "@/app/components/OnboardingModalContext";
 import { WhatsAppWidget } from "@/app/components/WhatsAppWidget";
 
@@ -94,13 +94,38 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { settings } = await loadPageData("/");
+  const jsonLd = buildJsonLd(
+    "Mortgage Xperts",
+    "Australia's trusted mortgage experts. Specializing in tailored home loan strategies, with dedicated services for the Nepalese community.",
+    "/",
+    settings,
+    []
+  );
+
+  // Enhance publisher with multilingual and broad local capabilities
+  const enhancedJsonLd = {
+    ...jsonLd,
+    publisher: {
+      ...jsonLd.publisher,
+      knowsLanguage: ["English", "Nepali"],
+      areaServed: "Australia",
+    }
+  };
+
   return (
     <html lang="en" className={`${inter.variable} ${montserrat.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(enhancedJsonLd) }}
+        />
+      </head>
       <body className="antialiased">
         <OnboardingModalProvider>
           {children}
