@@ -12,9 +12,10 @@ interface ClientPageProps {
   settings?: Record<string, string>;
   pageHeroSettings?: PageHeroSettings;
   pageContent?: string;
+  pageSections?: string[];
 }
 
-export default function FirstHomeGuideClient({ settings = {}, pageHeroSettings, pageContent }: ClientPageProps) {
+export default function FirstHomeGuideClient({ settings = {}, pageHeroSettings, pageContent, pageSections = [] }: ClientPageProps) {
   const finalHeroSettings = pageHeroSettings || {
     hero_badge: "Free Resource",
     hero_title: "First Home Buyers Guide",
@@ -48,7 +49,7 @@ export default function FirstHomeGuideClient({ settings = {}, pageHeroSettings, 
             </h2>
             
             <p className="text-[15px] sm:text-[16px] text-slate-600 leading-relaxed mb-8">
-              {pageContent || "Buying your first home is an exciting milestone, but the process can often feel overwhelming. Our comprehensive guide breaks down every step into simple, actionable advice."}
+              {pageSections?.[0] || pageContent || "Buying your first home is an exciting milestone, but the process can often feel overwhelming. Our comprehensive guide breaks down every step into simple, actionable advice."}
             </p>
 
             <div className="bg-white rounded-3xl p-8 md:p-10 border border-slate-200 shadow-xl relative overflow-hidden">

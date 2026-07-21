@@ -570,7 +570,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageS
               Benefits of Home Loans <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">for Nurses</span>
             </h2>
             <p className="text-slate-500 text-[14.5px] sm:text-[15.5px] leading-relaxed">
-              {pageContent || "Many lenders offer home loan discounts and perks specifically to nurses, due to the steady income and job security their profession provides. These benefits make it easier and more affordable to buy your home."}
+              {pageSections?.[0] || pageContent || "Many lenders offer home loan discounts and perks specifically to nurses, due to the steady income and job security their profession provides. These benefits make it easier and more affordable to buy your home."}
             </p>
           </div>
 

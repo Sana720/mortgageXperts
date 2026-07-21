@@ -11,9 +11,10 @@ interface ClientPageProps {
   settings?: Record<string, string>;
   pageHeroSettings?: PageHeroSettings;
   pageContent?: string;
+  pageSections?: string[];
 }
 
-export default function FreeResource2Client({ settings = {}, pageHeroSettings, pageContent }: ClientPageProps) {
+export default function FreeResource2Client({ settings = {}, pageHeroSettings, pageContent, pageSections = [] }: ClientPageProps) {
   const finalHeroSettings = pageHeroSettings || {
     hero_badge: "Free Resource",
     hero_title: "Home Buying Process",
@@ -47,7 +48,7 @@ export default function FreeResource2Client({ settings = {}, pageHeroSettings, p
             </h2>
             
             <p className="text-[15px] sm:text-[16px] text-slate-600 leading-relaxed mb-8">
-              {pageContent || "From contract clauses to cooling off periods, the Australian property timeline is incredibly strict. Use our flowchart to ensure you are completely prepared for settlement day."}
+              {pageSections?.[0] || pageContent || "From contract clauses to cooling off periods, the Australian property timeline is incredibly strict. Use our flowchart to ensure you are completely prepared for settlement day."}
             </p>
 
             <div className="bg-white rounded-3xl p-8 md:p-10 border border-slate-200 shadow-xl relative overflow-hidden">

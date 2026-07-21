@@ -743,7 +743,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageS
               <motion.div variants={premiumFadeUp} className="w-12 h-[3px] bg-[#2563EB] mb-5 rounded-full" />
 
               <motion.p variants={premiumFadeUp} className="text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed mb-6 font-inter font-normal">
-                {pageContent || "For many Australians, buying a first home is a dream that quickly becomes overwhelming. Once you start dealing with complex terms, restrictive lender buffers, and dense regulatory requirements, it is easy to get lost."}
+                {pageSections?.[0] || "For many Australians, buying a first home is a dream that quickly becomes overwhelming. Once you start dealing with complex terms, restrictive lender buffers, and dense regulatory requirements, it is easy to get lost."}
               </motion.p>
 
               <motion.div variants={premiumFadeUp} className="flex items-center gap-2.5 mb-8">

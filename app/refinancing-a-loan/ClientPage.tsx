@@ -666,7 +666,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageS
               <motion.div variants={premiumFadeUp} className="w-12 h-[3px] bg-[#7C3AED] mb-5 rounded-full" />
 
               <motion.p variants={premiumFadeUp} className="text-slate-500 text-[14.5px] leading-relaxed mb-6">
-                {pageContent || "Refinancing your home loan is like upgrading your car or utility bill to a better rate without changing address. If your mortgage is more than two years old, or your financial position has changed, you could be paying a large interest premium to your bank. Here's how we help you switch lenders to save."}
+                {pageSections?.[0] || pageContent || "Refinancing your home loan is like upgrading your car or utility bill to a better rate without changing address. If your mortgage is more than two years old, or your financial position has changed, you could be paying a large interest premium to your bank. Here's how we help you switch lenders to save."}
               </motion.p>
 
               <motion.div variants={premiumFadeUp} className="flex items-center gap-2.5 mb-6">

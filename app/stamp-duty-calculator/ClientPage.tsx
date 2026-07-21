@@ -40,12 +40,14 @@ export default function ClientPage({
   settings = {},
   pageHeroSettings,
   defaultState = "ACT",
-  pageContent
+  pageContent,
+  pageSections
 }: {
   settings?: Record<string, string>;
   pageHeroSettings?: PageHeroSettings;
   defaultState?: string;
-  pageContent?: string; pageSections?: string[];
+  pageContent?: string;
+  pageSections?: string[];
 }) {
   // Wizard steps
   const [currentStep, setCurrentStep] = useState(1);
@@ -610,7 +612,7 @@ export default function ClientPage({
               </h2>
               <div className="w-12 h-[3px] bg-orange-600 rounded-full" />
               <p className="text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium font-inter">
-                {pageContent || `Stamp duty (transfer duty tax) on ${stateCode} properties is calculated on standard government brackets. Concessions exist to help first home buyers purchase homes with up to 100% discounts on transfer duty.`}
+                {pageSections?.[0] || pageContent || `Stamp duty (transfer duty tax) on ${stateCode} properties is calculated on standard government brackets. Concessions exist to help first home buyers purchase homes with up to 100% discounts on transfer duty.`}
               </p>
 
               <div className="space-y-4 pt-4">

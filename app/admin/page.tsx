@@ -4,6 +4,9 @@
 
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { JsonEditor } from "@/components/JsonEditor";
+import { PageSectionsEditor } from "./PageSectionsEditor";
+import { BranchCityEditor } from "./BranchCityEditor";
+import { getSectionDefs } from "./pageSectionDefs";
 import Image from "next/image";
 import {
   LayoutDashboard,
@@ -88,7 +91,14 @@ export default function AdminPage() {
   const [authError, setAuthError] = useState("");
   const [activeTab, setActiveTab] = useState<"enquiries" | "settings" | "hero" | "blogs" | "testimonials" | "pages_manager" | "team">("enquiries");
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  
+
+  // Global toast notification (replaces all alert() calls)
+  const [globalToast, setGlobalToast] = useState<{ type: "success" | "error"; msg: string } | null>(null);
+  const showToast = (msg: string, type: "success" | "error" = "success") => {
+    setGlobalToast({ type, msg });
+    setTimeout(() => setGlobalToast(null), 4000);
+  };
+
   // Data States
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
   const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry | null>(null);
@@ -282,12 +292,12 @@ export default function AdminPage() {
         body: JSON.stringify(currentPageSettings)
       });
       if (res.ok) {
-        alert("Page SEO & Hero settings saved successfully!");
+        showToast("Page SEO & Hero settings saved successfully!");
       } else {
-        alert("Failed to save page settings");
+        showToast("Failed to save page settings", "error");
       }
     } catch {
-      alert("Error saving page settings");
+      showToast("Error saving page settings", "error");
     } finally {
       setSaveLoading(false);
     }
@@ -333,10 +343,10 @@ export default function AdminPage() {
           setPageEditSettings((prev: any) => prev ? { ...prev, hero_image: data.url } : prev);
         }
       } else {
-        alert(data.error || "Upload failed");
+        showToast(data.error || "Upload failed", "error");
       }
     } catch {
-      alert("Error uploading file");
+      showToast("Error uploading file", "error");
     }
   };
 
@@ -354,10 +364,10 @@ export default function AdminPage() {
       if (res.ok && data.url) {
         setTestimonialForm(prev => ({ ...prev, avatar: data.url }));
       } else {
-        alert(data.error || "Upload failed");
+        showToast(data.error || "Upload failed", "error");
       }
     } catch {
-      alert("Error uploading file");
+      showToast("Error uploading file", "error");
     }
   };
 
@@ -375,10 +385,10 @@ export default function AdminPage() {
       if (res.ok && data.url) {
         setBlogForm(prev => ({ ...prev, coverImage: data.url }));
       } else {
-        alert(data.error || "Upload failed");
+        showToast(data.error || "Upload failed", "error");
       }
     } catch {
-      alert("Error uploading file");
+      showToast("Error uploading file", "error");
     }
   };
 
@@ -403,10 +413,10 @@ export default function AdminPage() {
           }
         });
       } else {
-        alert(data.error || "Upload failed");
+        showToast(data.error || "Upload failed", "error");
       }
     } catch {
-      alert("Error uploading file");
+      showToast("Error uploading file", "error");
     }
   };
 
@@ -431,10 +441,10 @@ export default function AdminPage() {
           }
         });
       } else {
-        alert(data.error || "Upload failed");
+        showToast(data.error || "Upload failed", "error");
       }
     } catch {
-      alert("Error uploading file");
+      showToast("Error uploading file", "error");
     }
   };
 
@@ -481,7 +491,7 @@ export default function AdminPage() {
       await fetch("/api/admin/auth", { method: "DELETE" });
       setIsAuthenticated(false);
     } catch {
-      alert("Failed to logout");
+      showToast("Failed to logout", "error");
     }
   };
 
@@ -612,12 +622,12 @@ export default function AdminPage() {
         body: JSON.stringify(payload),
       });
       if (res.ok) {
-        alert("Settings saved successfully!");
+        showToast("Settings saved successfully!");
       } else {
-        alert("Failed to save settings");
+        showToast("Failed to save settings", "error");
       }
     } catch {
-      alert("Error saving settings");
+      showToast("Error saving settings", "error");
     } finally {
       setSaveLoading(false);
     }
@@ -637,10 +647,10 @@ export default function AdminPage() {
       if (res.ok && data.url) {
         setSettings(prev => ({ ...prev, [key]: data.url }));
       } else {
-        alert(data.error || "Upload failed");
+        showToast(data.error || "Upload failed", "error");
       }
     } catch {
-      alert("Error uploading file");
+      showToast("Error uploading file", "error");
     }
   };
 
@@ -738,10 +748,10 @@ export default function AdminPage() {
         setEditingBlog(null);
         fetchTabContents();
       } else {
-        alert(data.error || "Failed to save blog");
+        showToast(data.error || "Failed to save blog", "error");
       }
     } catch {
-      alert("Error saving blog");
+      showToast("Error saving blog", "error");
     } finally {
       setSaveLoading(false);
     }
@@ -787,10 +797,10 @@ export default function AdminPage() {
         fetchTabContents();
       } else {
         const data = await res.json();
-        alert(data.error || "Failed to create category");
+        showToast(data.error || "Failed to create category", "error");
       }
     } catch {
-      alert("Error creating category");
+      showToast("Error creating category", "error");
     }
   };
 
@@ -809,10 +819,10 @@ export default function AdminPage() {
         fetchTabContents();
       } else {
         const data = await res.json();
-        alert(data.error || "Failed to rename category");
+        showToast(data.error || "Failed to rename category", "error");
       }
     } catch {
-      alert("Error renaming category");
+      showToast("Error renaming category", "error");
     }
   };
 
@@ -824,10 +834,10 @@ export default function AdminPage() {
         fetchTabContents();
       } else {
         const data = await res.json();
-        alert(data.error || "Failed to delete category");
+        showToast(data.error || "Failed to delete category", "error");
       }
     } catch {
-      alert("Error deleting category");
+      showToast("Error deleting category", "error");
     }
   };
 
@@ -849,10 +859,10 @@ export default function AdminPage() {
         setEditingTestimonial(null);
         fetchTabContents();
       } else {
-        alert("Failed to save testimonial");
+        showToast("Failed to save testimonial", "error");
       }
     } catch {
-      alert("Error saving testimonial");
+      showToast("Error saving testimonial", "error");
     } finally {
       setSaveLoading(false);
     }
@@ -927,10 +937,10 @@ export default function AdminPage() {
         setEditingTeamMember(null);
         fetchTabContents();
       } else {
-        alert("Failed to save team member");
+        showToast("Failed to save team member", "error");
       }
     } catch {
-      alert("Error saving team member");
+      showToast("Error saving team member", "error");
     } finally {
       setSaveLoading(false);
     }
@@ -988,7 +998,7 @@ export default function AdminPage() {
         setTeamForm(prev => ({ ...prev, image: data.url }));
       }
     } catch {
-      alert("Error uploading file");
+      showToast("Error uploading file", "error");
     }
   };
 
@@ -1129,7 +1139,26 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-slate-50/50 text-slate-800 flex flex-col md:flex-row antialiased relative">
-      
+
+      {/* ── GLOBAL TOAST NOTIFICATION ── */}
+      {globalToast && (
+        <div className={`fixed bottom-6 right-6 z-[9999] flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-xl text-sm font-bold border max-w-sm animate-fade-in transition-all ${
+          globalToast.type === "success"
+            ? "bg-emerald-600 text-white border-emerald-500"
+            : "bg-rose-600 text-white border-rose-500"
+        }`}>
+          {globalToast.type === "success"
+            ? <Check className="w-4 h-4 shrink-0" />
+            : <AlertCircle className="w-4 h-4 shrink-0" />
+          }
+          <span>{globalToast.msg}</span>
+          <button onClick={() => setGlobalToast(null)} className="ml-2 opacity-70 hover:opacity-100 transition-opacity">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+
+
       {/* ── BACKDROP OVERLAY FOR MOBILE OFF-CANVAS ── */}
       {sidebarOpen && (
         <div 
@@ -1848,7 +1877,14 @@ export default function AdminPage() {
                         >
                           <div className="min-w-0 flex-1">
                             <div className="text-[11px] font-bold text-slate-800 truncate">{page.label.split(" (/")[0]}</div>
-                            <div className="text-[11px] text-slate-400 font-mono truncate mt-0.5">{page.value}</div>
+                            <div className="flex items-center gap-2 mt-0.5">
+                              <div className="text-[10px] text-slate-400 font-mono truncate">{page.value}</div>
+                              {getSectionDefs(page.value).filter(d => d.hint !== "Not used on this page" && d.hint !== "Not actively rendered on this page" && d.hint !== "Not actively used on this page" && d.hint !== "Not actively rendered").length > 0 && (
+                                <span className="shrink-0 text-[9px] font-black text-emerald-600 bg-emerald-50 border border-emerald-100 px-1.5 py-0.5 rounded-full">
+                                  {getSectionDefs(page.value).filter(d => d.hint !== "Not used on this page" && d.hint !== "Not actively rendered on this page" && d.hint !== "Not actively used on this page" && d.hint !== "Not actively rendered").length} sections
+                                </span>
+                              )}
+                            </div>
                           </div>
                           <div className="flex items-center gap-1.5 shrink-0">
                             <a
@@ -2069,33 +2105,35 @@ export default function AdminPage() {
                         </div>
                       </div>
 
-                      {/* DYNAMIC JSON EDITOR */}
+                      {/* ── CMS PAGE SECTIONS / BRANCH EDITOR ── */}
                       <div className="bg-white border border-slate-200/70 rounded-2xl p-6 shadow-sm mb-4">
-                        <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-start justify-between mb-5">
                           <div>
                             <h3 className="text-slate-800 font-extrabold text-sm uppercase tracking-wider flex items-center gap-2">
                               <FileText className="w-4 h-4 text-emerald-500" />
-                              Page Content & Data
+                              Page Content Sections
                             </h3>
-                            <p className="text-[11px] text-slate-500 mt-1">Edit the pre-filled structural data and text sections across the page.</p>
+                            <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
+                              Edit the text blocks and custom layout values that appear on this page.
+                            </p>
                           </div>
+                          <span className="shrink-0 bg-emerald-50 border border-emerald-100 text-emerald-700 text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full">
+                            CMS
+                          </span>
                         </div>
 
-                        {pageEditData === null || (Array.isArray(pageEditData) && pageEditData.length === 0) ? (
-                          <div className="text-center py-8">
-                            <p className="text-[12px] text-slate-400 italic mb-3">No content or data configured for this page yet.</p>
-                            <button
-                              type="button"
-                              onClick={() => setPageEditData([""])}
-                              className="text-[11px] font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-xl transition-all"
-                            >
-                              + Initialize Content
-                            </button>
-                          </div>
+                        {editingPagePath?.startsWith("/branches/") ? (
+                          <BranchCityEditor
+                            citySlug={editingPagePath.split("/").pop() || ""}
+                            rawValue={pageEditData}
+                            onChange={(data) => setPageEditData(JSON.stringify(data))}
+                          />
                         ) : (
-                          <div className="bg-slate-50/50 p-4 rounded-xl border border-slate-100">
-                            <JsonEditor data={pageEditData} onChange={setPageEditData} name="Page Content" />
-                          </div>
+                          <PageSectionsEditor
+                            pagePath={editingPagePath!}
+                            rawValue={pageEditData}
+                            onChange={(sections) => setPageEditData(sections)}
+                          />
                         )}
                       </div>
                       

@@ -345,7 +345,7 @@ export default function ClientPage({ settings = {}, pageHeroSettings, pageConten
               </h2>
               <div className="w-12 h-[3px] bg-indigo-600 rounded-full" />
               <p className="text-slate-500 text-[14px] sm:text-[14.5px] leading-relaxed max-w-xl font-medium">
-                {pageContent || "Borrowing more than 80% of a property's value generally triggers Lenders Mortgage Insurance (LMI). Use our calculator to evaluate your ratios and projected premiums."}
+                {pageSections?.[0] || pageContent || "Borrowing more than 80% of a property's value generally triggers Lenders Mortgage Insurance (LMI). Use our calculator to evaluate your ratios and projected premiums."}
               </p>
  
               <div className="space-y-4 pt-4">

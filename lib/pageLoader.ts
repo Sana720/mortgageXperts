@@ -87,15 +87,20 @@ export async function loadPageData(pagePath: string): Promise<PageData> {
         if (rawContent && (rawContent.startsWith('[') || rawContent.startsWith('{'))) {
           const parsed = JSON.parse(rawContent);
           if (Array.isArray(parsed)) {
-            pageSections = parsed;
+            pageSections = parsed.map(String);
+            // Don't set pageContent to raw JSON — pages using {pageContent || fallback}
+            // would render the full JSON array as visible text.
+            pageContent = undefined;
           } else if (typeof parsed === 'object' && parsed !== null) {
             pageData = parsed;
+            pageContent = undefined;
           }
         }
       } catch (e) {
-        // Ignore parse error, it's just a regular string
+        // Not JSON — keep pageContent as the raw string
       }
     }
+
   } catch (error) {
     console.error(`[loadPageData] Failed to load data for "${pagePath}":`, error);
   }
