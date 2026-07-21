@@ -53,7 +53,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
   const [isMobileAboutUsOpen, setIsMobileAboutUsOpen] = useState(false);
 
   const phoneVal = settings.header_phone || "0450 240 757";
-  const emailVal = settings.support_email || "mortgage@mortgageexpert.com.au";
+  const emailVal = settings.support_email || "mortgage@mortgagexperts.com.au";
   const logoVal = settings.logo_url || "/images/logo.png";
   const fbVal = settings.facebook_url || "https://www.facebook.com/MortgageXperts.au/";
   const igVal = settings.instagram_url || "https://www.instagram.com/mortgagexperts.au/#";

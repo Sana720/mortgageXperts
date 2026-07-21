@@ -513,7 +513,7 @@ export function MortgageMateForm({
                 </p>
                 <div className="bg-slate-50 rounded-xl p-3 border border-slate-100 space-y-1.5 font-bold text-slate-800 text-[11px]">
                   <div>📞 Mobile: <a href="tel:0450240757" className="text-[#2563EB] hover:underline font-bold">0450 240 757</a></div>
-                  <div>✉️ Email: <a href="mailto:mortgage@mortgageexpert.com.au" className="text-[#2563EB] hover:underline font-bold font-montserrat">mortgage@mortgageexpert.com.au</a></div>
+                  <div>✉️ Email: <a href="mailto:mortgage@mortgagexperts.com.au" className="text-[#2563EB] hover:underline font-bold font-montserrat">mortgage@mortgagexperts.com.au</a></div>
                 </div>
               </div>
             ) : (

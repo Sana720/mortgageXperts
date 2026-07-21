@@ -72,7 +72,7 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
   const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
   const phoneVal = settings.header_phone || "0450 240 757";
-  const emailVal = settings.support_email || "mortgage@mortgageexpert.com.au";
+  const emailVal = settings.support_email || "mortgage@mortgagexperts.com.au";
   const addressVal = settings.footer_address || "Level 20, 1 Market St, Sydney NSW 2000";
   const logoVal = settings.logo_url || "/images/logo.png";
   const fbVal = settings.facebook_url || "https://www.facebook.com/MortgageXperts.au/";
