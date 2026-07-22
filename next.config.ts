@@ -2,6 +2,26 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   serverExternalPackages: ["mysql2"],
+  // ── REDIRECTS ─────────────────────────────────────────────────────
+  async redirects() {
+    return [
+      {
+        source: "/blog",
+        destination: "/xpulse-intelligence",
+        permanent: true,
+      },
+      {
+        source: "/blog/:slug",
+        destination: "/xpulse-intelligence/:slug",
+        permanent: true,
+      },
+      {
+        source: "/the-xperts-news-insights",
+        destination: "/xpulse-intelligence",
+        permanent: true,
+      },
+    ];
+  },
   // ── SECURITY HEADERS ──────────────────────────────────────────────
   async headers() {
     return [

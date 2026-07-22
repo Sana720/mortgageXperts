@@ -22,6 +22,7 @@ import {
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 import { TestimonialSection } from "../../components/TestimonialSection";
+import { useOnboardingModal } from "../../components/OnboardingModalContext";
 
 export interface CityData {
   city: string;
@@ -82,6 +83,7 @@ export interface PageHeroSettings {
 }
 
 export default function BranchClientPage({ cityData, settings = {}, pageHeroSettings, pageContent, dbTeamLead }: { cityData: CityData; settings?: Record<string, string>; pageHeroSettings?: PageHeroSettings; pageContent?: string; dbTeamLead?: { name: string; role: string; image: string; bio: string; phone: string } | null }) {
+  const { openModal } = useOnboardingModal();
   // Use DB team lead (admin-editable) if available, otherwise fall back to static city data
   const effectiveTeamLead: { name: string; title: string; image: string; bio: string; phone?: string } = dbTeamLead
     ? { name: dbTeamLead.name, title: dbTeamLead.role, image: dbTeamLead.image, bio: dbTeamLead.bio, phone: dbTeamLead.phone }
@@ -236,6 +238,12 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
               <div className="flex flex-wrap items-center gap-4">
                 <Link
                   href={btn1Link}
+                  onClick={(e) => {
+                    if (btn1Link.startsWith("#") || btn1Link === "") {
+                      e.preventDefault();
+                      openModal();
+                    }
+                  }}
                   className="inline-flex items-center justify-center gap-2 text-white font-bold text-[13.5px] sm:text-[14px] py-3.5 px-8 rounded-full shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-center w-full sm:w-auto whitespace-nowrap"
                   style={{ background: cityData.accentColor, boxShadow: `0 10px 15px -3px ${cityData.accentColor}30` }}
                 >
@@ -268,10 +276,10 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
             <div className="lg:col-span-6 relative z-10 hidden lg:block">
               <div className="grid grid-cols-2 gap-4 max-w-md ml-auto">
                 {[
-                  { label: "Clients Helped", value: cityData.clientsHelped, icon: <Users className="w-5 h-5" /> },
-                  { label: "Approval Rate", value: cityData.approvalRate, icon: <CheckCircle2 className="w-5 h-5" /> },
-                  { label: "Avg Loan Size", value: cityData.avgLoanSize, icon: <Home className="w-5 h-5" /> },
-                  { label: "Median House Price", value: cityData.medianHousePrice, icon: <Building2 className="w-5 h-5" /> },
+                  { label: "Strategic Solution", value: "Tailored Lending", icon: <TrendingUp className="w-5 h-5" /> },
+                  { label: "ASIC Authorised", value: "Fully Compliant", icon: <Shield className="w-5 h-5" /> },
+                  { label: "Lenders Panel", value: "40+ Banks", icon: <Users className="w-5 h-5" /> },
+                  { label: "Response Time", value: "Within 24 Hours", icon: <Clock className="w-5 h-5" /> },
                 ].map((stat, i) => (
                   <motion.div
                     key={stat.label}
@@ -287,12 +295,12 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
                       {stat.icon}
                     </div>
                     <div
-                      className="text-[26px] font-bold leading-none mb-1"
+                      className="text-[20px] font-extrabold leading-none mb-1.5"
                       style={{ color: cityData.accentColor }}
                     >
                       {stat.value}
                     </div>
-                    <div className="text-slate-550 text-[11.5px] font-bold">{stat.label}</div>
+                    <div className="text-slate-500 text-[11px] font-bold uppercase tracking-wider">{stat.label}</div>
                   </motion.div>
                 ))}
               </div>
@@ -378,20 +386,29 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
               </div>
               <div className="flex flex-wrap gap-2">
                 {cityData.suburbs.map((suburb) => (
-                  <span
+                  <Link
                     key={suburb}
+                    href={`/branches/${cityData.slug}/${suburb.toLowerCase().replace(/\s+/g, "-")}`}
                     className="text-[12px] font-semibold px-3 py-1.5 rounded-full border transition-all hover:scale-[1.02]"
                     style={{ background: cityData.accentLight, color: cityData.accentColor, borderColor: `${cityData.accentColor}25` }}
                   >
                     {suburb}
-                  </span>
+                  </Link>
                 ))}
               </div>
               <div className="mt-5 pt-5 border-t border-slate-100">
                 <p className="text-[12.5px] text-slate-500 leading-relaxed">
                   Don&apos;t see your suburb? We work with clients across all of{" "}
                   <strong className="text-[#0B1F3A]">{cityData.city}</strong> and surrounds.{" "}
-                  <Link href="#enquiry" style={{ color: cityData.accentColor }} className="font-bold hover:underline">
+                  <Link
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      openModal();
+                    }}
+                    style={{ color: cityData.accentColor }}
+                    className="font-bold hover:underline"
+                  >
                     Get in touch →
                   </Link>
                 </p>
@@ -465,7 +482,11 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
 
               <div className="flex flex-wrap gap-3 pt-2">
                 <Link
-                  href="#enquiry"
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    openModal();
+                  }}
                   className="inline-flex items-center gap-2 font-bold text-[13px] py-3 px-6 rounded-full text-white transition-all hover:scale-[1.03]"
                   style={{ background: cityData.accentColor }}
                 >
@@ -543,6 +564,12 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
               <Link
                 key={link.name}
                 href={link.href}
+                onClick={(e) => {
+                  if (link.href === "#enquiry") {
+                    e.preventDefault();
+                    openModal();
+                  }
+                }}
                 className="flex items-center gap-2 p-3.5 bg-white rounded-xl border border-slate-100 text-[12.5px] font-semibold text-[#0B1F3A] hover:border-opacity-60 transition-all hover:shadow-sm"
                 style={{ "--hover-border": cityData.accentColor } as React.CSSProperties}
               >
@@ -626,93 +653,86 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
               </div>
             </div>
 
-            {/* Form */}
-            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-slate-100">
-              {submitted ? (
-                <div className="text-center py-12 space-y-4">
-                  <div
-                    className="w-16 h-16 rounded-full flex items-center justify-center mx-auto"
-                    style={{ background: `${cityData.accentColor}20`, border: `1px solid ${cityData.accentColor}40` }}
-                  >
-                    <CheckCircle2 className="w-7 h-7" style={{ color: cityData.accentColor }} />
-                  </div>
-                  <h3 className="text-xl font-bold text-[#0B1F3A]">Enquiry Received!</h3>
-                  <p className="text-slate-500 text-[13.5px] max-w-sm mx-auto leading-relaxed">
-                    Our {cityData.city} team will call you within 2 business hours to discuss your home loan needs.
-                  </p>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <label className="text-[10.5px] font-bold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">
-                      Your Full Name*
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="John Doe"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-slate-400 focus:bg-white transition-all shadow-inner"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-[10.5px] font-bold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">
-                        Email Address*
-                      </label>
-                      <input
-                        type="email"
-                        required
-                        placeholder="john@example.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-slate-400 focus:bg-white transition-all shadow-inner"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-[10.5px] font-bold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">
-                        Phone Number*
-                      </label>
-                      <input
-                        type="tel"
-                        required
-                        placeholder=""
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-slate-400 focus:bg-white transition-all shadow-inner"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="text-[10.5px] font-bold text-[#0B1F3A]/70 uppercase tracking-wide block mb-1.5">
-                      What are you looking to do? (Optional)
-                    </label>
-                    <textarea
-                      rows={3}
-                      placeholder={`e.g. Buy first home in ${cityData.city}, refinance my current loan...`}
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-[13.5px] font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-slate-400 focus:bg-white transition-all resize-none shadow-inner"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={submitting}
-                    className="w-full font-bold text-[13.5px] py-3.5 px-6 rounded-xl transition-all shadow-lg active:scale-[0.98] mt-2 hover:opacity-95"
-                    style={{ background: cityData.accentColor, color: "#fff" }}
-                  >
-                    {submitting ? "Sending..." : `Book Free Consultation in ${cityData.city}`}
-                  </button>
-                  <p className="text-[10.5px] text-slate-400 text-center mt-2">
-                    No fees. No obligation. Response within 2 business hours.
-                  </p>
-                </form>
-              )}
+            {/* Lead Generation CTA Card */}
+            <div className="bg-white rounded-3xl p-8 md:p-10 shadow-2xl border border-slate-100 flex flex-col justify-center items-center text-center space-y-6">
+              <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 shadow-md">
+                <CheckCircle2 className="w-8 h-8" style={{ color: cityData.accentColor }} />
+              </div>
+              <h3 className="text-2xl font-bold text-[#0B1F3A] leading-tight">Get Your Free Strategy Call</h3>
+              <p className="text-slate-500 text-[14px] leading-relaxed max-w-sm">
+                Answer a few quick questions to check your borrowing capacity, stamp duty, or refinance savings instantly.
+              </p>
+              <button
+                type="button"
+                onClick={openModal}
+                className="w-full font-bold text-[14px] py-4 px-6 rounded-xl transition-all shadow-lg active:scale-[0.98] mt-2 text-white flex items-center justify-center gap-2 cursor-pointer"
+                style={{ background: cityData.accentColor }}
+              >
+                Let&apos;s Get Started <ArrowRight className="w-4 h-4" />
+              </button>
+              <p className="text-[11px] text-slate-400">
+                Takes only 60 seconds • No fees • Zero obligation
+              </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── FOUNDER SECTION ── */}
+      <section className="py-16 md:py-24 bg-white border-b border-slate-100 relative overflow-hidden">
+        {/* Glow Blur */}
+        <div className="absolute right-[-10%] top-[10%] w-[350px] h-[350px] rounded-full blur-[100px] opacity-10 pointer-events-none bg-blue-600" />
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            {/* Left Column: Portrait */}
+            <div className="lg:col-span-5 flex justify-center">
+              <div className="relative w-[280px] h-[360px] sm:w-[320px] sm:h-[400px] rounded-[32px] overflow-hidden border border-slate-200 shadow-xl">
+                <img 
+                  src="/images/aakash_new.png" 
+                  alt="Aakash KC - Founder of Mortgage Xperts" 
+                  className="w-full h-full object-cover object-top hover:scale-[1.02] transition-transform duration-700" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/70 via-transparent to-transparent" />
+                <div className="absolute bottom-6 left-6 right-6 text-white text-left">
+                  <div className="text-lg font-bold">Aakash K C</div>
+                  <div className="text-xs text-white/80">Founder &amp; Principal Mortgage Broker</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column: Bio Content */}
+            <div className="lg:col-span-7 space-y-6 text-left">
+              <span className="text-[10px] font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full inline-block border border-blue-150 bg-blue-50/50 text-[#2563EB]">
+                Trust Our Founder
+              </span>
+              <h2 className="text-[#0B1F3A] text-[28px] sm:text-[36px] font-extrabold leading-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
+                Aakash K C <br />
+                <span className="text-slate-500 font-normal text-lg sm:text-xl">Your Multilingual Mortgage Mate</span>
+              </h2>
+              <div className="space-y-4 text-slate-650 text-[14px] sm:text-[14.5px] leading-relaxed">
+                <p>
+                  As the founder and principal mortgage expert at <strong>Mortgage Xperts</strong>, Aakash has spent over a decade assisting first-home buyers, seasoned property investors, and medical professionals across Australia in securing competitive home finance. 
+                </p>
+                <p>
+                  Having personally built a <strong>$5.3M property portfolio over just 3 years</strong>, Aakash doesn&apos;t just advice on mortgages — he lives and breathes property investment. He understands the critical details of loan structuring, cash flow optimization, and multi-lender strategy required to build long-term property wealth.
+                </p>
+                <p>
+                  Leading a multilingual advisory team, Aakash proudly delivers mortgage guidance in <strong>English, Nepali, and Hindi</strong>, simplifying the complex Australian banking ecosystem into clear, actionable strategies for all clients nationwide.
+                </p>
+              </div>
+              <div className="pt-2">
+                <button 
+                  type="button" 
+                  onClick={openModal}
+                  className="inline-flex items-center gap-2 font-bold text-[13px] py-3 px-6 rounded-full text-white transition-all hover:scale-[1.03] cursor-pointer border-0"
+                  style={{ background: cityData.accentColor }}
+                >
+                  Book Consultation with Aakash <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>

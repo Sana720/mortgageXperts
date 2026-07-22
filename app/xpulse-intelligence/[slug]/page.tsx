@@ -36,7 +36,7 @@ export async function generateMetadata(
   }
 
   return {
-    title: `${post.title} | Mortgage Xperts Blog`,
+    title: `${post.title} | XPULSE Intelligence`,
     description: post.excerpt,
   };
 }

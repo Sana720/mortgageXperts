@@ -11,7 +11,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/about-us-nepali-mortgage-broker-in-australia',
     '/best-nepali-investment-mortgage-broker-perth',
     '/best-nepali-mortgage-broker-australia',
-    '/blog',
+    '/xpulse-intelligence',
     '/borrowing-power-calculator',
     '/cash-rate-change-calculator',
     '/credit-guide',
@@ -21,6 +21,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/extra-repayment-calculator',
     '/first-home-guide',
     '/free-assessment',
+    '/free-resources',
+    '/free-resources/first-home-buyers-step-by-step-guide',
+    '/free-resources/step-by-step-home-buying-process',
     '/home-guarantee-scheme',
     '/home-loan-for-accountants',
     '/home-loan-for-doctors',
@@ -43,7 +46,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/rent-yield-calculators',
     '/self-employed-home-loans',
     '/terms-and-conditions',
-    '/the-xperts-news-insights',
     '/top-nepali-mortgage-broker-in-australia',
     '/ytd-calculator',
   ];
@@ -61,7 +63,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     if (Array.isArray(blogs)) {
       blogs.forEach((blog) => {
         sitemapEntries.push({
-          url: `${baseUrl}/blog/${blog.slug}`,
+          url: `${baseUrl}/xpulse-intelligence/${blog.slug}`,
           lastModified: new Date(blog.createdAt || Date.now()),
           changeFrequency: 'monthly',
           priority: 0.6,

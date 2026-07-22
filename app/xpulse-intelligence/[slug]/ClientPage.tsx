@@ -46,14 +46,14 @@ export default function BlogPostClient({ post }: { post: BlogPost }) {
           {/* Right Column - Article Content */}
           <div className="py-12 md:py-20 px-8 md:px-16 lg:px-24 bg-white overflow-y-auto">
             
-            <Link href={post.category === "Blog" ? "/blog" : "/the-xperts-news-insights"} className="inline-flex items-center text-[13px] text-slate-500 hover:text-[#2563EB] font-bold mb-8 transition-colors uppercase tracking-wider">
+            <Link href="/xpulse-intelligence" className="inline-flex items-center text-[13px] text-slate-500 hover:text-[#2563EB] font-bold mb-8 transition-colors uppercase tracking-wider">
               <ArrowLeft className="w-4 h-4 mr-1.5" />
-              Back to {post.category === "Blog" ? "Blog" : "News & Insights"}
+              Back to XPULSE Intelligence
             </Link>
 
             <header className="mb-10 space-y-6">
               <span className={`inline-block px-3 py-1 text-[11px] font-black uppercase tracking-widest rounded-full ${post.category === "Blog" ? "bg-rose-50 text-rose-600" : "bg-blue-50 text-blue-600"}`}>
-                {post.category}
+                {post.category === "Blog" ? "Insights" : "Company News"}
               </span>
               
               <h1 className="text-[#0B1F3A] text-[36px] sm:text-[44px] lg:text-[52px] font-black leading-[1.1] font-montserrat tracking-tight">

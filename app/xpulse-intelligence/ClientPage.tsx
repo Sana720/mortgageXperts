@@ -8,11 +8,11 @@ import Link from 'next/link';
 import { ArrowRight, Calendar, User, Newspaper, Search, Clock, Mail, CheckCircle2 } from 'lucide-react';
 import { getPostsByCategory, BlogPost } from '@/app/lib/blogData';
 
-interface BlogClientProps {
+interface XPulseClientProps {
   initialPosts?: BlogPost[];
 }
 
-export default function BlogClient({ initialPosts }: BlogClientProps) {
+export default function XPulseClient({ initialPosts }: XPulseClientProps) {
   // Use posts from props (which includes DB blogs + default blogs) or fallback to static default blogs
   const rawPosts = initialPosts || getPostsByCategory('Blog');
 
@@ -24,6 +24,9 @@ export default function BlogClient({ initialPosts }: BlogClientProps) {
 
   // Helper to dynamically tag posts based on content/title keywords
   const getSubCategory = (post: BlogPost): string => {
+    if (post.category === 'News & Insights') {
+      return 'Company News';
+    }
     const text = (post.title + ' ' + post.excerpt + ' ' + post.content).toLowerCase();
     if (text.includes('rba') || text.includes('rate') || text.includes('cash') || text.includes('market')) {
       return 'Market Updates';
@@ -98,13 +101,13 @@ export default function BlogClient({ initialPosts }: BlogClientProps) {
       <SiteHeader isSticky={false} />
 
       <SubPageHero
-        pageTitle="Blog"
-        themeColor="rose"
+        pageTitle="XPULSE Intelligence"
+        themeColor="blue"
         layoutType="clean"
         pageHeroSettings={{
-          hero_badge: "Property Insights",
-          hero_title: "Mortgage Xperts Blog",
-          hero_subtext: "Expert advice, property market trends, and practical tips to help you navigate the Australian real estate landscape.",
+          hero_badge: "Insights & News",
+          hero_title: "XPULSE Intelligence",
+          hero_subtext: "Stay updated with the latest announcements, policy changes, property market trends, and company news from the team at Mortgage Xperts.",
           hero_image: "/images/hero.png"
         }}
       />
@@ -178,7 +181,7 @@ export default function BlogClient({ initialPosts }: BlogClientProps) {
                   className="text-[26px] sm:text-[34px] font-bold text-[#0B1F3A] mb-4 group-hover:text-rose-600 transition-colors leading-tight"
                   style={{ fontFamily: 'var(--font-montserrat, sans-serif)' }}
                 >
-                  <Link href={`/blog/${featuredPost.slug}`}>
+                  <Link href={`/xpulse-intelligence/${featuredPost.slug}`}>
                     {featuredPost.title}
                   </Link>
                 </h2>
@@ -193,7 +196,7 @@ export default function BlogClient({ initialPosts }: BlogClientProps) {
                     <span className="text-[14px] font-bold text-[#0B1F3A]">{featuredPost.author}</span>
                   </div>
                   <Link
-                    href={`/blog/${featuredPost.slug}`}
+                    href={`/xpulse-intelligence/${featuredPost.slug}`}
                     className="inline-flex items-center text-[14px] text-rose-600 font-bold hover:text-rose-800 transition-colors group-hover:translate-x-1 duration-300"
                   >
                     Read Article
@@ -247,7 +250,7 @@ export default function BlogClient({ initialPosts }: BlogClientProps) {
                   className="text-[20px] font-bold text-[#0B1F3A] mb-4 group-hover:text-rose-600 transition-colors leading-snug line-clamp-2"
                   style={{ fontFamily: 'var(--font-montserrat, sans-serif)' }}
                 >
-                  <Link href={`/blog/${post.slug}`}>
+                  <Link href={`/xpulse-intelligence/${post.slug}`}>
                     {post.title}
                   </Link>
                 </h3>
@@ -257,7 +260,7 @@ export default function BlogClient({ initialPosts }: BlogClientProps) {
                 <div className="flex items-center justify-between pt-5 border-t border-slate-100">
                   <span className="text-[13px] font-semibold text-slate-700">By {post.author}</span>
                   <Link
-                    href={`/blog/${post.slug}`}
+                    href={`/xpulse-intelligence/${post.slug}`}
                     className="inline-flex items-center text-[13px] text-rose-600 font-bold hover:text-rose-800 transition-colors"
                   >
                     Read

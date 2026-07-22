@@ -36,7 +36,8 @@ import {
   AlertCircle,
   Phone,
   Mail,
-  Download
+  Download,
+  BookOpen
 } from "lucide-react";
 import dynamic from "next/dynamic";
 
@@ -89,7 +90,7 @@ export default function AdminPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState("");
-  const [activeTab, setActiveTab] = useState<"enquiries" | "settings" | "hero" | "blogs" | "testimonials" | "pages_manager" | "team">("enquiries");
+  const [activeTab, setActiveTab] = useState<"enquiries" | "settings" | "hero" | "blogs" | "testimonials" | "pages_manager" | "team" | "free_resources">("enquiries");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Global toast notification (replaces all alert() calls)
@@ -108,6 +109,20 @@ export default function AdminPage() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [teamMembers, setTeamMembers] = useState<any[]>([]);
+
+  // Free Resources States
+  const [freeResources, setFreeResources] = useState<any[]>([]);
+  const [freeResourceModalOpen, setFreeResourceModalOpen] = useState(false);
+  const [editingFreeResource, setEditingFreeResource] = useState<any | null>(null);
+  const [freeResourceForm, setFreeResourceForm] = useState({
+    title: "",
+    description: "",
+    image: "",
+    pdfUrl: "",
+    detailsUrl: "",
+    badge: "",
+    orderIndex: 0
+  });
   
   // Pages Manager States
   const [editingPagePath, setEditingPagePath] = useState<string | null>(null);
@@ -535,6 +550,10 @@ export default function AdminPage() {
         const res = await fetch("/api/admin/team");
         const data = await res.json();
         setTeamMembers(Array.isArray(data) ? data : []);
+      } else if (activeTab === "free_resources") {
+        const res = await fetch("/api/admin/free-resources");
+        const data = await res.json();
+        setFreeResources(Array.isArray(data) ? data : []);
       }
     } catch (err) {
       console.error("Error loading tab content:", err);
@@ -780,6 +799,117 @@ export default function AdminPage() {
       }
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const handleSaveFreeResource = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const method = editingFreeResource ? "PUT" : "POST";
+    const payload = editingFreeResource ? { ...freeResourceForm, id: editingFreeResource.id } : freeResourceForm;
+
+    try {
+      const res = await fetch("/api/admin/free-resources", {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if (res.ok) {
+        setFreeResourceModalOpen(false);
+        setEditingFreeResource(null);
+        fetchTabContents();
+        showToast(editingFreeResource ? "Resource updated successfully" : "Resource created successfully");
+      } else {
+        const data = await res.json();
+        showToast(data.error || "Failed to save resource", "error");
+      }
+    } catch {
+      showToast("Error saving resource", "error");
+    }
+  };
+
+  const handleEditFreeResource = (resource: any) => {
+    setEditingFreeResource(resource);
+    setFreeResourceForm({
+      title: resource.title,
+      description: resource.description,
+      image: resource.image,
+      pdfUrl: resource.pdfUrl,
+      detailsUrl: resource.detailsUrl,
+      badge: resource.badge,
+      orderIndex: resource.orderIndex
+    });
+    setFreeResourceModalOpen(true);
+  };
+
+  const handleDeleteFreeResource = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this resource?")) return;
+    try {
+      const res = await fetch(`/api/admin/free-resources?id=${id}`, { method: "DELETE" });
+      if (res.ok) {
+        fetchTabContents();
+        showToast("Resource deleted successfully");
+      }
+    } catch (err) {
+      console.error(err);
+      showToast("Error deleting resource", "error");
+    }
+  };
+
+  const handleNewFreeResource = () => {
+    setEditingFreeResource(null);
+    setFreeResourceForm({
+      title: "",
+      description: "",
+      image: "/images/refinance_guide_mockup.png",
+      pdfUrl: "",
+      detailsUrl: "",
+      badge: "Guide",
+      orderIndex: 0
+    });
+    setFreeResourceModalOpen(true);
+  };
+
+  const handleResourceImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        setFreeResourceForm(prev => ({ ...prev, image: data.url }));
+        showToast("Image uploaded successfully");
+      } else {
+        showToast(data.error || "Upload failed", "error");
+      }
+    } catch {
+      showToast("Error uploading file", "error");
+    }
+  };
+
+  const handleResourcePdfUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        setFreeResourceForm(prev => ({ ...prev, pdfUrl: data.url }));
+        showToast("PDF uploaded successfully");
+      } else {
+        showToast(data.error || "Upload failed", "error");
+      }
+    } catch {
+      showToast("Error uploading file", "error");
     }
   };
 
@@ -1280,7 +1410,20 @@ export default function AdminPage() {
             style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
           >
             <FileText className="w-4 h-4" />
-            <span>Blogs Manager</span>
+            <span>XPULSE Manager</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("free_resources")}
+            className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all ${
+              activeTab === "free_resources"
+                ? "bg-blue-50 text-blue-700 shadow-sm border border-blue-100/50"
+                : "text-slate-500 hover:bg-slate-50 hover:text-slate-800 border border-transparent"
+            }`}
+            style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
+          >
+            <BookOpen className="w-4 h-4" />
+            <span>Free Resources</span>
           </button>
 
           <button
@@ -1352,7 +1495,16 @@ export default function AdminPage() {
               className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5 shadow-sm shadow-blue-500/10 hover:scale-[1.02] active:scale-[0.98]"
             >
               <Plus className="w-4 h-4" />
-              <span>Create Blog</span>
+              <span>Create XPULSE Post</span>
+            </button>
+          )}
+          {activeTab === "free_resources" && (
+            <button
+              onClick={handleNewFreeResource}
+              className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5 shadow-sm shadow-blue-500/10 hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Create Free Resource</span>
             </button>
           )}
           {activeTab === "testimonials" && (
@@ -3017,6 +3169,67 @@ export default function AdminPage() {
             </div>
           )}
 
+          {/* ── TAB: FREE RESOURCES MANAGER ── */}
+          {activeTab === "free_resources" && (
+            <div className="space-y-4">
+              {freeResources.length === 0 ? (
+                <div className="bg-white border border-slate-200/70 rounded-2xl p-12 text-center text-slate-400 space-y-4 flex flex-col items-center justify-center">
+                  <BookOpen className="w-10 h-10 text-slate-300" />
+                  <div className="space-y-1">
+                    <h3 className="font-bold text-slate-700">No Free Resources Yet</h3>
+                    <p className="text-xs">Add dynamic PDF guides, roadmaps or checklists to display on the Free Resources page.</p>
+                  </div>
+                  <button
+                    onClick={handleNewFreeResource}
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all flex items-center gap-1.5 shadow-sm shadow-blue-500/10 hover:scale-[1.02] active:scale-[0.98]"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>Add First Resource</span>
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {freeResources.map(r => (
+                    <div key={r.id} className="bg-white border border-slate-200/70 rounded-2xl p-5 shadow-sm flex flex-col justify-between hover:border-slate-300 transition-all">
+                      <div className="space-y-3.5">
+                        <div className="aspect-video w-full rounded-xl bg-slate-50 border border-slate-100 overflow-hidden relative">
+                          <img src={r.image} alt={r.title} className="w-full h-full object-contain animate-fade-in" />
+                          <span className="absolute top-3 left-3 bg-slate-900/80 text-white text-[9px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full">
+                            {r.badge}
+                          </span>
+                        </div>
+                        <div>
+                          <h4 className="text-slate-900 text-sm font-black leading-tight">{r.title}</h4>
+                          <p className="text-slate-500 text-xs mt-1.5 line-clamp-2">{r.description}</p>
+                          <div className="mt-3 space-y-1 text-[11px] text-slate-600">
+                            <p className="truncate"><strong>PDF:</strong> <a href={r.pdfUrl} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">{r.pdfUrl}</a></p>
+                            <p className="truncate"><strong>Page Details:</strong> {r.detailsUrl || "None"}</p>
+                            <p><strong>Order Index:</strong> {r.orderIndex}</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="pt-3 border-t border-slate-100 mt-4 flex justify-end gap-1.5">
+                        <button
+                          onClick={() => handleEditFreeResource(r)}
+                          className="text-slate-500 hover:text-blue-600 p-1.5 hover:bg-slate-50 rounded-lg transition-all"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteFreeResource(r.id)}
+                          className="text-slate-500 hover:text-rose-600 p-1.5 hover:bg-rose-50 rounded-lg transition-all"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
           {/* ── TAB 6: TEAM MANAGER ── */}
           {activeTab === "team" && (
             <div className="space-y-4">
@@ -3334,6 +3547,153 @@ export default function AdminPage() {
                   className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4.5 py-2.5 rounded-xl transition-all"
                 >
                   {saveLoading ? "Saving..." : "Save Testimonial"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── MODAL: FREE RESOURCE EDITOR ── */}
+      {freeResourceModalOpen && (
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200/80 w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl flex flex-col">
+            {/* Modal Header */}
+            <div className="p-5 border-b border-slate-100 flex items-center justify-between">
+              <h3 className="text-slate-950 text-sm font-black uppercase tracking-tight">
+                {editingFreeResource ? "Edit Free Resource" : "Create Free Resource"}
+              </h3>
+              <button onClick={() => setFreeResourceModalOpen(false)} className="text-slate-400 hover:text-slate-800 transition-all">
+                <X className="w-5.5 h-5.5" />
+              </button>
+            </div>
+
+            {/* Modal Form */}
+            <form onSubmit={handleSaveFreeResource} className="p-5 space-y-4 text-slate-700">
+              <div>
+                <label className="text-[9.5px] font-extrabold uppercase tracking-wider block mb-1">Resource Title</label>
+                <input
+                  type="text"
+                  value={freeResourceForm.title}
+                  onChange={e => setFreeResourceForm(prev => ({ ...prev, title: e.target.value }))}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white"
+                  placeholder="e.g. First Home Buyers Checklist"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="text-[9.5px] font-extrabold uppercase tracking-wider block mb-1">Short Description</label>
+                <textarea
+                  rows={3}
+                  value={freeResourceForm.description}
+                  onChange={e => setFreeResourceForm(prev => ({ ...prev, description: e.target.value }))}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white leading-relaxed"
+                  placeholder="Description of resource content..."
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-[9.5px] font-extrabold uppercase tracking-wider block mb-1">Badge / Tag</label>
+                  <input
+                    type="text"
+                    value={freeResourceForm.badge}
+                    onChange={e => setFreeResourceForm(prev => ({ ...prev, badge: e.target.value }))}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white"
+                    placeholder="e.g. Checklist, Guide, Flowchart"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[9.5px] font-extrabold uppercase tracking-wider block mb-1">Order Index (Sort Order)</label>
+                  <input
+                    type="number"
+                    value={freeResourceForm.orderIndex}
+                    onChange={e => setFreeResourceForm(prev => ({ ...prev, orderIndex: parseInt(e.target.value) || 0 }))}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-[9.5px] font-extrabold uppercase tracking-wider block mb-1">Preview Image</label>
+                <div className="flex gap-2 items-center">
+                  <div className="flex-1">
+                    <input
+                      type="text"
+                      value={freeResourceForm.image}
+                      onChange={e => setFreeResourceForm(prev => ({ ...prev, image: e.target.value }))}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white"
+                      placeholder="/images/refinance_guide_mockup.png"
+                      required
+                    />
+                  </div>
+                  <label className="bg-slate-100 hover:bg-slate-250 border border-slate-250 cursor-pointer text-slate-700 text-xs font-bold px-3.5 py-2.5 rounded-xl transition-all select-none">
+                    Upload
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleResourceImageUpload}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-[9.5px] font-extrabold uppercase tracking-wider block mb-1">Download PDF Link</label>
+                <div className="flex gap-2 items-center">
+                  <div className="flex-1">
+                    <input
+                      type="text"
+                      value={freeResourceForm.pdfUrl}
+                      onChange={e => setFreeResourceForm(prev => ({ ...prev, pdfUrl: e.target.value }))}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white"
+                      placeholder="/assets/guide.pdf"
+                      required
+                    />
+                  </div>
+                  <label className="bg-slate-100 hover:bg-slate-200 border border-slate-250 cursor-pointer text-slate-700 text-xs font-bold px-3.5 py-2.5 rounded-xl transition-all select-none">
+                    Upload
+                    <input
+                      type="file"
+                      accept="application/pdf"
+                      onChange={handleResourcePdfUpload}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-[9.5px] font-extrabold uppercase tracking-wider block mb-1">Guide Page URL (Details Path - optional)</label>
+                <input
+                  type="text"
+                  value={freeResourceForm.detailsUrl}
+                  onChange={e => setFreeResourceForm(prev => ({ ...prev, detailsUrl: e.target.value }))}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500 focus:bg-white"
+                  placeholder="e.g. /free-resources/first-home-buyers-step-by-step-guide"
+                />
+              </div>
+
+              {/* Modal Actions */}
+              <div className="pt-4 border-t border-slate-100 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setFreeResourceModalOpen(false)}
+                  className="bg-slate-100 hover:bg-slate-250 text-slate-600 text-xs font-extrabold px-4.5 py-2.5 rounded-xl transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4.5 py-2.5 rounded-xl transition-all"
+                >
+                  Save Resource
                 </button>
               </div>
             </form>

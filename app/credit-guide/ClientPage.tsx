@@ -108,9 +108,9 @@ export function ClientPage({ settings, pageHeroSettings }: ClientPageProps) {
                 <div className="bg-[#EAF3FF] border border-blue-100 rounded-2xl p-6 my-4 space-y-2 text-[14px] sm:text-[15px]">
                   <p className="font-bold text-[#0B1F3A]">Licence & Corporate Details:</p>
                   <ul className="space-y-1.5 text-slate-600">
-                    <li><strong className="text-[#0B1F3A]">Entity Name:</strong> Mortgage Xperts Pty Ltd</li>
-                    <li><strong className="text-[#0B1F3A]">Australian Credit Licence (ACL) Number:</strong> 389087</li>
-                    <li><strong className="text-[#0B1F3A]">Registered Address:</strong> Level 20, 1 Market St, Sydney NSW 2000</li>
+                    <li><strong className="text-[#0B1F3A]">Entity Name:</strong> MUMA Groups Pty Ltd - ACN 668 612 468 trading as Mortgage Xperts</li>
+                    <li><strong className="text-[#0B1F3A]">Australian Credit Licence (ACL) Number:</strong> 384704</li>
+                    <li><strong className="text-[#0B1F3A]">Registered Address:</strong> 57 Anomia Road, JINDALEE, WA 6036</li>
                   </ul>
                 </div>
               </div>

@@ -6,11 +6,11 @@ import { executeQuery } from '@/lib/db';
 import { blogPosts, BlogPost } from '@/app/lib/blogData';
 
 export const metadata: Metadata = {
-  title: 'The Xperts News & Insights | Mortgage Xperts',
-  description: 'Stay updated with the latest news, announcements, and insights from the team at Mortgage Xperts.',
+  title: 'XPULSE Intelligence | Mortgage Xperts',
+  description: 'Stay updated with the latest news, tips, announcements, and insights on the Australian property market from the team at Mortgage Xperts.',
 };
 
-export default async function NewsInsightsPage() {
+export default async function XPulsePage() {
   let dbBlogs: any[] = [];
   try {
     dbBlogs = await executeQuery<any[]>('SELECT * FROM blogs WHERE published = 1 ORDER BY createdAt DESC');

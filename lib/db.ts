@@ -208,7 +208,18 @@ const tables = [
   ('6', 'Market Updates'),
   ('7', 'Featured Story'),
   ('8', 'Refinance Story'),
-  ('9', 'Healthcare Professional')`
+  ('9', 'Healthcare Professional')`,
+  `CREATE TABLE IF NOT EXISTS free_resources (
+      id VARCHAR(191) PRIMARY KEY,
+      title VARCHAR(255) NOT NULL,
+      description TEXT NOT NULL,
+      image VARCHAR(255) NOT NULL,
+      pdfUrl VARCHAR(255) NOT NULL,
+      detailsUrl VARCHAR(255) NOT NULL,
+      badge VARCHAR(255) NOT NULL,
+      orderIndex INT DEFAULT 0,
+      createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )`
 ];
 
 
@@ -232,6 +243,7 @@ export async function initializeTables() {
     { name: 'migratePageContentDefaults', fn: migratePageContentDefaults },
     { name: 'migrateNewPageSeeds', fn: migrateNewPageSeeds },
     { name: 'seedTeamMembers', fn: seedTeamMembers },
+    { name: 'seedFreeResources', fn: seedFreeResources },
   ];
 
   for (const migration of migrations) {
@@ -513,6 +525,53 @@ export async function seedTeamMembers() {
     console.log('Seeded default team members.');
   } catch (error) {
     console.error('Failed to seed team members:', error);
+  }
+}
+
+export async function seedFreeResources() {
+  try {
+    const existing = await executeQuery<any[]>('SELECT id FROM free_resources LIMIT 1');
+    if (Array.isArray(existing) && existing.length > 0) return;
+
+    const defaultResources = [
+      {
+        title: "First Home Buyers Checklist",
+        description: "Your step-by-step roadmap to buying your first home in Australia, covering budget goals, deposit targets, pre-approval, and cooling-off guidelines.",
+        image: "/images/first_home_guide_mockup.png",
+        pdfUrl: "/assets/first-home-buyers-step-by-step-guide.pdf",
+        detailsUrl: "/free-resources/first-home-buyers-step-by-step-guide",
+        badge: "Checklist",
+        orderIndex: 0
+      },
+      {
+        title: "Home Buying Process Flowchart",
+        description: "A complete visual timeline outlining contract clauses, conveyancing tasks, valuation steps, and what happens between unconditional approval and settlement day.",
+        image: "/images/process_flowchart_mockup.png",
+        pdfUrl: "/assets/step-by-step-home-buying-process.pdf",
+        detailsUrl: "/free-resources/step-by-step-home-buying-process",
+        badge: "Process Flowchart",
+        orderIndex: 1
+      },
+      {
+        title: "Refinance Repayment Savings Guide",
+        description: "Review your home loan interest rates, calculate potential repayment savings, and understand exactly how to secure lower rates from Australian lenders.",
+        image: "/images/refinance_guide_mockup.png",
+        pdfUrl: "https://s3-ap-southeast-2.amazonaws.com/mortgagexperts/sample-report.pdf",
+        detailsUrl: "/refinancing-a-loan",
+        badge: "Repayment Guide",
+        orderIndex: 2
+      }
+    ];
+
+    for (const r of defaultResources) {
+      await executeQuery(
+        'INSERT INTO free_resources (id, title, description, image, pdfUrl, detailsUrl, badge, orderIndex) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [crypto.randomUUID(), r.title, r.description, r.image, r.pdfUrl, r.detailsUrl, r.badge, r.orderIndex]
+      );
+    }
+    console.log('Seeded default free resources.');
+  } catch (error) {
+    console.error('Failed to seed free resources:', error);
   }
 }
 

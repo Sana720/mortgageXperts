@@ -24,14 +24,16 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Home() {
   let settings: Record<string, string> = {};
   let pageHeroSettings: PageHeroSettings | undefined = undefined;
+  let pageSections: string[] = [];
 
   try {
     const data = await loadPageData(PAGE_PATH);
     settings = data.settings || {};
     pageHeroSettings = data.pageHeroSettings || undefined;
+    pageSections = data.pageSections || [];
   } catch (error) {
     console.error("Failed to load homepage data:", error);
   }
 
-  return <ClientHomePage settings={settings} pageHeroSettings={pageHeroSettings} />;
+  return <ClientHomePage settings={settings} pageHeroSettings={pageHeroSettings} pageSections={pageSections} />;
 }

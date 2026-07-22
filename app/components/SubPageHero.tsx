@@ -391,7 +391,7 @@ export function SubPageHero({ pageTitle, themeColor = "blue", layoutType = "land
                       <Star key={i} className="w-3.5 h-3.5 text-[#FBBF24] fill-[#FBBF24]" />
                     ))}
                   </div>
-                  <div className="text-[9.5px] sm:text-[11.5px] text-slate-500 font-bold mt-0.5">4.9/5 from 1,200+ reviews</div>
+                  <div className="text-[9.5px] sm:text-[11.5px] text-slate-500 font-bold mt-0.5">4.9/5 from 760+ reviews</div>
                 </div>
               </div>
 
@@ -409,7 +409,7 @@ export function SubPageHero({ pageTitle, themeColor = "blue", layoutType = "land
                       <Star key={i} className="w-3.5 h-3.5 text-[#FBBF24] fill-[#FBBF24]" />
                     ))}
                   </div>
-                  <div className="text-[9.5px] sm:text-[11.5px] text-slate-500 font-bold mt-0.5">5.0/5 from 950+ reviews</div>
+                  <div className="text-[9px] sm:text-[11.5px] text-slate-500 font-bold mt-0.5">5/5 from 230+ reviews</div>
                 </div>
               </div>
             </motion.div>

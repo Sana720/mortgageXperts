@@ -483,7 +483,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageS
                     <div className="flex items-center gap-0.5">
                       {[...Array(5)].map((_, i) => <Star key={i} className="w-3.5 h-3.5 text-[#FBBF24] fill-[#FBBF24]" />)}
                     </div>
-                    <div className="text-[9.5px] sm:text-[11.5px] text-slate-500 font-bold mt-0.5">4.9/5 from 1,200+ reviews</div>
+                    <div className="text-[9.5px] sm:text-[11.5px] text-slate-500 font-bold mt-0.5">4.9/5 from 760+ reviews</div>
                   </div>
                 </div>
                 <div className="w-px h-8 bg-slate-200/80 hidden sm:block" />
@@ -495,7 +495,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageS
                     <div className="flex items-center gap-0.5">
                       {[...Array(5)].map((_, i) => <Star key={i} className="w-3.5 h-3.5 text-[#FBBF24] fill-[#FBBF24]" />)}
                     </div>
-                    <div className="text-[9.5px] sm:text-[11.5px] text-slate-500 font-bold mt-0.5">5.0/5 from 950+ reviews</div>
+                    <div className="text-[9.5px] sm:text-[11.5px] text-slate-500 font-bold mt-0.5">5/5 from 230+ reviews</div>
                   </div>
                 </div>
               </motion.div>

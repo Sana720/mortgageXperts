@@ -580,16 +580,53 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageS
                 Accountants usually have steady income, whether employed or self-employed, and demonstrate good money management skills. Lenders see this as lower risk and often offer better loan terms.
               </p>
               
-              {/* Jane Example */}
-              <div className="bg-white border border-slate-200/60 rounded-2xl p-4 flex gap-4 items-start shadow-sm">
-                <div className="w-6 h-6 rounded-full bg-violet-50 text-violet-600 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
-                  ✓
+              {/* Jane Success Story - Large Format */}
+              <div className="bg-violet-50/50 border border-violet-100 rounded-[28px] p-6 sm:p-8 space-y-6 mt-6">
+                <div className="flex items-center gap-2">
+                  <span className="text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 bg-violet-100 text-violet-700 rounded-full inline-block">Case Study</span>
+                  <h4 className="text-lg font-bold text-[#0B1F3A]">Jane&apos;s Journey: Waived LMI with 10% Deposit</h4>
                 </div>
-                <div>
-                  <h4 className="text-[13.5px] font-bold text-[#0B1F3A]">Jane&apos;s Case Study</h4>
-                  <p className="text-slate-550 text-[11.5px] leading-relaxed mt-0.5">
-                    {pageSections?.[1] || `Jane is a CPA-registered accountant earning $130,000 a year as a salaried employee. Because of her stable job and professional registration, her lender offers her a home loan with a discounted interest rate and waived LMI, even though her deposit is just 10%.`}
-                  </p>
+
+                <div className="relative border-l border-dashed border-violet-200 pl-6 ml-3 space-y-5 text-left">
+                  <div className="relative">
+                    <div className="absolute -left-[30px] top-0.5 w-4 h-4 rounded-full bg-violet-600 text-white flex items-center justify-center font-bold text-[9px] shadow-sm">
+                      ✓
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Before</span>
+                    <p className="text-slate-650 text-[12px] leading-relaxed mt-0.5">
+                      Jane was a CPA-registered accountant earning a strong salary of $130,000. She saved a 10% deposit ($60,000) for a $600,000 home, but was eager to purchase immediately instead of waiting to save the full 20% deposit ($120,000).
+                    </p>
+                  </div>
+
+                  <div className="relative">
+                    <div className="absolute -left-[30px] top-0.5 w-4 h-4 rounded-full bg-red-500 text-white flex items-center justify-center font-bold text-[9px] shadow-sm">
+                      !
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-red-500">Problem</span>
+                    <p className="text-slate-650 text-[12px] leading-relaxed mt-0.5">
+                      Lenders wanted to charge her over $14,000 in Lenders Mortgage Insurance (LMI) because her deposit was under 20%, which would wipe out a large portion of her hard-earned savings.
+                    </p>
+                  </div>
+
+                  <div className="relative">
+                    <div className="absolute -left-[30px] top-0.5 w-4 h-4 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-[9px] shadow-sm">
+                      ⚙
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600">Solution</span>
+                    <p className="text-slate-650 text-[12px] leading-relaxed mt-0.5">
+                      We applied for a specialized Accountant package that offers a 90% LVR (Loan-to-Value Ratio) with an LMI waiver for CPA-qualified professionals earning over $120,000.
+                    </p>
+                  </div>
+
+                  <div className="relative">
+                    <div className="absolute -left-[30px] top-0.5 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-[9px] shadow-sm">
+                      ★
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600">Result</span>
+                    <p className="text-slate-650 text-[12px] leading-relaxed mt-0.5 font-semibold">
+                      Jane purchased her home with only a 10% deposit. The LMI waiver saved her exactly $14,200, allowing her to keep her savings in an offset account to reduce interest.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1066,16 +1103,53 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageS
                 Accountants may qualify for loans with deposits as low as 10%, provided they meet registration and income requirements. Your borrowing power depends on your income, expenses, debts, and credit history.
               </p>
               
-              {/* Emily Case Study */}
-              <div className="bg-violet-50/40 border border-violet-100/60 rounded-[24px] p-5 flex items-start gap-4 mt-6">
-                <div className="w-10 h-10 rounded-full bg-violet-100 flex items-center justify-center shrink-0 text-violet-600">
-                  <AlertCircle className="w-5.5 h-5.5" />
+              {/* Emily Success Story - Large Format */}
+              <div className="bg-violet-50/50 border border-violet-100 rounded-[28px] p-6 sm:p-8 space-y-6 mt-6">
+                <div className="flex items-center gap-2">
+                  <span className="text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 bg-violet-100 text-violet-700 rounded-full inline-block">Case Study</span>
+                  <h4 className="text-lg font-bold text-[#0B1F3A]">Emily&apos;s Scenario: Quick Purchase Without LMI</h4>
                 </div>
-                <div>
-                  <h4 className="text-[14px] font-extrabold text-[#0B1F3A]">Emily&apos;s Scenario</h4>
-                  <p className="text-slate-600 text-[12.5px] leading-relaxed mt-0.5">
-                    {pageSections?.[5] || `Emily, a CPA-registered accountant earning $125,000, wants to buy a $600,000 home. With a 10% deposit of $60,000 and strong financials, she qualifies to borrow the remaining $540,000 without paying LMI. Her stable income also helps her get a loan amount that comfortably fits her budget.`}
-                  </p>
+
+                <div className="relative border-l border-dashed border-violet-200 pl-6 ml-3 space-y-5 text-left">
+                  <div className="relative">
+                    <div className="absolute -left-[30px] top-0.5 w-4 h-4 rounded-full bg-violet-600 text-white flex items-center justify-center font-bold text-[9px] shadow-sm">
+                      ✓
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Before</span>
+                    <p className="text-slate-650 text-[12px] leading-relaxed mt-0.5">
+                      Emily was a CPA earning $125,000. She was renting a flat but wanted to buy a home of her own for $600,000. She only had a $60,000 deposit saved and felt she was still 2 years away from avoiding LMI.
+                    </p>
+                  </div>
+
+                  <div className="relative">
+                    <div className="absolute -left-[30px] top-0.5 w-4 h-4 rounded-full bg-red-500 text-white flex items-center justify-center font-bold text-[9px] shadow-sm">
+                      !
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-red-500">Problem</span>
+                    <p className="text-slate-650 text-[12px] leading-relaxed mt-0.5">
+                      Typical banks would charge her over $13,500 in LMI premiums, forcing her to reduce her borrowing limit or buy a lower-quality property further away.
+                    </p>
+                  </div>
+
+                  <div className="relative">
+                    <div className="absolute -left-[30px] top-0.5 w-4 h-4 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-[9px] shadow-sm">
+                      ⚙
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600">Solution</span>
+                    <p className="text-slate-650 text-[12px] leading-relaxed mt-0.5">
+                      Our experts structured a professional waiver package that approved her 90% loan with LMI completely waived due to her CPA credentials.
+                    </p>
+                  </div>
+
+                  <div className="relative">
+                    <div className="absolute -left-[30px] top-0.5 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-[9px] shadow-sm">
+                      ★
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600">Result</span>
+                    <p className="text-slate-650 text-[12px] leading-relaxed mt-0.5 font-semibold">
+                      Emily bought her $600,000 home immediately. She kept $13,500 in cash, her monthly repayments fit comfortably within her budget, and she avoided paying rent.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1168,22 +1242,72 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageS
             ))}
           </div>
 
-          {/* Tom Case Study */}
-          <div className="mt-12 bg-violet-50/50 border border-violet-100/70 rounded-[32px] p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-violet-100 flex items-center justify-center shrink-0">
-                <Sparkles className="w-6 h-6 text-violet-700" />
+          {/* Tom Success Story - Large Format */}
+          <div className="mt-16 bg-violet-50/50 border border-violet-100 rounded-[32px] p-8 md:p-12 shadow-md relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-36 h-36 bg-violet-100/30 opacity-40 rounded-bl-full pointer-events-none" />
+            <div className="max-w-3xl mx-auto space-y-8">
+              <div className="text-center space-y-2">
+                <span className="text-[10px] font-bold uppercase tracking-widest px-3 py-1 bg-violet-100 text-violet-700 rounded-full inline-block">Real Success Story</span>
+                <h3 className="text-2xl sm:text-3xl font-black text-[#0B1F3A]" style={{ fontFamily: "var(--font-montserrat, sans-serif)" }}>
+                  Tom&apos;s Journey: Saving $18,400 on LMI
+                </h3>
               </div>
-              <div>
-                <h4 className="text-[15px] font-extrabold text-[#0B1F3A]">Tom&apos;s Discovery</h4>
-                <p className="text-slate-600 text-[13px] mt-0.5 leading-relaxed">
-                  {pageSections?.[7] || `Tom is a self-employed accountant who didn’t know about LMI waivers. A mortgage broker helped him find a lender offering this benefit, saving him thousands. The broker also helped Tom gather his documents, making the process smooth and successful.`}
-                </p>
+
+              {/* Vertical timeline steps */}
+              <div className="relative border-l-2 border-dashed border-violet-200 pl-8 ml-4 space-y-8 text-left">
+                
+                {/* Step 1: Before */}
+                <div className="relative">
+                  <div className="absolute -left-[41px] top-0.5 w-6 h-6 rounded-full bg-violet-600 text-white flex items-center justify-center font-bold text-[10px] shadow-sm">
+                    1
+                  </div>
+                  <h4 className="text-[14px] font-extrabold text-[#0B1F3A] uppercase tracking-wide">Before</h4>
+                  <p className="text-slate-650 text-[13px] leading-relaxed mt-1">
+                    Tom was a dedicated self-employed accountant building his local practice. He had managed to save a 10% deposit of $70,000 to buy a family home valued at $700,000, but felt stuck because banks required a 20% deposit to avoid Lenders Mortgage Insurance (LMI).
+                  </p>
+                </div>
+
+                {/* Step 2: Problem */}
+                <div className="relative">
+                  <div className="absolute -left-[41px] top-0.5 w-6 h-6 rounded-full bg-red-500 text-white flex items-center justify-center font-bold text-[10px] shadow-sm">
+                    2
+                  </div>
+                  <h4 className="text-[14px] font-extrabold text-[#0B1F3A] uppercase tracking-wide text-red-600">Problem</h4>
+                  <p className="text-slate-650 text-[13px] leading-relaxed mt-1">
+                    Lenders wanted to charge him over $18,000 in LMI because his deposit was below 20%. As a self-employed business owner, traditional banks also scrutinized his tax returns, demanding two full years of financials and delaying his pre-approval.
+                  </p>
+                </div>
+
+                {/* Step 3: Solution */}
+                <div className="relative">
+                  <div className="absolute -left-[41px] top-0.5 w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-[10px] shadow-sm">
+                    3
+                  </div>
+                  <h4 className="text-[14px] font-extrabold text-[#0B1F3A] uppercase tracking-wide text-blue-600">Solution</h4>
+                  <p className="text-slate-650 text-[13px] leading-relaxed mt-1">
+                    We identified that Tom was registered with CPA Australia. We leveraged specialized professional policy waivers, allowing Tom to access a 90% LVR loan with a complete 100% LMI waiver, and used a single year of tax returns to streamline his self-employed assessment.
+                  </p>
+                </div>
+
+                {/* Step 4: Result */}
+                <div className="relative">
+                  <div className="absolute -left-[41px] top-0.5 w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-[10px] shadow-sm">
+                    4
+                  </div>
+                  <h4 className="text-[14px] font-extrabold text-[#0B1F3A] uppercase tracking-wide text-emerald-600">Result</h4>
+                  <p className="text-slate-650 text-[13px] leading-relaxed mt-1 font-semibold">
+                    Tom secured his $700,000 home with only a 10% deposit. The LMI waiver saved him exactly $18,400 in upfront costs, which he kept in his offset account to reduce interest.
+                  </p>
+                </div>
+
+              </div>
+
+              <div className="pt-4 flex justify-center">
+                <button type="button" onClick={openModal} className="cursor-pointer border-0 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-[13px] font-bold px-8 py-3.5 transition-all shadow-md hover:scale-[1.02] active:scale-[0.98]">
+                  Get Started Like Tom
+                </button>
               </div>
             </div>
-            <button type="button" onClick={openModal} className="cursor-pointer border-0 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-[13px] font-extrabold px-6 py-3 transition-colors shrink-0 whitespace-nowrap">
-              Get Started
-            </button>
           </div>
         </div>
       </section>

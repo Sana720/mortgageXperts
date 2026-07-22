@@ -76,6 +76,9 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
   const branchesMenu = [
     { name: "Mortgage Xperts — Adelaide", href: "/branches/adelaide", state: "SA" },
     { name: "Mortgage Xperts — Brisbane", href: "/branches/brisbane", state: "QLD" },
+    { name: "Mortgage Xperts — Canberra", href: "/branches/canberra", state: "ACT" },
+    { name: "Mortgage Xperts — Darwin", href: "/branches/darwin", state: "NT" },
+    { name: "Mortgage Xperts — Hobart", href: "/branches/hobart", state: "TAS" },
     { name: "Mortgage Xperts — Melbourne", href: "/branches/melbourne", state: "VIC" },
     { name: "Mortgage Xperts — Perth", href: "/branches/perth", state: "WA" },
     { name: "Mortgage Xperts — Sydney", href: "/branches/sydney", state: "NSW" },
@@ -124,8 +127,16 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
   ];
 
   const resourcesMenu = [
-    { name: "The Xperts News & Insights", href: "/the-xperts-news-insights" },
-    { name: "Blog", href: "/blog" },
+    { name: "XPULSE Intelligence", href: "/xpulse-intelligence" },
+    {
+      name: "Free Resources",
+      href: "/free-resources",
+      submenu: [
+        { name: "All Free Resources", href: "/free-resources" },
+        { name: "First Home Buyers Guide", href: "/free-resources/first-home-buyers-step-by-step-guide" },
+        { name: "Home Buying Process Flowchart", href: "/free-resources/step-by-step-home-buying-process" },
+      ]
+    },
     {
       name: "Property Reports",
       href: "/resources/property-reports",
@@ -139,11 +150,6 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
     { name: "First Home Guide", href: "/first-home-guide" },
     { name: "Refinancing Guide", href: "/refinancing-guide" },
     { name: "Property Investment Guide", href: "/property-investment-guide" },
-    {
-      name: "Free Resources",
-      href: "#",
-      submenu: freeResourcesMenu
-    },
   ];
 
   return (
@@ -213,7 +219,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                 Home Loans <ChevronDown className="w-3.5 h-3.5 mt-0.5 transition-transform duration-200 group-hover:rotate-180" />
               </Link>
               <div className="absolute top-full left-0 pt-2.5 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                <div className="bg-white border border-slate-100 rounded-xl shadow-xl py-2 max-h-[400px] overflow-y-auto">
+                <div className="bg-white border border-slate-100 rounded-xl shadow-xl py-2">
                   {homeLoanMenu.map((item) => (
                     <Link
                       key={item.name}
@@ -471,7 +477,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                     </button>
                   </div>
                   {isMobileHomeLoansOpen && (
-                    <div className="pl-3 flex flex-col gap-2.5 text-[13.5px] font-medium text-slate-600 mt-1 max-h-[200px] overflow-y-auto animate-fadeIn">
+                    <div className="pl-3 flex flex-col gap-2.5 text-[13.5px] font-medium text-slate-600 mt-1 animate-fadeIn">
                       {homeLoanMenu.map((item) => (
                         <Link
                           key={item.name}
@@ -568,7 +574,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                       <Link href="/resources/property-reports/baldivis-wa" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#10A3EB] transition-colors">↳ Baldivis, WA</Link>
                       <Link href="/resources/property-reports/box-hill-vic" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#10A3EB] transition-colors">↳ Box Hill, VIC</Link>
                     </div>
-                    <Link href="/the-xperts-news-insights" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#10A3EB] transition-colors">News & Insights</Link>
+                    <Link href="/xpulse-intelligence" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#10A3EB] transition-colors">XPULSE Intelligence</Link>
                     <Link href="/first-home-guide" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#10A3EB] transition-colors">First Home Guide</Link>
                   </div>
                 </div>

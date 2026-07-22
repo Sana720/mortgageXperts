@@ -153,7 +153,7 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
                 />
               </Link>
               <p className="text-[13px] text-slate-400 leading-relaxed mb-6 max-w-xs">
-                We simplify the home loan journey and help Australians achieve their property goals with confidence and clarity.
+                Australia's trusted multilingual mortgage broker. Professional home loan guidance in English, Nepali &amp; Hindi.
               </p>
               <ul className="space-y-3 mb-6">
                 <li>
@@ -239,10 +239,9 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
                 <div className="flex flex-col gap-2.5">
                   <FooterNavLink href="/first-home-guide">First Home Guide</FooterNavLink>
                   <FooterNavLink href="/refinancing-guide">Refinancing Guide</FooterNavLink>
-                  <FooterNavLink href="/the-xperts-news-insights">News & Insights</FooterNavLink>
-                  <FooterNavLink href="/blog">Blog</FooterNavLink>
+                  <FooterNavLink href="/xpulse-intelligence">XPULSE Intelligence</FooterNavLink>
                 </div>
-                <FooterColumnCta href="/blog">Explore resources</FooterColumnCta>
+                <FooterColumnCta href="/xpulse-intelligence">Explore resources</FooterColumnCta>
               </div>
 
               <div>
@@ -267,9 +266,9 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
                 </div>
                 <div className="flex flex-col gap-2.5">
                   <FooterNavLink href="/about-us-nepali-mortgage-broker-in-australia">About Mortgage Xperts</FooterNavLink>
-                  <FooterNavLink href="#">Our Lenders</FooterNavLink>
+                  <FooterNavLink href="/free-assessment">Our Lenders</FooterNavLink>
                   <FooterNavLink href="/free-assessment">Reviews</FooterNavLink>
-                  <FooterNavLink href="#">Careers</FooterNavLink>
+                  <FooterNavLink href="/about-us-nepali-mortgage-broker-in-australia">Careers</FooterNavLink>
                   <FooterNavLink href="/best-nepali-investment-mortgage-broker-perth">Contact Us</FooterNavLink>
                 </div>
               </div>
@@ -349,30 +348,35 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
 
           {/* Legal bar */}
           <Reveal delay={0.08} direction="fade" className="border-t border-white/10 pt-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4 text-[11px] sm:text-[12px] text-slate-400">
-            <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-3">
-              <span>© 2026 Mortgage Xperts. All Rights Reserved.</span>
-              <span className="hidden sm:inline text-white/20">·</span>
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                {[
-                  { name: "Privacy Policy", href: "/privacy-policy" },
-                  { name: "Terms & Conditions", href: "/terms-and-conditions" },
-                  { name: "Credit Guide", href: "/credit-guide" },
-                  { name: "Disclaimer", href: "/disclaimer" }
-                ].map((item, i) => (
-                  <span key={item.name} className="flex items-center gap-3">
-                    {i > 0 && <span className="text-white/20 hidden sm:inline">·</span>}
-                    <Link href={item.href} className="hover:text-white transition-colors">
-                      {item.name}
-                    </Link>
-                  </span>
-                ))}
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-3">
+                <span>© 2026 Mortgage Xperts. All Rights Reserved.</span>
+                <span className="hidden sm:inline text-white/20">·</span>
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                  {[
+                    { name: "Privacy Policy", href: "/privacy-policy" },
+                    { name: "Terms & Conditions", href: "/terms-and-conditions" },
+                    { name: "Credit Guide", href: "/credit-guide" },
+                    { name: "Disclaimer", href: "/disclaimer" }
+                  ].map((item, i) => (
+                    <span key={item.name} className="flex items-center gap-3">
+                      {i > 0 && <span className="text-white/20 hidden sm:inline">·</span>}
+                      <Link href={item.href} className="hover:text-white transition-colors">
+                        {item.name}
+                      </Link>
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="text-[10px] text-slate-500">
+                MUMA Groups Pty Ltd - ACN 668 612 468 trading as Mortgage Xperts.
               </div>
             </div>
             <div className="flex items-center gap-2 text-slate-400 shrink-0">
               <svg className="w-4 h-4 text-[#10A3EB] shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
                 <path d="M12 2C8.5 2 5.5 4 4 7c-1.2 2.2-1 5 .5 7.2.8 1.1 2 2.5 3.5 4.3.9 1.1 1.8 2.2 2.5 3.2.4.6.9 1.3 1 1.3s.6-.7 1-1.3c.7-1 1.6-2.1 2.5-3.2 1.5-1.8 2.7-3.2 3.5-4.3 1.5-2.2 1.7-5 .5-7.2C18.5 4 15.5 2 12 2zm0 5.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5z" />
               </svg>
-              <span>Australian Credit Licence 389087</span>
+              <span>Australian Credit License: 384704</span>
             </div>
           </Reveal>
         </div>

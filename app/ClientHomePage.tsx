@@ -58,6 +58,7 @@ import {
 interface ClientHomePageProps {
   settings?: Record<string, string>;
   pageHeroSettings?: PageHeroSettings;
+  pageSections?: string[];
 }
 
 // ── Premium inline SVG icons (match finalized design style) ───
@@ -1393,25 +1394,40 @@ function HeroSlider({ slidesJson }: { slidesJson?: string | null }) {
               </div>
 
               {/* Trust Bar — checkmark pills */}
-              <div className="grid grid-cols-2 gap-2 pt-4 mt-1 border-t border-slate-100 sm:flex sm:flex-wrap">
-                {[
-                  { full: "Australia-Wide Service", short: "Australia-Wide" },
-                  { full: "40+ Lenders", short: "40+ Lenders" },
-                  { full: "First Home Buyers & Investors", short: "Buyers & Investors" },
-                  { full: "Strategic Lending Solutions", short: "Strategic Solutions" },
-                ].map((item) => (
-                  <span
-                    key={item.full}
-                    className={`inline-flex items-center gap-1.5 border text-[10.5px] sm:text-[11.5px] font-semibold px-2.5 py-1.5 rounded-full justify-center whitespace-nowrap transition-colors duration-500 ${active.statPillBg}`}
-                  >
-                    <svg className="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="m5 13 4 4L19 7" /></svg>
-                    <span className="sm:hidden">{item.short}</span>
-                    <span className="hidden sm:inline">{item.full}</span>
-                  </span>
-                ))}
+              <div className="flex flex-col gap-2 pt-4 mt-1 border-t border-slate-100">
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    "ASIC Authorised",
+                    "FBAA Member",
+                    "Response within 24 hours",
+                  ].map((text) => (
+                    <span
+                      key={text}
+                      className={`inline-flex items-center gap-1.5 border text-[10.5px] sm:text-[11.5px] font-bold px-3.5 py-1.5 rounded-full justify-center whitespace-nowrap transition-colors duration-500 ${active.statPillBg}`}
+                    >
+                      <svg className="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.8} strokeLinecap="round" strokeLinejoin="round"><path d="m5 13 4 4L19 7" /></svg>
+                      <span>{text}</span>
+                    </span>
+                  ))}
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    "40+ Lenders",
+                    "Strategic Solution",
+                    "Australia – Wide",
+                  ].map((text) => (
+                    <span
+                      key={text}
+                      className={`inline-flex items-center gap-1.5 border text-[10.5px] sm:text-[11.5px] font-bold px-3.5 py-1.5 rounded-full justify-center whitespace-nowrap transition-colors duration-500 ${active.statPillBg}`}
+                    >
+                      <svg className="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.8} strokeLinecap="round" strokeLinejoin="round"><path d="m5 13 4 4L19 7" /></svg>
+                      <span>{text}</span>
+                    </span>
+                  ))}
+                </div>
               </div>
 
-              {/* Google rating strip (Google rating + $2.4B approved shown in ALL slides) */}
+              {/* Google rating strip (Google rating + $1.8B approved shown in ALL slides) */}
               <div className="flex flex-wrap items-center gap-4 mt-2">
                 <div className="flex items-center gap-2">
                   <GoogleIcon />
@@ -1421,11 +1437,11 @@ function HeroSlider({ slidesJson }: { slidesJson?: string | null }) {
                         <Star key={i} className="w-3 h-3 text-yellow-400 fill-yellow-400" />
                       ))}
                     </div>
-                    <div className="text-[10px] text-slate-500 font-semibold">4.9 · 1,200+ Reviews</div>
+                    <div className="text-[10px] text-slate-500 font-semibold">4.9 · 760+ Reviews</div>
                   </div>
                 </div>
                 <div className="w-px h-7 bg-slate-200 hidden sm:block" />
-                <div className="text-[11.5px] text-slate-500 font-medium hidden sm:block">$2.4B+ Loans Approved Since 2010</div>
+                <div className="text-[11.5px] text-slate-500 font-medium hidden sm:block">$1.8B+ Loans Approved Since 2016</div>
               </div>
             </motion.div>
           </AnimatePresence>
@@ -1446,8 +1462,8 @@ function HeroSlider({ slidesJson }: { slidesJson?: string | null }) {
             </div>
             <div>
               <div className="text-[10.5px] text-slate-400 font-semibold uppercase tracking-wide">Loans Approved</div>
-              <div className="text-[22px] font-black text-[#0B1F3A] leading-none mt-0.5">$2.4B+</div>
-              <div className="text-[10.5px] text-slate-400 font-medium mt-1">Since 2010</div>
+              <div className="text-[22px] font-black text-[#0B1F3A] leading-none mt-0.5">$1.8B+</div>
+              <div className="text-[10.5px] text-slate-400 font-medium mt-1">Since 2016</div>
             </div>
           </motion.div>
 
@@ -1464,7 +1480,7 @@ function HeroSlider({ slidesJson }: { slidesJson?: string | null }) {
             </div>
             <div>
               <div className="text-[10.5px] text-slate-400 font-semibold uppercase tracking-wide">Average Approval</div>
-              <div className="text-[22px] font-black text-[#0B1F3A] leading-none mt-0.5">98%</div>
+              <div className="text-[22px] font-black text-[#0B1F3A] leading-none mt-0.5">99.6%</div>
               <div className="text-[10.5px] text-slate-400 font-medium mt-1">Helping More Australians</div>
             </div>
           </motion.div>
@@ -1546,7 +1562,7 @@ function HeroSlider({ slidesJson }: { slidesJson?: string | null }) {
   );
 }
 
-export default function ClientHomePage({ settings = {}, pageHeroSettings }: ClientHomePageProps) {
+export default function ClientHomePage({ settings = {}, pageHeroSettings, pageSections = [] }: ClientHomePageProps) {
   const { openModal } = useOnboardingModal();
   const [showStickyCta, setShowStickyCta] = useState(false);
 
@@ -2153,15 +2169,35 @@ export default function ClientHomePage({ settings = {}, pageHeroSettings }: Clie
   );
 }
 
-function WhyChooseUsSection() {
+function WhyChooseUsSection({ pageSections = [] }: { pageSections?: string[] }) {
   const { openModal } = useOnboardingModal();
   const [activeIndex, setActiveIndex] = useState(0);
 
   const cards = [
-    { city: "Sydney", title: "Mortgage Broker in Sydney", desc: "Expert mortgage broker in Sydney helping health professionals, first home buyers and property investors secure the right home loan with tailored lending strategies.", img: "/images/sydney_real.png" },
-    { city: "Adelaide", title: "Mortgage Broker in Adelaide", desc: "Mortgage Xperts serves health professionals and investors in Adelaide with expert home loan and refinancing solutions. Personalised guidance to navigate Australia's complex mortgage market.", img: "/images/adelaide_real.png" },
-    { city: "Melbourne", title: "Mortgage Broker in Melbourne", desc: "Trusted mortgage broker in Melbourne helping doctors, nurses, allied health professionals and property investors get personalised home loan solutions, refinancing advice and investment finance.", img: "/images/melbourne_real.png" },
-    { city: "Brisbane", title: "Mortgage Broker in Brisbane", desc: "Mortgage Xperts Brisbane specialises in home loans, refinancing, and investment finance for health professionals and property investors, backed by hundreds of satisfied clients.", img: "/images/brisbane_real.png" },
+    {
+      city: pageSections[2] || "Sydney",
+      title: pageSections[3] || "Mortgage Broker in Sydney",
+      desc: pageSections[4] || "Expert mortgage broker in Sydney helping health professionals, first home buyers and property investors secure the right home loan with tailored lending strategies.",
+      img: "/images/sydney_real.png"
+    },
+    {
+      city: pageSections[5] || "Adelaide",
+      title: pageSections[6] || "Mortgage Broker in Adelaide",
+      desc: pageSections[7] || "Mortgage Xperts serves health professionals and investors in Adelaide with expert home loan and refinancing solutions. Personalised guidance to navigate Australia's complex mortgage market.",
+      img: "/images/adelaide_real.png"
+    },
+    {
+      city: pageSections[8] || "Melbourne",
+      title: pageSections[9] || "Mortgage Broker in Melbourne",
+      desc: pageSections[10] || "Trusted mortgage broker in Melbourne helping doctors, nurses, allied health professionals and property investors get personalised home loan solutions, refinancing advice and investment finance.",
+      img: "/images/melbourne_real.png"
+    },
+    {
+      city: pageSections[11] || "Brisbane",
+      title: pageSections[12] || "Mortgage Broker in Brisbane",
+      desc: pageSections[13] || "Mortgage Xperts Brisbane specialises in home loans, refinancing, and investment finance for health professionals and property investors, backed by hundreds of satisfied clients.",
+      img: "/images/brisbane_real.png"
+    },
   ];
 
   return (
@@ -2180,15 +2216,15 @@ function WhyChooseUsSection() {
               </span>
             </div>
             <h2 className="text-[#0B1F3A] text-[32px] sm:text-[36px] lg:text-[40px] font-extrabold leading-[1.1] tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-              Why Choose <br className="hidden lg:block" />Mortgage <span className="text-[#2563EB]">Xperts?</span>
+              {pageSections[0] || "Why Choose Mortgage Xperts?"}
             </h2>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
             className="w-full lg:w-[40%] flex flex-col items-start lg:items-end"
           >
-            <p className="text-slate-500 text-[13px] sm:text-[14px] leading-relaxed mb-6 lg:text-right max-w-md">
-              We deliver <span className="text-[#0B1F3A] font-semibold">personalised lending strategies</span> for health professionals and property investors across Australia. Whether you&apos;re purchasing your first home or building a portfolio, we have you covered.
+            <p className="text-slate-550 text-[13px] sm:text-[14px] leading-relaxed mb-6 lg:text-right max-w-md">
+              {pageSections[1] || "We deliver personalised lending strategies for health professionals and property investors across Australia. Whether you're purchasing your first home or building a portfolio, we have you covered."}
             </p>
             <Link
               href="#"
@@ -2405,7 +2441,7 @@ function FounderProfileSection() {
                 Aakash K C
               </h2>
               <p className="text-[#2563EB] text-[14px] sm:text-[16px] font-bold mt-1.5 leading-snug">
-                Nepali Mortgage Broker in Perth | Helping First-Home Buyers &amp; Investors Nationwide
+                Nepali Mortgage Broker in Australia | Helping First-Home Buyers &amp; Investors Nationwide
               </p>
             </div>
 
@@ -2508,7 +2544,7 @@ function FounderProfileSection() {
                   <div className="min-w-0">
                     <div className="text-[9px] text-slate-400 uppercase tracking-wider font-bold leading-none">Office Address</div>
                     <div className="text-[12px] font-bold mt-0.5 leading-snug">
-                      57 Anomia Road, Jindalee, WA 6027
+                      57 Anomia Road, JINDALEE, WA 6036
                     </div>
                   </div>
                 </div>
@@ -2544,9 +2580,9 @@ function FounderProfileSection() {
                 <HomeIcon className="w-5 h-5" />
               </div>
               <div>
-                <div className="text-[18px] xs:text-[20px] font-black text-[#0B1F3A] leading-tight">$4.5M+</div>
+                <div className="text-[18px] xs:text-[20px] font-black text-[#0B1F3A] leading-tight">5.3M +</div>
                 <div className="text-[11.5px] xs:text-[12px] font-extrabold text-[#0B1F3A] mt-0.5">Property Portfolio</div>
-                <div className="text-[9px] xs:text-[10px] text-slate-400 font-semibold mt-0.5">Built in just 3 years</div>
+                <div className="text-[9px] xs:text-[10px] text-slate-400 font-semibold mt-0.5">Build in 3 years</div>
               </div>
             </div>
 
@@ -2561,7 +2597,7 @@ function FounderProfileSection() {
                 </svg>
               </div>
               <div>
-                <div className="text-[18px] xs:text-[20px] font-black text-[#0B1F3A] leading-tight">500+</div>
+                <div className="text-[18px] xs:text-[20px] font-black text-[#0B1F3A] leading-tight">950+</div>
                 <div className="text-[11.5px] xs:text-[12px] font-extrabold text-[#0B1F3A] mt-0.5">Happy Clients</div>
                 <div className="text-[9px] xs:text-[10px] text-slate-400 font-semibold mt-0.5">Across Australia</div>
               </div>
@@ -2579,9 +2615,9 @@ function FounderProfileSection() {
                 </svg>
               </div>
               <div>
-                <div className="text-[18px] xs:text-[20px] font-black text-[#0B1F3A] leading-tight">$250M+</div>
+                <div className="text-[18px] xs:text-[20px] font-black text-[#0B1F3A] leading-tight">760M+</div>
                 <div className="text-[11.5px] xs:text-[12px] font-extrabold text-[#0B1F3A] mt-0.5">Loans Settled</div>
-                <div className="text-[9px] xs:text-[10px] text-slate-400 font-semibold mt-0.5">For clients</div>
+                <div className="text-[9px] xs:text-[10px] text-slate-400 font-semibold mt-0.5">For Clients</div>
               </div>
             </div>
 
@@ -2595,9 +2631,9 @@ function FounderProfileSection() {
                 </svg>
               </div>
               <div>
-                <div className="text-[18px] xs:text-[20px] font-black text-[#0B1F3A] leading-tight">10+ Years</div>
+                <div className="text-[18px] xs:text-[20px] font-black text-[#0B1F3A] leading-tight">10 + Years</div>
                 <div className="text-[11.5px] xs:text-[12px] font-extrabold text-[#0B1F3A] mt-0.5">Industry Experience</div>
-                <div className="text-[9px] xs:text-[10px] text-slate-400 font-semibold mt-0.5">In finance &amp; lending</div>
+                <div className="text-[9px] xs:text-[10px] text-slate-400 font-semibold mt-0.5">In finance &amp; Lending</div>
               </div>
             </div>
 

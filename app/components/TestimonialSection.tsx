@@ -63,7 +63,7 @@ function GoogleReviewCard({ name, date, text, avatar }: { name: string; date: st
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          {avatar && avatar.startsWith("http") ? (
+          {avatar && avatar.trim() !== "" ? (
             <div className="w-9 h-9 rounded-full overflow-hidden relative shrink-0">
               <img src={avatar} alt={name} className="w-full h-full object-cover" />
             </div>

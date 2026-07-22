@@ -230,8 +230,8 @@ export function ClientPage({ settings, pageHeroSettings }: ClientPageProps) {
                     </div>
                     <div>
                       <div className="text-[11px] text-slate-500 font-bold uppercase">Email Address</div>
-                      <a href={`mailto:${settings?.support_email || "privacy@mortgagexperts.com.au"}`} className="text-[14px] font-extrabold text-[#2563EB] hover:underline">
-                        {settings?.support_email || "privacy@mortgagexperts.com.au"}
+                      <a href={`mailto:${settings?.support_email || "mortgage@mortgagexperts.com.au"}`} className="text-[14px] font-extrabold text-[#2563EB] hover:underline">
+                        {settings?.support_email || "mortgage@mortgagexperts.com.au"}
                       </a>
                     </div>
                   </div>

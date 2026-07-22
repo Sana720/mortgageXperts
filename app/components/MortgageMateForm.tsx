@@ -597,43 +597,46 @@ export function MortgageMateForm({
             <div className="grid grid-cols-3 gap-2 pt-4 border-t border-slate-100">
               {/* ProductReview */}
               <div className="flex flex-col items-start gap-1 pr-2 border-r border-slate-100">
-                <div className="flex items-center gap-1">
+                <span className="text-[8px] font-bold text-slate-400 uppercase tracking-wider leading-none">Product Review</span>
+                <div className="flex items-center gap-1 mt-0.5">
                   <div className="flex gap-0.5">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} className="w-2.5 h-2.5 text-[#FBBF24] fill-[#FBBF24]" />
                     ))}
                   </div>
                 </div>
-                <p className="text-[10px] text-slate-500 font-semibold leading-tight mt-0.5">
-                  <strong className="text-slate-800 font-bold">4.9</strong>/5 (850+ Reviews)
+                <p className="text-[10px] text-slate-550 font-semibold leading-tight mt-0.5">
+                  <strong className="text-slate-800 font-bold">4.9</strong>/5 (230+ Reviews)
                 </p>
               </div>
 
               {/* Facebook */}
               <div className="flex flex-col items-start gap-1 px-2 border-r border-slate-100">
-                <div className="flex items-center gap-1">
+                <span className="text-[8px] font-bold text-slate-400 uppercase tracking-wider leading-none">Facebook</span>
+                <div className="flex items-center gap-1 mt-0.5">
                   <div className="flex gap-0.5">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} className="w-2.5 h-2.5 text-[#FBBF24] fill-[#FBBF24]" />
                     ))}
                   </div>
                 </div>
-                <p className="text-[10px] text-slate-500 font-semibold leading-tight mt-0.5">
-                  <strong className="text-slate-800 font-bold">4.9</strong>/5 (120+ Reviews)
+                <p className="text-[10px] text-slate-550 font-semibold leading-tight mt-0.5">
+                  <strong className="text-slate-800 font-bold">5.0</strong>/5 (230+ Reviews)
                 </p>
               </div>
 
               {/* Google */}
               <div className="flex flex-col items-start gap-1 pl-2">
-                <div className="flex items-center gap-1">
+                <span className="text-[8px] font-bold text-slate-400 uppercase tracking-wider leading-none">Google</span>
+                <div className="flex items-center gap-1 mt-0.5">
                   <div className="flex gap-0.5">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} className="w-2.5 h-2.5 text-[#FBBF24] fill-[#FBBF24]" />
                     ))}
                   </div>
                 </div>
-                <p className="text-[10px] text-slate-500 font-semibold leading-tight mt-0.5">
-                  <strong className="text-slate-800 font-bold">4.9</strong>/5 (230+ Reviews)
+                <p className="text-[10px] text-slate-550 font-semibold leading-tight mt-0.5">
+                  <strong className="text-slate-800 font-bold">4.9</strong>/5 (760+ Reviews)
                 </p>
               </div>
             </div>
