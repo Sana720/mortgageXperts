@@ -1670,7 +1670,7 @@ export default function ClientHomePage({ settings = {}, pageHeroSettings, pageSe
                 ].map((badge, idx) => (
                   <div 
                     key={idx} 
-                    className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100/80 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.02)]"
+                    className="flex items-center justify-center gap-3 p-3.5 rounded-xl border border-slate-100/80 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.02)]"
                   >
                     <div className="relative shrink-0 flex items-center justify-center">
                       {idx === 0 ? (
@@ -1679,7 +1679,7 @@ export default function ClientHomePage({ settings = {}, pageHeroSettings, pageSe
                         <span className={`w-2.5 h-2.5 rounded-full ${badge.color}`} />
                       )}
                     </div>
-                    <div className="flex flex-col text-left">
+                    <div className="flex flex-col text-center items-center">
                       <span className="text-[#0B1F3A] font-extrabold text-[12px] leading-snug">{badge.title}</span>
                       <span className="text-slate-400 text-[10px] font-medium leading-none mt-0.5">{badge.desc}</span>
                     </div>

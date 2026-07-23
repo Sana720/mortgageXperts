@@ -3641,6 +3641,11 @@ export default function AdminPage() {
                       className="hidden"
                     />
                   </label>
+                  {freeResourceForm.image && (
+                    <div className="w-10 h-10 border border-slate-200 rounded-xl overflow-hidden flex items-center justify-center p-0.5 bg-slate-50 shrink-0">
+                      <img src={freeResourceForm.image} alt="Preview" className="w-full h-full object-contain rounded-lg" />
+                    </div>
+                  )}
                 </div>
               </div>
 
