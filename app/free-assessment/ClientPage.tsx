@@ -38,13 +38,13 @@ import { MortgageMateForm } from "../components/MortgageMateForm";
 
 import { useOnboardingModal } from "@/app/components/OnboardingModalContext";
 
-import { 
-  EASE_OUT, 
-  VIEWPORT_LOOSE, 
-  staggerContainer, 
-  fadeInUp, 
-  motionCardHover, 
-  motionCardShadow 
+import {
+  EASE_OUT,
+  VIEWPORT_LOOSE,
+  staggerContainer,
+  fadeInUp,
+  motionCardHover,
+  motionCardShadow
 } from "@/lib/motion";
 
 const premiumFadeUp: Variants = {
@@ -166,7 +166,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
       {/* Main Profile & Multi-step Section */}
       <main id="lead-form" className="flex-1 max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-8 lg:py-0 lg:h-[calc(100vh-120px)] lg:min-h-[620px] lg:max-h-[850px] flex items-center w-full relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center w-full">
-          
+
           {/* LEFT COLUMN: Hero content (if step === 0) or form content (if step >= 1) */}
           <div className="lg:col-span-7">
             {step === 0 ? (
@@ -279,7 +279,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
           </div>
 
           {/* RIGHT COLUMN: Akash KC Portrait (Background) & Bio Details Card (Overlapping Left) */}
-          <motion.div 
+          <motion.div
             initial="hidden"
             animate="visible"
             variants={premiumFadeUp}
@@ -287,11 +287,11 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
           >
             {/* Portrait of Aakash */}
             <div className="relative w-[260px] sm:w-[280px] h-[340px] lg:absolute lg:right-0 lg:bottom-0 lg:top-0 lg:w-[320px] lg:h-full z-0 overflow-hidden rounded-3xl lg:rounded-none transition-all duration-300">
-              <Image 
-                src="/images/aakash_new.png" 
+              <Image
+                src="/images/aakash_new.png"
                 fill
-                alt="Aakash KC - Principal Mortgage Advisor" 
-                className="object-cover object-top select-none pointer-events-none" 
+                alt="Aakash KC - Principal Mortgage Advisor"
+                className="object-cover object-top select-none pointer-events-none"
                 priority
               />
               {/* Soft gradient masks to blend the portrait with the background (desktop only) */}
@@ -351,7 +351,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
                     </div>
                     <span className="text-[10px] text-slate-600 font-bold">FBAA Member</span>
                   </div>
-                  
+
                   <div className="flex items-center gap-1.5">
                     <div className="w-4.5 h-4.5 rounded-full bg-blue-50 flex items-center justify-center text-[#10A3EB] shrink-0">
                       <Award className="w-3 h-3 text-[#10A3EB]" />
@@ -441,10 +441,10 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
                 <span className="text-[10px] font-extrabold text-sky-100 uppercase tracking-widest">Choose Your Mortgage Mate Path – Trusted Home Loan Experts</span>
               </div>
               <h2 className="text-white text-[28px] sm:text-[34px] md:text-[42px] font-extrabold leading-tight tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                Free loan guides built to turn visitors into qualified leads.
+                Tailored Home Loan Strategies for Your Unique Journey.
               </h2>
               <p className="text-blue-100/80 text-[14px] md:text-[15px] leading-relaxed mt-3 max-w-2xl font-medium">
-                Pick the situation that fits you best, then complete the quick Mortgage Mate assessment so Aakash can match the right lending strategy.
+                Select the scenario that best matches your goals, then complete our quick assessment so expert can match you with the right lending strategy.
               </p>
             </div>
 
@@ -523,29 +523,29 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
       <section className="bg-slate-50 py-14 md:py-18 border-b border-slate-100">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
           <div className="max-w-4xl mx-auto">
-              <div className="inline-flex items-center gap-2 bg-white border border-slate-200 rounded-full px-3 py-1 mb-4 shadow-sm">
-                <HelpCircle className="w-3.5 h-3.5 text-[#10A3EB]" />
-                <span className="text-[10px] text-[#10A3EB] font-extrabold uppercase tracking-widest">Mortgage Mate FAQs</span>
-              </div>
-              <h2 className="text-[#0B1F3A] text-[26px] md:text-[34px] font-extrabold leading-tight mb-5">
-                Questions people ask before giving their details.
-              </h2>
-              <div className="space-y-3">
-                {leadFaqs.map((faq) => (
-                  <details key={faq.q} className="group bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
-                     <summary className="cursor-pointer list-none flex items-center justify-between gap-4 text-[#0B1F3A] text-[14px] font-extrabold">
-                      <span>{faq.q}</span>
-                      <span className="w-7 h-7 rounded-full bg-sky-50 text-[#10A3EB] flex items-center justify-center text-base shrink-0 group-open:rotate-45 transition-transform">+</span>
-                    </summary>
-                    <p className="text-slate-500 text-[12.5px] leading-relaxed mt-3 font-medium">
-                      {faq.a}
-                    </p>
-                  </details>
-                ))}
-              </div>
+            <div className="inline-flex items-center gap-2 bg-white border border-slate-200 rounded-full px-3 py-1 mb-4 shadow-sm">
+              <HelpCircle className="w-3.5 h-3.5 text-[#10A3EB]" />
+              <span className="text-[10px] text-[#10A3EB] font-extrabold uppercase tracking-widest">Mortgage Mate FAQs</span>
+            </div>
+            <h2 className="text-[#0B1F3A] text-[26px] md:text-[34px] font-extrabold leading-tight mb-5">
+              Questions people ask before giving their details.
+            </h2>
+            <div className="space-y-3">
+              {leadFaqs.map((faq) => (
+                <details key={faq.q} className="group bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+                  <summary className="cursor-pointer list-none flex items-center justify-between gap-4 text-[#0B1F3A] text-[14px] font-extrabold">
+                    <span>{faq.q}</span>
+                    <span className="w-7 h-7 rounded-full bg-sky-50 text-[#10A3EB] flex items-center justify-center text-base shrink-0 group-open:rotate-45 transition-transform">+</span>
+                  </summary>
+                  <p className="text-slate-500 text-[12.5px] leading-relaxed mt-3 font-medium">
+                    {faq.a}
+                  </p>
+                </details>
+              ))}
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
       <section className="bg-slate-50/50 border-t border-b border-slate-100 py-10 overflow-hidden">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 flex flex-col gap-8">
@@ -588,15 +588,15 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
               <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#10A3EB]">Credibility & Accreditations</span>
               <h4 className="text-[#0B1F3A] text-lg font-black mt-1 font-montserrat">Premium Broker Status</h4>
             </div>
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {[
                 { title: "St.George Flame Broker", desc: "Top-tier lending privileges", color: "bg-red-500", lightBg: "bg-red-50/40" },
                 { title: "Westpac Platinum Broker", desc: "Elite priority channel", color: "bg-red-600", lightBg: "bg-red-50/20" },
                 { title: "CBA Elite Partner", desc: "Premium priority access", color: "bg-yellow-400", lightBg: "bg-amber-50/30" }
               ].map((badge, idx) => (
-                <div 
-                  key={idx} 
+                <div
+                  key={idx}
                   className={`flex items-center justify-center gap-3 p-3.5 rounded-xl border border-slate-100/80 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.02)]`}
                 >
                   <div className="relative shrink-0 flex items-center justify-center">
@@ -707,14 +707,14 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
                 {/* Image Container */}
                 <div className="relative w-24 h-24 xs:w-28 xs:h-28 sm:w-36 sm:h-36 flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-105 self-center">
                   <Image
-                     src={award.img}
+                    src={award.img}
                     alt={award.title}
                     fill
                     className="object-contain"
                     sizes="(max-width: 640px) 120px, 176px"
                   />
                 </div>
-                
+
                 {/* Text Details */}
                 <div className="w-full">
                   <h3 className="text-[#0B1F3A] font-extrabold text-[12px] sm:text-[14px] leading-tight mb-1" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
