@@ -66,7 +66,13 @@ const YoutubeIcon = () => (
   </svg>
 );
 
-export function SiteFooter({ settings = {} }: { settings?: Record<string, string> }) {
+export function SiteFooter({ 
+  settings = {}, 
+  noNavigation = false 
+}: { 
+  settings?: Record<string, string>; 
+  noNavigation?: boolean; 
+}) {
   const { openModal } = useOnboardingModal();
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
@@ -140,8 +146,27 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
 
       {/* Main footer */}
       <footer className="bg-[#000b1e] rounded-t-[28px] text-white">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 pt-12 md:pt-14 pb-8">
-          <Stagger className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 mb-12">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-6 md:py-8">
+          {noNavigation ? (
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 text-[11px] sm:text-[12px] text-slate-400">
+              <div className="flex flex-col gap-1.5">
+                <div className="text-slate-300 font-medium">
+                  © 2026 Mortgage Xperts. All Rights Reserved.
+                </div>
+                <div className="text-[11px] text-slate-400">
+                  MUMA Groups Pty Ltd - ACN 668 612 468 trading as Mortgage Xperts.
+                </div>
+              </div>
+              <div className="flex items-center gap-2 text-slate-400 shrink-0">
+                <svg className="w-4 h-4 text-[#10A3EB] shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                  <path d="M12 2C8.5 2 5.5 4 4 7c-1.2 2.2-1 5 .5 7.2.8 1.1 2 2.5 3.5 4.3.9 1.1 1.8 2.2 2.5 3.2.4.6.9 1.3 1 1.3s.6-.7 1-1.3c.7-1 1.6-2.1 2.5-3.2 1.5-1.8 2.7-3.2 3.5-4.3 1.5-2.2 1.7-5 .5-7.2C18.5 4 15.5 2 12 2zm0 5.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5z" />
+                </svg>
+                <span>Australian Credit License: 384704</span>
+              </div>
+            </div>
+          ) : (
+            <>
+              <Stagger className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 mb-12">
             <StaggerItem className="lg:col-span-3">
               <Link href="/" className="inline-flex items-center bg-white rounded-xl px-4 py-2 mb-6 hover:opacity-95 transition-all">
                 <Image
@@ -207,6 +232,11 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
                   <FooterNavLink href="/investing-in-property-nepali-mortgage-broker">Investing in Property</FooterNavLink>
                   <FooterNavLink href="/home-guarantee-scheme">Home Guarantee Scheme</FooterNavLink>
                   <FooterNavLink href="/no-deposit-home-loans-in-australia">No Deposit Home Loans</FooterNavLink>
+                  <FooterNavLink href="/self-employed-home-loans">Self-Employed Home Loans</FooterNavLink>
+                  <FooterNavLink href="/home-loan-for-nurses">Home Loan for Nurses</FooterNavLink>
+                  <FooterNavLink href="/home-loan-for-accountants">Home Loan for Accountants</FooterNavLink>
+                  <FooterNavLink href="/home-loan-for-doctors">Home Loan for Doctors</FooterNavLink>
+                  <FooterNavLink href="/home-loan-with-visas">Visa &amp; Non-Resident Home Loans</FooterNavLink>
                 </div>
                 <FooterColumnCta href="/nepali-mortgage-broker-in-australia">Explore solutions</FooterColumnCta>
               </div>
@@ -379,6 +409,8 @@ export function SiteFooter({ settings = {} }: { settings?: Record<string, string
               <span>Australian Credit License: 384704</span>
             </div>
           </Reveal>
+            </>
+          )}
         </div>
       </footer>
     </div>

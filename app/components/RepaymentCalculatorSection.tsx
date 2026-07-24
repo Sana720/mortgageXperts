@@ -465,12 +465,13 @@ export function RepaymentCalculatorSection() {
               >
                 Get Expert Advice <ArrowRight className="w-4 h-4" />
               </button>
-              <Link
-                href="/loan-repayment-calculator"
-                className="flex-1 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-[#0B1F3A] font-extrabold text-[12px] uppercase tracking-wider py-3 px-5 rounded-xl flex items-center justify-center gap-2 transition-all"
+              <button
+                type="button"
+                onClick={openModal}
+                className="flex-1 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-[#0B1F3A] font-extrabold text-[12px] uppercase tracking-wider py-3 px-5 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer"
               >
-                Full Calculator <ChevronRight className="w-4 h-4" />
-              </Link>
+                Book a Discovery Call <ChevronRight className="w-4 h-4" />
+              </button>
             </div>
           </motion.div>
         </div>

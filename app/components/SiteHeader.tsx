@@ -43,7 +43,15 @@ const YoutubeIcon = () => (
   </svg>
 );
 
-export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: boolean; settings?: Record<string, string> }) {
+export function SiteHeader({ 
+  isSticky = true, 
+  settings = {}, 
+  noNavigation = false 
+}: { 
+  isSticky?: boolean; 
+  settings?: Record<string, string>; 
+  noNavigation?: boolean; 
+}) {
   const { openModal } = useOnboardingModal();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileHomeLoansOpen, setIsMobileHomeLoansOpen] = useState(false);
@@ -199,18 +207,32 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-2 lg:py-3 flex items-center justify-between gap-6">
 
           {/* Logo */}
-          <Link href="/" className="shrink-0 flex items-center">
-            <Image
-              src={logoVal}
-              alt="Mortgage Xperts Logo"
-              width={180}
-              height={56}
-              priority
-              className="object-contain h-11 xl:h-14 w-auto"
-            />
-          </Link>
+          {noNavigation ? (
+            <div onClick={openModal} className="shrink-0 flex items-center cursor-pointer">
+              <Image
+                src={logoVal}
+                alt="Mortgage Xperts Logo"
+                width={180}
+                height={56}
+                priority
+                className="object-contain h-11 xl:h-14 w-auto"
+              />
+            </div>
+          ) : (
+            <Link href="/" className="shrink-0 flex items-center">
+              <Image
+                src={logoVal}
+                alt="Mortgage Xperts Logo"
+                width={180}
+                height={56}
+                priority
+                className="object-contain h-11 xl:h-14 w-auto"
+              />
+            </Link>
+          )}
 
           {/* Center Navigation */}
+          {!noNavigation && (
           <nav className="hidden xl:flex items-center gap-4 xl:gap-5 2xl:gap-7 text-[13px] 2xl:text-[13.5px] font-semibold text-[#0B1F3A] whitespace-nowrap shrink-0">
             
             {/* Home Dropdown */}
@@ -323,8 +345,6 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
               </div>
             </div>
 
-            {/* Mortgage Mate (Direct Link) */}
-            <Link href="/free-assessment" className="hover:text-[#10A3EB] transition-colors pb-0.5 whitespace-nowrap">Mortgage Mate</Link>
 
             {/* About Us Dropdown */}
             <div className="relative group py-2">
@@ -373,6 +393,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
               </div>
             </div>
           </nav>
+          )}
 
           {/* Right Actions */}
           <div className="flex items-center gap-2.5 sm:gap-4 shrink-0">
@@ -412,22 +433,25 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
               </button>
             </div>
             {/* Mobile hamburger */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="xl:hidden flex flex-col gap-1.5 p-2 z-50 relative focus:outline-none cursor-pointer"
-              aria-label="Toggle Menu"
-            >
-              <span className={`w-5.5 h-0.5 block transition-transform duration-300 ${isMobileMenuOpen ? "rotate-45 translate-y-2 bg-[#0B1F3A]" : "bg-[#10A3EB] xl:bg-[#0B1F3A]"}`} />
-              <span className={`w-5.5 h-0.5 block transition-opacity duration-300 ${isMobileMenuOpen ? "opacity-0" : "bg-[#10A3EB] xl:bg-[#0B1F3A]"}`} />
-              <span className={`w-5.5 h-0.5 block transition-transform duration-300 ${isMobileMenuOpen ? "-rotate-45 -translate-y-2 bg-[#0B1F3A]" : "bg-[#10A3EB] xl:bg-[#0B1F3A]"}`} />
-            </button>
+            {!noNavigation && (
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="xl:hidden flex flex-col gap-1.5 p-2 z-50 relative focus:outline-none cursor-pointer"
+                aria-label="Toggle Menu"
+              >
+                <span className={`w-5.5 h-0.5 block transition-transform duration-300 ${isMobileMenuOpen ? "rotate-45 translate-y-2 bg-[#0B1F3A]" : "bg-[#10A3EB] xl:bg-[#0B1F3A]"}`} />
+                <span className={`w-5.5 h-0.5 block transition-opacity duration-300 ${isMobileMenuOpen ? "opacity-0" : "bg-[#10A3EB] xl:bg-[#0B1F3A]"}`} />
+                <span className={`w-5.5 h-0.5 block transition-transform duration-300 ${isMobileMenuOpen ? "-rotate-45 -translate-y-2 bg-[#0B1F3A]" : "bg-[#10A3EB] xl:bg-[#0B1F3A]"}`} />
+              </button>
+            )}
           </div>
         </div>
       </header>
 
       {/* Mobile Drawer (Off-Canvas) Navigation */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
+      {!noNavigation && (
+        <AnimatePresence>
+          {isMobileMenuOpen && (
           <>
             {/* Backdrop Overlay */}
             <motion.div
@@ -579,10 +603,6 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
                   </div>
                 </div>
 
-                {/* Mortgage Mate */}
-                <Link href="/free-assessment" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#10A3EB] transition-colors pb-2 border-b border-slate-50">
-                  Mortgage Mate
-                </Link>
 
                 {/* About Us Dropdown/Block */}
                 <div className="border-b border-slate-50 pb-2 flex flex-col gap-1.5">
@@ -693,6 +713,7 @@ export function SiteHeader({ isSticky = true, settings = {} }: { isSticky?: bool
           </>
         )}
       </AnimatePresence>
+      )}
     </>
   );
 }

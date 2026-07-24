@@ -93,20 +93,32 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
 
   const leadFaqs = [
     {
-      q: "Is the Mortgage Mate assessment free?",
-      a: "Yes. The first assessment and strategy call are free. Mortgage Xperts is paid by the lender if your loan settles."
+      q: "Who is The Mortgage Mate?",
+      a: "I’m Aakash, the Founder and Principal Broker at Mortgage Xperts. As The Mortgage Mate, I personally help clients understand their home-loan options and guide them through the lending process."
     },
     {
-      q: "Why do I need to give my details first?",
-      a: "Your contact details let the broker connect your answers with the secure financial profile and follow up with lender-specific guidance."
+      q: "Is the Mortgage Xperts service free?",
+      a: "Yes. Our mortgage broking service is free to you—from the first assessment through to loan settlement. Mortgage Xperts is paid a commission by the lender when your loan settles, so you do not pay us a broker."
     },
     {
-      q: "What happens after I submit the form?",
-      a: "Your enquiry is saved for Mortgage Xperts, then you are redirected to Middle Finance to complete your detailed financial profile."
+      q: "Why do I need to provide my contact details?",
+      a: "Your details allow me to connect your answers with your financial profile, review your circumstances and contact you with relevant next steps. It also means you will not need to repeat the same information when we speak."
     },
     {
-      q: "Can first-home buyers, investors and refinancers all use this?",
-      a: "Yes. The questions adapt around your goal so Aakash can assess the most relevant lending strategy."
+      q: "What happens after I submit the assessment?",
+      a: "After submitting the initial assessment, you will continue to our secure Middle Finance portal to complete your financial profile. I will then personally review your information and contact you to discuss your goals, available options and next steps."
+    },
+    {
+      q: "Who will review my information?",
+      a: "Your information will be personally reviewed by me, Aakash—the Founder and Principal Broker at Mortgage Xperts. You will receive guidance based on your circumstances, rather than a generic automated response."
+    },
+    {
+      q: "Can first-home buyers, investors and refinancers use this service?",
+      a: "Absolutely. Whether you are buying your first home, purchasing an investment property or reviewing your existing loan, I can help you explore options suited to your circumstances and goals. Lending options remain subject to lender eligibility and assessment criteria."
+    },
+    {
+      q: "Am I obligated to proceed?",
+      a: "No. The initial assessment and strategy call are designed to help you understand your options. You are under no obligation to submit a loan application or proceed with any recommendation."
     }
   ];
 
@@ -114,7 +126,6 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
     {
       title: "Health Professionals",
       tag: "LMI Waiver",
-      href: "/home-loan-for-doctors",
       image: "/images/Healthcare Professionals.png",
       accent: "from-emerald-600 to-teal-500",
       summary: "Up to 95% LVR with zero LMI and discounted rates tailored for medical practitioners and healthcare staff.",
@@ -123,16 +134,14 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
     {
       title: "First Home Buyers",
       tag: "Start Here",
-      href: "/first-home-guide",
       image: "/images/first_home_family_modern.png",
       accent: "from-blue-600 to-sky-500",
       summary: "Deposit, grants, lender options and pre-approval guidance in one simple path.",
       points: ["Low deposit options", "Grant checks", "Pre-approval plan"]
     },
     {
-      title: "Investment Loans",
+      title: "Smart Investors",
       tag: "Grow Wealth",
-      href: "/property-investment-guide",
       image: "/images/sleek_modern_home_keys.png",
       accent: "from-violet-600 to-indigo-500",
       summary: "Structure your next property purchase with borrowing power and strategy in mind.",
@@ -141,7 +150,6 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
     {
       title: "Refinancing",
       tag: "Save Smarter",
-      href: "/refinancing-guide",
       image: "/images/refinance_family_clean.png",
       accent: "from-rose-600 to-pink-500",
       summary: "Check whether your current loan is still competitive before rates move again.",
@@ -153,7 +161,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
 
   return (
     <div className="min-h-screen bg-white flex flex-col font-inter">
-      <SiteHeader isSticky={true} />
+      <SiteHeader isSticky={true} noNavigation={true} />
 
       {/* Main Profile & Multi-step Section */}
       <main id="lead-form" className="flex-1 max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-8 lg:py-0 lg:h-[calc(100vh-120px)] lg:min-h-[620px] lg:max-h-[850px] flex items-center w-full relative z-10">
@@ -430,7 +438,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
             <div className="max-w-3xl">
               <div className="inline-flex items-center gap-2 bg-white/10 border border-white/15 rounded-full px-3 py-1 mb-4">
                 <Sparkles className="w-3.5 h-3.5 text-sky-300" />
-                <span className="text-[10px] font-extrabold text-sky-100 uppercase tracking-widest">Choose Your Mortgage Mate Path</span>
+                <span className="text-[10px] font-extrabold text-sky-100 uppercase tracking-widest">Choose Your Mortgage Mate Path – Trusted Home Loan Experts</span>
               </div>
               <h2 className="text-white text-[28px] sm:text-[34px] md:text-[42px] font-extrabold leading-tight tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
                 Free loan guides built to turn visitors into qualified leads.
@@ -461,9 +469,9 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
                 key={flyer.title}
                 variants={fadeInUp}
                 whileHover={{ y: -6 }}
-                className={`group relative min-h-[430px] rounded-2xl overflow-hidden bg-white shadow-2xl shadow-blue-950/25 border border-white/10 ${idx % 2 === 1 ? "xl:mt-8" : ""}`}
+                onClick={openModal}
+                className={`group relative min-h-[430px] rounded-2xl overflow-hidden bg-white shadow-2xl shadow-blue-950/25 border border-white/10 cursor-pointer ${idx % 2 === 1 ? "xl:mt-8" : ""}`}
               >
-                <Link href={flyer.href} className="absolute inset-0 z-20" aria-label={`Read ${flyer.title} guide`} />
                 <div className={`h-2 bg-gradient-to-r ${flyer.accent}`} />
                 <div className="relative h-48 bg-slate-100 overflow-hidden">
                   <Image
@@ -514,36 +522,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
       {/* Download Guide & FAQs */}
       <section className="bg-slate-50 py-14 md:py-18 border-b border-slate-100">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            <div className="lg:col-span-5 bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xl shadow-slate-200/40">
-              <div className="relative h-64 bg-sky-50">
-                <Image src="/images/family_couch_laptop.png" fill alt="Free mortgage guide" className="object-cover object-center" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/75 via-[#0B1F3A]/10 to-transparent" />
-                <div className="absolute left-5 right-5 bottom-5">
-                  <div className="inline-flex items-center gap-1.5 bg-white text-[#10A3EB] rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider mb-2">
-                    <Download className="w-3 h-3" />
-                    Free Download Guide
-                  </div>
-                  <h2 className="text-white text-[24px] font-extrabold leading-tight">
-                    Home loan readiness guide for buyers, refinancers and investors.
-                  </h2>
-                </div>
-              </div>
-              <div className="p-5">
-                <p className="text-slate-500 text-[13px] leading-relaxed font-medium">
-                  Use the guide to understand deposit, borrowing power, documents and lender-fit basics. For a personalised version, complete the assessment above.
-                </p>
-                <button
-                  type="button"
-                  onClick={openModal}
-                  className="mt-5 inline-flex items-center justify-center gap-2 w-full bg-[#10A3EB] hover:bg-[#0e92d3] text-white px-5 py-3 rounded-xl text-[12px] font-extrabold uppercase tracking-wide transition-all cursor-pointer"
-                >
-                  Get My Personal Assessment <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-
-            <div className="lg:col-span-7">
+          <div className="max-w-4xl mx-auto">
               <div className="inline-flex items-center gap-2 bg-white border border-slate-200 rounded-full px-3 py-1 mb-4 shadow-sm">
                 <HelpCircle className="w-3.5 h-3.5 text-[#10A3EB]" />
                 <span className="text-[10px] text-[#10A3EB] font-extrabold uppercase tracking-widest">Mortgage Mate FAQs</span>
@@ -566,8 +545,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
       <section className="bg-slate-50/50 border-t border-b border-slate-100 py-10 overflow-hidden">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 flex flex-col gap-8">
@@ -763,7 +741,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
         backgroundClass="bg-white"
       />
 
-      <SiteFooter />
+      <SiteFooter noNavigation={true} />
     </div>
   );
 }

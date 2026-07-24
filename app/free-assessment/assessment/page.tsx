@@ -25,7 +25,7 @@ export default function MortgageMateAssessmentPage() {
 
       {/* Original website header (Layered on top with z-10) */}
       <div className="relative z-10">
-        <SiteHeader isSticky={true} />
+        <SiteHeader isSticky={true} noNavigation={true} />
       </div>
 
       <main className={`relative z-10 flex-1 flex flex-col justify-center py-8 sm:py-12 w-full max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 ${isSubmitted ? "py-10" : "min-h-[calc(100vh-80px)]"}`}>
@@ -119,7 +119,7 @@ export default function MortgageMateAssessmentPage() {
       {/* Render footer only when submitted & scroll is active */}
       {isSubmitted && (
         <div className="relative z-10">
-          <SiteFooter />
+          <SiteFooter noNavigation={true} />
         </div>
       )}
     </div>
