@@ -734,12 +734,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
       </section>
 
       {/* ── CLIENT TESTIMONIALS ── */}
-      <TestimonialSection 
-        badgeText="Client Success"
-        titleText={<>Loved by <span className="text-[#10A3EB]">1,200+ Australian Families</span></>}
-        subtitleText="Read first-hand experiences from our mortgage clients who successfully purchased their dream home or investment properties."
-        backgroundClass="bg-white"
-      />
+      <TestimonialSection />
 
       <SiteFooter noNavigation={true} />
     </div>
