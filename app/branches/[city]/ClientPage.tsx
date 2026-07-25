@@ -388,7 +388,7 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
                 {cityData.suburbs.map((suburb) => (
                   <Link
                     key={suburb}
-                    href={`/branches/${cityData.slug}/${suburb.toLowerCase().replace(/\s+/g, "-")}`}
+                    href={`/nepali-mortgage-broker-${cityData.slug}/${suburb.toLowerCase().replace(/\s+/g, "-")}`}
                     className="text-[12px] font-semibold px-3 py-1.5 rounded-full border transition-all hover:scale-[1.02]"
                     style={{ background: cityData.accentLight, color: cityData.accentColor, borderColor: `${cityData.accentColor}25` }}
                   >

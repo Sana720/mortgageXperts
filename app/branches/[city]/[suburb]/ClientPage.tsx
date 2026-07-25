@@ -191,10 +191,169 @@ export default function SuburbClientPage({
         </div>
       </section>
 
-      {/* ── FREE PROPERTY REPORT CALLOUT ── */}
+      {/* ── LOAN SERVICES IN SUBURB ── */}
+      <section className="py-16 md:py-20 bg-slate-50 border-b border-slate-100">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+          <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
+            <span 
+              className="text-[10px] font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full inline-block border"
+              style={{ color: cityData.accentColor, background: cityData.accentLight, borderColor: `${cityData.accentColor}30` }}
+            >
+              Loan Solutions in {suburbName}
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-[#0B1F3A]" style={{ fontFamily: "var(--font-montserrat, sans-serif)" }}>
+              Tailored Home Finance for <span style={{ color: cityData.accentColor }}>{suburbName}</span> Buyers &amp; Owners
+            </h2>
+            <p className="text-slate-500 text-[14px] leading-relaxed">
+              Whether you are buying your first home, upgrading, refinancing or expanding your investment portfolio in {suburbName}, we provide unbiased advice with access to 40+ lenders.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                title: "First Home Buyer Loans",
+                desc: `Purchase in ${suburbName} with as little as 5% deposit. We assist with ${cityData.stateShort} First Home Owner Grants, Stamp Duty Exemptions & Federal Guarantees.`,
+                icon: <Home className="w-5 h-5" />,
+              },
+              {
+                title: "Refinancing & Rate Swaps",
+                desc: `Existing ${suburbName} homeowner? Reduce your monthly repayments, access home equity for renovations or cash-out with sharp interest rates.`,
+                icon: <TrendingUp className="w-5 h-5" />,
+              },
+              {
+                title: "Investment Property Loans",
+                desc: `Build long-term wealth in ${suburbName}. We structure tax-effective investment loans with interest-only options and offset accounts.`,
+                icon: <Users className="w-5 h-5" />,
+              },
+              {
+                title: "Doctor, Nurse & Self-Employed",
+                desc: `Exclusive 90% LVR No LMI waivers for medical & accounting professionals in ${suburbName}, plus low-doc options for self-employed business owners.`,
+                icon: <Award className="w-5 h-5" />,
+              },
+            ].map((service, idx) => (
+              <div key={idx} className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm space-y-3 hover:shadow-md transition-shadow">
+                <div 
+                  className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  style={{ background: cityData.accentLight, color: cityData.accentColor }}
+                >
+                  {service.icon}
+                </div>
+                <h3 className="text-base font-bold text-[#0B1F3A]">{service.title}</h3>
+                <p className="text-slate-500 text-[13px] leading-relaxed">{service.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── STEP BY STEP PROCESS ── */}
+      <section className="py-16 bg-white border-b border-slate-100">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+          <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
+            <span 
+              className="text-[10px] font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full inline-block border"
+              style={{ color: cityData.accentColor, background: cityData.accentLight, borderColor: `${cityData.accentColor}30` }}
+            >
+              How It Works
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-[#0B1F3A]" style={{ fontFamily: "var(--font-montserrat, sans-serif)" }}>
+              Simple 4-Step Journey to Your {suburbName} Home Loan
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+            {[
+              {
+                step: "01",
+                title: "Free Consultation",
+                desc: `Discuss your deposit, budget, and goals for ${suburbName} in English, Nepali, or Hindi.`,
+              },
+              {
+                step: "02",
+                title: "Lender Comparison",
+                desc: `We compare 40+ banks & non-bank lenders to find the sharpest interest rate and fee structure.`,
+              },
+              {
+                step: "03",
+                title: "Pre-Approval",
+                desc: `Get formal pre-approval ready so you can make offers or bid at auction in ${suburbName} with 100% confidence.`,
+              },
+              {
+                step: "04",
+                title: "Settlement & Support",
+                desc: `We manage paperwork, conveyancer coordination, and grant payouts through to key handover.`,
+              },
+            ].map((item, i) => (
+              <div key={i} className="relative space-y-3">
+                <div 
+                  className="text-3xl font-black"
+                  style={{ color: cityData.accentColor }}
+                >
+                  {item.step}
+                </div>
+                <h3 className="text-lg font-bold text-[#0B1F3A]">{item.title}</h3>
+                <p className="text-slate-500 text-[13px] leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SUBURB FAQ SECTION ── */}
       <section className="py-16 bg-slate-50 border-b border-slate-100">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
-          <div className="bg-white rounded-3xl p-8 md:p-12 border border-slate-100 shadow-sm max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="max-w-4xl mx-auto space-y-8">
+            <div className="text-center space-y-3">
+              <span 
+                className="text-[10px] font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full inline-block border"
+                style={{ color: cityData.accentColor, background: cityData.accentLight, borderColor: `${cityData.accentColor}30` }}
+              >
+                Got Questions?
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0B1F3A]" style={{ fontFamily: "var(--font-montserrat, sans-serif)" }}>
+                Frequently Asked Questions for {suburbName} Buyers
+              </h2>
+            </div>
+
+            <div className="space-y-4">
+              {[
+                {
+                  q: `Why use a Nepali mortgage broker in ${suburbName}?`,
+                  a: `Our team provides bilingual guidance in Nepali and English, helping you navigate the Australian banking system smoothly. We make sure you understand every clause, interest rate option, and grant entitlement without language barriers.`
+                },
+                {
+                  q: `How much deposit do I need to buy a home in ${suburbName}?`,
+                  a: `Most lenders prefer a 20% deposit to avoid LMI (Lenders Mortgage Insurance). However, first home buyers in ${suburbName} can buy with as little as 5% deposit through the Home Guarantee Scheme or LMI waiver programs.`
+                },
+                {
+                  q: `Are there stamp duty concessions available for ${suburbName} properties?`,
+                  a: `Yes, ${cityData.state} offers specific stamp duty exemptions and concessions for first home buyers based on property purchase price thresholds. Our brokers verify your exact savings during initial assessment.`
+                },
+                {
+                  q: `Do you charge any broker fees for your services in ${suburbName}?`,
+                  a: `No, our mortgage broking service is 100% free for clients. We are paid a commission directly by the selected lender after your loan settles.`
+                }
+              ].map((faq, idx) => (
+                <div key={idx} className="bg-white rounded-2xl p-6 border border-slate-100 space-y-2">
+                  <h3 className="text-base font-bold text-[#0B1F3A] flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 shrink-0" style={{ color: cityData.accentColor }} />
+                    {faq.q}
+                  </h3>
+                  <p className="text-slate-500 text-[13.5px] leading-relaxed pl-6">
+                    {faq.a}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── FREE PROPERTY REPORT CALLOUT ── */}
+      <section className="py-16 bg-white border-b border-slate-100">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
+          <div className="bg-slate-50 rounded-3xl p-8 md:p-12 border border-slate-100 shadow-sm max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="space-y-4 max-w-xl text-left">
               <span 
                 className="text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full border text-emerald-600 bg-emerald-50 border-emerald-100"
@@ -231,7 +390,7 @@ export default function SuburbClientPage({
               {cityData.suburbs.map((sub) => (
                 <Link
                   key={sub}
-                  href={`/branches/${cityData.slug}/${sub.toLowerCase().replace(/\s+/g, "-")}`}
+                  href={`/nepali-mortgage-broker-${cityData.slug}/${sub.toLowerCase().replace(/\s+/g, "-")}`}
                   className="text-[12px] font-semibold px-3 py-2 rounded-xl border border-slate-100 text-center bg-slate-50 hover:bg-white transition-all hover:scale-[1.01]"
                   style={{
                     color: sub.toLowerCase() === suburbName.toLowerCase() ? cityData.accentColor : "#0B1F3A",

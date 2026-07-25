@@ -22,6 +22,19 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  // ── REWRITES ──────────────────────────────────────────────────────
+  async rewrites() {
+    return [
+      {
+        source: "/nepali-mortgage-broker-:city([a-z-]+)/:suburb([a-z-]+)",
+        destination: "/branches/:city/:suburb",
+      },
+      {
+        source: "/nepali-mortgage-broker-:city([a-z-]+)",
+        destination: "/branches/:city",
+      },
+    ];
+  },
   // ── SECURITY HEADERS ──────────────────────────────────────────────
   async headers() {
     return [

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { MetadataRoute } from 'next';
 import { executeQuery } from '@/lib/db';
+import { cityDataMap } from '@/app/branches/[city]/cityData';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://mortgagexperts.com.au';
@@ -56,6 +57,45 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: route === '' ? 'daily' : 'weekly',
     priority: route === '' ? 1.0 : 0.8,
   }));
+
+  // Add branch city & suburb routes dynamically
+  try {
+    Object.keys(cityDataMap).forEach((cityKey) => {
+      const cityData = cityDataMap[cityKey];
+      // City main URL (both standard branch & SEO friendly alias)
+      sitemapEntries.push({
+        url: `${baseUrl}/nepali-mortgage-broker-${cityKey}`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly',
+        priority: 0.9,
+      });
+      sitemapEntries.push({
+        url: `${baseUrl}/branches/${cityKey}`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly',
+        priority: 0.8,
+      });
+
+      // Suburb URLs
+      cityData.suburbs.forEach((suburb) => {
+        const suburbSlug = suburb.toLowerCase().replace(/\s+/g, '-');
+        sitemapEntries.push({
+          url: `${baseUrl}/nepali-mortgage-broker-${cityKey}/${suburbSlug}`,
+          lastModified: new Date(),
+          changeFrequency: 'monthly',
+          priority: 0.7,
+        });
+        sitemapEntries.push({
+          url: `${baseUrl}/branches/${cityKey}/${suburbSlug}`,
+          lastModified: new Date(),
+          changeFrequency: 'monthly',
+          priority: 0.7,
+        });
+      });
+    });
+  } catch (err) {
+    console.error('Failed to generate dynamic sitemap for branches:', err);
+  }
 
   // Fetch dynamic blog posts
   try {

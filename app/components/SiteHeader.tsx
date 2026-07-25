@@ -82,14 +82,14 @@ export function SiteHeader({
   ];
 
   const branchesMenu = [
-    { name: "Mortgage Xperts — Adelaide", href: "/branches/adelaide", state: "SA" },
-    { name: "Mortgage Xperts — Brisbane", href: "/branches/brisbane", state: "QLD" },
-    { name: "Mortgage Xperts — Canberra", href: "/branches/canberra", state: "ACT" },
-    { name: "Mortgage Xperts — Darwin", href: "/branches/darwin", state: "NT" },
-    { name: "Mortgage Xperts — Hobart", href: "/branches/hobart", state: "TAS" },
-    { name: "Mortgage Xperts — Melbourne", href: "/branches/melbourne", state: "VIC" },
-    { name: "Mortgage Xperts — Perth", href: "/branches/perth", state: "WA" },
-    { name: "Mortgage Xperts — Sydney", href: "/branches/sydney", state: "NSW" },
+    { name: "Mortgage Xperts — Adelaide", href: "/nepali-mortgage-broker-adelaide", state: "SA" },
+    { name: "Mortgage Xperts — Brisbane", href: "/nepali-mortgage-broker-brisbane", state: "QLD" },
+    { name: "Mortgage Xperts — Canberra", href: "/nepali-mortgage-broker-canberra", state: "ACT" },
+    { name: "Mortgage Xperts — Darwin", href: "/nepali-mortgage-broker-darwin", state: "NT" },
+    { name: "Mortgage Xperts — Hobart", href: "/nepali-mortgage-broker-hobart", state: "TAS" },
+    { name: "Mortgage Xperts — Melbourne", href: "/nepali-mortgage-broker-melbourne", state: "VIC" },
+    { name: "Mortgage Xperts — Perth", href: "/nepali-mortgage-broker-perth", state: "WA" },
+    { name: "Mortgage Xperts — Sydney", href: "/nepali-mortgage-broker-sydney", state: "NSW" },
   ];
 
   const stampDutyStates = [

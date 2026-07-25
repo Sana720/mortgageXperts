@@ -280,13 +280,13 @@ export function SiteFooter({
                   <h4 className="text-[13px] font-extrabold text-white">Locations</h4>
                 </div>
                 <div className="flex flex-col gap-2.5">
-                  <FooterNavLink href="/branches/sydney">Sydney, NSW</FooterNavLink>
-                  <FooterNavLink href="/branches/melbourne">Melbourne, VIC</FooterNavLink>
-                  <FooterNavLink href="/branches/brisbane">Brisbane, QLD</FooterNavLink>
-                  <FooterNavLink href="/branches/adelaide">Adelaide, SA</FooterNavLink>
-                  <FooterNavLink href="/branches/perth">Perth, WA</FooterNavLink>
+                  <FooterNavLink href="/nepali-mortgage-broker-sydney">Sydney, NSW</FooterNavLink>
+                  <FooterNavLink href="/nepali-mortgage-broker-melbourne">Melbourne, VIC</FooterNavLink>
+                  <FooterNavLink href="/nepali-mortgage-broker-brisbane">Brisbane, QLD</FooterNavLink>
+                  <FooterNavLink href="/nepali-mortgage-broker-adelaide">Adelaide, SA</FooterNavLink>
+                  <FooterNavLink href="/nepali-mortgage-broker-perth">Perth, WA</FooterNavLink>
                 </div>
-                <FooterColumnCta href="/branches/sydney">View all locations</FooterColumnCta>
+                <FooterColumnCta href="/nepali-mortgage-broker-sydney">View all locations</FooterColumnCta>
               </div>
 
               <div>
