@@ -1,29 +1,41 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Metadata } from 'next';
 import ClientPage from './ClientPage';
 
 import { executeQuery } from '@/lib/db';
 import { blogPosts, BlogPost } from '@/app/lib/blogData';
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: 'XPULSE Intelligence | Mortgage Xperts',
   description: 'Stay updated with the latest news, tips, announcements, and insights on the Australian property market from the team at Mortgage Xperts.',
 };
 
+interface DbBlogRow {
+  id: string | number;
+  slug: string;
+  title: string;
+  excerpt?: string;
+  content?: string;
+  createdAt: string | number | Date;
+  category?: string;
+  coverImage?: string;
+}
+
 export default async function XPulsePage() {
-  let dbBlogs: any[] = [];
+  let dbBlogs: DbBlogRow[] = [];
   try {
-    dbBlogs = await executeQuery<any[]>('SELECT * FROM blogs WHERE published = 1 ORDER BY createdAt DESC');
+    dbBlogs = await executeQuery<DbBlogRow[]>('SELECT * FROM blogs WHERE published = 1 ORDER BY createdAt DESC');
   } catch (err) {
     console.error('Failed to fetch blogs from DB:', err);
   }
 
   const mappedDbBlogs: BlogPost[] = dbBlogs.map(row => ({
-    id: row.id,
+    id: String(row.id),
     slug: row.slug,
     title: row.title,
-    excerpt: row.excerpt,
-    content: row.content,
+    excerpt: row.excerpt || "",
+    content: row.content || "",
     author: "Aakash KC",
     date: new Date(row.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
     category: row.category === 'News & Insights' ? 'News & Insights' : 'Blog',

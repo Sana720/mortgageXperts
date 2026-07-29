@@ -22,6 +22,9 @@ import {
 import { SiteHeader } from "../../components/SiteHeader";
 import { SiteFooter } from "../../components/SiteFooter";
 import { TestimonialSection } from "../../components/TestimonialSection";
+import { RoadmapSection } from "../../components/RoadmapSection";
+import { LenderPanelSection } from "../../components/LenderPanelSection";
+import { MarketOverviewSection } from "../../components/MarketOverviewSection";
 import { useOnboardingModal } from "../../components/OnboardingModalContext";
 
 export interface CityData {
@@ -341,6 +344,17 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
         </div>
       </section>
 
+      {/* ── LENDER PANEL & ACCREDITATIONS SECTION ── */}
+      <LenderPanelSection />
+
+      {/* ── MARKET OVERVIEW SECTION ── */}
+      <MarketOverviewSection
+        city={cityData.city}
+        state={cityData.state}
+        accentColor={cityData.accentColor}
+        accentLight={cityData.accentLight}
+      />
+
       {/* ── LOCAL MARKET INSIGHT ── */}
       <section className="py-14 bg-slate-50 border-b border-slate-100">
         <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16">
@@ -417,6 +431,15 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
           </div>
         </div>
       </section>
+
+      {/* ── ROADMAP / PROCESS SECTION ── */}
+      <RoadmapSection colorTheme={
+        cityData.slug === "melbourne" ? "purple" :
+        cityData.slug === "brisbane" ? "amber" :
+        cityData.slug === "perth" ? "emerald" :
+        cityData.slug === "adelaide" ? "sky" :
+        "blue"
+      } />
 
       {/* ── WHY CHOOSE US IN CITY ── */}
       <section className="py-14 bg-white border-b border-slate-100">

@@ -20,6 +20,9 @@ import {
 import { SiteHeader } from "@/app/components/SiteHeader";
 import { SiteFooter } from "@/app/components/SiteFooter";
 import { TestimonialSection } from "@/app/components/TestimonialSection";
+import { RoadmapSection } from "@/app/components/RoadmapSection";
+import { LenderPanelSection } from "@/app/components/LenderPanelSection";
+import { MarketOverviewSection } from "@/app/components/MarketOverviewSection";
 import { useOnboardingModal } from "@/app/components/OnboardingModalContext";
 import { CityData } from "../ClientPage";
 
@@ -155,6 +158,26 @@ export default function SuburbClientPage({
           </div>
         </div>
       </section>
+
+      {/* ── LENDER PANEL & ACCREDITATIONS SECTION ── */}
+      <LenderPanelSection />
+
+      {/* ── MARKET OVERVIEW SECTION ── */}
+      <MarketOverviewSection
+        city={suburbName}
+        state={cityData.state}
+        accentColor={cityData.accentColor}
+        accentLight={cityData.accentLight}
+      />
+
+      {/* ── ROADMAP / PROCESS SECTION ── */}
+      <RoadmapSection colorTheme={
+        cityData.slug === "melbourne" ? "purple" :
+        cityData.slug === "brisbane" ? "amber" :
+        cityData.slug === "perth" ? "emerald" :
+        cityData.slug === "adelaide" ? "sky" :
+        "blue"
+      } />
 
       {/* ── KEY BENEFITS ── */}
       <section className="py-16 bg-white border-b border-slate-100">

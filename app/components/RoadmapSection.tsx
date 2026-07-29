@@ -384,7 +384,7 @@ export function RoadmapSection({
                     const StepIcon = step.icon;
 
                     const colors = [
-                      { accent: t.accent, lightBg: "#EAF3FF", border: "#D8E7FF" },
+                      { accent: t.accent, lightBg: t.bgLight, border: t.borderLight },
                       { accent: "#10B981", lightBg: "#ECFDF5", border: "#A7F3D0" },
                       { accent: "#8B5CF6", lightBg: "#EDE9FE", border: "#DDD6FE" },
                       { accent: "#F59E0B", lightBg: "#FFFBEB", border: "#FDE68A" },
