@@ -1,11 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { SiteHeader } from '@/app/components/SiteHeader';
 import { SiteFooter } from '@/app/components/SiteFooter';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, User } from 'lucide-react';
-import { BlogPost } from '@/app/lib/blogData';
+import { ArrowLeft, Calendar, User, Copy, Check, ChevronRight } from 'lucide-react';
+import { BlogPost, blogPosts } from '@/app/lib/blogData';
 
 const FacebookIcon = ({ className }: { className?: string }) => (
   <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -15,7 +15,7 @@ const FacebookIcon = ({ className }: { className?: string }) => (
 
 const TwitterIcon = ({ className }: { className?: string }) => (
   <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
   </svg>
 );
 
@@ -25,93 +25,227 @@ const LinkedinIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-export default function BlogPostClient({ post }: { post: BlogPost }) {
+const WhatsAppIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-1.14 4.162 4.183-1.095z"/>
+  </svg>
+);
+
+export default function BlogPostClient({ post, allPosts }: { post: BlogPost; allPosts?: BlogPost[] }) {
+  const [copied, setCopied] = useState(false);
+  const [currentUrl, setCurrentUrl] = useState('');
+
+  React.useEffect(() => {
+    setCurrentUrl(window.location.href);
+  }, []);
+
+  // Compute related posts (excluding current post)
+  const postsPool = allPosts && allPosts.length > 0 ? allPosts : blogPosts;
+  const relatedPosts = postsPool
+    .filter(p => p.slug !== post.slug)
+    .slice(0, 3);
+
+  const shareTitle = encodeURIComponent(post.title);
+
+  const shareLinks = {
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`,
+    twitter: `https://twitter.com/intent/tweet?text=${shareTitle}&url=${encodeURIComponent(currentUrl)}`,
+    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`,
+    whatsapp: `https://api.whatsapp.com/send?text=${shareTitle}%20${encodeURIComponent(currentUrl)}`
+  };
+
+  const handleCopy = () => {
+    if (currentUrl && typeof navigator !== 'undefined') {
+      navigator.clipboard.writeText(currentUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    }
+  };
+
   return (
-    <div className="bg-white min-h-screen font-sans flex flex-col">
+    <div className="bg-[#F8FAFC] min-h-screen font-sans flex flex-col">
       <SiteHeader isSticky={false} />
 
       <article id="article" className="w-full flex-1">
-        <div className="grid grid-cols-1 lg:grid-cols-[45%_55%] min-h-[calc(100vh-80px)]">
-          {/* Left Column - Sticky Image */}
-          <div className="relative h-[40vh] lg:h-[calc(100vh-80px)] lg:sticky lg:top-[80px] bg-slate-100">
+        <div className="grid grid-cols-1 lg:grid-cols-[42%_58%] min-h-[calc(100vh-80px)]">
+          
+          {/* Left Column - Sticky Cover Image */}
+          <div className="relative h-[40vh] lg:h-[calc(100vh-80px)] lg:sticky lg:top-[80px] bg-slate-100 overflow-hidden">
             <img 
               src={post.image} 
               alt={post.title}
               className="w-full h-full object-cover"
             />
-            {/* Optional Overlay if text needs to be on image, but we leave it clean per the reference */}
-            <div className="absolute inset-0 bg-black/10 mix-blend-multiply" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/60 via-transparent to-transparent lg:hidden" />
           </div>
 
-          {/* Right Column - Article Content */}
-          <div className="py-12 md:py-20 px-8 md:px-16 lg:px-24 bg-white overflow-y-auto">
+          {/* Right Column - Article Body */}
+          <div className="py-10 md:py-16 px-6 sm:px-10 lg:px-16 bg-white overflow-y-auto">
             
-            <Link href="/xpulse-intelligence" className="inline-flex items-center text-[13px] text-slate-500 hover:text-[#2563EB] font-bold mb-8 transition-colors uppercase tracking-wider">
+            <Link href="/blog" className="inline-flex items-center text-[13px] text-blue-600 hover:text-[#0B1F3A] font-bold mb-8 transition-colors uppercase tracking-wider">
               <ArrowLeft className="w-4 h-4 mr-1.5" />
-              Back to XPULSE Intelligence
+              Back to Blog & Insights
             </Link>
 
-            <header className="mb-10 space-y-6">
-              <span className={`inline-block px-3 py-1 text-[11px] font-black uppercase tracking-widest rounded-full ${post.category === "Blog" ? "bg-rose-50 text-rose-600" : "bg-blue-50 text-blue-600"}`}>
-                {post.category === "Blog" ? "Insights" : "Company News"}
+            <header className="mb-10 space-y-5">
+              <span className="inline-block px-3 py-1 text-[11px] font-bold uppercase tracking-wider rounded-md bg-blue-50 text-blue-700">
+                {post.category}
               </span>
               
-              <h1 className="text-[#0B1F3A] text-[36px] sm:text-[44px] lg:text-[52px] font-black leading-[1.1] font-montserrat tracking-tight">
+              <h1 
+                className="text-[#0B1F3A] text-[32px] sm:text-[40px] lg:text-[46px] font-extrabold leading-[1.15] tracking-tight"
+                style={{ fontFamily: 'var(--font-montserrat, sans-serif)' }}
+              >
                 {post.title}
               </h1>
               
               {post.excerpt && (
-                <p className="text-[18px] text-slate-500 font-medium leading-relaxed border-l-4 border-[#2563EB] pl-4 italic">
+                <p className="text-[17px] text-slate-600 font-medium leading-relaxed border-l-4 border-blue-600 pl-4 italic bg-slate-50 py-3 rounded-r-lg">
                   {post.excerpt}
                 </p>
               )}
 
-              <div className="flex flex-wrap items-center gap-6 text-[13px] text-slate-500 font-bold border-t border-b border-slate-100 py-4 mt-8">
-                <div className="flex items-center">
-                  <User className="w-4 h-4 mr-2 text-[#2563EB]" />
-                  <span className="text-[#0B1F3A]">{post.author}</span>
-                </div>
-                <div className="flex items-center">
-                  <Calendar className="w-4 h-4 mr-2 text-[#2563EB]" />
-                  <span>{post.date}</span>
+              <div className="flex flex-wrap items-center justify-between gap-4 text-[13px] text-slate-500 font-semibold border-t border-b border-slate-100 py-4 mt-6">
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center">
+                    <User className="w-4 h-4 mr-1.5 text-blue-600" />
+                    <span className="text-[#0B1F3A]">{post.author}</span>
+                  </div>
+                  <span>•</span>
+                  <div className="flex items-center">
+                    <Calendar className="w-4 h-4 mr-1.5 text-blue-600" />
+                    <span>{post.date}</span>
+                  </div>
                 </div>
               </div>
             </header>
 
+            {/* Content Body */}
             <div 
               className="prose prose-lg prose-slate max-w-none 
-                prose-headings:font-black prose-headings:text-[#0B1F3A] prose-headings:tracking-tight
-                prose-h1:text-[36px] prose-h1:mt-12 prose-h1:mb-6 prose-h1:font-montserrat
-                prose-h2:text-[28px] prose-h2:mt-12 prose-h2:mb-5 prose-h2:font-montserrat prose-h2:text-[#0B1F3A]
-                prose-h3:text-[22px] prose-h3:mt-8 prose-h3:mb-4 prose-h3:font-montserrat prose-h3:text-slate-800
-                prose-h4:text-[18px] prose-h4:mt-6 prose-h4:mb-3 prose-h4:font-montserrat
+                prose-headings:font-extrabold prose-headings:text-[#0B1F3A] prose-headings:tracking-tight
+                prose-h2:text-[26px] prose-h2:mt-10 prose-h2:mb-4 prose-h2:text-[#0B1F3A]
+                prose-h3:text-[20px] prose-h3:mt-8 prose-h3:mb-3 prose-h3:text-slate-800
                 prose-p:text-[16px] prose-p:text-slate-600 prose-p:leading-[1.8] prose-p:mb-6
-                prose-a:text-[#2563EB] prose-a:font-bold prose-a:no-underline hover:prose-a:underline
+                prose-a:text-blue-600 prose-a:font-bold prose-a:no-underline hover:prose-a:underline
                 prose-ul:mt-2 prose-ul:mb-6 prose-li:text-[16px] prose-li:text-slate-600 prose-li:leading-relaxed
-                prose-blockquote:border-l-[#2563EB] prose-blockquote:bg-blue-50/50 prose-blockquote:py-2 prose-blockquote:px-5 prose-blockquote:rounded-r-xl prose-blockquote:text-slate-700 prose-blockquote:font-medium
-                prose-strong:font-black prose-strong:text-[#0B1F3A]"
+                prose-blockquote:border-l-blue-600 prose-blockquote:bg-blue-50/60 prose-blockquote:py-3 prose-blockquote:px-5 prose-blockquote:rounded-r-xl prose-blockquote:text-slate-700
+                prose-strong:font-bold prose-strong:text-[#0B1F3A]"
               style={{ '--tw-prose-headings': 'var(--font-montserrat, sans-serif)' } as React.CSSProperties}
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
 
-            <footer id="share" className="mt-16 pt-8 border-t border-slate-200">
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-                <div className="flex items-center space-x-4">
-                  <span className="text-[14px] text-[#0B1F3A] font-bold uppercase tracking-wider">Share this article:</span>
-                  <div className="flex space-x-3">
-                    <button className="w-10 h-10 rounded-full bg-slate-50 border border-slate-200 shadow-sm flex items-center justify-center text-slate-600 hover:bg-[#1877F2] hover:text-white transition-colors hover:border-transparent">
-                      <FacebookIcon className="w-4 h-4 fill-current" />
-                    </button>
-                    <button className="w-10 h-10 rounded-full bg-slate-50 border border-slate-200 shadow-sm flex items-center justify-center text-slate-600 hover:bg-[#1DA1F2] hover:text-white transition-colors hover:border-transparent">
-                      <TwitterIcon className="w-4 h-4 fill-current" />
-                    </button>
-                    <button className="w-10 h-10 rounded-full bg-slate-50 border border-slate-200 shadow-sm flex items-center justify-center text-slate-600 hover:bg-[#0A66C2] hover:text-white transition-colors hover:border-transparent">
-                      <LinkedinIcon className="w-4 h-4 fill-current" />
-                    </button>
-                  </div>
+            {/* Social Share Section */}
+            <footer id="share" className="mt-14 pt-8 border-t border-slate-200">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-200/80">
+                <span className="text-[14px] text-[#0B1F3A] font-bold uppercase tracking-wider">
+                  Share Article:
+                </span>
+                <div className="flex flex-wrap items-center gap-2">
+                  <a 
+                    href={shareLinks.facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-center text-[#1877F2] hover:bg-[#1877F2] hover:text-white transition-all"
+                    title="Share on Facebook"
+                  >
+                    <FacebookIcon className="w-4 h-4" />
+                  </a>
+                  <a 
+                    href={shareLinks.twitter}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-center text-slate-900 hover:bg-black hover:text-white transition-all"
+                    title="Share on X"
+                  >
+                    <TwitterIcon className="w-4 h-4" />
+                  </a>
+                  <a 
+                    href={shareLinks.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-center text-[#0A66C2] hover:bg-[#0A66C2] hover:text-white transition-all"
+                    title="Share on LinkedIn"
+                  >
+                    <LinkedinIcon className="w-4 h-4" />
+                  </a>
+                  <a 
+                    href={shareLinks.whatsapp}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-center text-[#25D366] hover:bg-[#25D366] hover:text-white transition-all"
+                    title="Share on WhatsApp"
+                  >
+                    <WhatsAppIcon className="w-4 h-4" />
+                  </a>
+                  <button 
+                    onClick={handleCopy}
+                    className="h-10 px-3 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center gap-1.5 text-[13px] font-bold text-slate-700 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 transition-all"
+                    title="Copy Link"
+                  >
+                    {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-slate-500" />}
+                    <span>{copied ? 'Copied!' : 'Copy Link'}</span>
+                  </button>
                 </div>
               </div>
             </footer>
+
+            {/* Related Posts Section */}
+            {relatedPosts.length > 0 && (
+              <section className="mt-16 pt-10 border-t border-slate-200">
+                <div className="flex items-center justify-between mb-8">
+                  <div>
+                    <span className="text-blue-600 text-[12px] font-bold uppercase tracking-wider block">Recommended</span>
+                    <h2 
+                      className="text-[24px] font-extrabold text-[#0B1F3A]"
+                      style={{ fontFamily: 'var(--font-montserrat, sans-serif)' }}
+                    >
+                      Related Articles
+                    </h2>
+                  </div>
+                  <Link 
+                    href="/blog" 
+                    className="text-[13px] font-bold text-blue-600 hover:text-[#0B1F3A] inline-flex items-center"
+                  >
+                    View All <ChevronRight className="w-4 h-4 ml-0.5" />
+                  </Link>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {relatedPosts.map(item => (
+                    <article 
+                      key={item.id || item.slug}
+                      className="bg-slate-50 rounded-xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-md transition-all flex flex-col group"
+                    >
+                      <Link href={`/xpulse-intelligence/${item.slug}`} className="block h-36 overflow-hidden bg-slate-200">
+                        <img 
+                          src={item.image} 
+                          alt={item.title} 
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </Link>
+                      <div className="p-4 flex flex-col flex-grow">
+                        <span className="text-[11px] font-semibold text-slate-500 mb-1">{item.date}</span>
+                        <h3 
+                          className="text-[15px] font-bold text-[#0B1F3A] mb-2 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug"
+                          style={{ fontFamily: 'var(--font-montserrat, sans-serif)' }}
+                        >
+                          <Link href={`/xpulse-intelligence/${item.slug}`}>
+                            {item.title}
+                          </Link>
+                        </h3>
+                        <Link
+                          href={`/xpulse-intelligence/${item.slug}`}
+                          className="mt-auto pt-3 text-[12px] font-bold text-blue-600 inline-flex items-center group-hover:translate-x-0.5 transition-transform"
+                        >
+                          Read Article <ChevronRight className="w-3.5 h-3.5 ml-0.5" />
+                        </Link>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            )}
 
           </div>
         </div>
