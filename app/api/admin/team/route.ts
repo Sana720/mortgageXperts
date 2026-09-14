@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { executeQuery } from '@/lib/db';
 import crypto from 'crypto';
 import { cookies } from 'next/headers';
@@ -34,6 +35,8 @@ export async function POST(request: Request) {
       [id, name, role, email || '', phone || '', bio || '', image || '/images/aakash_new.png', orderIndex || 0, branch || null]
     );
 
+    revalidatePath('/', 'layout');
+
     return NextResponse.json({ success: true, id });
   } catch (error) {
     console.error('Failed to create team member:', error);
@@ -55,6 +58,8 @@ export async function PUT(request: Request) {
       [name, role, email || '', phone || '', bio || '', image || '', orderIndex || 0, branch || null, id]
     );
 
+    revalidatePath('/', 'layout');
+
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Failed to update team member:', error);
@@ -74,6 +79,7 @@ export async function DELETE(request: Request) {
     }
 
     await executeQuery('DELETE FROM team_members WHERE id = ?', [id]);
+    revalidatePath('/', 'layout');
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Failed to delete team member:', error);

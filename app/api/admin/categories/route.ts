@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { executeQuery } from '@/lib/db';
 import { isAuthenticated } from '@/lib/auth';
 import crypto from 'crypto';
@@ -45,6 +46,8 @@ export async function POST(request: Request) {
       'INSERT INTO blog_categories (id, name) VALUES (?, ?)',
       [id, trimmedName]
     );
+
+    revalidatePath('/', 'layout');
 
     return NextResponse.json({ success: true, id, name: trimmedName });
   } catch (error: any) {
@@ -98,6 +101,8 @@ export async function PUT(request: Request) {
       [trimmedName, oldName]
     );
 
+    revalidatePath('/', 'layout');
+
     return NextResponse.json({ success: true, id, name: trimmedName });
   } catch (error: any) {
     console.error('Failed to update category:', error);
@@ -147,6 +152,8 @@ export async function DELETE(request: Request) {
       [oldName]
     );
 
+    revalidatePath('/', 'layout');
+    revalidatePath('/', 'layout');
     return NextResponse.json({ success: true });
   } catch (error: any) {
     console.error('Failed to delete category:', error);

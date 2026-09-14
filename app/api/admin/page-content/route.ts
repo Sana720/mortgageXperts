@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { executeQuery } from '@/lib/db';
 import { isAuthenticated } from '@/lib/auth';
 
@@ -44,6 +45,7 @@ export async function POST(request: Request) {
       [page_path, content || '']
     );
 
+    revalidatePath('/', 'layout');
     return NextResponse.json({ success: true });
   } catch (error: unknown) {
     console.error('Failed to save page content:', error);

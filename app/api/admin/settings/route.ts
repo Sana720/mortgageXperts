@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { executeQuery } from '@/lib/db';
 import { isAuthenticated } from '@/lib/auth';
 
@@ -33,6 +34,7 @@ export async function POST(request: Request) {
         );
       }
     }
+    revalidatePath('/', 'layout');
     return NextResponse.json({ success: true });
   } catch (error: any) {
     console.error('Failed to save settings:', error);
