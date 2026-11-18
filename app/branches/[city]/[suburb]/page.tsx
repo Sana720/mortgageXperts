@@ -91,11 +91,31 @@ export default async function SuburbPage({
     ]
   );
 
+  const localBusinessJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FinancialService',
+    name: `Mortgage Xperts - ${suburbName}`,
+    image: 'https://mortgagexperts.com.au/favicon.png',
+    telephone: settings.header_phone || '0450 240 757',
+    email: settings.support_email || 'mortgage@mortgagexperts.com.au',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: suburbName,
+      addressRegion: cityData.stateShort,
+      addressCountry: 'AU'
+    },
+    url: `https://mortgagexperts.com.au${pagePath}`
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
       />
       <SuburbClientPage cityData={cityData} suburbName={suburbName} settings={settings} />
     </>

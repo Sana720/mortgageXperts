@@ -63,6 +63,7 @@ interface SubPageHeroProps {
   pageTitle: string;
   themeColor?: "blue" | "green" | "violet" | "teal" | "orange" | "rose";
   layoutType?: "landing" | "clean";
+  settings?: Record<string, string>;
   pageHeroSettings?: {
     hero_badge?: string;
     hero_title?: string;
@@ -75,7 +76,7 @@ interface SubPageHeroProps {
   } | null;
 }
 
-export function SubPageHero({ pageTitle, themeColor = "blue", layoutType = "landing", pageHeroSettings }: SubPageHeroProps) {
+export function SubPageHero({ pageTitle, themeColor = "blue", layoutType = "landing", pageHeroSettings, settings }: SubPageHeroProps) {
   const badgeText = pageHeroSettings?.hero_badge || "Premium Mortgage Experts";
   const titleText = pageHeroSettings?.hero_title || pageTitle;
   const subtextText = pageHeroSettings?.hero_subtext || "We help you unlock better interest rates, calculate your borrowing limits, and secure your finance with a completely stress-free experience.";
@@ -207,7 +208,7 @@ export function SubPageHero({ pageTitle, themeColor = "blue", layoutType = "land
     if (lowerTitle.includes("team") || lowerTitle.includes("broker") || lowerTitle.includes("xperts") || lowerTitle.includes("about")) {
       cardTitle = "Our Service Standards";
       cardItems = [
-        { title: "Accredited Specialists", desc: "Over 15+ years of combined experience." },
+        { title: "Accredited Specialists", desc: settings?.stats_experience || "7+ Years of Personal Property Investment Experience." },
         { title: "Bilingual Services", desc: "Expert guidance in English & Nepali." },
         { title: "Client First Approach", desc: "Direct, personal access to senior brokers." }
       ];
@@ -391,7 +392,7 @@ export function SubPageHero({ pageTitle, themeColor = "blue", layoutType = "land
                       <Star key={i} className="w-3.5 h-3.5 text-[#FBBF24] fill-[#FBBF24]" />
                     ))}
                   </div>
-                  <div className="text-[9.5px] sm:text-[11.5px] text-slate-500 font-bold mt-0.5">4.9/5 from 760+ reviews</div>
+                  <div className="text-[9.5px] sm:text-[11.5px] text-slate-500 font-bold mt-0.5">{settings?.google_reviews_text || "100+ reviews - Google Reviews"}</div>
                 </div>
               </div>
 

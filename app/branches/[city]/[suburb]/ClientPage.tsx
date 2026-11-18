@@ -98,7 +98,7 @@ export default function SuburbClientPage({
                         <Star key={i} className="w-2.5 h-2.5 text-[#FBBF24] fill-[#FBBF24]" />
                       ))}
                     </div>
-                    <div className="text-[10px] text-slate-500 font-bold mt-0.5">4.9/5 (760+ Google Reviews)</div>
+                    <div className="text-[10px] text-slate-500 font-bold mt-0.5">100+ reviews - Google Reviews</div>
                   </div>
                 </div>
                 <div className="w-px h-6 bg-slate-200 hidden sm:block" />
@@ -464,7 +464,7 @@ export default function SuburbClientPage({
               </h2>
               <div className="space-y-4 text-slate-650 text-[14px] sm:text-[14.5px] leading-relaxed">
                 <p>
-                  As the founder and principal mortgage expert at <strong>Mortgage Xperts</strong>, Aakash has spent over a decade assisting first-home buyers, seasoned property investors, and medical professionals across Australia in securing competitive home finance. 
+                  As the founder and principal mortgage expert at <strong>Mortgage Xperts</strong>, Aakash brings 7+ years of personal property investment experience assisting first-home buyers, seasoned property investors, and medical professionals across Australia in securing competitive home finance. 
                 </p>
                 <p>
                   Having personally built a <strong>$5.3M property portfolio over just 3 years</strong>, Aakash doesn&apos;t just advice on mortgages — he lives and breathes property investment. He understands the critical details of loan structuring, cash flow optimization, and multi-lender strategy required to build long-term property wealth.

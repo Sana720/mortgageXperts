@@ -9,12 +9,6 @@ import { ArrowRight, Shield } from "lucide-react";
 const EASE_OUT = [0.25, 0.1, 0.25, 1] as const;
 const VIEWPORT = { once: true, margin: "-80px" };
 
-const FlameIcon = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-[#EA580C] shrink-0">
-    <path d="M12 2c0 0-4.5 4.5-4.5 8.5C7.5 13.5 9.5 15 12 15s4.5-1.5 4.5-4.5C16.5 6.5 12 2 12 2zm0 18c3.5 0 6-2.5 6-6 0-1.5-.5-3-1.5-4.5-1.5 2-3.5 3-4.5 4s-1.5 2-1.5 3c0 2 1.5 3.5 3 3.5z" />
-  </svg>
-);
-
 export function LenderPanelSection() {
   return (
     <section className="py-6 bg-white">
@@ -74,39 +68,6 @@ export function LenderPanelSection() {
               <Link href="#" className="text-[#2563EB] text-[12px] font-bold inline-flex items-center gap-1 hover:underline whitespace-nowrap">
                 View all lenders <ArrowRight className="w-3.5 h-3.5" />
               </Link>
-            </div>
-          </div>
-
-          {/* Partnership Badges */}
-          <div className="border-t border-slate-200/60 pt-6">
-            <div className="text-center md:text-left mb-4 flex items-center gap-2">
-              <Shield className="w-4 h-4 text-[#10A3EB]" />
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#10A3EB]">Credibility & Accreditations</span>
-            </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {[
-                { title: "St.George Flame Broker", desc: "Top-tier lending privileges", color: "bg-red-500" },
-                { title: "Westpac Platinum Broker", desc: "Elite priority channel", color: "bg-red-600" },
-                { title: "CBA Elite Partner", desc: "Premium priority access", color: "bg-yellow-400" }
-              ].map((badge, idx) => (
-                <div 
-                  key={idx} 
-                  className="flex items-center justify-center gap-3 p-3.5 rounded-xl border border-slate-100/80 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.02)]"
-                >
-                  <div className="relative shrink-0 flex items-center justify-center">
-                    {idx === 0 ? (
-                      <FlameIcon />
-                    ) : (
-                      <span className={`w-2.5 h-2.5 rounded-full ${badge.color}`} />
-                    )}
-                  </div>
-                  <div className="flex flex-col text-center items-center">
-                    <span className="text-[#0B1F3A] font-extrabold text-[12px] leading-snug">{badge.title}</span>
-                    <span className="text-slate-400 text-[10px] font-medium leading-none mt-0.5">{badge.desc}</span>
-                  </div>
-                </div>
-              ))}
             </div>
           </div>
         </motion.div>

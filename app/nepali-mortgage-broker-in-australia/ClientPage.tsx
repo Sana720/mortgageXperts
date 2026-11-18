@@ -539,7 +539,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageS
                         <Star key={i} className="w-3.5 h-3.5 text-[#FBBF24] fill-[#FBBF24]" />
                       ))}
                     </div>
-                    <div className="text-[11.5px] text-slate-500 font-bold mt-0.5">4.9/5 from 760+ reviews</div>
+                    <div className="text-[11.5px] text-slate-500 font-bold mt-0.5">100+ reviews - Google Reviews</div>
                   </div>
                 </div>
 
@@ -1768,7 +1768,7 @@ export function ClientPage({ settings = {}, pageHeroSettings, pageContent, pageS
 
               {/* Stats row */}
               <motion.div variants={premiumFadeUp} className="grid grid-cols-3 gap-4 py-6 border-y border-white/10">
-                {[{ val: "1,200+", label: "Happy Clients" }, { val: "40+", label: "Lender Partners" }, { val: "$2B+", label: "Loans Settled" }].map((stat, i) => (
+                {[{ val: "500+", label: "Families Helped" }, { val: "40+", label: "Lender Partners" }, { val: "$450M+", label: "Loans Settled" }].map((stat, i) => (
                   <div key={i} className="text-center">
                     <div className="text-[22px] sm:text-[26px] font-black text-white" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>{stat.val}</div>
                     <div className="text-[11.5px] text-white/50 font-bold mt-1">{stat.label}</div>

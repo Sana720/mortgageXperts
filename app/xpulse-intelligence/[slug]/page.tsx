@@ -38,6 +38,20 @@ export async function generateMetadata(
   return {
     title: `${post.title} | XPULSE Intelligence`,
     description: post.excerpt,
+    alternates: {
+      canonical: `https://mortgagexperts.com.au/xpulse-intelligence/${slug}`,
+    },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      url: `https://mortgagexperts.com.au/xpulse-intelligence/${slug}`,
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
+    },
   };
 }
 

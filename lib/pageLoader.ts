@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { executeQuery, migrateHomepageSlideLinks, migrateFirstHomeBuyerLinks, migrateVisaHomeLoanRow } from '@/lib/db';
+import { executeQuery, migrateHomepageSlideLinks, migrateHealthcareHomepageSlides, migrateGlobalSettingsDefaults, migrateFirstHomeBuyerLinks, migrateVisaHomeLoanRow } from '@/lib/db';
 import type { Metadata } from 'next';
 
 export type GlobalSettings = Record<string, string>;
@@ -39,6 +39,8 @@ export interface PageData {
 export async function loadPageData(pagePath: string): Promise<PageData> {
   if (pagePath === '/') {
     migrateHomepageSlideLinks().catch(() => {});
+    migrateHealthcareHomepageSlides().catch(() => {});
+    migrateGlobalSettingsDefaults().catch(() => {});
   }
   if (pagePath === '/nepali-mortgage-broker-in-australia') {
     migrateFirstHomeBuyerLinks().catch(() => {});

@@ -1685,7 +1685,12 @@ export default function AdminPage() {
               "logo_url", "site_icon_url", "interest_rate", "mortgage_mate_video_url",
               "meta_title", "meta_description", "meta_keywords",
               "smtp_host", "smtp_port", "smtp_user", "smtp_pass", "smtp_from",
-              "google_maps_embed"
+              "google_maps_embed",
+              "stats_loans_approved", "stats_families_helped_val", "stats_families_helped_label",
+              "google_reviews_text", "stats_experience_val", "stats_experience_label", "stats_since_year",
+              "founder_name", "founder_title", "founder_subtitle", "founder_image",
+              "founder_bio_p1", "founder_bio_p2", "founder_bio_p3", "founder_bio_p4", "founder_bio_p5",
+              "founder_territories_title", "founder_territories", "founder_tagline", "founder_quote"
             ])} className="bg-white border border-slate-200/70 rounded-2xl p-6 md:p-8 space-y-8 max-w-4xl shadow-sm">
               
               {/* SECTION A: Site Branding Assets */}
@@ -1977,6 +1982,251 @@ export default function AdminPage() {
                   </div>
                 </div>
 
+              </div>
+
+              {/* SECTION F: Homepage Statistics & Trust Badges */}
+              <div className="space-y-4 border-t border-slate-100 pt-5">
+                <h3 className="text-slate-900 text-sm font-bold tracking-tight pb-2 border-b border-slate-100 flex items-center gap-2">
+                  <Percent className="w-4 h-4 text-blue-600" />
+                  <span>Homepage Statistics &amp; Trust Metrics</span>
+                </h3>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+                  <div>
+                    <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">Loans Approved / Settled Stat</label>
+                    <input
+                      type="text"
+                      value={settings.stats_loans_approved || ""}
+                      onChange={e => setSettings(prev => ({ ...prev, stats_loans_approved: e.target.value }))}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      placeholder="$450M+"
+                    />
+                    <span className="text-[10px] text-slate-400 mt-1 block">Hero &amp; Metrics card amount</span>
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">Families Helped Value</label>
+                    <input
+                      type="text"
+                      value={settings.stats_families_helped_val || ""}
+                      onChange={e => setSettings(prev => ({ ...prev, stats_families_helped_val: e.target.value }))}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      placeholder="500+"
+                    />
+                    <span className="text-[10px] text-slate-400 mt-1 block">Count (e.g. 500+)</span>
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">Families Helped Label</label>
+                    <input
+                      type="text"
+                      value={settings.stats_families_helped_label || ""}
+                      onChange={e => setSettings(prev => ({ ...prev, stats_families_helped_label: e.target.value }))}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      placeholder="Families Helped"
+                    />
+                    <span className="text-[10px] text-slate-400 mt-1 block">Label beneath count</span>
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">Google Reviews Count &amp; Label</label>
+                    <input
+                      type="text"
+                      value={settings.google_reviews_text || ""}
+                      onChange={e => setSettings(prev => ({ ...prev, google_reviews_text: e.target.value }))}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      placeholder="100+ reviews - Google Reviews"
+                    />
+                    <span className="text-[10px] text-slate-400 mt-1 block">Displays on Hero &amp; SubPageHero</span>
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">Investment Experience Value</label>
+                    <input
+                      type="text"
+                      value={settings.stats_experience_val || ""}
+                      onChange={e => setSettings(prev => ({ ...prev, stats_experience_val: e.target.value }))}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      placeholder="7+ Years"
+                    />
+                    <span className="text-[10px] text-slate-400 mt-1 block">Experience metric (e.g. 7+ Years)</span>
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">Investment Experience Label</label>
+                    <input
+                      type="text"
+                      value={settings.stats_experience_label || ""}
+                      onChange={e => setSettings(prev => ({ ...prev, stats_experience_label: e.target.value }))}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      placeholder="Personal Property Investment Experience"
+                    />
+                    <span className="text-[10px] text-slate-400 mt-1 block">Full description label</span>
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">Since Year</label>
+                    <input
+                      type="text"
+                      value={settings.stats_since_year || ""}
+                      onChange={e => setSettings(prev => ({ ...prev, stats_since_year: e.target.value }))}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      placeholder="Since 2019"
+                    />
+                    <span className="text-[10px] text-slate-400 mt-1 block">Established date tag</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* SECTION G: Founder Profile (Aakash KC) */}
+              <div className="space-y-4 border-t border-slate-100 pt-5">
+                <h3 className="text-slate-900 text-sm font-bold tracking-tight pb-2 border-b border-slate-100 flex items-center gap-2">
+                  <User className="w-4 h-4 text-blue-600" />
+                  <span>Founder Profile (Aakash KC - The Mortgage Mate)</span>
+                </h3>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div>
+                    <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">Founder Full Name</label>
+                    <input
+                      type="text"
+                      value={settings.founder_name || ""}
+                      onChange={e => setSettings(prev => ({ ...prev, founder_name: e.target.value }))}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      placeholder="Aakash K C"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">Founder Role &amp; Title</label>
+                    <input
+                      type="text"
+                      value={settings.founder_title || ""}
+                      onChange={e => setSettings(prev => ({ ...prev, founder_title: e.target.value }))}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      placeholder="Aakash KC - Founder &amp; Principal Broker | The Mortgage Mate"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">Founder Subtitle / Credo</label>
+                    <input
+                      type="text"
+                      value={settings.founder_subtitle || ""}
+                      onChange={e => setSettings(prev => ({ ...prev, founder_subtitle: e.target.value }))}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      placeholder="Your Multilingual Mortgage Mate"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">Founder Photograph (Owner Genuine Image)</label>
+                    <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+                      <div className="flex-1 w-full">
+                        <input
+                          type="text"
+                          value={settings.founder_image || ""}
+                          onChange={e => setSettings(prev => ({ ...prev, founder_image: e.target.value }))}
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                          placeholder="/images/aakash_new.png"
+                        />
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        <label className="bg-slate-100 hover:bg-slate-200 border border-slate-250 cursor-pointer text-slate-700 text-xs font-bold px-3.5 py-2.5 rounded-xl transition-all inline-block shrink-0">
+                          Upload Image
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={e => handleFileUpload(e, "founder_image")}
+                            className="hidden"
+                          />
+                        </label>
+                        {settings.founder_image && (
+                          <div className="w-10 h-10 border border-slate-200 rounded-xl overflow-hidden flex items-center justify-center bg-slate-50 shrink-0 relative">
+                            <img src={settings.founder_image} alt="Founder" className="w-full h-full object-cover object-top" />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">Biography Paragraph 1</label>
+                    <textarea
+                      rows={2}
+                      value={settings.founder_bio_p1 || ""}
+                      onChange={e => setSettings(prev => ({ ...prev, founder_bio_p1: e.target.value }))}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all leading-relaxed"
+                      placeholder="As the Founder and Principal Broker of Mortgage Xperts, Aakash K C provides personalised home loan guidance..."
+                    />
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">Biography Paragraph 2 (Healthcare Focus)</label>
+                    <textarea
+                      rows={2}
+                      value={settings.founder_bio_p2 || ""}
+                      onChange={e => setSettings(prev => ({ ...prev, founder_bio_p2: e.target.value }))}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all leading-relaxed"
+                      placeholder="With a particular focus on healthcare professionals, Aakash helps nurses, doctors, midwives, allied health professionals and aged-care workers..."
+                    />
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">Biography Paragraph 3 (The Mortgage Mate)</label>
+                    <textarea
+                      rows={2}
+                      value={settings.founder_bio_p3 || ""}
+                      onChange={e => setSettings(prev => ({ ...prev, founder_bio_p3: e.target.value }))}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all leading-relaxed"
+                      placeholder="Known as The Mortgage Mate, Aakash believes mortgage guidance should be clear, accessible and tailored to each client's circumstances..."
+                    />
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">Biography Paragraph 4</label>
+                    <textarea
+                      rows={2}
+                      value={settings.founder_bio_p4 || ""}
+                      onChange={e => setSettings(prev => ({ ...prev, founder_bio_p4: e.target.value }))}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all leading-relaxed"
+                      placeholder="Whether purchasing a first home, refinancing an existing loan or investing in property..."
+                    />
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">Biography Paragraph 5 (Multilingual Assistance)</label>
+                    <textarea
+                      rows={2}
+                      value={settings.founder_bio_p5 || ""}
+                      onChange={e => setSettings(prev => ({ ...prev, founder_bio_p5: e.target.value }))}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all leading-relaxed"
+                      placeholder="Mortgage Xperts proudly assists clients in English, Nepali and Hindi..."
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">Territories Coverage</label>
+                    <input
+                      type="text"
+                      value={settings.founder_territories || ""}
+                      onChange={e => setSettings(prev => ({ ...prev, founder_territories: e.target.value }))}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      placeholder="Sydney | Melbourne | Brisbane | Perth | Adelaide | Canberra | Hobart | Darwin | Nationwide"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] font-extrabold text-slate-500 uppercase tracking-widest block mb-2">Brand Tagline</label>
+                    <input
+                      type="text"
+                      value={settings.founder_tagline || ""}
+                      onChange={e => setSettings(prev => ({ ...prev, founder_tagline: e.target.value }))}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm font-semibold focus:outline-none focus:border-blue-500 focus:bg-white transition-all"
+                      placeholder="Mortgage Xperts - Empowering Better Decisions."
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className="pt-4 border-t border-slate-100 flex justify-end">
@@ -2608,13 +2858,22 @@ export default function AdminPage() {
                           <LayoutDashboard className="w-4.5 h-4.5 text-blue-600 shrink-0" />
                           <h2 className="text-sm font-extrabold tracking-tight uppercase" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>Homepage Hero Slides</h2>
                         </div>
-                        <span className="text-[9px] bg-indigo-50 text-indigo-700 font-bold px-2 py-0.5 rounded-full uppercase self-start sm:self-auto">5 Slides Configurable</span>
+                        <span className="text-[9px] bg-indigo-50 text-indigo-700 font-bold px-2 py-0.5 rounded-full uppercase self-start sm:self-auto">
+                          {(() => {
+                            try {
+                              const arr = JSON.parse(currentPageSettings.slides || "[]");
+                              return `${Math.max(4, arr.length)} Slides Configurable`;
+                            } catch {
+                              return "4 Slides Configurable";
+                            }
+                          })()}
+                        </span>
                       </div>
 
                       {/* Slide tabs selection */}
                       <div className="flex flex-wrap gap-1.5 p-1 bg-slate-50 rounded-xl border border-slate-200/60">
-                        {[0, 1, 2, 3, 4].map((idx) => {
-                          let slidesArray = [];
+                        {(() => {
+                          let slidesArray: any[] = [];
                           try {
                             slidesArray = typeof currentPageSettings.slides === "string" 
                               ? JSON.parse(currentPageSettings.slides) 
@@ -2622,25 +2881,30 @@ export default function AdminPage() {
                           } catch {
                             slidesArray = [];
                           }
-                          const slideData = slidesArray[idx] || {};
-                          return (
-                            <button
-                              key={idx}
-                              type="button"
-                              onClick={() => setActiveSlideIndex(idx)}
-                              className={`flex-1 min-w-[70px] text-center py-2 px-1 text-[10px] font-black rounded-lg transition-all ${
-                                activeSlideIndex === idx
-                                  ? "bg-white text-blue-600 shadow-sm border border-slate-200/50"
-                                  : "text-slate-500 hover:text-slate-800 hover:bg-white/40"
-                              }`}
-                            >
-                              Slide {idx + 1}
-                              <span className="block text-[8px] font-medium text-slate-400 truncate max-w-[80px] mx-auto">
-                                {slideData.badge || "No Label"}
-                              </span>
-                            </button>
-                          );
-                        })}
+                          const defaultLabels = ["Nurses and Mid Wives", "Doctors and Dentists", "Allied Health Professionals", "Aged Care Workers", "Nurses"];
+                          const count = Math.max(4, slidesArray.length);
+                          return Array.from({ length: count }, (_, idx) => {
+                            const slideData = slidesArray[idx] || {};
+                            const label = slideData.badge || defaultLabels[idx] || `Slide ${idx + 1}`;
+                            return (
+                              <button
+                                key={idx}
+                                type="button"
+                                onClick={() => setActiveSlideIndex(idx)}
+                                className={`flex-1 min-w-[70px] text-center py-2 px-1 text-[10px] font-black rounded-lg transition-all ${
+                                  activeSlideIndex === idx
+                                    ? "bg-white text-blue-600 shadow-sm border border-slate-200/50"
+                                    : "text-slate-500 hover:text-slate-800 hover:bg-white/40"
+                                }`}
+                              >
+                                Slide {idx + 1}
+                                <span className="block text-[8px] font-medium text-slate-400 truncate max-w-[100px] mx-auto">
+                                  {label}
+                                </span>
+                              </button>
+                            );
+                          });
+                        })()}
                       </div>
                       {/* Edit Active Slide Fields */}
                       <div className="bg-slate-50/60 border border-slate-200/40 rounded-2xl p-5 space-y-4">

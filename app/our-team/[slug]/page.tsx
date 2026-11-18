@@ -25,9 +25,26 @@ export async function generateMetadata(
     };
   }
 
+  const canonicalUrl = `https://mortgagexperts.com.au/our-team/${resolvedParams.slug}`;
   return {
     title: `${member.name} - ${member.role} | Mortgage Xperts`,
     description: member.bio,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: `${member.name} - ${member.role}`,
+      description: member.bio,
+      url: canonicalUrl,
+      type: 'profile',
+      images: member.image ? [{ url: member.image, width: 800, height: 800, alt: member.name }] : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${member.name} - ${member.role}`,
+      description: member.bio,
+      images: member.image ? [member.image] : [],
+    },
   };
 }
 
@@ -39,5 +56,27 @@ export default async function TeamMemberPage({ params }: { params: Promise<{ slu
     notFound();
   }
 
-  return <ClientPage member={member} />;
+  const personJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: member.name,
+    jobTitle: member.role,
+    description: member.bio,
+    image: member.image || '',
+    worksFor: {
+      '@type': 'FinancialService',
+      name: 'Mortgage Xperts'
+    },
+    url: `https://mortgagexperts.com.au/our-team/${resolvedParams.slug}`
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+      />
+      <ClientPage member={member} />
+    </>
+  );
 }

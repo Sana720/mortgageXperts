@@ -131,7 +131,26 @@ const tables = [
   ('logo_url', '/images/logo.png'),
   ('site_icon_url', '/favicon.ico'),
   ('interest_rate', '6.19'),
-  ('mortgage_mate_video_url', 'https://www.youtube.com/embed/XXXXX')`,
+  ('mortgage_mate_video_url', 'https://www.youtube.com/embed/XXXXX'),
+  ('stats_loans_approved', '$450M+'),
+  ('stats_families_helped_val', '500+'),
+  ('stats_families_helped_label', 'Families Helped'),
+  ('google_reviews_text', '100+ reviews - Google Reviews'),
+  ('stats_experience_val', '7+ Years'),
+  ('stats_experience_label', 'Personal Property Investment Experience'),
+  ('stats_since_year', 'Since 2019'),
+  ('founder_name', 'Aakash K C'),
+  ('founder_title', 'Aakash KC - Founder & Principal Broker | The Mortgage Mate'),
+  ('founder_subtitle', 'Your Multilingual Mortgage Mate'),
+  ('founder_image', '/images/aakash_new.png'),
+  ('founder_bio_p1', 'As the Founder and Principal Broker of Mortgage Xperts, Aakash K C provides personalised home loan guidance to healthcare professionals, first-home buyers, homeowners and property investors across Australia.'),
+  ('founder_bio_p2', 'With a particular focus on healthcare professionals, Aakash helps nurses, doctors, midwives, allied health professionals and aged-care workers navigate their home loan options. He understands how different employment arrangements, shift allowances, overtime and salary packaging can influence borrowing capacity and lender assessments.'),
+  ('founder_bio_p3', 'Known as The Mortgage Mate, Aakash believes mortgage guidance should be clear, accessible and tailored to each client\\'s circumstances. With access to a panel of lenders, he helps clients compare suitable loan options, understand their borrowing capacity and make informed financial decisions.'),
+  ('founder_bio_p4', 'Whether purchasing a first home, refinancing an existing loan or investing in property, Aakash focuses on understanding each client\\'s financial circumstances, explaining available options and providing practical support throughout the lending process.'),
+  ('founder_bio_p5', 'Mortgage Xperts proudly assists clients in English, Nepali and Hindi, providing personalised support from the initial consultation through to settlement and beyond.'),
+  ('founder_territories_title', 'Serving All Australian States and Territories'),
+  ('founder_territories', 'Sydney | Melbourne | Brisbane | Perth | Adelaide | Canberra | Hobart | Darwin | Nationwide'),
+  ('founder_tagline', 'Mortgage Xperts - Empowering Better Decisions.')`,
   `CREATE TABLE IF NOT EXISTS page_meta_hero (
       page_path VARCHAR(191) PRIMARY KEY,
       meta_title VARCHAR(255) NOT NULL,
@@ -148,7 +167,7 @@ const tables = [
       slides TEXT
   )`,
   `INSERT IGNORE INTO page_meta_hero (page_path, meta_title, meta_description, meta_keywords, hero_badge, hero_title, hero_subtext, hero_image, hero_btn1_text, hero_btn1_link, hero_btn2_text, hero_btn2_link, slides) VALUES 
-  ('/', 'Mortgage Xperts - Australia | Leading Nepali Mortgage Brokerage', 'Australia’s top-rated Nepali mortgage experts, helping clients secure better home loans, refinance smarter, and invest with confidence.', 'mortgage broker, home loans, first home buyer, Australia home loan, Nepali broker', '', '', '', '', '', '', '', '', '[{"id":1,"service":"first-home","badge":"First Home Buyer Specialists","title":"Your Journey to Your First Home, Simplified","subtext":"Secure your first home with expert guidance, government grants assistance, and access to low-deposit options from 40+ leading lenders.","image":"/images/hero.png","btnText1":"Get Started","btnLink1":"/nepali-mortgage-broker-in-australia","btnText2":"Free Strategy Call","btnLink2":"#callback"},{"id":2,"service":"healthcare","badge":"Specialist Lenders for Medical & Health Professionals","title":"Exclusive Mortgage Benefits for Health Professionals","subtext":"Get up to 95% LVR with zero Lenders Mortgage Insurance (LMI) and discounted interest rates tailored for medical practitioners and healthcare staff.","image":"/images/hero_slide_2_green.png","btnText1":"Get Started","btnLink1":"/home-loan-for-doctors","btnText2":"Free Strategy Call","btnLink2":"#callback"},{"id":3,"service":"investment","badge":"Strategic Lending for Property Investors","title":"Build and Scale Your Property Portfolio","subtext":"Maximize your borrowing power, optimize loan structures, and leverage equity to grow your long-term property investment wealth.","image":"/images/hero_slide_3_yellow.png","btnText1":"Get Started","btnLink1":"/investing-in-property-nepali-mortgage-broker","btnText2":"Free Strategy Call","btnLink2":"#callback"},{"id":4,"service":"refinancing","badge":"Smart Refinance Strategies","title":"Refinance and Save Thousands Annually","subtext":"Switch to a lower rate, consolidate high-interest debts, or unlock equity for renovations with our streamlined mortgage refinance process.","image":"/images/hero_slide_4_purple.png","btnText1":"Get Started","btnLink1":"/refinancing-a-loan","btnText2":"Free Strategy Call","btnLink2":"#callback"},{"id":5,"service":"self-employed","badge":"Low-Doc & Self-Employed Mortgage Experts","title":"Flexible Home Loans for Business Owners","subtext":"No up-to-date tax returns? We specialize in alt-doc and low-doc lending solutions to secure the home loan you deserve using alternative proof of income.","image":"/images/hero_slide_5_rose.png","btnText1":"Get Started","btnLink1":"/self-employed-home-loans","btnText2":"Free Strategy Call","btnLink2":"#callback"}]'),
+  ('/', 'Mortgage Xperts - Australia | Leading Nepali Mortgage Brokerage', 'Australia’s top-rated Nepali mortgage experts, helping clients secure better home loans, refinance smarter, and invest with confidence.', 'mortgage broker, home loans, first home buyer, Australia home loan, Nepali broker', '', '', '', '', '', '', '', '', '[{"id":1,"service":"nurses-midwives","badge":"Nurses and Mid Wives","title":"Specialist Home Loans for Nurses & Midwives","subtext":"Enjoy up to 90–95% LVR with zero Lenders Mortgage Insurance (LMI) and discounted interest rates tailored for nurses and midwives across Australia.","image":"/images/Healthcare Professionals.png","btnText1":"Explore Nurse Loans","btnLink1":"/home-loan-for-nurses","btnText2":"Free Strategy Call","btnLink2":"#callback"},{"id":2,"service":"doctors-dentists","badge":"Doctors and Dentists","title":"Exclusive Mortgage Benefits for Doctors & Dentists","subtext":"Access up to 95% LVR with zero LMI, elevated borrowing caps, and commercial rate discounts designed specifically for medical doctors, dentists, and specialists.","image":"/images/doctor_hero.png","btnText1":"Explore Doctor Loans","btnLink1":"/home-loan-for-doctors","btnText2":"Free Strategy Call","btnLink2":"#callback"},{"id":3,"service":"allied-health","badge":"Allied Health Professionals","title":"Tailored Home Loans for Allied Health Professionals","subtext":"Exclusive lending policies and waived LMI benefits for physiotherapists, pharmacists, optometrists, occupational therapists, and healthcare clinicians.","image":"/images/hero_slide_2_green.png","btnText1":"Explore Allied Health","btnLink1":"/home-loan-for-nurses","btnText2":"Free Strategy Call","btnLink2":"#callback"},{"id":4,"service":"aged-care","badge":"Aged Care Workers","title":"Flexible Home Loans for Dedicated Aged Care Workers","subtext":"We understand your shifts, overtime, and salary packaging arrangements. We help aged care professionals secure the competitive home loan they deserve.","image":"/images/diverse_professional_clients.png","btnText1":"Explore Aged Care Loans","btnLink1":"/nepali-mortgage-broker-in-australia","btnText2":"Free Strategy Call","btnLink2":"#callback"}]'),
   ('/nepali-mortgage-broker-in-australia', 'Nepali Mortgage Broker in Australia | Mortgage Xperts', 'Leading Nepali mortgage brokers helping you secure home loans, low deposit options, and grants in Australia with bilingual support.', 'Nepali mortgage broker, Nepali broker Australia, Sydney Nepali broker, home loans', 'First Home Buyer Specialists', 'Your First Home Doesn\\'t Need To Feel Complicated.', 'Secure your first home with expert guidance, government grants assistance, and access to low-deposit options from 40+ leading lenders.', '/images/hero.png', 'Get Started', '#onboarding', 'Free Strategy Call', '#contact', '[]'),
   ('/home-loan-for-nurses', 'Home Loans for Nurses & Midwives in Australia | Mortgage Xperts', 'Special home loan benefits and LMI waivers for nurses, midwives, and healthcare professionals in Australia.', 'home loans for nurses, nurse mortgage, LMI waiver nurses, healthcare home loans', 'Healthcare Professional Benefits', 'Specialist Home Loans for Nurses & Midwives', 'Enjoy up to 90% LVR with zero LMI and discounted rates. Our team helps nurses and healthcare staff secure the best possible home loan deals.', '/images/hero_slide_2_green.png', 'Check Eligibility', '#calculator', 'Book Free Call', '#callback', '[]'),
   ('/home-loan-for-doctors', 'Home Loans for Doctors & Medical Specialists | Mortgage Xperts', 'Exclusive 95% LVR home loans with zero Lenders Mortgage Insurance (LMI) for doctors and medical specialists.', 'home loans for doctors, doctor home loan, LMI waiver doctors, medical professional loan', 'Medical Professional Benefits', 'Premium Home Loans for Doctors & Medical Specialists', 'Unlock exclusive home loan benefits with 0% LMI up to 95% LVR. Tailored doctor home loans designed for medical practitioners and specialists.', '/images/hero_slide_2_green.png', 'Check LMI Waiver', '#calculator', 'Consult An Expert', '#callback', '[]'),
@@ -237,6 +256,8 @@ export async function initializeTables() {
     { name: 'migrateEnquiriesMessageColumn', fn: migrateEnquiriesMessageColumn },
     { name: 'migrateTeamMembersBranchColumn', fn: migrateTeamMembersBranchColumn },
     { name: 'migrateHomepageSlideLinks', fn: migrateHomepageSlideLinks },
+    { name: 'migrateHealthcareHomepageSlides', fn: migrateHealthcareHomepageSlides },
+    { name: 'migrateGlobalSettingsDefaults', fn: migrateGlobalSettingsDefaults },
     { name: 'migrateFirstHomeBuyerLinks', fn: migrateFirstHomeBuyerLinks },
     { name: 'migrateRefinancingLinks', fn: migrateRefinancingLinks },
     { name: 'migrateVisaHomeLoanRow', fn: migrateVisaHomeLoanRow },
@@ -371,6 +392,117 @@ export async function migrateHomepageSlideLinks() {
   }
 }
 
+/** One-time fix: migrate homepage hero slides to Healthcare four rotating slides. */
+export async function migrateHealthcareHomepageSlides() {
+  try {
+    const rows = await executeQuery<Array<{ slides: string }>>(
+      'SELECT slides FROM page_meta_hero WHERE page_path = ?',
+      ['/']
+    );
+    if (!Array.isArray(rows) || !rows.length) return;
+    const raw = rows[0].slides;
+    if (raw && (raw.includes('First Home Buyer Specialists') || !raw.includes('Nurses and Mid Wives'))) {
+      const newSlides = [
+        {
+          id: 1,
+          service: 'nurses-midwives',
+          badge: 'Nurses and Mid Wives',
+          title: 'Specialist Home Loans for Nurses & Midwives',
+          subtext:
+            'Enjoy up to 90–95% LVR with zero Lenders Mortgage Insurance (LMI) and discounted interest rates tailored for nurses and midwives across Australia.',
+          image: '/images/Healthcare Professionals.png',
+          btnText1: 'Explore Nurse Loans',
+          btnLink1: '/home-loan-for-nurses',
+          btnText2: 'Free Strategy Call',
+          btnLink2: '#callback',
+        },
+        {
+          id: 2,
+          service: 'doctors-dentists',
+          badge: 'Doctors and Dentists',
+          title: 'Exclusive Mortgage Benefits for Doctors & Dentists',
+          subtext:
+            'Access up to 95% LVR with zero LMI, elevated borrowing caps, and commercial rate discounts designed specifically for medical doctors, dentists, and specialists.',
+          image: '/images/doctor_hero.png',
+          btnText1: 'Explore Doctor Loans',
+          btnLink1: '/home-loan-for-doctors',
+          btnText2: 'Free Strategy Call',
+          btnLink2: '#callback',
+        },
+        {
+          id: 3,
+          service: 'allied-health',
+          badge: 'Allied Health Professionals',
+          title: 'Tailored Home Loans for Allied Health Professionals',
+          subtext:
+            'Exclusive lending policies and waived LMI benefits for physiotherapists, pharmacists, optometrists, occupational therapists, and healthcare clinicians.',
+          image: '/images/hero_slide_2_green.png',
+          btnText1: 'Explore Allied Health',
+          btnLink1: '/home-loan-for-nurses',
+          btnText2: 'Free Strategy Call',
+          btnLink2: '#callback',
+        },
+        {
+          id: 4,
+          service: 'aged-care',
+          badge: 'Aged Care Workers',
+          title: 'Flexible Home Loans for Dedicated Aged Care Workers',
+          subtext:
+            'We understand your shifts, overtime, and salary packaging arrangements. We help aged care professionals secure the competitive home loan they deserve.',
+          image: '/images/diverse_professional_clients.png',
+          btnText1: 'Explore Aged Care Loans',
+          btnLink1: '/nepali-mortgage-broker-in-australia',
+          btnText2: 'Free Strategy Call',
+          btnLink2: '#callback',
+        },
+      ];
+      await executeQuery('UPDATE page_meta_hero SET slides = ? WHERE page_path = ?', [
+        JSON.stringify(newSlides),
+        '/',
+      ]);
+      console.log('Migrated homepage hero slides to Healthcare four rotating slides.');
+    }
+  } catch (error) {
+    console.error('Healthcare slide migration skipped:', error);
+  }
+}
+
+/** One-time fix: ensure default stats and founder settings exist in global_settings */
+export async function migrateGlobalSettingsDefaults() {
+  const defaults: [string, string][] = [
+    ['stats_loans_approved', '$450M+'],
+    ['stats_families_helped_val', '500+'],
+    ['stats_families_helped_label', 'Families Helped'],
+    ['google_reviews_text', '100+ reviews - Google Reviews'],
+    ['stats_experience_val', '7+ Years'],
+    ['stats_experience_label', 'Personal Property Investment Experience'],
+    ['stats_since_year', 'Since 2019'],
+    ['founder_name', 'Aakash K C'],
+    ['founder_title', 'Aakash KC - Founder & Principal Broker | The Mortgage Mate'],
+    ['founder_subtitle', 'Your Multilingual Mortgage Mate'],
+    ['founder_image', '/images/aakash_new.png'],
+    ['founder_bio_p1', 'As the Founder and Principal Broker of Mortgage Xperts, Aakash K C provides personalised home loan guidance to healthcare professionals, first-home buyers, homeowners and property investors across Australia.'],
+    ['founder_bio_p2', 'With a particular focus on healthcare professionals, Aakash helps nurses, doctors, midwives, allied health professionals and aged-care workers navigate their home loan options. He understands how different employment arrangements, shift allowances, overtime and salary packaging can influence borrowing capacity and lender assessments.'],
+    ['founder_bio_p3', 'Known as The Mortgage Mate, Aakash believes mortgage guidance should be clear, accessible and tailored to each client\'s circumstances. With access to a panel of lenders, he helps clients compare suitable loan options, understand their borrowing capacity and make informed financial decisions.'],
+    ['founder_bio_p4', 'Whether purchasing a first home, refinancing an existing loan or investing in property, Aakash focuses on understanding each client\'s financial circumstances, explaining available options and providing practical support throughout the lending process.'],
+    ['founder_bio_p5', 'Mortgage Xperts proudly assists clients in English, Nepali and Hindi, providing personalised support from the initial consultation through to settlement and beyond.'],
+    ['founder_territories_title', 'Serving All Australian States and Territories'],
+    ['founder_territories', 'Sydney | Melbourne | Brisbane | Perth | Adelaide | Canberra | Hobart | Darwin | Nationwide'],
+    ['founder_tagline', 'Mortgage Xperts - Empowering Better Decisions.']
+  ];
+
+  try {
+    for (const [key, val] of defaults) {
+      await executeQuery(
+        'INSERT IGNORE INTO global_settings (`key`, `value`) VALUES (?, ?)',
+        [key, val]
+      );
+    }
+  } catch (error) {
+    console.error('Global settings default migration skipped:', error);
+  }
+}
+
 /** One-time fix: update links for first home buyer page in existing DB row. */
 export async function migrateFirstHomeBuyerLinks() {
   try {
@@ -480,11 +612,11 @@ export async function seedTeamMembers() {
     const defaultMembers = [
       {
         name: "Aakash KC",
-        role: "The Mortgage Mate | Founder & Principal Broker",
+        role: "Aakash KC - Founder & Principal Broker | The Mortgage Mate",
         image: "/images/aakash_new.png",
         email: "aakash@mortgagexperts.com.au",
         phone: "0450 240 757",
-        bio: "As the founder of Mortgage Xperts and widely known as 'The Mortgage Mate', Aakash brings years of dedicated experience to the Australian mortgage industry. With a passion for empowering the Nepali community and all Australians, he has helped hundreds of clients secure their dream homes, build robust investment portfolios, and navigate the complexities of lending with clarity and confidence.",
+        bio: "As the Founder and Principal Broker of Mortgage Xperts, Aakash K C provides personalised home loan guidance to healthcare professionals, first-home buyers, homeowners and property investors across Australia. With a particular focus on healthcare professionals, Aakash helps nurses, doctors, midwives, allied health professionals and aged-care workers navigate their home loan options. Known as The Mortgage Mate, Aakash believes mortgage guidance should be clear, accessible and tailored to each client's circumstances.",
         orderIndex: 0
       },
       {

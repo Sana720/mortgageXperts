@@ -270,7 +270,11 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
                   ))}
                 </div>
                 <span className="text-slate-500 text-[12.5px] font-semibold">
-                  Trusted by hundreds of {cityData.city} families
+                  {cityData.slug === "sydney"
+                    ? "Personalised home loan solutions across Greater Sydney & NSW"
+                    : cityData.slug === "brisbane"
+                    ? "Home loans for buyers, owners and investors across Brisbane & QLD"
+                    : `Trusted by hundreds of ${cityData.city} families`}
                 </span>
               </div>
             </motion.div>
@@ -279,8 +283,8 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
             <div className="lg:col-span-6 relative z-10 hidden lg:block">
               <div className="grid grid-cols-2 gap-4 max-w-md ml-auto">
                 {[
-                  { label: "Strategic Solution", value: "Tailored Lending", icon: <TrendingUp className="w-5 h-5" /> },
-                  { label: "ASIC Authorised", value: "Fully Compliant", icon: <Shield className="w-5 h-5" /> },
+                  { label: "Strategic Guidance", value: "Tailored Lending", icon: <TrendingUp className="w-5 h-5" /> },
+                  { label: "Client-First Advice", value: "Transparent", icon: <Shield className="w-5 h-5" /> },
                   { label: "Lenders Panel", value: "40+ Banks", icon: <Users className="w-5 h-5" /> },
                   { label: "Response Time", value: "Within 24 Hours", icon: <Clock className="w-5 h-5" /> },
                 ].map((stat, i) => (
@@ -311,33 +315,63 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
 
             {/* Mobile Stats Grid (renders under the left col content on mobile) */}
             <div className="lg:hidden block mt-6">
-              <div className="grid grid-cols-2 gap-4">
-                {[
-                  { label: "Clients Helped", value: cityData.clientsHelped, icon: <Users className="w-5 h-5" /> },
-                  { label: "Approval Rate", value: cityData.approvalRate, icon: <CheckCircle2 className="w-5 h-5" /> },
-                  { label: "Avg Loan Size", value: cityData.avgLoanSize, icon: <Home className="w-5 h-5" /> },
-                  { label: "Median House Price", value: cityData.medianHousePrice, icon: <Building2 className="w-5 h-5" /> },
-                ].map((stat) => (
-                  <div
-                    key={stat.label}
-                    className="rounded-2xl p-5 border bg-slate-50 border-slate-100 shadow-sm"
-                  >
+              {cityData.slug === "sydney" || cityData.slug === "brisbane" || !cityData.clientsHelped ? (
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { label: "Strategic Guidance", value: "Tailored Lending", icon: <TrendingUp className="w-4 h-4" /> },
+                    { label: "Client-First Advice", value: "Transparent", icon: <Shield className="w-4 h-4" /> },
+                    { label: "Lenders Panel", value: "40+ Banks", icon: <Users className="w-4 h-4" /> },
+                    { label: "Response Time", value: "Within 24 Hours", icon: <Clock className="w-4 h-4" /> },
+                  ].map((stat) => (
                     <div
-                      className="w-8 h-8 rounded-lg flex items-center justify-center mb-3"
-                      style={{ background: cityData.accentLight, color: cityData.accentColor }}
+                      key={stat.label}
+                      className="rounded-2xl p-4 border bg-slate-50 border-slate-100 shadow-xs"
                     >
-                      {stat.icon}
+                      <div
+                        className="w-7 h-7 rounded-lg flex items-center justify-center mb-2"
+                        style={{ background: cityData.accentLight, color: cityData.accentColor }}
+                      >
+                        {stat.icon}
+                      </div>
+                      <div
+                        className="text-[15px] font-bold leading-tight mb-0.5"
+                        style={{ color: cityData.accentColor }}
+                      >
+                        {stat.value}
+                      </div>
+                      <div className="text-slate-400 text-[10px] font-semibold">{stat.label}</div>
                     </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-4">
+                  {[
+                    { label: "Clients Helped", value: cityData.clientsHelped, icon: <Users className="w-5 h-5" /> },
+                    { label: "Approval Rate", value: cityData.approvalRate, icon: <CheckCircle2 className="w-5 h-5" /> },
+                    { label: "Avg Loan Size", value: cityData.avgLoanSize, icon: <Home className="w-5 h-5" /> },
+                    { label: "Median House Price", value: cityData.medianHousePrice, icon: <Building2 className="w-5 h-5" /> },
+                  ].map((stat) => (
                     <div
-                      className="text-[22px] font-bold leading-none mb-1"
-                      style={{ color: cityData.accentColor }}
+                      key={stat.label}
+                      className="rounded-2xl p-5 border bg-slate-50 border-slate-100 shadow-sm"
                     >
-                      {stat.value}
+                      <div
+                        className="w-8 h-8 rounded-lg flex items-center justify-center mb-3"
+                        style={{ background: cityData.accentLight, color: cityData.accentColor }}
+                      >
+                        {stat.icon}
+                      </div>
+                      <div
+                        className="text-[22px] font-bold leading-none mb-1"
+                        style={{ color: cityData.accentColor }}
+                      >
+                        {stat.value}
+                      </div>
+                      <div className="text-slate-400 text-[11px] font-semibold">{stat.label}</div>
                     </div>
-                    <div className="text-slate-400 text-[11px] font-semibold">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
 
           </div>
@@ -490,13 +524,13 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
                 className="text-[10px] font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full w-fit block border"
                 style={{ color: cityData.accentColor, background: `${cityData.accentColor}15`, borderColor: `${cityData.accentColor}30` }}
               >
-                Your {cityData.city} Broker
+                {cityData.slug === "sydney" || cityData.slug === "brisbane" ? "Your Mortgage Broker" : `Your ${cityData.city} Broker`}
               </span>
               <h2
                 className="text-[28px] sm:text-[36px] font-bold leading-tight text-white"
                 style={{ fontFamily: "var(--font-montserrat, sans-serif)" }}
               >
-                Meet {effectiveTeamLead.name}
+                {cityData.slug === "sydney" || cityData.slug === "brisbane" ? "Book with Aakash" : `Meet ${effectiveTeamLead.name}`}
               </h2>
               <p className="text-[15px] font-bold" style={{ color: cityData.accentColor }}>
                 {effectiveTeamLead.title}
@@ -523,14 +557,16 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
                 </a>
               </div>
 
-              {/* Office Info */}
+              {/* Consultation Location / Office Info */}
               <div
                 className="flex items-start gap-3 p-4 rounded-2xl border mt-2"
                 style={{ background: "rgba(255,255,255,0.05)", borderColor: "rgba(255,255,255,0.12)" }}
               >
                 <MapPin className="w-4 h-4 mt-0.5 shrink-0" style={{ color: cityData.accentColor }} />
                 <div>
-                  <p className="text-[12px] font-bold text-white/60 uppercase tracking-wider mb-0.5">Office Address</p>
+                  <p className="text-[12px] font-bold text-white/60 uppercase tracking-wider mb-0.5">
+                    {cityData.slug === "sydney" || cityData.slug === "brisbane" ? "Consultation Location" : "Office Address"}
+                  </p>
                   <p className="text-[13.5px] font-semibold text-white">{cityData.officeAddress}</p>
                 </div>
               </div>
@@ -539,10 +575,10 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
             {/* Accreditation / Trust Badges */}
             <div className="grid grid-cols-2 gap-4">
               {[
-                { icon: <Award className="w-5 h-5" />, title: "FBAA Accredited", desc: "Member of Finance Brokers Association of Australasia" },
-                { icon: <Shield className="w-5 h-5" />, title: "ASIC Licensed", desc: "Australian Credit Licence — fully regulated broker" },
-                { icon: <TrendingUp className="w-5 h-5" />, title: "40+ Lenders", desc: `Access to 40+ lenders for ${cityData.city} borrowers` },
-                { icon: <Clock className="w-5 h-5" />, title: "Fast Pre-Approvals", desc: "Same-day assessment and 48hr pre-approval turnaround" },
+                { icon: <TrendingUp className="w-5 h-5" />, title: "40+ Lender Panel", desc: `Compare suitable options across major banks and specialist lenders` },
+                { icon: <Clock className="w-5 h-5" />, title: "Prompt Turnaround", desc: "Same-day assessment and responsive communication" },
+                { icon: <Shield className="w-5 h-5" />, title: "Zero Broker Fees", desc: "Our standard residential mortgage advisory is 100% free for clients" },
+                { icon: <Award className="w-5 h-5" />, title: "Personalised Strategy", desc: "Mortgage solutions tailored to your individual goals" },
               ].map((badge, i) => (
                 <div
                   key={i}
@@ -647,7 +683,9 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
                   <div className="w-9 h-9 rounded-full flex items-center justify-center shrink-0" style={{ background: `${cityData.accentColor}25` }}>
                     <MapPin className="w-4 h-4" style={{ color: cityData.accentColor }} />
                   </div>
-                  <span className="text-[14px] font-semibold">{cityData.officeAddress}</span>
+                  <span className="text-[14px] font-semibold">
+                    {cityData.slug === "sydney" || cityData.slug === "brisbane" ? `Consultation Location: ${cityData.officeAddress}` : cityData.officeAddress}
+                  </span>
                 </div>
                 <a
                   href="mailto:mortgage@mortgagexperts.com.au"
@@ -727,22 +765,64 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
             {/* Right Column: Bio Content */}
             <div className="lg:col-span-7 space-y-6 text-left">
               <span className="text-[10px] font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full inline-block border border-blue-150 bg-blue-50/50 text-[#2563EB]">
-                Trust Our Founder
+                {cityData.slug === "sydney" ? "Serving Greater Sydney & Regional NSW" : cityData.slug === "brisbane" ? "Serving Brisbane & Queensland" : "Trust Our Founder"}
               </span>
               <h2 className="text-[#0B1F3A] text-[28px] sm:text-[36px] font-extrabold leading-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                Aakash K C <br />
-                <span className="text-slate-500 font-normal text-lg sm:text-xl">Your Multilingual Mortgage Mate</span>
+                {cityData.slug === "sydney" ? (
+                  <>
+                    Speak With a Mortgage Broker Serving Sydney <br />
+                    <span className="text-slate-500 font-normal text-lg sm:text-xl">Aakash K C – Founder &amp; Principal Broker | The Mortgage Mate</span>
+                  </>
+                ) : cityData.slug === "brisbane" ? (
+                  <>
+                    Start Your Brisbane Home Loan Assessment <br />
+                    <span className="text-slate-500 font-normal text-lg sm:text-xl">Aakash K C – Founder &amp; Principal Broker | The Mortgage Mate</span>
+                  </>
+                ) : (
+                  <>
+                    Aakash K C <br />
+                    <span className="text-slate-500 font-normal text-lg sm:text-xl">Your Multilingual Mortgage Mate</span>
+                  </>
+                )}
               </h2>
               <div className="space-y-4 text-slate-650 text-[14px] sm:text-[14.5px] leading-relaxed">
-                <p>
-                  As the founder and principal mortgage expert at <strong>Mortgage Xperts</strong>, Aakash has spent over a decade assisting first-home buyers, seasoned property investors, and medical professionals across Australia in securing competitive home finance. 
-                </p>
-                <p>
-                  Having personally built a <strong>$5.3M property portfolio over just 3 years</strong>, Aakash doesn&apos;t just advice on mortgages — he lives and breathes property investment. He understands the critical details of loan structuring, cash flow optimization, and multi-lender strategy required to build long-term property wealth.
-                </p>
-                <p>
-                  Leading a multilingual advisory team, Aakash proudly delivers mortgage guidance in <strong>English, Nepali, and Hindi</strong>, simplifying the complex Australian banking ecosystem into clear, actionable strategies for all clients nationwide.
-                </p>
+                {cityData.slug === "sydney" ? (
+                  <>
+                    <p>
+                      From first home purchases and investment loans to refinancing and construction finance, <strong>Mortgage Xperts</strong> offers personalised assistance throughout the lending process.
+                    </p>
+                    <p>
+                      Request your free home loan assessment and speak with <strong>Aakash K C</strong>, Founder &amp; Principal Broker of Mortgage Xperts.
+                    </p>
+                    <p>
+                      Known as The Mortgage Mate, Aakash helps nurses, doctors, midwives, allied health professionals, first-home buyers and property investors navigate their home loan options across Greater Sydney, New South Wales and nationwide.
+                    </p>
+                  </>
+                ) : cityData.slug === "brisbane" ? (
+                  <>
+                    <p>
+                      Whether you are purchasing your first property, building a home or reviewing an existing loan, receive personalised guidance tailored to your financial circumstances.
+                    </p>
+                    <p>
+                      Speak with Mortgage Xperts and request a free home loan assessment with <strong>Aakash K C</strong>, Founder &amp; Principal Broker.
+                    </p>
+                    <p>
+                      Known as The Mortgage Mate, Aakash helps nurses, midwives, doctors and other eligible healthcare professionals, first home buyers, property investors, existing homeowners and self-employed borrowers across Brisbane and Queensland make informed finance decisions.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p>
+                      As the founder and principal mortgage expert at <strong>Mortgage Xperts</strong>, Aakash brings 7+ years of personal property investment experience assisting first-home buyers, seasoned property investors, and medical professionals across Australia in securing competitive home finance. 
+                    </p>
+                    <p>
+                      Having personally built a <strong>$5.3M property portfolio over just 3 years</strong>, Aakash doesn&apos;t just advice on mortgages — he lives and breathes property investment. He understands the critical details of loan structuring, cash flow optimization, and multi-lender strategy required to build long-term property wealth.
+                    </p>
+                    <p>
+                      Leading a multilingual advisory team, Aakash proudly delivers mortgage guidance in <strong>English, Nepali, and Hindi</strong>, simplifying the complex Australian banking ecosystem into clear, actionable strategies for all clients nationwide.
+                    </p>
+                  </>
+                )}
               </div>
               <div className="pt-2">
                 <button 
@@ -763,10 +843,20 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
       <TestimonialSection
         badgeText="Google Reviews"
         titleText={
-          <>
-            Loved By Hundreds of{" "}
-            <span style={{ color: cityData.accentColor }}>{cityData.city} Clients</span>
-          </>
+          cityData.slug === "sydney" ? (
+            <>
+              Trusted Across <span style={{ color: cityData.accentColor }}>Sydney &amp; New South Wales</span>
+            </>
+          ) : cityData.slug === "brisbane" ? (
+            <>
+              Trusted Across <span style={{ color: cityData.accentColor }}>Brisbane &amp; Queensland</span>
+            </>
+          ) : (
+            <>
+              Loved By Hundreds of{" "}
+              <span style={{ color: cityData.accentColor }}>{cityData.city} Clients</span>
+            </>
+          )
         }
         backgroundClass="bg-white"
       />

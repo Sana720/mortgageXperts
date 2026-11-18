@@ -61,9 +61,6 @@ export async function generateMetadata(): Promise<Metadata> {
     keywords: keywordsVal,
     authors: [{ name: "Mortgage Xperts" }],
     robots: "index, follow",
-    alternates: {
-      canonical: "https://mortgagexperts.com.au/",
-    },
     icons: {
       icon: faviconVal,
       shortcut: "/favicon.ico",

@@ -1221,7 +1221,7 @@ function FaqCtaSection({ settings = {} }: { settings?: Record<string, string> })
 
 
 // ── HERO SLIDER COMPONENT ──
-function HeroSlider({ slidesJson }: { slidesJson?: string | null }) {
+function HeroSlider({ slidesJson, settings = {} }: { slidesJson?: string | null; settings?: Record<string, string> }) {
   const { openModal } = useOnboardingModal();
   const slides = React.useMemo(() => mergeHeroSlides(slidesJson), [slidesJson]);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -1427,7 +1427,7 @@ function HeroSlider({ slidesJson }: { slidesJson?: string | null }) {
                 </div>
               </div>
 
-              {/* Google rating strip (Google rating + $1.8B approved shown in ALL slides) */}
+              {/* Google rating strip (Google rating + Loans approved shown in ALL slides) */}
               <div className="flex flex-wrap items-center gap-4 mt-2">
                 <div className="flex items-center gap-2">
                   <GoogleIcon />
@@ -1437,11 +1437,13 @@ function HeroSlider({ slidesJson }: { slidesJson?: string | null }) {
                         <Star key={i} className="w-3 h-3 text-yellow-400 fill-yellow-400" />
                       ))}
                     </div>
-                    <div className="text-[10px] text-slate-500 font-semibold">4.9 · 760+ Reviews</div>
+                    <div className="text-[10px] text-slate-500 font-semibold">{settings.google_reviews_text || "100+ reviews - Google Reviews"}</div>
                   </div>
                 </div>
                 <div className="w-px h-7 bg-slate-200 hidden sm:block" />
-                <div className="text-[11.5px] text-slate-500 font-medium hidden sm:block">$1.8B+ Loans Approved Since 2016</div>
+                <div className="text-[11.5px] text-slate-500 font-medium hidden sm:block">
+                  {(settings.stats_loans_approved || "$450M+") + " Loans Approved " + (settings.stats_since_year || "Since 2019")}
+                </div>
               </div>
             </motion.div>
           </AnimatePresence>
@@ -1462,8 +1464,8 @@ function HeroSlider({ slidesJson }: { slidesJson?: string | null }) {
             </div>
             <div>
               <div className="text-[10.5px] text-slate-400 font-semibold uppercase tracking-wide">Loans Approved</div>
-              <div className="text-[22px] font-black text-[#0B1F3A] leading-none mt-0.5">$1.8B+</div>
-              <div className="text-[10.5px] text-slate-400 font-medium mt-1">Since 2016</div>
+              <div className="text-[22px] font-black text-[#0B1F3A] leading-none mt-0.5">{settings.stats_loans_approved || "$450M+"}</div>
+              <div className="text-[10.5px] text-slate-400 font-medium mt-1">{settings.stats_since_year || "Since 2019"}</div>
             </div>
           </motion.div>
 
@@ -1592,7 +1594,7 @@ export default function ClientHomePage({ settings = {}, pageHeroSettings, pageSe
       <SiteHeader settings={settings} />
 
       {/* ── HERO SLIDER SECTION ── */}
-      <HeroSlider slidesJson={pageHeroSettings?.slides} />
+      <HeroSlider slidesJson={pageHeroSettings?.slides} settings={settings} />
 
       {/* ── LENDER PANEL ── */}
       <section className="bg-white border-t border-slate-100 py-4">
@@ -1652,39 +1654,6 @@ export default function ClientHomePage({ settings = {}, pageHeroSettings, pageSe
                 <Link href="#" className="text-[#2563EB] text-[12px] font-bold inline-flex items-center gap-1 hover:underline whitespace-nowrap">
                   View all lenders <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
-              </div>
-            </div>
-
-            {/* Partnership Badges (Clean Premium Redesign) */}
-            <div className="border-t border-slate-200/60 pt-6">
-              <div className="text-center md:text-left mb-4 flex items-center gap-2">
-                <Shield className="w-4 h-4 text-[#10A3EB]" />
-                <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#10A3EB]">Credibility & Accreditations</span>
-              </div>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {[
-                  { title: "St.George Flame Broker", desc: "Top-tier lending privileges", color: "bg-red-500" },
-                  { title: "Westpac Platinum Broker", desc: "Elite priority channel", color: "bg-red-600" },
-                  { title: "CBA Elite Partner", desc: "Premium priority access", color: "bg-yellow-400" }
-                ].map((badge, idx) => (
-                  <div 
-                    key={idx} 
-                    className="flex items-center justify-center gap-3 p-3.5 rounded-xl border border-slate-100/80 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.02)]"
-                  >
-                    <div className="relative shrink-0 flex items-center justify-center">
-                      {idx === 0 ? (
-                        <FlameIcon />
-                      ) : (
-                        <span className={`w-2.5 h-2.5 rounded-full ${badge.color}`} />
-                      )}
-                    </div>
-                    <div className="flex flex-col text-center items-center">
-                      <span className="text-[#0B1F3A] font-extrabold text-[12px] leading-snug">{badge.title}</span>
-                      <span className="text-slate-400 text-[10px] font-medium leading-none mt-0.5">{badge.desc}</span>
-                    </div>
-                  </div>
-                ))}
               </div>
             </div>
           </motion.div>
@@ -2003,7 +1972,7 @@ export default function ClientHomePage({ settings = {}, pageHeroSettings, pageSe
       <WhyChooseUsSection />
 
       {/* ── FOUNDER & OWNER SECTION ── */}
-      <FounderProfileSection />
+      <FounderProfileSection settings={settings} />
 
       {/* ── AWARDS & RECOGNITION SECTION ── */}
       <section className="bg-white pb-16 pt-16 md:pb-20 border-t border-slate-100">
@@ -2331,15 +2300,20 @@ function WhyChooseUsSection({ pageSections = [] }: { pageSections?: string[] }) 
   );
 }
 
-function FounderProfileSection() {
+function FounderProfileSection({ settings = {} }: { settings?: Record<string, string> }) {
   const skills = [
     "Mortgage advisory and loan structuring",
+    "Healthcare professional lending",
     "Investment property finance",
     "Lender policy analysis",
     "Portfolio finance strategy",
-    "Refinancing and debt optimisation",
-    "Client advisory and relationship management"
+    "Refinancing and debt optimisation"
   ];
+
+  const founderName = settings.founder_name || "Aakash K C";
+  const founderTitle = settings.founder_title || "Aakash KC - Founder & Principal Broker | The Mortgage Mate";
+  const founderSubtitle = settings.founder_subtitle || "Your Multilingual Mortgage Mate";
+  const founderImage = settings.founder_image || "/images/aakash_new.png";
 
   return (
     <section className="relative overflow-hidden bg-slate-50/40 py-10 lg:py-12 border-t border-slate-100">
@@ -2358,10 +2332,10 @@ function FounderProfileSection() {
             {/* Aspect ratio wrapper for absolute placement of borderless photo */}
             <div className="relative w-full max-w-[440px] aspect-[3/4] overflow-visible self-center lg:self-start">
               <Image
-                src="/images/aakash_new.png"
-                alt="Aakash K C"
+                src={founderImage}
+                alt={founderTitle}
                 fill
-                className="object-cover object-top"
+                className="object-cover object-top rounded-2xl shadow-sm"
                 sizes="(max-width: 1024px) 100vw, 440px"
                 priority
               />
@@ -2416,7 +2390,7 @@ function FounderProfileSection() {
             {/* Bottom Quote / Strategy Call CTA */}
             <div className="border-l-4 border-blue-600 bg-blue-50/40 rounded-r-xl p-3.5 w-full max-w-[440px] self-center lg:self-start mt-2">
               <p className="text-[12px] italic text-[#0B1F3A] font-semibold leading-relaxed font-inter">
-                &quot;Whether you’re a first-home buyer or an experienced investor, I can guide you through every step of securing the right home loan. Contact me today for a free strategy consultation.&quot;
+                &quot;{settings.founder_quote || "Whether purchasing a first home, refinancing an existing loan or investing in property, I focus on understanding your circumstances and providing practical support throughout."}&quot;
               </p>
             </div>
 
@@ -2430,36 +2404,58 @@ function FounderProfileSection() {
               <span className="inline-flex items-center gap-1.5 bg-[#EBF5FF] text-[#2563EB] rounded-full px-3 py-1 text-[9px] font-bold uppercase tracking-widest shadow-sm">
                 <Star className="w-3 h-3 fill-[#2563EB]" /> Founder &amp; Principal Broker
               </span>
-              <span className="inline-flex items-center gap-1.5 bg-[#FFFBEB] text-[#D97706] rounded-full px-3 py-1 text-[9px] font-bold uppercase tracking-widest shadow-sm">
-                <TrendingUp className="w-3 h-3 text-[#D97706]" /> Investment Strategist
+              <span className="inline-flex items-center gap-1.5 bg-[#ECFDF5] text-[#0D9488] rounded-full px-3 py-1 text-[9px] font-bold uppercase tracking-widest shadow-sm">
+                <Shield className="w-3 h-3 text-[#0D9488]" /> The Mortgage Mate
               </span>
             </div>
 
             {/* Name & Headline */}
             <div>
               <h2 className="text-[#0B1F3A] text-[36px] sm:text-[44px] font-extrabold leading-[1.1] tracking-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                Aakash K C
+                {founderName}
               </h2>
-              <p className="text-[#2563EB] text-[14px] sm:text-[16px] font-bold mt-1.5 leading-snug">
-                Nepali Mortgage Broker in Australia | Helping First-Home Buyers &amp; Investors Nationwide
+              <p className="text-[#2563EB] text-[15px] sm:text-[17px] font-bold mt-1 leading-snug">
+                {founderSubtitle}
+              </p>
+              <p className="text-slate-500 text-[12.5px] sm:text-[13.5px] font-semibold mt-0.5">
+                {founderTitle}
               </p>
             </div>
 
             {/* Main Bio Paragraphs */}
             <div className="space-y-3.5 text-slate-600 text-[13px] sm:text-[14px] leading-relaxed font-inter">
               <p>
-                Aakash K C is a trusted Nepali mortgage and investment property broker at <strong>Mortgage Xperts</strong>, helping clients across Australia secure home loans and investment property finance. With direct access to <strong>40+ leading Australian lenders</strong>, he provides fast, personalised solutions tailored to each client&apos;s unique goals.
+                {settings.founder_bio_p1 || "As the Founder and Principal Broker of Mortgage Xperts, Aakash K C provides personalised home loan guidance to healthcare professionals, first-home buyers, homeowners and property investors across Australia."}
               </p>
               <p>
-                Aakash has helped multiple property investors purchase multiple properties each and has personally built a <strong>$4.5 million property portfolio over just 3 years</strong>. By combining real-world investment experience with expert mortgage guidance, he helps first-home buyers and seasoned investors make confident, informed financial decisions.
+                {settings.founder_bio_p2 || "With a particular focus on healthcare professionals, Aakash helps nurses, doctors, midwives, allied health professionals and aged-care workers navigate their home loan options. He understands how different employment arrangements, shift allowances, overtime and salary packaging can influence borrowing capacity and lender assessments."}
               </p>
               <p>
-                Trusted by hundreds of clients nationwide, Aakash is committed to simplifying the mortgage process, maximising opportunities, and delivering results.
+                {settings.founder_bio_p3 || "Known as The Mortgage Mate, Aakash believes mortgage guidance should be clear, accessible and tailored to each client's circumstances. With access to a panel of lenders, he helps clients compare suitable loan options, understand their borrowing capacity and make informed financial decisions."}
+              </p>
+              <p>
+                {settings.founder_bio_p4 || "Whether purchasing a first home, refinancing an existing loan or investing in property, Aakash focuses on understanding each client's financial circumstances, explaining available options and providing practical support throughout the lending process."}
+              </p>
+              <p>
+                {settings.founder_bio_p5 || "Mortgage Xperts proudly assists clients in English, Nepali and Hindi, providing personalised support from the initial consultation through to settlement and beyond."}
               </p>
             </div>
 
+            {/* Serving Territories & Brand Tagline */}
+            <div className="mt-2 pt-3 border-t border-slate-100 flex flex-col gap-1 bg-slate-50/60 p-3.5 rounded-xl border border-slate-150">
+              <div className="text-[10px] font-black uppercase tracking-wider text-[#0B1F3A]">
+                {settings.founder_territories_title || "Serving All Australian States and Territories"}
+              </div>
+              <div className="text-[11.5px] font-semibold text-slate-600">
+                {settings.founder_territories || "Sydney | Melbourne | Brisbane | Perth | Adelaide | Canberra | Hobart | Darwin | Nationwide"}
+              </div>
+              <div className="text-[12px] font-black text-[#2563EB] mt-0.5">
+                {settings.founder_tagline || "Mortgage Xperts - Empowering Better Decisions."}
+              </div>
+            </div>
+
             {/* Experience & Skills List */}
-            <div className="mt-1">
+            <div className="mt-2">
               <div className="text-[11px] font-extrabold text-[#0B1F3A] uppercase tracking-wider mb-3 flex items-center gap-2">
                 <svg viewBox="0 0 24 24" fill="none" className="w-3.5 h-3.5 text-blue-600 shrink-0" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 20h9" />
@@ -2496,25 +2492,25 @@ function FounderProfileSection() {
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Phone */}
-                <a href="tel:0450240757" className="flex items-center gap-3 group text-[#0B1F3A] hover:text-[#2563EB] transition-colors">
+                <a href={`tel:${(settings.header_phone || "0450240757").replace(/\s+/g, "")}`} className="flex items-center gap-3 group text-[#0B1F3A] hover:text-[#2563EB] transition-colors">
                   <div className="w-8.5 h-8.5 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-[#2563EB] group-hover:bg-blue-50 transition-colors shrink-0">
                     <Phone className="w-4 h-4" />
                   </div>
                   <div className="min-w-0">
                     <div className="text-[9px] text-slate-400 uppercase tracking-wider font-bold leading-none">Call Mobile</div>
-                    <div className="text-[13px] font-extrabold mt-0.5">0450 240 757</div>
+                    <div className="text-[13px] font-extrabold mt-0.5">{settings.header_phone || "0450 240 757"}</div>
                   </div>
                 </a>
 
                 {/* Email */}
-                <a href="mailto:mortgage@mortgagexperts.com.au" className="flex items-center gap-3 group text-[#0B1F3A] hover:text-[#2563EB] transition-colors">
+                <a href={`mailto:${settings.support_email || "mortgage@mortgagexperts.com.au"}`} className="flex items-center gap-3 group text-[#0B1F3A] hover:text-[#2563EB] transition-colors">
                   <div className="w-8.5 h-8.5 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-[#2563EB] group-hover:bg-blue-50 transition-colors shrink-0">
                     <Mail className="w-4 h-4" />
                   </div>
                   <div className="min-w-0">
                     <div className="text-[9px] text-slate-400 uppercase tracking-wider font-bold leading-none">Email Address</div>
                     <div className="text-[12.5px] font-extrabold mt-0.5 truncate">
-                      mortgage@mortgagexperts.com.au
+                      {settings.support_email || "mortgage@mortgagexperts.com.au"}
                     </div>
                   </div>
                 </a>
@@ -2544,7 +2540,7 @@ function FounderProfileSection() {
                   <div className="min-w-0">
                     <div className="text-[9px] text-slate-400 uppercase tracking-wider font-bold leading-none">Office Address</div>
                     <div className="text-[12px] font-bold mt-0.5 leading-snug">
-                      57 Anomia Road, JINDALEE, WA 6036
+                      {settings.footer_address || "57 Anomia Road, JINDALEE, WA 6036"}
                     </div>
                   </div>
                 </div>
@@ -2552,7 +2548,7 @@ function FounderProfileSection() {
 
               {/* Service Focus Badges */}
               <div className="flex flex-wrap gap-2 pt-3 border-t border-slate-100">
-                {["First Home Buyers", "Investment Loan", "Refinancing"].map((tag) => (
+                {["Healthcare Professionals", "First Home Buyers", "Property Investment", "Refinancing"].map((tag) => (
                   <span key={tag} className="bg-blue-50/50 border border-blue-100/50 rounded-lg px-2.5 py-1 text-[9px] font-extrabold text-[#2563EB] uppercase tracking-widest shadow-sm">
                     {tag}
                   </span>
@@ -2586,7 +2582,7 @@ function FounderProfileSection() {
               </div>
             </div>
 
-            {/* Metric 2 - Clients */}
+            {/* Metric 2 - Families Helped */}
             <div className="flex flex-col items-center text-center lg:flex-row lg:items-center lg:text-left gap-3 lg:gap-4 lg:pl-8">
               <div className="w-11 h-11 xs:w-12 xs:h-12 rounded-full bg-blue-50 flex items-center justify-center shrink-0 text-blue-600 self-center">
                 <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
@@ -2597,13 +2593,17 @@ function FounderProfileSection() {
                 </svg>
               </div>
               <div>
-                <div className="text-[18px] xs:text-[20px] font-black text-[#0B1F3A] leading-tight">950+</div>
-                <div className="text-[11.5px] xs:text-[12px] font-extrabold text-[#0B1F3A] mt-0.5">Happy Clients</div>
+                <div className="text-[18px] xs:text-[20px] font-black text-[#0B1F3A] leading-tight">
+                  {settings.stats_families_helped_val || "500+"}
+                </div>
+                <div className="text-[11.5px] xs:text-[12px] font-extrabold text-[#0B1F3A] mt-0.5">
+                  {settings.stats_families_helped_label || "Families Helped"}
+                </div>
                 <div className="text-[9px] xs:text-[10px] text-slate-400 font-semibold mt-0.5">Across Australia</div>
               </div>
             </div>
 
-            {/* Metric 3 - Settled */}
+            {/* Metric 3 - Loans Settled */}
             <div className="flex flex-col items-center text-center lg:flex-row lg:items-center lg:text-left gap-3 lg:gap-4 lg:pl-8">
               <div className="w-11 h-11 xs:w-12 xs:h-12 rounded-full bg-blue-50 flex items-center justify-center shrink-0 text-blue-600 self-center">
                 {/* Handshake SVG */}
@@ -2615,7 +2615,9 @@ function FounderProfileSection() {
                 </svg>
               </div>
               <div>
-                <div className="text-[18px] xs:text-[20px] font-black text-[#0B1F3A] leading-tight">760M+</div>
+                <div className="text-[18px] xs:text-[20px] font-black text-[#0B1F3A] leading-tight">
+                  {settings.stats_loans_approved || "$450M+"}
+                </div>
                 <div className="text-[11.5px] xs:text-[12px] font-extrabold text-[#0B1F3A] mt-0.5">Loans Settled</div>
                 <div className="text-[9px] xs:text-[10px] text-slate-400 font-semibold mt-0.5">For Clients</div>
               </div>
@@ -2631,9 +2633,13 @@ function FounderProfileSection() {
                 </svg>
               </div>
               <div>
-                <div className="text-[18px] xs:text-[20px] font-black text-[#0B1F3A] leading-tight">10 + Years</div>
-                <div className="text-[11.5px] xs:text-[12px] font-extrabold text-[#0B1F3A] mt-0.5">Industry Experience</div>
-                <div className="text-[9px] xs:text-[10px] text-slate-400 font-semibold mt-0.5">In finance &amp; Lending</div>
+                <div className="text-[18px] xs:text-[20px] font-black text-[#0B1F3A] leading-tight">
+                  {settings.stats_experience_val || "7+ Years"}
+                </div>
+                <div className="text-[11.5px] xs:text-[12px] font-extrabold text-[#0B1F3A] mt-0.5">
+                  {settings.stats_experience_label || "Personal Property Investment Experience"}
+                </div>
+                <div className="text-[9px] xs:text-[10px] text-slate-400 font-semibold mt-0.5">Across Australia</div>
               </div>
             </div>
 

@@ -6,20 +6,20 @@ export const cityDataMap: Record<string, CityData> = {
     state: "New South Wales",
     stateShort: "NSW",
     slug: "sydney",
-    tagline: "Expert Brokers. Sydney-Smart Strategy.",
+    tagline: "Personalised Home Loan Solutions",
     description:
-      "Sydney's property market is one of the most competitive in the world. Our Sydney-based mortgage brokers have deep knowledge of the local lending landscape — from the inner west to the Northern Beaches — to help you secure the right loan at the best rate.",
+      "Buying your first home, refinancing or investing in Sydney? Mortgage Xperts helps you compare suitable home loan options, understand your borrowing capacity and make informed property finance decisions. We assist home buyers, healthcare professionals, homeowners, investors and self-employed borrowers across Greater Sydney and regional New South Wales, with personalised consultations by phone and online.",
     heroImage: "/images/sydney_real.png",
     accentColor: "#2563EB",
     accentLight: "#EFF6FF",
     accentDark: "#1e3a8a",
-    medianHousePrice: "$1.42M",
-    avgLoanSize: "$890K",
-    approvalRate: "94%",
-    clientsHelped: "600+",
-    marketInsight: "Sydney's Competitive Market Demands the Right Lender",
+    medianHousePrice: "",
+    avgLoanSize: "",
+    approvalRate: "",
+    clientsHelped: "",
+    marketInsight: "Understanding Home Loans in Sydney",
     marketDetail:
-      "With Sydney's median house price sitting above $1.4M, navigating lenders who allow higher LVRs and offer competitive rates for high-value loans is critical. Our brokers know which lenders treat Sydney properties favourably.",
+      "Sydney property buyers can face very different financing requirements depending on whether they are purchasing an apartment, established house, townhouse or newly constructed home. For apartment buyers, lenders may consider factors such as property size, location, building characteristics and strata information. For borrowers purchasing a higher-value home, deposit requirements, loan-to-value ratio and Lenders Mortgage Insurance (LMI) may become particularly important. Mortgage Xperts compares suitable home loan products and lending policies across our lender panel, helping you understand the financing implications of your chosen property and financial position.",
     suburbs: [
       "Parramatta", "Chatswood", "Bondi", "Strathfield", "Burwood", "Liverpool",
       "Penrith", "Castle Hill", "Blacktown", "Hurstville", "Campbelltown", "Manly",
@@ -28,27 +28,39 @@ export const cityDataMap: Record<string, CityData> = {
       "Cronulla", "Miranda", "Baulkham Hills", "Kellyville", "Richmond", "Kensington"
     ],
     localTips: [
-      { title: "Stamp Duty Savings", desc: "NSW offers stamp duty exemptions for first home buyers on properties under $800K — our brokers ensure you claim every concession." },
-      { title: "High-Value Loan Access", desc: "We work with lenders who specialize in Sydney's $1M+ property segment with more flexible LVR policies." },
-      { title: "First Home Guarantee", desc: "Eligible Sydney buyers can purchase with a 5% deposit with no LMI via the federal scheme — we manage the whole process." },
-      { title: "Nepali Community Focus", desc: "We proudly serve Sydney's large Nepali community with multilingual support and culturally aware loan advice." },
+      {
+        title: "First Home Buyer Support in New South Wales",
+        desc: "Eligible first home buyers purchasing a new or established home valued up to $800,000 may qualify for a transfer duty exemption under the NSW First Home Buyers Assistance Scheme. Concessions may also apply to qualifying homes valued above $800,000 and below $1 million. Understanding these potential savings, together with your deposit, purchase costs and borrowing capacity, can help you establish a realistic property budget before making an offer."
+      },
+      {
+        title: "Home Loans for Sydney Healthcare Professionals",
+        desc: "Nurses, midwives, doctors and other healthcare professionals may receive employment income that includes base salary, overtime, shift allowances and penalty rates. Different lenders can assess these income components differently. Mortgage Xperts reviews suitable lender policies and explores potential LMI concessions for eligible professions, taking account of your individual circumstances. Whether you work in a hospital, community healthcare service or private practice, we help you assess your borrowing options."
+      },
+      {
+        title: "Compare 40+ Lenders",
+        desc: "We compare suitable home loan products and lending policies across our comprehensive lender panel, helping you understand the financing implications of your chosen property and financial position."
+      },
+      {
+        title: "Personalised Consultations",
+        desc: "From first home purchases and investment loans to refinancing and construction finance, we offer personalised assistance by phone and online throughout Greater Sydney and regional NSW."
+      }
     ],
     teamLead: {
-      name: "Arjun Thapa",
-      title: "Senior Mortgage Broker — Sydney Branch",
-      image: "/images/team_sydney.png",
-      bio: "Arjun has helped over 600 Sydney families secure home loans over 8 years in the industry. A specialist in high-value inner-city and western Sydney properties, he navigates complex lending scenarios with confidence.",
+      name: "Aakash K C",
+      title: "Founder & Principal Broker",
+      image: "/images/aakash_new.png",
+      bio: "As the Founder and Principal Broker of Mortgage Xperts, Aakash provides personalised home loan guidance to healthcare professionals, first-home buyers, homeowners and property investors across Greater Sydney, New South Wales and Australia-wide.",
     },
     uniqueAdvantages: [
-      { iconKey: "MapPin", title: "Sydney Market Knowledge", desc: "Deep expertise in inner-west, northern beaches, western Sydney and CBD property lending nuances." },
-      { iconKey: "Users", title: "Multilingual Team", desc: "We assist Sydney's diverse communities in English, Nepali, Hindi, and more — no lost-in-translation delays." },
-      { iconKey: "TrendingUp", title: "High LVR Specialists", desc: "Access to lenders who lend up to 95% LVR on Sydney properties without excessive LMI loading." },
-      { iconKey: "Clock", title: "Same-Day Assessment", desc: "Submit your details online and receive a same-day borrowing capacity assessment." },
-      { iconKey: "Shield", title: "Zero Broker Fees", desc: "We are paid by the lender — you pay absolutely nothing for our expert advisory service." },
-      { iconKey: "Award", title: "40+ Lender Panel", desc: "We compare 40+ banks and non-bank lenders to find the sharpest rate for your Sydney property." },
+      { iconKey: "MapPin", title: "Sydney Market Understanding", desc: "Expert guidance on apartment strata requirements, established houses, and new constructions across Greater Sydney." },
+      { iconKey: "Users", title: "Multilingual Guidance", desc: "We proudly assist clients in English, Nepali and Hindi, offering accessible advice tailored to your circumstances." },
+      { iconKey: "TrendingUp", title: "Tailored Loan Structuring", desc: "Careful assessment of deposit requirements, loan-to-value ratios (LVR) and potential LMI concessions." },
+      { iconKey: "Clock", title: "Prompt Assessments", desc: "Request your free assessment online for rapid review of your borrowing capacity and loan options." },
+      { iconKey: "Shield", title: "No Client Fees", desc: "Our residential mortgage advisory service is paid by the lender, with zero fees charged to you." },
+      { iconKey: "Award", title: "40+ Lender Panel", desc: "We compare suitable loan products and policies across 40+ leading Australian banks and lenders." },
     ],
     nearbyAreas: ["Blue Mountains", "Central Coast", "Illawarra", "Hunter Valley", "Southern Highlands"],
-    officeAddress: "Level 5, 1 Market Street, Sydney NSW 2000",
+    officeAddress: "Online & Australia-Wide",
     officePhone: "0450 240 757",
   },
 
@@ -108,20 +120,20 @@ export const cityDataMap: Record<string, CityData> = {
     state: "Queensland",
     stateShort: "QLD",
     slug: "brisbane",
-    tagline: "Queensland's Fastest-Growing Market. Our Home.",
+    tagline: "Home Loans for Buyers, Owners and Investors",
     description:
-      "Brisbane is booming — fuelled by the 2032 Olympics pipeline and interstate migration. Our Brisbane brokers are embedded in the local market, helping buyers, investors and refinancers capitalise on QLD's incredible growth story.",
+      "Planning to buy or build in Brisbane? Mortgage Xperts helps you assess your borrowing capacity, compare home loan options and understand the financial commitments involved in purchasing property. We support first home buyers, healthcare professionals, property investors, existing homeowners and self-employed borrowers across Brisbane and Queensland.",
     heroImage: "/images/brisbane_real.png",
     accentColor: "#D97706",
     accentLight: "#FFFBEB",
     accentDark: "#92400e",
-    medianHousePrice: "$862K",
-    avgLoanSize: "$580K",
-    approvalRate: "96%",
-    clientsHelped: "400+",
-    marketInsight: "Brisbane's Olympic Growth Boom Needs a Broker Who Moves Fast",
+    medianHousePrice: "",
+    avgLoanSize: "",
+    approvalRate: "",
+    clientsHelped: "",
+    marketInsight: "Buying Established Homes and New Builds in Brisbane",
     marketDetail:
-      "Queensland property prices have surged over 40% in 3 years. Brisbane investors and first home buyers need a broker who can quickly assess lender valuations, navigate LMI for growth suburbs, and lock in pre-approvals before properties are snapped up.",
+      "A borrower purchasing an established home may face different upfront costs and government assistance options from someone purchasing a newly built home or vacant residential land. Construction loans also require additional planning. Depending on the lender, building funds may be released in stages as construction progresses, and repayments during construction may differ from those on a completed-property loan. Mortgage Xperts helps borrowers compare suitable construction, owner-occupier and investment loan options while considering their deposit, income and ongoing expenses.",
     suburbs: [
       "Fortitude Valley", "Chermside", "Carindale", "Sunnybank", "Aspley", "Mt Gravatt",
       "Toowong", "Indooroopilly", "Logan", "Ipswich", "Redcliffe", "Strathpine",
@@ -130,27 +142,39 @@ export const cityDataMap: Record<string, CityData> = {
       "Moorooka", "Eight Mile Plains", "Calamvale", "Gold Coast", "Sunshine Coast"
     ],
     localTips: [
-      { title: "QLD First Home Owner Grant", desc: "$30,000 grant available for eligible first home buyers building a new home in Queensland — we manage the entire application." },
-      { title: "Olympic Infrastructure Zones", desc: "Properties near Olympic precincts and new infrastructure corridors are lender favourites — we know which postcodes to target." },
-      { title: "Interstate Buyer Support", desc: "Many Brisbane buyers are relocating from Sydney and Melbourne — we handle interstate purchases remotely with full support." },
-      { title: "Investment Loan Strategy", desc: "Brisbane's rental yields are among Australia's best. We structure interest-only and investment loan packages to maximise returns." },
+      {
+        title: "Queensland First Home Buyer Concessions",
+        desc: "Queensland provides different transfer duty concessions depending on the property type. Eligible first home buyers purchasing an established property may receive a transfer duty concession. For qualifying new homes or vacant residential land transactions entered into from 1 May 2025, a full transfer duty concession may be available. These distinctions can influence the amount you need to save before purchasing."
+      },
+      {
+        title: "Healthcare Professional Home Loans in Brisbane",
+        desc: "For nurses, midwives, doctors and other eligible healthcare professionals, borrowing capacity may depend on how a lender assesses regular salary, overtime and roster-based earnings. Mortgage Xperts compares relevant lender policies and investigates potential benefits such as profession-specific LMI concessions, subject to eligibility. We also assist healthcare professionals with refinancing, purchasing investment properties and planning future home upgrades."
+      },
+      {
+        title: "Construction & New Build Planning",
+        desc: "Building in Brisbane requires coordinated progress drawdowns, builder contract reviews, and construction loan structuring to ensure smooth fund releases from slab down to handover."
+      },
+      {
+        title: "Personalised Online & Phone Consultations",
+        desc: "Access tailored mortgage guidance from the comfort of your home. We assist clients across Greater Brisbane, the Gold Coast, Sunshine Coast, and regional Queensland."
+      }
     ],
     teamLead: {
-      name: "Ramesh Gurung",
-      title: "Senior Mortgage Broker — Brisbane Branch",
-      image: "/images/team_brisbane.png",
-      bio: "Ramesh has guided over 400 Queensland families through the home buying process. He specialises in QLD government grants, investor lending and helping interstate migrants settle into Brisbane.",
+      name: "Aakash K C",
+      title: "Founder & Principal Broker",
+      image: "/images/aakash_new.png",
+      bio: "As the Founder and Principal Broker of Mortgage Xperts, Aakash provides personalised home loan guidance to first-home buyers, healthcare professionals, existing homeowners and property investors across Brisbane, Queensland and Australia-wide.",
     },
     uniqueAdvantages: [
-      { iconKey: "TrendingUp", title: "Olympic Growth Expertise", desc: "We identify lender-preferred Olympic corridor suburbs and structure loans to maximise capital growth potential." },
-      { iconKey: "MapPin", title: "Southeast QLD Network", desc: "From Brisbane CBD to Gold Coast and Sunshine Coast — we service all of South East Queensland." },
-      { iconKey: "Home", title: "$30K FHOG Specialists", desc: "We manage Queensland's First Home Owner Grant applications end-to-end with zero paperwork stress." },
-      { iconKey: "Users", title: "Interstate Relocation", desc: "Helping Sydney and Melbourne buyers purchase in Brisbane remotely — fully digital, no need to fly up." },
-      { iconKey: "Shield", title: "Investor Loan Experts", desc: "Interest-only and investment structuring tailored to Brisbane's exceptional rental yield market." },
-      { iconKey: "Award", title: "Same-Day Response", desc: "In Brisbane's fast-moving market, speed matters — we respond same day, every day." },
+      { iconKey: "TrendingUp", title: "Construction & Established Loans", desc: "Expert structuring for both completed properties and staged construction drawdowns across Queensland." },
+      { iconKey: "MapPin", title: "Brisbane & QLD Reach", desc: "From Brisbane CBD and middle rings to Logan, Ipswich, Gold Coast, and Sunshine Coast." },
+      { iconKey: "Home", title: "Transfer Duty Concession Guidance", desc: "Clear navigation of Queensland established home concessions and new build/land exemptions." },
+      { iconKey: "Users", title: "Healthcare Lending Expertise", desc: "Assessing overtime, shift penalties, and LMI waiver eligibility for QLD healthcare professionals." },
+      { iconKey: "Shield", title: "Zero Broker Fees", desc: "Our residential mortgage advisory service is 100% free to you, paid entirely by the lender." },
+      { iconKey: "Award", title: "40+ Lender Comparisons", desc: "We compare options across 40+ leading Australian banks and specialist lenders for Queensland buyers." },
     ],
     nearbyAreas: ["Gold Coast", "Sunshine Coast", "Toowoomba", "Ipswich", "Logan", "Moreton Bay"],
-    officeAddress: "Level 4, 333 Adelaide Street, Brisbane QLD 4000",
+    officeAddress: "Online & Australia-Wide",
     officePhone: "0450 240 757",
   },
 

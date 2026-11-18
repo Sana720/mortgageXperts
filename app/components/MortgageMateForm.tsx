@@ -671,7 +671,7 @@ export function MortgageMateForm({
                   </div>
                 </div>
                 <p className="text-[10px] text-slate-550 font-semibold leading-tight mt-0.5">
-                  <strong className="text-slate-800 font-bold">4.9</strong>/5 (760+ Reviews)
+                  <strong className="text-slate-800 font-bold">4.9</strong>/5 (100+ Reviews)
                 </p>
               </div>
             </div>

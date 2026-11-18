@@ -581,39 +581,6 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
               </div>
             </div>
           </div>
-
-          {/* Partnership Badges (Clean Premium Redesign) */}
-          <div className="border-t border-slate-200/60 pt-6">
-            <div className="text-center md:text-left mb-4">
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#10A3EB]">Credibility & Accreditations</span>
-              <h4 className="text-[#0B1F3A] text-lg font-black mt-1 font-montserrat">Premium Broker Status</h4>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {[
-                { title: "St.George Flame Broker", desc: "Top-tier lending privileges", color: "bg-red-500", lightBg: "bg-red-50/40" },
-                { title: "Westpac Platinum Broker", desc: "Elite priority channel", color: "bg-red-600", lightBg: "bg-red-50/20" },
-                { title: "CBA Elite Partner", desc: "Premium priority access", color: "bg-yellow-400", lightBg: "bg-amber-50/30" }
-              ].map((badge, idx) => (
-                <div
-                  key={idx}
-                  className={`flex items-center justify-center gap-3 p-3.5 rounded-xl border border-slate-100/80 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.02)]`}
-                >
-                  <div className="relative shrink-0 flex items-center justify-center">
-                    {idx === 0 ? (
-                      <FlameIcon />
-                    ) : (
-                      <span className={`w-2.5 h-2.5 rounded-full ${badge.color}`} />
-                    )}
-                  </div>
-                  <div className="flex flex-col text-center items-center">
-                    <span className="text-[#0B1F3A] font-extrabold text-[12px] leading-snug">{badge.title}</span>
-                    <span className="text-slate-400 text-[10px] font-medium leading-none mt-0.5">{badge.desc}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
