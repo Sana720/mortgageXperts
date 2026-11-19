@@ -35,13 +35,13 @@ export async function generateMetadata({
   const { settings, pageHeroSettings } = await loadPageData(pagePath);
 
   return buildPageMetadata(pagePath, pageHeroSettings, settings, {
-    title: `Mortgage Broker in ${suburbName}, ${cityData.city} | Home Loans`,
-    description: `Looking for a home loan in ${suburbName}? Our trusted ${cityData.city} mortgage brokers compare 40+ lenders to secure the sharpest rates for ${suburbName} first home buyers and investors.`,
+    title: `Nepali Mortgage Broker in ${suburbName}, ${cityData.city} | Home Loans`,
+    description: `Looking for a home loan in ${suburbName}? Our trusted ${cityData.city} Nepali mortgage brokers compare 40+ lenders to secure the sharpest rates for ${suburbName} first home buyers and investors.`,
     keywords: [
+      `Nepali mortgage broker ${suburbName}`,
       `mortgage broker ${suburbName}`,
       `home loans ${suburbName}`,
       `best mortgage broker ${suburbName}`,
-      `Nepali mortgage broker ${suburbName}`,
       `refinance home loan ${suburbName}`,
     ],
   });
@@ -80,8 +80,8 @@ export default async function SuburbPage({
   const { settings } = await loadPageData(pagePath);
 
   const jsonLd = buildJsonLd(
-    `Mortgage Broker in ${suburbName} - Mortgage Xperts`,
-    `Looking for the best mortgage broker in ${suburbName}? Compare 40+ lenders and secure the right rate with Mortgage Xperts ${cityData.city}.`,
+    `Nepali Mortgage Broker in ${suburbName} - Mortgage Xperts`,
+    `Looking for the best Nepali mortgage broker in ${suburbName}? Compare 40+ lenders and secure the right rate with Mortgage Xperts ${cityData.city}.`,
     pagePath,
     settings,
     [

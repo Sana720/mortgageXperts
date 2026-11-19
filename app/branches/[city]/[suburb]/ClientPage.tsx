@@ -25,6 +25,7 @@ import { LenderPanelSection } from "@/app/components/LenderPanelSection";
 import { MarketOverviewSection } from "@/app/components/MarketOverviewSection";
 import { useOnboardingModal } from "@/app/components/OnboardingModalContext";
 import { CityData } from "../ClientPage";
+import { getSuburbMarketContent } from "./suburbMarketContent";
 
 interface SuburbClientPageProps {
   cityData: CityData;
@@ -78,12 +79,12 @@ export default function SuburbClientPage({
                 className="text-[#0B1F3A] text-[36px] sm:text-[48px] lg:text-[56px] font-black leading-[1.05] tracking-tight"
                 style={{ fontFamily: "var(--font-montserrat, sans-serif)" }}
               >
-                Mortgage Broker in <span style={{ color: cityData.accentColor }}>{suburbName}</span>
+                Nepali Mortgage Broker in <span style={{ color: cityData.accentColor }}>{suburbName}</span>
               </h1>
 
               {/* Description */}
               <p className="text-slate-500 text-[14px] sm:text-[15px] leading-relaxed max-w-xl">
-                Looking to secure a home loan in <strong>{suburbName}</strong>? Our experienced mortgage brokers understand the {cityData.city} property landscape. We compare 40+ leading Australian banks and lenders to secure a competitive rate and tailors a lending strategy specific to your financial goals.
+                Looking to secure a home loan in <strong>{suburbName}</strong>? Our experienced Nepali mortgage brokers understand the {cityData.city} property landscape. We compare 40+ leading Australian banks and lenders to secure a competitive rate and tailor a lending strategy specific to your financial goals.
               </p>
 
               {/* Rating Badges */}
@@ -98,7 +99,7 @@ export default function SuburbClientPage({
                         <Star key={i} className="w-2.5 h-2.5 text-[#FBBF24] fill-[#FBBF24]" />
                       ))}
                     </div>
-                    <div className="text-[10px] text-slate-500 font-bold mt-0.5">100+ reviews - Google Reviews</div>
+                    <div className="text-[10px] text-slate-500 font-bold mt-0.5">5.0 out of 100+ reviews - Google Reviews</div>
                   </div>
                 </div>
                 <div className="w-px h-6 bg-slate-200 hidden sm:block" />
@@ -112,7 +113,7 @@ export default function SuburbClientPage({
                         <Star key={i} className="w-2.5 h-2.5 text-[#FBBF24] fill-[#FBBF24]" />
                       ))}
                     </div>
-                    <div className="text-[10px] text-slate-500 font-bold mt-0.5">5/5 (230+ Facebook Reviews)</div>
+                    <div className="text-[10px] text-slate-500 font-bold mt-0.5">5.0 out of 15+ reviews. Facebook</div>
                   </div>
                 </div>
               </div>
@@ -168,6 +169,7 @@ export default function SuburbClientPage({
         state={cityData.state}
         accentColor={cityData.accentColor}
         accentLight={cityData.accentLight}
+        customContent={getSuburbMarketContent(suburbName, cityData.city, cityData.state, cityData.stateShort)}
       />
 
       {/* ── ROADMAP / PROCESS SECTION ── */}

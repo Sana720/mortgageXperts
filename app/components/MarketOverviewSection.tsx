@@ -10,6 +10,7 @@ interface MarketOverviewSectionProps {
   state: string;
   accentColor?: string;
   accentLight?: string;
+  customContent?: React.ReactNode;
 }
 
 const EASE_OUT = [0.25, 0.1, 0.25, 1] as const;
@@ -19,6 +20,7 @@ export function MarketOverviewSection({
   state = "South Australia",
   accentColor = "#2563EB",
   accentLight = "#EFF6FF",
+  customContent,
 }: MarketOverviewSectionProps) {
   const { openModal } = useOnboardingModal();
 
@@ -54,15 +56,21 @@ export function MarketOverviewSection({
 
             {/* Paragraph Content */}
             <div className="space-y-5 text-slate-600 text-[15px] sm:text-[15.5px] leading-relaxed pt-2">
-              <p>
-                Securing property in {state} demands a tailored approach to finance. Elements such as your borrowing limits, upfront savings, career type, and ongoing lifestyle costs heavily influence the specific interest rates and lending policies available to your household.
-              </p>
-              <p>
-                Mortgage Xperts delivers specialized mortgage strategies for first-time buyers, seasoned investors, residential upgraders, self-employed business owners, and healthcare professionals throughout {city} and regional {state}. Instead of restricting your choices to a single bank&apos;s rigid lending guidelines, our {city} team unlocks competitive financing options by analyzing products across a diverse network of more than 40 premier Australian banks and non-bank lenders.
-              </p>
-              <p>
-                We pay close attention to industry-specific benefits, such as maximizing complex shift or overtime incomes and securing Lenders Mortgage Insurance (LMI) waivers for eligible medical and corporate professionals. Whether your goal is to purchase an existing family home in {city}&apos;s outer corridors, optimize your cash flow through refinancing, acquire a strategic investment unit, or fund a brand-new house and land package, our expert advisors manage the entire lending process from your very first consultation until the keys are in your hand at settlement.
-              </p>
+              {customContent ? (
+                customContent
+              ) : (
+                <>
+                  <p>
+                    Securing property in {state} demands a tailored approach to finance. Elements such as your borrowing limits, upfront savings, career type, and ongoing lifestyle costs heavily influence the specific interest rates and lending policies available to your household.
+                  </p>
+                  <p>
+                    Mortgage Xperts delivers specialized mortgage strategies for first-time buyers, seasoned investors, residential upgraders, self-employed business owners, and healthcare professionals throughout {city} and regional {state}. Instead of restricting your choices to a single bank&apos;s rigid lending guidelines, our {city} team unlocks competitive financing options by analyzing products across a diverse network of more than 40 premier Australian banks and non-bank lenders.
+                  </p>
+                  <p>
+                    We pay close attention to industry-specific benefits, such as maximizing complex shift or overtime incomes and securing Lenders Mortgage Insurance (LMI) waivers for eligible medical and corporate professionals. Whether your goal is to purchase an existing family home in {city}&apos;s outer corridors, optimize your cash flow through refinancing, acquire a strategic investment unit, or fund a brand-new house and land package, our expert advisors manage the entire lending process from your very first consultation until the keys are in your hand at settlement.
+                  </p>
+                </>
+              )}
             </div>
           </motion.div>
 
