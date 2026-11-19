@@ -31,8 +31,6 @@ import {
 } from "lucide-react";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
-import { RepaymentCalculatorSection } from "../components/RepaymentCalculatorSection";
-import { RoadmapSection } from "../components/RoadmapSection";
 import { TestimonialSection } from "../components/TestimonialSection";
 import { MortgageMateForm } from "../components/MortgageMateForm";
 
@@ -69,7 +67,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
 
   const proofStats = [
     { label: "Client Rating", value: "4.9/5" },
-    { label: "Client Families", value: "1,200+" },
+    { label: "Client Families", value: "500+" },
     { label: "Lender Panel", value: "40+" }
   ];
 
@@ -93,32 +91,32 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
 
   const leadFaqs = [
     {
-      q: "Who is The Mortgage Mate?",
-      a: "I’m Aakash, the Founder and Principal Broker at Mortgage Xperts. As The Mortgage Mate, I personally help clients understand their home-loan options and guide them through the lending process."
+      q: "Who will assist me with my home loan?",
+      a: "I’m Aakash K C, Founder and Principal Broker of Mortgage Xperts, also known as The Mortgage Mate. I personally help clients understand their home loan options, compare suitable lenders and navigate the lending process, from initial assessment through to settlement."
     },
     {
       q: "Is the Mortgage Xperts service free?",
-      a: "Yes. Our mortgage broking service is free to you—from the first assessment through to loan settlement. Mortgage Xperts is paid a commission by the lender when your loan settles, so you do not pay us a broker."
+      a: "Yes. Mortgage Xperts provides mortgage broking services at no cost to you, including your initial assessment, lender comparisons, loan application assistance and ongoing support. We are generally paid a commission by the lender when your loan settles. Any applicable fees or costs associated with your loan will be explained before you proceed."
     },
     {
       q: "Why do I need to provide my contact details?",
-      a: "Your details allow me to connect your answers with your financial profile, review your circumstances and contact you with relevant next steps. It also means you will not need to repeat the same information when we speak."
+      a: "Your contact details allow us to connect your enquiry with your assessment, clarify any information required and contact you with personalised guidance. We handle your personal information in accordance with our Privacy Policy."
     },
     {
       q: "What happens after I submit the assessment?",
-      a: "After submitting the initial assessment, you will continue to our secure Middle Finance portal to complete your financial profile. I will then personally review your information and contact you to discuss your goals, available options and next steps."
+      a: "Once you submit your assessment, your enquiry is received by Mortgage Xperts. You may then be directed to our secure finance platform to complete your financial profile. We review the information provided and contact you to discuss suitable home loan options and the next steps."
     },
     {
       q: "Who will review my information?",
-      a: "Your information will be personally reviewed by me, Aakash—the Founder and Principal Broker at Mortgage Xperts. You will receive guidance based on your circumstances, rather than a generic automated response."
+      a: "Your assessment will be personally reviewed by Aakash K C, Founder and Principal Broker of Mortgage Xperts. Where necessary, information may also be processed through our authorised technology and lending partners to assist with your assessment and loan application, subject to applicable privacy and consent requirements."
     },
     {
-      q: "Can first-home buyers, investors and refinancers use this service?",
-      a: "Absolutely. Whether you are buying your first home, purchasing an investment property or reviewing your existing loan, I can help you explore options suited to your circumstances and goals. Lending options remain subject to lender eligibility and assessment criteria."
+      q: "Can first home buyers, investors and refinancers use this service?",
+      a: "Absolutely. Mortgage Xperts assists first home buyers, existing homeowners, property investors, healthcare professionals and self-employed borrowers. Whether you are purchasing a property, refinancing an existing mortgage, building a home or exploring your borrowing capacity, our assessment can help you understand your available options."
     },
     {
       q: "Am I obligated to proceed?",
-      a: "No. The initial assessment and strategy call are designed to help you understand your options. You are under no obligation to submit a loan application or proceed with any recommendation."
+      a: "No. Your assessment is free and comes with no obligation to proceed. You can review your options, ask questions and decide whether to move forward when you are ready."
     }
   ];
 
@@ -161,7 +159,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
 
   return (
     <div className="min-h-screen bg-white flex flex-col font-inter">
-      <SiteHeader isSticky={true} noNavigation={true} />
+      <SiteHeader isSticky={true} noNavigation={true} hidePhone={true} />
 
       {/* Main Profile & Multi-step Section */}
       <main id="lead-form" className="flex-1 max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 py-8 lg:py-0 lg:h-[calc(100vh-120px)] lg:min-h-[620px] lg:max-h-[850px] flex items-center w-full relative z-10">
@@ -211,47 +209,9 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
                 </div>
 
                 {/* Rating Badges Section */}
-                <div className="grid grid-cols-3 gap-2 sm:gap-6 pt-5 border-t border-slate-200 max-w-xl">
-                  {/* ProductReview */}
+                <div className="grid grid-cols-2 gap-3 sm:gap-6 pt-5 border-t border-slate-200 max-w-md">
+                  {/* Google Reviews */}
                   <div className="flex flex-col items-start gap-1 pr-1.5 sm:pr-4 border-r border-slate-200">
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-5 h-5 rounded-full bg-[#34A853]/10 flex items-center justify-center text-[#34A853] shrink-0">
-                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5">
-                          <path d="M12 2C6.477 2 2 6.477 2 12c0 2.223.725 4.28 1.956 5.945L3.02 21.02a.5.5 0 00.686.686l3.075-.936A9.954 9.954 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z" />
-                        </svg>
-                      </div>
-                      <div className="flex gap-0.5">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-2.5 h-2.5 text-[#FBBF24] fill-[#FBBF24]" />
-                        ))}
-                      </div>
-                    </div>
-                    <p className="text-[10px] sm:text-[11.5px] text-slate-500 font-medium leading-tight mt-1">
-                      <strong className="text-slate-800 font-bold">4.9</strong> out of 850+ reviews
-                    </p>
-                  </div>
-
-                  {/* Facebook */}
-                  <div className="flex flex-col items-start gap-1 px-1 sm:px-2 border-r border-slate-200">
-                    <div className="flex items-center gap-1.5">
-                      <div className="w-5 h-5 rounded-full bg-[#1877F2]/10 flex items-center justify-center text-[#1877F2] shrink-0">
-                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5">
-                          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                        </svg>
-                      </div>
-                      <div className="flex gap-0.5">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-2.5 h-2.5 text-[#FBBF24] fill-[#FBBF24]" />
-                        ))}
-                      </div>
-                    </div>
-                    <p className="text-[10px] sm:text-[11.5px] text-slate-500 font-medium leading-tight mt-1">
-                      <strong className="text-slate-800 font-bold">4.9</strong> out of 120+ reviews
-                    </p>
-                  </div>
-
-                  {/* Google */}
-                  <div className="flex flex-col items-start gap-1 pl-1.5 sm:pl-4">
                     <div className="flex items-center gap-1.5">
                       <div className="w-5 h-5 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
                         <svg viewBox="0 0 24 24" className="w-3.5 h-3.5">
@@ -268,7 +228,26 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
                       </div>
                     </div>
                     <p className="text-[10px] sm:text-[11.5px] text-slate-500 font-medium leading-tight mt-1">
-                      <strong className="text-slate-800 font-bold">4.9</strong> out of 230+ reviews
+                      <strong className="text-slate-800 font-bold">5.0</strong> out of 100+ reviews - Google Reviews
+                    </p>
+                  </div>
+
+                  {/* Facebook */}
+                  <div className="flex flex-col items-start gap-1 pl-1.5 sm:pl-2">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-5 h-5 rounded-full bg-[#1877F2]/10 flex items-center justify-center text-[#1877F2] shrink-0">
+                        <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5">
+                          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                        </svg>
+                      </div>
+                      <div className="flex gap-0.5">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className="w-2.5 h-2.5 text-[#FBBF24] fill-[#FBBF24]" />
+                        ))}
+                      </div>
+                    </div>
+                    <p className="text-[10px] sm:text-[11.5px] text-slate-500 font-medium leading-tight mt-1">
+                      <strong className="text-slate-800 font-bold">5.0</strong> out of 15+ reviews. Facebook
                     </p>
                   </div>
                 </div>
@@ -334,7 +313,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
                     <div className="text-slate-400 text-[7.5px] font-extrabold uppercase tracking-wider mt-0.5">Rating</div>
                   </div>
                   <div className="border-x border-slate-100">
-                    <div className="text-[#0B1F3A] text-[13.5px] font-black">1,200+</div>
+                    <div className="text-[#0B1F3A] text-[13.5px] font-black">500+</div>
                     <div className="text-slate-400 text-[7.5px] font-extrabold uppercase tracking-wider mt-0.5">Families</div>
                   </div>
                   <div>
@@ -356,7 +335,7 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
                     <div className="w-4.5 h-4.5 rounded-full bg-blue-50 flex items-center justify-center text-[#10A3EB] shrink-0">
                       <Award className="w-3 h-3 text-[#10A3EB]" />
                     </div>
-                    <span className="text-[10px] text-slate-600 font-bold">Credit Licensee</span>
+                    <span className="text-[10px] text-slate-600 font-bold">Credit Representative</span>
                   </div>
                 </div>
               </div>
@@ -423,12 +402,6 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
           </div>
         </div>
       </section>
-
-      {/* Five Steps to Your First Home — exact same section used across the site */}
-      <RoadmapSection colorTheme="blue" />
-
-      {/* Repayment Calculator */}
-      <RepaymentCalculatorSection />
 
       {/* Mortgage Mate Flyer Stack */}
       <section className="bg-[#0B1F3A] py-14 md:py-18 overflow-hidden relative">
@@ -584,124 +557,8 @@ export default function MortgageMatePage({ videoUrl }: { videoUrl: string }) {
         </div>
       </section>
 
-      {/* ── AWARDS & INDUSTRY RECOGNITION ── */}
-      <section className="py-16 md:py-20 bg-[#EDF1F9]/40 border-t border-b border-slate-100">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-10 lg:px-16 text-center flex flex-col items-center">
-          {/* Top Badge */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={VIEWPORT_LOOSE}
-            variants={fadeInUp}
-            className="inline-flex items-center gap-2 bg-white border border-slate-200 rounded-full px-4 py-1.5 mb-4 shadow-sm"
-          >
-            <Star className="w-3.5 h-3.5 text-[#10A3EB] fill-[#10A3EB]" />
-            <span className="text-[#10A3EB] text-[11px] font-extrabold tracking-widest uppercase">
-              Award-Winning Excellence
-            </span>
-          </motion.div>
-
-          {/* Heading */}
-          <motion.h2
-            initial="hidden"
-            whileInView="visible"
-            viewport={VIEWPORT_LOOSE}
-            variants={fadeInUp}
-            className="text-[28px] sm:text-[34px] md:text-[42px] font-extrabold text-[#0B1F3A] leading-tight font-montserrat"
-            style={{ fontFamily: "var(--font-montserrat), sans-serif" }}
-          >
-            Proven Track Record. <br />
-            <span className="text-[#10A3EB]">Recognised For Excellence.</span>
-          </motion.h2>
-
-          {/* Description */}
-          <motion.p
-            initial="hidden"
-            whileInView="visible"
-            viewport={VIEWPORT_LOOSE}
-            variants={fadeInUp}
-            className="text-slate-500 text-[14.5px] mt-3 max-w-2xl mx-0 lg:mx-auto leading-relaxed font-inter font-medium"
-          >
-            We take pride in our commitment to excellence, customer satisfaction, and building elite bank partnerships. Here are our recent achievements and industry recognitions.
-          </motion.p>
-
-          {/* Grid Layout for Awards */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={staggerContainer}
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 mt-12 w-full"
-          >
-            {[
-              {
-                img: "/images/2.png",
-                title: "Quality Business Awards",
-                subtitle: "2026 Winner",
-                desc: "Quality Rating Over 95%",
-              },
-              {
-                img: "/images/3.png",
-                title: "Quality Business Awards",
-                subtitle: "2026 Winner",
-                desc: "Gold Medalist",
-              },
-              {
-                img: "/images/4.png",
-                title: "Achievement Award",
-                subtitle: "2026 Honor",
-                desc: "Wreath of Excellence",
-              },
-              {
-                img: "/images/5.png",
-                title: "Best Self-Employed Broker",
-                subtitle: "Australia 2026",
-                desc: "Specialist Mortgage Broker",
-              },
-              {
-                img: "/images/7.png",
-                title: "Quality Business Awards",
-                subtitle: "2026 Winner",
-                desc: "Gold Medalist",
-              },
-            ].map((award, idx) => (
-              <motion.div
-                key={idx}
-                variants={fadeInUp}
-                whileHover={{ ...motionCardHover, boxShadow: motionCardShadow }}
-                className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 sm:p-5 flex flex-col items-center justify-center text-center transition-all duration-300 group last:col-span-2 md:last:col-span-1 lg:last:col-span-1"
-              >
-                {/* Image Container */}
-                <div className="relative w-24 h-24 xs:w-28 xs:h-28 sm:w-36 sm:h-36 flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-105 self-center">
-                  <Image
-                    src={award.img}
-                    alt={award.title}
-                    fill
-                    className="object-contain"
-                    sizes="(max-width: 640px) 120px, 176px"
-                  />
-                </div>
-
-                {/* Text Details */}
-                <div className="w-full">
-                  <h3 className="text-[#0B1F3A] font-extrabold text-[12px] sm:text-[14px] leading-tight mb-1" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
-                    {award.title}
-                  </h3>
-                  <div className="text-[#10A3EB] font-bold text-[11px] sm:text-[11.5px] mb-1">
-                    {award.subtitle}
-                  </div>
-                  <p className="text-slate-550 text-[10.5px] font-semibold leading-snug">
-                    {award.desc}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
       {/* ── CLIENT TESTIMONIALS ── */}
-      <TestimonialSection />
+      <TestimonialSection singleRow={true} />
 
       <SiteFooter noNavigation={true} />
     </div>

@@ -109,13 +109,15 @@ interface TestimonialSectionProps {
   titleText?: React.ReactNode;
   subtitleText?: string;
   backgroundClass?: string;
+  singleRow?: boolean;
 }
 
 export function TestimonialSection({
   badgeText = "Google Reviews",
   titleText = <>Loved By Hundreds of <span className="text-[#2563EB]">Happy Clients</span></>,
   subtitleText = "Don't just take our word for it. See what our clients have to say about their experience with Mortgage Xperts.",
-  backgroundClass = "bg-slate-50"
+  backgroundClass = "bg-slate-50",
+  singleRow = false
 }: TestimonialSectionProps) {
   const [dbReviews, setDbReviews] = useState<DBTestimonial[]>([]);
 
@@ -184,9 +186,9 @@ export function TestimonialSection({
     avatar: r.avatar
   }));
 
-  const reviews1 = formattedReviews.length > 0 
-    ? formattedReviews.filter((_, idx) => idx % 2 === 0) 
-    : defaultReviews1;
+  const reviews1 = singleRow
+    ? (formattedReviews.length > 0 ? formattedReviews : [...defaultReviews1, ...defaultReviews2])
+    : (formattedReviews.length > 0 ? formattedReviews.filter((_, idx) => idx % 2 === 0) : defaultReviews1);
   const reviews2 = formattedReviews.length > 0 
     ? formattedReviews.filter((_, idx) => idx % 2 !== 0) 
     : defaultReviews2;
@@ -235,20 +237,22 @@ export function TestimonialSection({
       </motion.div>
 
       {/* Marquee Row 2 (Reverse) */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={VIEWPORT_LOOSE}
-        transition={{ duration: 0.7, delay: 0.12, ease: EASE_OUT }}
-        className="flex overflow-hidden relative mt-4"
-        style={{ WebkitMaskImage: "linear-gradient(to right, transparent, black 12%, black 88%, transparent)" }}
-      >
-        <div className="flex w-max animate-marquee-reverse hover:pause">
-          {row2.map((rev, i) => (
-            <GoogleReviewCard key={`r2-${i}`} {...rev} />
-          ))}
-        </div>
-      </motion.div>
+      {!singleRow && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={VIEWPORT_LOOSE}
+          transition={{ duration: 0.7, delay: 0.12, ease: EASE_OUT }}
+          className="flex overflow-hidden relative mt-4"
+          style={{ WebkitMaskImage: "linear-gradient(to right, transparent, black 12%, black 88%, transparent)" }}
+        >
+          <div className="flex w-max animate-marquee-reverse hover:pause">
+            {row2.map((rev, i) => (
+              <GoogleReviewCard key={`r2-${i}`} {...rev} />
+            ))}
+          </div>
+        </motion.div>
+      )}
     </section>
   );
 }

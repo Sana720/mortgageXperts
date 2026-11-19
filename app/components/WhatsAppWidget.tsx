@@ -1,8 +1,16 @@
 "use client";
 
 import React from "react";
+import { usePathname } from "next/navigation";
 
 export function WhatsAppWidget() {
+  const pathname = usePathname();
+
+  // Hide WhatsApp widget on free-assessment landing page
+  if (pathname?.startsWith("/free-assessment")) {
+    return null;
+  }
+
   // Mobile / Desktop compatible link direct to chat with business phone
   const whatsappUrl = "https://wa.me/61450240757";
 

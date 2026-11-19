@@ -274,6 +274,16 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
                     ? "Personalised home loan solutions across Greater Sydney & NSW"
                     : cityData.slug === "brisbane"
                     ? "Home loans for buyers, owners and investors across Brisbane & QLD"
+                    : cityData.slug === "perth"
+                    ? "Your home loan and property finance partner across Perth & WA"
+                    : cityData.slug === "adelaide"
+                    ? "Home loans, refinancing and property investment across Adelaide & SA"
+                    : cityData.slug === "canberra"
+                    ? "Home loans for professionals and first home buyers across Canberra & ACT"
+                    : cityData.slug === "darwin"
+                    ? "Property finance across Darwin & the Northern Territory"
+                    : cityData.slug === "hobart"
+                    ? "Home loan guidance across Hobart & Tasmania"
                     : `Trusted by hundreds of ${cityData.city} families`}
                 </span>
               </div>
@@ -315,7 +325,7 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
 
             {/* Mobile Stats Grid (renders under the left col content on mobile) */}
             <div className="lg:hidden block mt-6">
-              {cityData.slug === "sydney" || cityData.slug === "brisbane" || !cityData.clientsHelped ? (
+              {cityData.slug === "sydney" || cityData.slug === "brisbane" || cityData.slug === "perth" || cityData.slug === "adelaide" || cityData.slug === "canberra" || cityData.slug === "darwin" || cityData.slug === "hobart" || !cityData.clientsHelped ? (
                 <div className="grid grid-cols-2 gap-3">
                   {[
                     { label: "Strategic Guidance", value: "Tailored Lending", icon: <TrendingUp className="w-4 h-4" /> },
@@ -524,13 +534,13 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
                 className="text-[10px] font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full w-fit block border"
                 style={{ color: cityData.accentColor, background: `${cityData.accentColor}15`, borderColor: `${cityData.accentColor}30` }}
               >
-                {cityData.slug === "sydney" || cityData.slug === "brisbane" ? "Your Mortgage Broker" : `Your ${cityData.city} Broker`}
+                {cityData.slug === "sydney" || cityData.slug === "brisbane" || cityData.slug === "perth" || cityData.slug === "adelaide" || cityData.slug === "canberra" || cityData.slug === "darwin" || cityData.slug === "hobart" ? "Your Mortgage Broker" : `Your ${cityData.city} Broker`}
               </span>
               <h2
                 className="text-[28px] sm:text-[36px] font-bold leading-tight text-white"
                 style={{ fontFamily: "var(--font-montserrat, sans-serif)" }}
               >
-                {cityData.slug === "sydney" || cityData.slug === "brisbane" ? "Book with Aakash" : `Meet ${effectiveTeamLead.name}`}
+                {cityData.slug === "sydney" || cityData.slug === "brisbane" || cityData.slug === "perth" || cityData.slug === "adelaide" || cityData.slug === "canberra" || cityData.slug === "darwin" || cityData.slug === "hobart" ? "Book with Aakash" : `Meet ${effectiveTeamLead.name}`}
               </h2>
               <p className="text-[15px] font-bold" style={{ color: cityData.accentColor }}>
                 {effectiveTeamLead.title}
@@ -565,7 +575,7 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
                 <MapPin className="w-4 h-4 mt-0.5 shrink-0" style={{ color: cityData.accentColor }} />
                 <div>
                   <p className="text-[12px] font-bold text-white/60 uppercase tracking-wider mb-0.5">
-                    {cityData.slug === "sydney" || cityData.slug === "brisbane" ? "Consultation Location" : "Office Address"}
+                    {cityData.slug === "sydney" || cityData.slug === "brisbane" || cityData.slug === "perth" || cityData.slug === "adelaide" || cityData.slug === "canberra" || cityData.slug === "darwin" || cityData.slug === "hobart" ? "Consultation Location" : "Office Address"}
                   </p>
                   <p className="text-[13.5px] font-semibold text-white">{cityData.officeAddress}</p>
                 </div>
@@ -684,7 +694,7 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
                     <MapPin className="w-4 h-4" style={{ color: cityData.accentColor }} />
                   </div>
                   <span className="text-[14px] font-semibold">
-                    {cityData.slug === "sydney" || cityData.slug === "brisbane" ? `Consultation Location: ${cityData.officeAddress}` : cityData.officeAddress}
+                    {cityData.slug === "sydney" || cityData.slug === "brisbane" || cityData.slug === "perth" || cityData.slug === "adelaide" || cityData.slug === "canberra" || cityData.slug === "darwin" || cityData.slug === "hobart" ? `Consultation Location: ${cityData.officeAddress}` : cityData.officeAddress}
                   </span>
                 </div>
                 <a
@@ -765,7 +775,21 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
             {/* Right Column: Bio Content */}
             <div className="lg:col-span-7 space-y-6 text-left">
               <span className="text-[10px] font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full inline-block border border-blue-150 bg-blue-50/50 text-[#2563EB]">
-                {cityData.slug === "sydney" ? "Serving Greater Sydney & Regional NSW" : cityData.slug === "brisbane" ? "Serving Brisbane & Queensland" : "Trust Our Founder"}
+                {cityData.slug === "sydney"
+                  ? "Serving Greater Sydney & Regional NSW"
+                  : cityData.slug === "brisbane"
+                  ? "Serving Brisbane & Queensland"
+                  : cityData.slug === "perth"
+                  ? "Serving Perth & Western Australia"
+                  : cityData.slug === "adelaide"
+                  ? "Serving Adelaide & South Australia"
+                  : cityData.slug === "canberra"
+                  ? "Serving Canberra & the ACT"
+                  : cityData.slug === "darwin"
+                  ? "Serving Darwin & the Northern Territory"
+                  : cityData.slug === "hobart"
+                  ? "Serving Hobart & Tasmania"
+                  : "Trust Our Founder"}
               </span>
               <h2 className="text-[#0B1F3A] text-[28px] sm:text-[36px] font-extrabold leading-tight" style={{ fontFamily: "var(--font-montserrat), sans-serif" }}>
                 {cityData.slug === "sydney" ? (
@@ -776,6 +800,31 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
                 ) : cityData.slug === "brisbane" ? (
                   <>
                     Start Your Brisbane Home Loan Assessment <br />
+                    <span className="text-slate-500 font-normal text-lg sm:text-xl">Aakash K C – Founder &amp; Principal Broker | The Mortgage Mate</span>
+                  </>
+                ) : cityData.slug === "perth" ? (
+                  <>
+                    Book Your Perth Home Loan Assessment <br />
+                    <span className="text-slate-500 font-normal text-lg sm:text-xl">Aakash K C – Founder &amp; Principal Broker | The Mortgage Mate</span>
+                  </>
+                ) : cityData.slug === "adelaide" ? (
+                  <>
+                    Personalised Mortgage Guidance Across South Australia <br />
+                    <span className="text-slate-500 font-normal text-lg sm:text-xl">Aakash K C – Founder &amp; Principal Broker | The Mortgage Mate</span>
+                  </>
+                ) : cityData.slug === "canberra" ? (
+                  <>
+                    Speak With Mortgage Xperts in Canberra <br />
+                    <span className="text-slate-500 font-normal text-lg sm:text-xl">Aakash K C – Founder &amp; Principal Broker | The Mortgage Mate</span>
+                  </>
+                ) : cityData.slug === "darwin" ? (
+                  <>
+                    Home Loan Assistance Across the Northern Territory <br />
+                    <span className="text-slate-500 font-normal text-lg sm:text-xl">Aakash K C – Founder &amp; Principal Broker | The Mortgage Mate</span>
+                  </>
+                ) : cityData.slug === "hobart" ? (
+                  <>
+                    Mortgage Services Throughout Tasmania <br />
                     <span className="text-slate-500 font-normal text-lg sm:text-xl">Aakash K C – Founder &amp; Principal Broker | The Mortgage Mate</span>
                   </>
                 ) : (
@@ -808,6 +857,66 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
                     </p>
                     <p>
                       Known as The Mortgage Mate, Aakash helps nurses, midwives, doctors and other eligible healthcare professionals, first home buyers, property investors, existing homeowners and self-employed borrowers across Brisbane and Queensland make informed finance decisions.
+                    </p>
+                  </>
+                ) : cityData.slug === "perth" ? (
+                  <>
+                    <p>
+                      From your initial borrowing assessment to application support and settlement, <strong>Mortgage Xperts</strong> provides personalised assistance.
+                    </p>
+                    <p>
+                      Book a free consultation with <strong>Aakash K C</strong>, Founder &amp; Principal Broker.
+                    </p>
+                    <p>
+                      Known as The Mortgage Mate, Aakash helps first home buyers, nurses, midwives, doctors, property investors, homeowners and self-employed borrowers throughout Perth and Western Australia navigate their lending options.
+                    </p>
+                  </>
+                ) : cityData.slug === "adelaide" ? (
+                  <>
+                    <p>
+                      We assist clients in Adelaide and regional South Australia through convenient phone and online consultations.
+                    </p>
+                    <p>
+                      Start with a free assessment and discuss your borrowing options with <strong>Aakash K C</strong>, Founder &amp; Principal Broker.
+                    </p>
+                    <p>
+                      Known as The Mortgage Mate, Aakash helps first home buyers, healthcare professionals, homeowners, self-employed borrowers and property investors across Adelaide and regional South Australia navigate their home loan options.
+                    </p>
+                  </>
+                ) : cityData.slug === "canberra" ? (
+                  <>
+                    <p>
+                      Our phone and online consultations provide access to personalised mortgage guidance without requiring an in-person appointment.
+                    </p>
+                    <p>
+                      Book a free assessment with <strong>Aakash K C</strong>, Founder &amp; Principal Broker of Mortgage Xperts.
+                    </p>
+                    <p>
+                      Known as The Mortgage Mate, Aakash helps public sector employees, healthcare professionals, first home buyers, property investors and self-employed borrowers across Canberra and the ACT navigate their home loan options.
+                    </p>
+                  </>
+                ) : cityData.slug === "darwin" ? (
+                  <>
+                    <p>
+                      Whether you are purchasing a home in Darwin, building in Palmerston or exploring a property purchase elsewhere in the Territory, we provide consultations by phone and online.
+                    </p>
+                    <p>
+                      Request your free mortgage assessment with <strong>Aakash K C</strong>, Founder &amp; Principal Broker of Mortgage Xperts.
+                    </p>
+                    <p>
+                      Known as The Mortgage Mate, Aakash helps first home buyers, healthcare professionals, defence personnel, homeowners, investors and self-employed borrowers across Darwin, Palmerston and regional Northern Territory navigate their home loan options.
+                    </p>
+                  </>
+                ) : cityData.slug === "hobart" ? (
+                  <>
+                    <p>
+                      Whether you are buying in Hobart or exploring options elsewhere in Tasmania, our phone and online consultations make professional mortgage guidance accessible.
+                    </p>
+                    <p>
+                      Request a free home loan assessment with <strong>Aakash K C</strong>, Founder &amp; Principal Broker of Mortgage Xperts.
+                    </p>
+                    <p>
+                      Known as The Mortgage Mate, Aakash helps healthcare professionals, first home buyers, homeowners and property investors across Hobart, Greater Hobart and regional Tasmania navigate their home loan options.
                     </p>
                   </>
                 ) : (
@@ -850,6 +959,26 @@ export default function BranchClientPage({ cityData, settings = {}, pageHeroSett
           ) : cityData.slug === "brisbane" ? (
             <>
               Trusted Across <span style={{ color: cityData.accentColor }}>Brisbane &amp; Queensland</span>
+            </>
+          ) : cityData.slug === "perth" ? (
+            <>
+              Trusted Across <span style={{ color: cityData.accentColor }}>Perth &amp; Western Australia</span>
+            </>
+          ) : cityData.slug === "adelaide" ? (
+            <>
+              Trusted Across <span style={{ color: cityData.accentColor }}>Adelaide &amp; South Australia</span>
+            </>
+          ) : cityData.slug === "canberra" ? (
+            <>
+              Trusted Across <span style={{ color: cityData.accentColor }}>Canberra &amp; the ACT</span>
+            </>
+          ) : cityData.slug === "darwin" ? (
+            <>
+              Trusted Across <span style={{ color: cityData.accentColor }}>Darwin &amp; the Northern Territory</span>
+            </>
+          ) : cityData.slug === "hobart" ? (
+            <>
+              Trusted Across <span style={{ color: cityData.accentColor }}>Hobart &amp; Tasmania</span>
             </>
           ) : (
             <>

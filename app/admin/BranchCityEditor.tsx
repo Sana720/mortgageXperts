@@ -135,69 +135,233 @@ const DEFAULT_CITIES: Record<string, Partial<CityData>> = {
     }
   },
   perth: {
-    tagline: "WA's Hottest Market. Smart Lending.",
-    medianHousePrice: "$748K",
-    avgLoanSize: "$520K",
-    approvalRate: "93%",
-    clientsHelped: "250+",
-    marketInsight: "Perth's Mining-Driven Boom Requires Lenders Who Understand WA Income",
-    marketDetail: "Perth's property market is unique — many buyers work FIFO (fly-in-fly-out) jobs with irregular income structures. We work with lenders who understand WA income types and can assess FIFO earnings, contract work and mining bonuses accurately.",
+    tagline: "Your Home Loan and Property Finance Partner",
+    medianHousePrice: "",
+    avgLoanSize: "",
+    approvalRate: "",
+    clientsHelped: "",
+    marketInsight: "Perth Home Loans, Construction Finance and Investment Lending",
+    marketDetail:
+      "For buyers considering established homes, house and land packages or newly constructed properties, the financing process can vary considerably. An established-property purchase generally involves finance approval and settlement within the agreed contract period. Construction lending may involve separate land and building arrangements, progress payments and additional lender documentation. For investors, important considerations include interest-only versus principal-and-interest repayments, available equity, rental income assessment and the effect of existing debts on borrowing capacity. Mortgage Xperts helps you compare suitable loan structures and understand the financial implications before proceeding.",
     suburbs: ["Subiaco", "Fremantle", "Joondalup", "Rockingham", "Mandurah", "Armadale", "Midland", "Cannington", "Stirling", "Wanneroo", "Gosnells", "Canning Vale"],
-    officeAddress: "Level 3, 140 St Georges Terrace, Perth WA 6000",
+    officeAddress: "Online & Australia-Wide",
     officePhone: "0450 240 757",
     localTips: [
-      { title: "FIFO Income Assessment", desc: "Many WA lenders don't understand FIFO earnings — we work with lenders who correctly assess all fly-in-fly-out income types." },
-      { title: "WA Stamp Duty Thresholds", desc: "WA first home buyers receive exemptions below $430K and concessions up to $530K — we ensure you benefit fully." },
-      { title: "Regional WA Properties", desc: "Lending for Pilbara, Kimberley and South West WA properties has specific lender requirements — we know who to approach." },
-      { title: "Mining Wealth Strategy", desc: "We help high-income mining workers structure loans that maximise deductions and build wealth through property portfolios." },
+      {
+        title: "First Home Buyer Assistance in Western Australia",
+        desc: "From 7 May 2026, eligible first home buyers can receive an exemption from transfer duty on qualifying homes valued up to $600,000, with concessional rates applying to qualifying homes valued above $600,000 and up to $800,000. Different thresholds apply to vacant residential land. These concessions can influence your upfront purchase costs, particularly when deciding between an established home and building a new property."
+      },
+      {
+        title: "Mortgage Solutions for Nurses and Healthcare Professionals",
+        desc: "Mortgage Xperts places particular emphasis on helping healthcare professionals navigate lender requirements. Income from rotating shifts, overtime and penalty rates may be treated differently by individual lenders. We assess relevant borrowing options and potential profession-specific lending concessions. Our services also support medical professionals purchasing investment properties, refinancing existing mortgages and planning construction projects."
+      },
+      {
+        title: "Construction & Investment Lending Structures",
+        desc: "We assist with staged progress payments for house and land packages, building contracts, interest-only versus P&I structures, equity release, and rental income assessments for WA property investors."
+      },
+      {
+        title: "Personalised Online & Australia-Wide Consultations",
+        desc: "Access tailored mortgage guidance and borrowing capacity assessments from anywhere in Western Australia. We assist clients across Greater Perth and regional WA via phone and secure online consultations."
+      }
     ],
     uniqueAdvantages: [
-      { iconKey: "Shield", title: "FIFO Income Experts", desc: "Specialist lender access for fly-in-fly-out workers, contractors and resource industry employees." },
-      { iconKey: "MapPin", title: "All WA Regions", desc: "From Perth metro to the Pilbara, Kimberley and Great Southern — we lend across Western Australia." },
-      { iconKey: "Building2", title: "Resource Sector Lending", desc: "Lenders who understand contract and project-based income common in WA's resources economy." },
-      { iconKey: "TrendingUp", title: "Growth Market Strategy", desc: "Perth's market growth trajectory remains strong — we help investors position in the right suburbs now." },
-      { iconKey: "Home", title: "WA Grant Navigation", desc: "End-to-end management of WA's First Home Owner Grant and stamp duty concession applications." },
-      { iconKey: "Award", title: "Nepali Community Support", desc: "Trusted by Perth's growing Nepali community for honest, bilingual mortgage guidance." },
+      { iconKey: "TrendingUp", title: "Construction & Established Loans", desc: "Expert structuring for established homes, house & land packages, and investment lending across WA." },
+      { iconKey: "MapPin", title: "Perth & Regional WA", desc: "Supporting buyers throughout Greater Perth, Mandurah, the South West, and regional Western Australia." },
+      { iconKey: "Home", title: "WA Transfer Duty Guidance", desc: "Clear navigation of Western Australia first home buyer transfer duty exemptions and concessions." },
+      { iconKey: "Users", title: "Healthcare Lending Solutions", desc: "Specialist assessment of shift allowances, overtime, and profession-specific lending benefits." },
+      { iconKey: "Shield", title: "Zero Broker Fees", desc: "Our residential mortgage advisory service is 100% free to you, paid entirely by the lender." },
+      { iconKey: "Award", title: "40+ Lender Comparisons", desc: "We compare loan options across 40+ leading Australian banks and specialist lenders for WA clients." },
     ],
     nearbyAreas: ["Mandurah", "Peel Region", "South West WA", "Wheatbelt", "Pilbara (remote)"],
     teamLead: {
-      name: "Bibek Shrestha",
-      title: "Senior Mortgage Broker — Perth Branch",
-      image: "/images/team_perth.png",
-      bio: "Bibek specialises in WA mining-industry income assessments and has helped 250+ Perth families buy their first home or investment property. He's the go-to broker for FIFO workers across the state."
+      name: "Aakash K C",
+      title: "Founder & Principal Broker",
+      image: "/images/aakash_new.png",
+      bio: "As the Founder and Principal Broker of Mortgage Xperts, Aakash provides personalised home loan guidance to first home buyers, nurses, midwives, doctors, property investors, homeowners and self-employed borrowers throughout Perth, Western Australia and nationwide."
     }
   },
   adelaide: {
-    tagline: "South Australia's Most Trusted Brokers.",
-    medianHousePrice: "$718K",
-    avgLoanSize: "$490K",
-    approvalRate: "95%",
-    clientsHelped: "200+",
-    marketInsight: "Adelaide: Australia's Most Accessible Capital City Market",
-    marketDetail: "Adelaide's property market has outperformed expectations — driven by interstate migration, defence industry investment and lifestyle appeal. Our Adelaide brokers know which lenders offer the best rates for SA properties and how to maximise your borrowing power in this market.",
+    tagline: "Home Loans, Refinancing and Property Investment",
+    medianHousePrice: "",
+    avgLoanSize: "",
+    approvalRate: "",
+    clientsHelped: "",
+    marketInsight: "Understanding Property Finance in Adelaide",
+    marketDetail:
+      "Adelaide home buyers may be considering established properties, new residential developments, townhouses or house and land packages. Each purchase type can involve different financial considerations. For established homes, you may need to budget for transfer duty, inspections and other purchasing expenses. For a new build, construction timelines, progress payments and potential changes to building costs can affect your finance requirements. Investors may also need to consider rental income, existing property debt, available equity and the impact of additional repayments on household cash flow. Mortgage Xperts helps borrowers review suitable lending options and understand how these factors affect their financial plans.",
     suburbs: ["Glenelg", "Norwood", "Prospect", "Salisbury", "Morphett Vale", "Tea Tree Gully", "Marion", "Campbelltown", "Golden Grove", "Mount Barker", "Port Adelaide", "Unley"],
-    officeAddress: "Level 1, 45 Grenfell Street, Adelaide SA 5000",
+    officeAddress: "Online & Australia-Wide",
     officePhone: "0450 240 757",
     localTips: [
-      { title: "SA First Home Owner Grant", desc: "Eligible SA first home buyers can access a $15,000 FHOG for new builds — we check and apply on your behalf." },
-      { title: "Affordable Entry Points", desc: "Adelaide's median is still well below Sydney and Melbourne — making it easier to enter the market with a smaller deposit." },
-      { title: "Defence Sector Lending", desc: "With significant RAAF and naval presence in Adelaide, we assist defence personnel with specific lending entitlements." },
-      { title: "SA Stamp Duty Concessions", desc: "SA abolished stamp duty for eligible first home buyers in 2023 — we ensure all new buyers benefit from this change." },
+      {
+        title: "South Australian First Home Buyer Benefits",
+        desc: "South Australia provides stamp duty relief for eligible first home buyers purchasing qualifying new homes, off-the-plan apartments or vacant land intended for a new home. For eligible contracts entered into from 6 June 2024, full stamp duty relief may apply without a property value cap. This makes it particularly important to compare the upfront financial implications of purchasing an established home with those of purchasing or building a new property."
+      },
+      {
+        title: "Home Loans for Adelaide Healthcare Workers",
+        desc: "Nurses, midwives, doctors and other healthcare professionals may have different employment arrangements and income patterns. Mortgage Xperts reviews suitable lending policies for eligible overtime, penalty rates and shift allowances, along with potential LMI concessions for qualifying professionals. Whether you are purchasing your first home, refinancing or expanding your property portfolio, our approach is tailored to your financial circumstances."
+      },
+      {
+        title: "Construction & Investment Lending Considerations",
+        desc: "For new builds and house and land packages, we assist with progress payment structures and builder contracts. For property investors, we evaluate rental yields, available equity, and interest-only versus P&I repayment structures."
+      },
+      {
+        title: "Personalised Mortgage Guidance Across South Australia",
+        desc: "We assist clients in Adelaide and regional South Australia through convenient phone and online consultations. Start with a free assessment and discuss your borrowing options with Mortgage Xperts."
+      }
     ],
     uniqueAdvantages: [
-      { iconKey: "Home", title: "Affordable Market Entry", desc: "Adelaide's property values make borrowing more accessible — we help clients enter the market sooner." },
-      { iconKey: "Award", title: "SA Grant Specialists", desc: "End-to-end First Home Owner Grant and stamp duty concession management for South Australian buyers." },
-      { iconKey: "Shield", title: "Defence Sector Lending", desc: "Specific lender relationships for RAAF, Navy and Army personnel based in and around Adelaide." },
-      { iconKey: "TrendingUp", title: "Growth Suburb Expertise", desc: "We know which Adelaide suburbs are set to outperform — ideal for first and repeat buyers alike." },
-      { iconKey: "MapPin", title: "Hills and Barossa Access", desc: "We lend across metro Adelaide, the Adelaide Hills, McLaren Vale and Barossa Valley regions." },
-      { iconKey: "Users", title: "Community-Focused", desc: "Adelaide's close-knit community deserves a local broker who understands South Australian life." },
+      { iconKey: "TrendingUp", title: "Established & Construction Finance", desc: "Expert structuring for established homes, house and land packages, and investment properties in SA." },
+      { iconKey: "MapPin", title: "Adelaide & Regional SA", desc: "Assisting home buyers across Greater Adelaide, Adelaide Hills, Barossa, and regional South Australia." },
+      { iconKey: "Home", title: "SA Stamp Duty Relief Guidance", desc: "Clear advice on qualifying new builds, off-the-plan contracts, and full stamp duty relief exemptions." },
+      { iconKey: "Users", title: "Healthcare Lending Solutions", desc: "Navigating shift allowances, overtime, and profession-specific LMI concessions for SA medical workers." },
+      { iconKey: "Shield", title: "Zero Broker Fees", desc: "Our standard residential mortgage advisory service is 100% free to you, paid entirely by the lender." },
+      { iconKey: "Award", title: "40+ Lender Panel", desc: "We compare loan options across 40+ leading Australian banks and specialist lenders for Adelaide clients." },
     ],
     nearbyAreas: ["Adelaide Hills", "Barossa Valley", "McLaren Vale", "Fleurieu Peninsula", "Yorke Peninsula"],
     teamLead: {
-      name: "Priya Karmacharya",
-      title: "Senior Mortgage Broker — Adelaide Branch",
-      image: "/images/team_adelaide.png",
-      bio: "Priya has 5 years of South Australian mortgage experience and specialises in first home buyer grants, affordable property purchases, and defence sector lending throughout the Adelaide metro area."
+      name: "Aakash K C",
+      title: "Founder & Principal Broker",
+      image: "/images/aakash_new.png",
+      bio: "As the Founder and Principal Broker of Mortgage Xperts, Aakash provides personalised home loan guidance to first home buyers, healthcare professionals, homeowners, self-employed borrowers and property investors across Adelaide, regional South Australia and nationwide."
+    }
+  },
+  canberra: {
+    tagline: "Home Loans for Professionals and First Home Buyers",
+    medianHousePrice: "",
+    avgLoanSize: "",
+    approvalRate: "",
+    clientsHelped: "",
+    marketInsight: "Home Loan Options for Canberra Professionals",
+    marketDetail:
+      "Canberra borrowers may work in government departments, healthcare services, professional organisations or private businesses. For salaried employees, lenders commonly consider base income, employment arrangements, existing debts and living expenses. For borrowers with variable income, additional documentation may be required. Mortgage Xperts reviews suitable lender assessment policies and helps you understand which income sources can be considered in your loan application. We also assist borrowers purchasing apartments, established homes and investment properties, where lender requirements and property characteristics can affect available finance.",
+    suburbs: ["Civic", "Belconnen", "Gungahlin", "Tuggeranong", "Woden", "Kingston", "Manuka", "Queanbeyan", "Yass", "Goulburn"],
+    officeAddress: "Online & Australia-Wide",
+    officePhone: "0450 240 757",
+    localTips: [
+      {
+        title: "ACT Home Buyer Concession Scheme",
+        desc: "The ACT Home Buyer Concession Scheme provides conveyance duty relief to eligible buyers. From 1 July 2026, the scheme removed its property value cap and income threshold. Eligible applicants may receive a full conveyance duty exemption, subject to other requirements, including previous property ownership and occupancy conditions. Understanding these rules can make a significant difference when estimating the upfront costs of purchasing your home."
+      },
+      {
+        title: "Healthcare Professional Home Loans",
+        desc: "For nurses, midwives, doctors and other eligible healthcare professionals, we assess lending policies for relevant shift income, overtime, additional allowances and potential LMI concessions. We also help homeowners consider refinancing, access to available equity and financing for future property purchases."
+      },
+      {
+        title: "Public Sector & Salaried Income Assessments",
+        desc: "We work with lenders offering favorable assessment policies for federal and ACT government employees, assessing permanent roles, allowances, and salary packaging structures."
+      },
+      {
+        title: "Personalised Phone & Online Consultations",
+        desc: "Our phone and online consultations provide access to personalised mortgage guidance without requiring an in-person appointment. Book a free assessment with Aakash K C, Founder & Principal Broker of Mortgage Xperts."
+      }
+    ],
+    uniqueAdvantages: [
+      { iconKey: "Award", title: "Public Sector & Professional Lending", desc: "Specialist lender assessment for federal government, ACT public service, and corporate professionals." },
+      { iconKey: "MapPin", title: "Canberra Metro & Surrounds", desc: "Serving buyers across Belconnen, Gungahlin, Woden, Tuggeranong, and surrounding regional areas." },
+      { iconKey: "Home", title: "ACT Conveyance Duty Relief", desc: "Navigating the uncapped ACT Home Buyer Concession Scheme to minimise upfront purchasing costs." },
+      { iconKey: "Users", title: "Healthcare Lending Solutions", desc: "Assessing shift allowances, overtime, and profession-specific LMI waivers for medical staff." },
+      { iconKey: "Shield", title: "Zero Broker Fees", desc: "Our standard residential mortgage advisory service is 100% free to you, paid entirely by the lender." },
+      { iconKey: "TrendingUp", title: "40+ Lender Panel", desc: "We compare options across 40+ leading Australian banks and specialist lenders for ACT borrowers." },
+    ],
+    nearbyAreas: ["Queanbeyan", "Gundaroo", "Yass", "Murrumbateman"],
+    teamLead: {
+      name: "Aakash K C",
+      title: "Founder & Principal Broker",
+      image: "/images/aakash_new.png",
+      bio: "As the Founder and Principal Broker of Mortgage Xperts, Aakash provides personalised home loan guidance to public sector employees, healthcare professionals, first home buyers, property investors and self-employed borrowers across Canberra, the ACT and nationwide."
+    }
+  },
+  darwin: {
+    tagline: "Property Finance Across the Northern Territory",
+    medianHousePrice: "",
+    avgLoanSize: "",
+    approvalRate: "",
+    clientsHelped: "",
+    marketInsight: "Understanding Darwin Property Lending",
+    marketDetail:
+      "Property financing in Darwin can involve considerations that differ from those associated with buying in other Australian capital cities. Lenders may assess certain property types, locations and building characteristics differently. Appropriate insurance arrangements and ongoing ownership expenses should also be considered when establishing a realistic property budget. For buyers relocating to the Territory, employment arrangements, available savings, existing property ownership and anticipated living costs may influence borrowing capacity. Mortgage Xperts helps borrowers understand these considerations and compare suitable lending options.",
+    suburbs: ["Palmerston", "Casuarina", "Larrakeyah", "Nightcliff", "Rapid Creek", "Fannie Bay", "Stuart Park", "Rosebery", "Howard Springs", "Humpty Doo"],
+    officeAddress: "Online & Australia-Wide",
+    officePhone: "0450 240 757",
+    localTips: [
+      {
+        title: "Northern Territory First Home Buyer Support",
+        desc: "The Northern Territory's Homegrown Territory program offers a $50,000 grant for eligible first home buyers purchasing or building a qualifying new home. The program includes eligible new-home purchases, building arrangements and certain off-the-plan transactions. Contract dates, property conditions and residency requirements apply. Understanding potential government assistance alongside your deposit, construction costs and loan repayments can help you prepare for a purchase."
+      },
+      {
+        title: "Home Loans for Healthcare and Defence Personnel",
+        desc: "Healthcare professionals may have income arrangements involving overtime, penalty rates or roster-based allowances. Defence personnel may also have employment-related circumstances that require consideration during the loan assessment process. Mortgage Xperts compares relevant lender policies and explores suitable lending options based on the borrower's actual income, employment and financial circumstances."
+      },
+      {
+        title: "Top End Property Lending & Cyclone Insurance",
+        desc: "Lenders assess property construction types, location zoning, and insurance requirements differently in tropical and regional NT. We ensure your loan is structured correctly from pre-approval to settlement."
+      },
+      {
+        title: "Personalised Consultations Across the NT",
+        desc: "Whether you are purchasing a home in Darwin, building in Palmerston or exploring a property purchase elsewhere in the Territory, we provide consultations by phone and online. Request your free mortgage assessment with Mortgage Xperts."
+      }
+    ],
+    uniqueAdvantages: [
+      { iconKey: "TrendingUp", title: "Top End Property Lending", desc: "Expert assessment for Darwin, Palmerston, and regional NT property purchases and construction." },
+      { iconKey: "MapPin", title: "Darwin & Regional NT", desc: "Supporting buyers across Darwin metro, Palmerston, Katherine, Alice Springs, and regional centres." },
+      { iconKey: "Home", title: "Homegrown Territory Grant", desc: "Navigating the $50,000 NT first home buyer grant for new builds and qualifying homes." },
+      { iconKey: "Users", title: "Healthcare & Defence Experts", desc: "Specialist lender channels for ADF defence personnel, medical professionals, and shift workers." },
+      { iconKey: "Shield", title: "Zero Broker Fees", desc: "Our standard residential mortgage advisory service is 100% free to you, paid entirely by the lender." },
+      { iconKey: "Award", title: "40+ Lender Panel", desc: "We compare loan options across 40+ leading Australian banks and specialist lenders for NT clients." },
+    ],
+    nearbyAreas: ["Palmerston", "Alice Springs", "Katherine", "Tennant Creek", "Nhulunbuy"],
+    teamLead: {
+      name: "Aakash K C",
+      title: "Founder & Principal Broker",
+      image: "/images/aakash_new.png",
+      bio: "As the Founder and Principal Broker of Mortgage Xperts, Aakash provides personalised home loan guidance to first home buyers, healthcare professionals, defence personnel, homeowners, investors and self-employed borrowers across Darwin, Palmerston and regional Northern Territory."
+    }
+  },
+  hobart: {
+    tagline: "Home Loan Guidance Across Tasmania",
+    medianHousePrice: "",
+    avgLoanSize: "",
+    approvalRate: "",
+    clientsHelped: "",
+    marketInsight: "Financing Established Homes and Investment Properties in Tasmania",
+    marketDetail:
+      "Buying property in Tasmania can involve lending considerations related to the property's condition, location, construction type and intended use. For example, lenders may request additional information when assessing certain regional properties or homes with unusual construction features. Rural-residential properties may also be subject to different lending policies from standard suburban houses. For investors, lenders generally consider existing debts, rental income, household expenses and the proposed loan structure. Mortgage Xperts compares suitable lending policies and helps borrowers understand the requirements relevant to their chosen property.",
+    suburbs: ["Sandy Bay", "Glenorchy", "Kingston", "Howrah", "Bellerive", "New Town", "North Hobart", "Moonah", "Margate", "Sorell"],
+    officeAddress: "Online & Australia-Wide",
+    officePhone: "0450 240 757",
+    localTips: [
+      {
+        title: "Understanding First Home Buyer Costs in Tasmania",
+        desc: "First home buyers should allow for expenses beyond the deposit, including applicable property transfer duty, legal costs, inspections and other settlement expenses. Tasmania previously offered a full property transfer duty exemption for eligible first home buyers of established homes settling within a specified period. That exemption is not available for transactions settling after 30 June 2026. It is therefore important to calculate your purchase costs using the concessions actually available at the time of your transaction."
+      },
+      {
+        title: "Healthcare Professional and Refinancing Solutions",
+        desc: "Mortgage Xperts assists nurses, midwives, doctors and other eligible healthcare professionals whose income may include shift allowances, overtime or penalty rates. We also help existing homeowners review their interest rates, repayment structures and refinancing options, including potential switching costs and loan features."
+      },
+      {
+        title: "Regional & Rural-Residential Property Lending",
+        desc: "Lenders assess regional acreages, heritage titles, and non-standard constructions with specific guidelines. We help identify lenders with favorable valuation and LVR policies for Tasmanian properties."
+      },
+      {
+        title: "Personalised Consultations Across Tasmania",
+        desc: "Whether you are buying in Hobart or exploring options elsewhere in Tasmania, our phone and online consultations make professional mortgage guidance accessible. Request a free home loan assessment with Mortgage Xperts."
+      }
+    ],
+    uniqueAdvantages: [
+      { iconKey: "TrendingUp", title: "Established & Investment Loans", desc: "Expert assessment for Hobart homes, regional properties, rural-residential, and investment portfolios." },
+      { iconKey: "MapPin", title: "Hobart & Regional TAS", desc: "Assisting clients across Greater Hobart, Launceston, Devonport, Burnie, and rural Tasmania." },
+      { iconKey: "Home", title: "Transfer Duty Cost Navigation", desc: "Accurate calculation of upfront settlement costs, duty obligations, and available concessions in TAS." },
+      { iconKey: "Users", title: "Healthcare & Shift Work Lending", desc: "Evaluating shift penalties, overtime, and profession-specific LMI waivers for Tasmanian medical staff." },
+      { iconKey: "Shield", title: "Zero Broker Fees", desc: "Our standard residential mortgage advisory service is 100% free to you, paid entirely by the lender." },
+      { iconKey: "Award", title: "40+ Lender Panel", desc: "We compare loan options across 40+ leading Australian banks and specialist lenders for Tasmanian clients." },
+    ],
+    nearbyAreas: ["Launceston", "Devonport", "Burnie", "Kingborough", "Huon Valley"],
+    teamLead: {
+      name: "Aakash K C",
+      title: "Founder & Principal Broker",
+      image: "/images/aakash_new.png",
+      bio: "As the Founder and Principal Broker of Mortgage Xperts, Aakash provides personalised home loan guidance to healthcare professionals, first home buyers, homeowners and property investors across Hobart, Greater Hobart and regional Tasmania."
     }
   }
 };

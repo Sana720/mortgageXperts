@@ -46,11 +46,13 @@ const YoutubeIcon = () => (
 export function SiteHeader({ 
   isSticky = true, 
   settings = {}, 
-  noNavigation = false 
+  noNavigation = false,
+  hidePhone = false
 }: { 
   isSticky?: boolean; 
   settings?: Record<string, string>; 
   noNavigation?: boolean; 
+  hidePhone?: boolean;
 }) {
   const { openModal } = useOnboardingModal();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -400,11 +402,13 @@ export function SiteHeader({
             <button className="hidden xl:flex items-center text-[#0B1F3A] hover:text-[#10A3EB] transition-colors">
               <Search className="w-5 h-5" />
             </button>
-            <div className="hidden xl:flex items-center gap-1.5 text-[13.5px]">
-              <Phone className="w-4 h-4 text-[#10A3EB] shrink-0" />
-              <span className="text-slate-500 font-medium">Call:</span>
-              <span className="font-bold text-[#0B1F3A]">{phoneVal}</span>
-            </div>
+            {!hidePhone && (
+              <div className="hidden xl:flex items-center gap-1.5 text-[13.5px]">
+                <Phone className="w-4 h-4 text-[#10A3EB] shrink-0" />
+                <span className="text-slate-500 font-medium">Call:</span>
+                <span className="font-bold text-[#0B1F3A]">{phoneVal}</span>
+              </div>
+            )}
             {/* Desktop Button */}
             <button
               onClick={openModal}
@@ -415,13 +419,15 @@ export function SiteHeader({
             {/* Mobile Quick Action Buttons (Replacing single Let's Talk button with 2 Stunning Circular Icons) */}
             <div className="flex xl:hidden items-center gap-3">
               {/* Call Icon Button */}
-              <a
-                href={`tel:${phoneVal.replace(/\s+/g, "")}`}
-                className="w-10 h-10 rounded-full border-2 border-[#10A3EB] bg-[#F0F9FF] flex items-center justify-center text-[#10A3EB] hover:bg-[#E0F2FE] hover:scale-105 active:scale-95 transition-all duration-300 shadow-sm"
-                aria-label="Call Us"
-              >
-                <Phone className="w-4.5 h-4.5" strokeWidth={2.5} />
-              </a>
+              {!hidePhone && (
+                <a
+                  href={`tel:${phoneVal.replace(/\s+/g, "")}`}
+                  className="w-10 h-10 rounded-full border-2 border-[#10A3EB] bg-[#F0F9FF] flex items-center justify-center text-[#10A3EB] hover:bg-[#E0F2FE] hover:scale-105 active:scale-95 transition-all duration-300 shadow-sm"
+                  aria-label="Call Us"
+                >
+                  <Phone className="w-4.5 h-4.5" strokeWidth={2.5} />
+                </a>
+              )}
               {/* Email Icon Button */}
               <button
                 type="button"
